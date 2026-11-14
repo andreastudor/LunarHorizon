@@ -79,12 +79,15 @@ Toate pachetele backend s-au instalat din wheels (`--only-binary=:all:`) pe Wind
 
 | Componentă | Alegere | Versiune observată | Cerințe observate | Etapă |
 |---|---|---|---|---|
-| API | FastAPI | 0.162.7 | Python ≥ 3.11, Pydantic ≥ 2.9 (fixat deja la 2.14.3) | E06 |
 | Hartă 3D | Three.js | 0.187.0 | — | E07 |
 | Hartă 2D | OpenLayers (`ol`) | 10.11.0 | Proiecții proprii prin `proj4` ≥ 2.8 și `ol/proj/proj4.register` | E11 |
 | Grafice | Plotly (`plotly.js-dist-min`) | 4.3.0 | Pachet de aproximativ 6,2 MB nearhivat | E10 |
 
-Neverificate încă: Pydantic, Uvicorn, Playwright, proj4.
+Neverificate încă: Playwright, proj4.
+
+**Instalate la E06 (2026-11-14):** FastAPI 0.162.7 și Uvicorn 0.54.0 (rulare); `httpx2` 2.16.0 (dezvoltare,
+requis de `fastapi.testclient`; Starlette 1.10 declară `httpx` depreciat). Dependențele tranzitive sunt în
+`backend/constraints.txt`. Starea serviciului este în [API.md](API.md) §8.
 
 Mediul local observat: Git 2.56 cu Git LFS 3.8.1. Lipsesc utilitarele GDAL în linie de comandă, Conda,
 Docker și GitHub CLI; niciunul nu este necesar până la E16.
@@ -142,7 +145,7 @@ Un singur pachet Python, `backend/lunarhorizon/`. Dependențele merg într-un si
 | `terrain` | Registrul produselor DEM (din manifeste), eșantionare, acoperire, profilul orizontului, manifestul de teren vizual |
 | `visibility` | Criterii, detectarea și rafinarea evenimentelor, indicatori |
 | `simulation` | Orchestrare, evidența simulărilor, cache, construirea răspunsului și a provenienței |
-| `api` | Rutere FastAPI, scheme Pydantic, maparea erorilor |
+| `api` | Aplicația FastAPI, simulări asincrone cu cache, maparea erorilor (implementat la E06) |
 
 Reguli:
 

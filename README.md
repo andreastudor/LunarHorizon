@@ -88,8 +88,17 @@ cd frontend
 npm run dev
 ```
 
-Pagina este la <http://localhost:5173>. Backendul nu are încă un server; API-ul (`/api/health` și celelalte)
-se adaugă la etapa E06.
+Pagina este la <http://localhost:5173>.
+
+Serverul API (din E06), în alt terminal, din `backend/`:
+
+```powershell
+$env:PYTHONUTF8 = '1'
+.venv\Scripts\python -m uvicorn lunarhorizon.api.app:app --host 127.0.0.1 --port 8000
+```
+
+Documentația interactivă este la <http://127.0.0.1:8000/api/docs>, iar schema OpenAPI la `/api/openapi.json`.
+Kernelurile SPICE trebuie descărcate (`scripts\download_kernels.py`); fără ele `health` raportează `degraded`.
 
 ## Verificări
 

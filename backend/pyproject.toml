@@ -13,12 +13,14 @@ requires-python = ">=3.13,<3.14"
 license = "MIT"
 
 [dependency-groups]
-# Biblioteci folosite de cod. FastAPI și Uvicorn se adaugă la etapa E06.
+# Biblioteci folosite de cod (FastAPI și Uvicorn adăugate la E06).
 runtime = [
     "numpy==2.5.4",
     "spiceypy==8.4.0",
     "rasterio==1.5.2",
     "pydantic==2.14.3",
+    "fastapi==0.162.7",
+    "uvicorn==0.54.0",
 ]
 dev = [
     { include-group = "runtime" },
@@ -27,6 +29,9 @@ dev = [
     "mypy==2.4.1",
     # Validarea fixture-urilor față de schema JSON generată (testele de contract).
     "jsonschema==4.26.0",
+    # Clientul HTTP cerut de fastapi.testclient (testele API; nu rulează în producție).
+    # Starlette 1.10 declară `httpx` depreciat în favoarea `httpx2`.
+    "httpx2==2.16.0",
 ]
 
 [tool.pytest.ini_options]

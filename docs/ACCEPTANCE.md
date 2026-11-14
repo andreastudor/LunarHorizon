@@ -1,4 +1,21 @@
 # Criterii de acceptanță
+## E06 — stare 2026-11-14: implementare tehnică finalizată; acceptare științifică restantă
+
+| Criteriu BACKLOG E06 | Stare | Dovadă |
+|---|---|---|
+| FastAPI cu `health`, `sites`, `coverage`, `simulations` (+ `terrain/manifest`) | Îndeplinit | `backend/lunarhorizon/api/app.py`; cereri HTTP reale în VALIDARE |
+| Simulări asincrone, cache, serii temporale, `provenance`, `quality` | Îndeplinit | `api/jobs.py`, `simulation/idealized.py`; cache în memorie (limitat) |
+| Erori în formatul stabilit | Îndeplinit | `application/problem+json`, validate față de schema `Problem` în `tests/test_api.py` |
+| Teste de contract pentru fiecare endpoint | Îndeplinit | `tests/test_api.py` (25) cu răspunsuri validate față de JSON Schema |
+| Erori de validare și de acoperire temporală | Îndeplinit | matrice de cereri invalide; `OUT_OF_EPHEMERIS_COVERAGE` cu limite pentru ambele profiluri |
+| Aceeași cerere → aceeași simulare | Îndeplinit | același `id`, `cache_hit`, rezultat identic (și recalculat, fără `computed_at_utc`) |
+| Apeluri concurente către SPICE | Îndeplinit | 6 fire cu 2 profiluri = rezultate secvențiale; 4 cereri HTTP simultane |
+| O simulare idealizată întoarce rezultat complet conform schemei | Îndeplinit | `SimulationResult` validat prin Pydantic și JSON Schema; coerență cu `body_direction` |
+
+Restant științific: rezultatele depind de D-02 (corecția), D-04/D-16 (criterii de vizibilitate), D-01–D-03 și de E04
+(D-07, D-10, verificarea pozițiilor) rămase deschise; modul idealizat nu include relief și nu validează acoperirea
+orizontului. Nu s-au schimbat criteriile de acceptanță.
+
 ## E05 — închidere 2026-11-14: implementare tehnică finalizată; acceptare științifică restantă
 
 Stare declarată exact: **implementare tehnică finalizată; acceptare științifică restantă.** E05 nu este declarată

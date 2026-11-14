@@ -1,4 +1,24 @@
 # Stare
+## E06 — API și simulare în modul idealizat, 2026-11-14
+
+**Implementare tehnică finalizată; acceptare științifică dependentă de E03/E04/E05 rămase deschise.** FastAPI
+0.162.7 + Uvicorn 0.54.0 (fixate; `httpx2` 2.16.0 pentru testele HTTP). Endpointuri: `GET /api/health`, `/api/sites`,
+`/api/coverage`, `/api/terrain/manifest`, `POST /api/simulations`, `GET /api/simulations/{id}`. Calculul este numai
+`idealized_local_plane` (orizont 0°, **fără efectele terenului local**, explicit în rezultat); `terrain_mode=dem` este
+refuzat (`OUT_OF_DEM_COVERAGE`), nu înlocuit. Motorul astronomic E03 este reutilizat (fără al doilea motor);
+accesul la SPICE este serializat. Cadrele nu se convertesc (un sit din catalog cu alt cadru decât cel cerut este refuzat).
+Punctul provizoriu E05 nu este expus ca sit; acoperirea orizontului nu este declarată validată.
+
+Verificări rulate: pytest 327/327 (289 anterioare + 13 simulare + 25 API), Ruff și mypy fără probleme, schema și
+tipurile TS la zi (contractele nu s-au modificat), `npm run typecheck` trecut, server Uvicorn real cu cereri HTTP
+(vezi VALIDARE). Detalii de contract: [API.md](API.md) §8; comenzi: [HANDOFF_CLAUDE.md](HANDOFF_CLAUDE.md).
+
+Restanțe E06: azimutul nedefinit (zenit/nadir) nu poate fi reprezentat în schema 0.3.0 (simularea eșuează explicit);
+D-20 (limita duratei) și criteriile D-04/D-16 sunt provizorii; cache în memorie; fișierele de teren vizual nu se servesc
+static (E07/E08). Dependențele E06 din E03/E04 (D-02, T-01, D-07, D-10) rămân deschise: nu blochează implementarea
+tehnică, dar rezultatele nu sunt validate științific. **Primul pas E07:** interfața de bază și globul 3D peste
+`GET /api/sites` și `/api/coverage`, conform backlog-ului; nu a fost început.
+
 ## E05 — închidere tehnică, 2026-11-14 (preluare de la Codex)
 
 **Implementare tehnică finalizată; acceptare științifică restantă.** Stare reverificată: 289 teste backend trecute

@@ -55,5 +55,6 @@ folosește explicit `py -3.13` (lansatorul `py` are implicit 3.15), nu Python-ul
 | Kerneluri SPICE | rădăcină | `backend\.venv\Scripts\python scripts\download_kernels.py [--verify]`; testele `-m kernels` le cer |
 | Horizons | rădăcină | `scripts\query_horizons.py` (rețea, arhivează răspunsurile originale); `scripts\validate_e03.py` (fără rețea) |
 | Contracte și vectori comuni | rădăcină, apoi `frontend/` | `backend\.venv\Scripts\python scripts\generate_contracts.py [--check]`, apoi `npm run contracts:generate`; nu edita manual fișierele generate |
+| Server API (E06) | `backend/` | `.venv\Scripts\python -m uvicorn lunarhorizon.api.app:app --port 8000` → http://127.0.0.1:8000/api/docs |
 | Server de dezvoltare | `frontend/` | `npm run dev` → http://localhost:5173 |
 | Dependențe | — | pip (`--group`, `-c constraints.txt`) și npm (`--save-exact`); procedura în `CONTRIBUTING.md` |

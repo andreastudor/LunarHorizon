@@ -28,7 +28,7 @@ Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Conven
 >
 > Regulile dintre câmpuri (de exemplu „`null` cere un motiv”, „grup prezent sau declarat necalculat”) nu pot
 > fi exprimate în JSON Schema. Le impun validatorii Pydantic, adică backendul care produce rezultatele.
-> Endpointurile nu există încă; serverul se implementează la E06.
+> Endpointurile sunt implementate la E06 (2026-11-14), fără schimbarea versiunii de schemă (0.3.0); vezi §8.
 
 Valorile din exemple sunt substituenți (`<...>`), nu rezultate. Exemple complete, sintetice și valide, pentru
 fiecare tip de document: [tests/fixtures/contracts/synthetic_valid_documents.json](../tests/fixtures/contracts/synthetic_valid_documents.json).
@@ -350,3 +350,44 @@ Exportul se generează în frontend din rezultatul încărcat și funcționează
 - **JSON** — configurația completă și metadatele: `request`, `sites`, `events`, `summary`, `horizon`, `provenance`, `quality`.
 
 Identificatorii tehnici din export nu se traduc.
+
+## 8. Implementarea E06 (2026-11-14)
+
+Aplicația este `lunarhorizon.api.app:app` (FastAPI 0.162.7, Uvicorn 0.54.0); schema OpenAPI este la
+`/api/openapi.json`, documentația la `/api/docs`. Toate endpointurile din §2 există. Precizări față de specificația
+inițială:
+
+- **Numai modul idealizat este calculat.** Rezultatul declară `horizon[].mode = "idealized_local_plane"`,
+  `terrain[].available = false` cu motiv și `quality.approximations` care spune explicit că relieful local nu este
+  inclus. Observatorul este pe sfera de referință (`on_reference_surface = true`); `sites.terrain_elevation_m` este
+  `null` cu o intrare în `quality.issues` (`terrain_elevation_not_used`); elevația din catalog nu se folosește.
+- **`terrain_mode = "dem"` este refuzat** cu `OUT_OF_DEM_COVERAGE` (422) pentru orice sit, deoarece calculul
+  orizontului din DEM (E09) nu există și acoperirea nu este validată. Serviciul nu trece niciodată singur în modul
+  idealizat.
+- **Cadre.** `frame_id` selectează profilul de kerneluri (`MOON_ME_DE440_ME421` → `de440_me421`, `MOON_ME_DE421` →
+  `de421`). Un sit din catalog cu alt cadru decât cel cerut este refuzat cu `UNSUPPORTED_FRAME` (nu se convertește).
+  Punctele `custom` sunt interpretate în cadrul cererii. Aliasurile `MOON_ME`, `MOON_PA`, `IAU_MOON` sunt respinse
+  la validare (`UNSUPPORTED_FRAME`).
+- **Identificator și cache.** `id = "sim-" + primele 32 de caractere SHA-256` ale cererii canonice, după completarea
+  `series_step_s` (implicit: primul pas dintre 60, 300, 600, 900, 1800, 3600, 7200, 21600, 43200, 86400 s care dă cel
+  mult 1500 de puncte). Aceeași cerere → același `id`; `200` cu `cache_hit: true` pentru o simulare existentă și
+  neeșuată, `202` pentru una nouă. Cache-ul este în memorie, limitat la `cache_size = 64` simulări terminate.
+- **Validări sincrone** (înainte de a crea simularea): structură Pydantic (`VALIDATION_ERROR`, `TOO_MANY_SITES`,
+  `UNSUPPORTED_FRAME` numai pentru valoare de cadru invalidă), durata maximă 366 de zile (`INTERVAL_TOO_LONG`, D-20
+  provizoriu), cel mult 20.000 de puncte de serie, `site_id` necunoscut sau repetat (`VALIDATION_ERROR`), încărcarea
+  kernelurilor (`KERNEL_MISSING`, 503) și acoperirea efemeridelor (`OUT_OF_EPHEMERIS_COVERAGE`, 422, cu limitele
+  profilului; motorul aplică și marja de 600 s a corecției de timp de lumină).
+- **Evenimente și rezumat (idealizat).** Soarele este vizibil la elevația centrului ≥ 0°; Pământul la elevația centrului
+  ≥ `earth_criterion.min_elevation_deg`. Grila de scanare are pasul ≥ 900 s (mărit pentru intervale lungi, cel mult
+  20.000 de puncte); fiecare trecere se rafinează prin bisecție la 1 ms (`refinement_tolerance_s = 0.001`).
+  Intervalele deschise la capete au `truncated_start`/`truncated_end`. Seria folosește aceleași funcții de vizibilitate.
+- **Azimut nedefinit** (zenit/nadir): contractul 0.3.0 nu acceptă `null`; simularea eșuează explicit
+  (`status: failed`, `INTERNAL_ERROR` cu motivul). O schimbare a schemei rămâne decizie deschisă.
+- **`GET /api/coverage`** primește opțional `frame_id` (implicit cadrul profilului implicit). Lista `terrain` conține
+  numai produsele al căror raster de calcul există pe disc; conturul este dreptunghiul rasterului, nu acoperirea
+  orizontului. **`GET /api/terrain/manifest`** întoarce manifestul de teren al rasterului care conține punctul
+  (`site_id` sau `latitude_deg` + `longitude_deg`); în afara lui `404` cu `OUT_OF_DEM_COVERAGE`, iar fără raster pe disc
+  `503` cu `TERRAIN_DATA_MISSING`. Fișierele de teren vizual nu se servesc static la E06.
+- **Erori** au tipul de conținut `application/problem+json`; `type` este `urn:lunarhorizon:problem:<cod>`. Erorile
+  neașteptate nu expun detalii interne. Rutele inexistente folosesc răspunsul implicit Starlette.
+- CORS permite numai originile serverului Vite local (`localhost:5173`, `127.0.0.1:5173`).

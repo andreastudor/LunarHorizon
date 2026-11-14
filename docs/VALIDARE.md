@@ -1,4 +1,23 @@
 # Validare — toleranțe, rezultate și probleme
+## E06 — verificări (2026-11-14)
+
+Rulate în această sesiune: `pytest` 327/327 (cu kerneluri), Ruff, `ruff format --check`, mypy strict, `generate_contracts.py
+--check`, `npm run contracts:check` și `npm run typecheck`. Testele noi: `test_simulation_idealized.py` (13) compară seria
+cu `body_direction` direct, verifică evenimentele ca treceri reale la ±2 s și elevație ≈ 0° (toleranță 1e-4°, numai
+verificare de coerență internă, nu toleranță validată T-xx), rezumatul față de intervale, determinismul, acoperirea
+temporală, refuzul modului `dem`, azimutul nedefinit și concurența cu două profiluri. `test_api.py` (25) acoperă fiecare
+endpoint și 17 cereri invalide.
+
+Cereri HTTP reale (Uvicorn pe 127.0.0.1:8000, `curl`): `health` ok; `sites` 10 intrări; `coverage` 1849-12-25 – 2150-01-21 și
+conturul rasterului PGDA 104 (−85,788°…−85,063°); `terrain/manifest` 200 în raster și 404 `OUT_OF_DEM_COVERAGE` în afara lui;
+`POST` 202 → progres → `GET` done (572 KB, 30 de zile, 2 situri, ≈1 s); al doilea `POST` identic 200 `cache_hit: true`;
+`terrain_mode=dem` 422 `OUT_OF_DEM_COVERAGE`; interval în 1800 → 422 `OUT_OF_EPHEMERIS_COVERAGE` cu limitele; `{"sites":[]}` 422
+`VALIDATION_ERROR`; `MOON_ME` 422 `UNSUPPORTED_FRAME`; id necunoscut 404 `SIMULATION_NOT_FOUND`; antet CORS pentru
+`localhost:5173`. Observație de plauzibilitate (nu validare): la Apollo 11 răsăritul 2026-11-15T01:55Z, apusul
+2026-11-29T21:29Z și următorul răsărit 2026-12-14T16:13Z sunt separate de ≈14,8 și ≈14,7 zile; nu au fost comparate cu o sursă
+independentă. Erori găsite și reparate în timpul verificării: formatarea UTC cu microsecunde și un cod de eroare greșit
+(`UNSUPPORTED_FRAME` pentru `frame_id` lipsă), ambele acoperite acum de teste.
+
 ## E05 — reverificare la preluare (2026-11-14)
 
 Fără modificarea datelor sau a codului de calcul: `pytest` 289/289 (cu kerneluri) și `scripts/verify_e05.py` au trecut din

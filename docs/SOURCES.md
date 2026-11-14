@@ -149,6 +149,11 @@ Proiectul însuși este sub licență MIT ([LICENSE](../LICENSE)).
 | SpiceyPy | 8.4.0 | MIT | Backend |
 | Rasterio | 1.5.2 | BSD-3-Clause | Backend |
 | Pydantic | 2.14.3 | MIT | Backend (contracte, din E02) |
+| FastAPI | 0.162.7 | MIT | Backend (API, din E06) |
+| Starlette | 1.10.0 | BSD-3-Clause | Backend (tranzitiv prin FastAPI) |
+| Uvicorn | 0.54.0 | BSD-3-Clause | Backend (server ASGI, din E06) |
+| httpx2 | 2.16.0 | BSD-3-Clause | Dezvoltare (clientul `fastapi.testclient`, din E06) |
+| anyio, h11, annotated-doc, idna, httpcore2, opentelemetry-api, truststore | 4.16.0, 0.16.0, 0.0.6, 3.20, 2.16.0, 1.45.2, 0.10.5 | MIT, MIT, MIT, BSD-3-Clause, BSD-3-Clause, Apache-2.0, MIT | Tranzitive (licențe din metadatele pachetelor instalate) |
 | jsonschema | 4.26.0 | MIT | Dezvoltare (validarea fixture-urilor, din E02) |
 | json-schema-to-typescript | 16.0.0 | MIT | Dezvoltare (tipurile TS generate, din E02) |
 | pytest | 9.2.0 | MIT | Dezvoltare |
