@@ -19,7 +19,10 @@ Din rădăcina repository-ului, în PowerShell:
 $env:PYTHONUTF8 = '1'
 backend\.venv\Scripts\python scripts\download_terrain.py
 backend\.venv\Scripts\python scripts\download_terrain.py --verify
+backend\.venv\Scripts\python scripts\download_e05_auxiliary.py
 backend\.venv\Scripts\python scripts\build_terrain.py
+backend\.venv\Scripts\python scripts\build_e05_auxiliary.py
+backend\.venv\Scripts\python scripts\verify_e05.py
 cd backend
 .venv\Scripts\python -m pytest
 .venv\Scripts\python -m ruff check . ..\scripts
@@ -38,6 +41,10 @@ Date oficiale [PGDA 104](https://pgda.gsfc.nasa.gov/products/104), Leibnitz Beta
 descărcare. MD5-ul publicat pentru arhiva întreagă nu a fost verificat. Produsele generate sunt în
 `data/_cache/terrain/leibnitz_beta/`: `calculation.tif`, `visual_8.tif`, `visual_16.tif` și manifestul vizual.
 Manifestele versionate sunt `data/manifests/terrain_products.json` și `data/manifests/leibnitz_terrain.json`.
+Manifestul auxiliar este `data/manifests/e05_auxiliary.json`; produsele vizuale sunt în `data/_cache/e05_auxiliary/`.
+Fișierele auxiliare se citesc la grila nativă: GLDMASK și GLDSBCT sunt la 15 m/pixel, nu 5 m; nu sunt LOLA LDEC.
+Semnificația GLDSIGM trebuie clarificată din cauza neconcordanței cu README-ul. Au fost reproduse achiziția și
+generarea într-un director curat și venv separat; detaliile sunt în VALIDARE.
 
 ## Limite și următoarea acțiune
 
@@ -45,9 +52,10 @@ Manifestele versionate sunt `data/manifests/terrain_products.json` și `data/man
   fost aprobat ca sit D-07; PGDA 104 nu este unul dintre produsele numite în propunerea D-07.
 - Cadrul `MOON_ME_DE421` din manifest este o ipoteză de lucru neconfirmată; nu a avut loc conversie de cadru.
   NoData și zona testată sunt consemnate în VALIDARE; `d_max` și acoperirea orizontului nu sunt confirmate.
-- De terminat E05: evaluarea și aprobarea siturilor și sursei, D-05/D-06/D-19, verificarea conturului generat,
-  textura globului și fundalurile 2D, datele de calitate și verificarea produselor într-o instalare curată.
-- Următorul pas concret: inspectează produsul de calitate/număr de imagini PGDA 104 pentru punctul provizoriu,
-  validează sursa și cadrul cu geografia, apoi alege al doilea sit și pregătește fundalurile oficiale. Nu confunda
+- De terminat E05: deciziile D-05/D-06/D-07/D-19 și D-11, clarificarea calității și validarea GEO a sursei/cadrului.
+  Propunerile concrete, neaprobate, sunt în [E05_DECIZII.md](E05_DECIZII.md). Acoperirea orizontului și convergența
+  țin de E09, nu sunt criterii suplimentare E05; al doilea sit și comparația sunt în E12, cu selecția D-07 deschisă.
+- Următorul pas concret: obține confirmările pentru E05_DECIZII și clarifică GLDSIGM/LDEC; apoi finalizează E05.
+  Nu confunda
   terenul vizual cu rasterul de calcul și nu marchează E05 completă fără criteriile din BACKLOG.
 - E06 depinde de E03 și E04 conform backlog-ului; înaintea finalizării ei rămân deciziile E03 și verificările E04.

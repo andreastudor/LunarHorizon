@@ -1,0 +1,105 @@
+{
+  "schema": "e05-auxiliary-v1",
+  "source_url": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_2k.jpg",
+  "source_sha256": "f7130a1822681fa7512d7dcfd40db8c10b9ba4f06777910348698260ed7a2170",
+  "credit": "NASA Scientific Visualization Studio",
+  "usage": "NASA media guidelines; informational use, no endorsement",
+  "image_limit": "Aesthetic product; polar gaps use lower-resolution LOLA albedo; not scientific data",
+  "source_map_center_longitude_deg": 0,
+  "files": [
+    {
+      "name": "globe.jpg",
+      "sha256": "f7130a1822681fa7512d7dcfd40db8c10b9ba4f06777910348698260ed7a2170",
+      "size_bytes": 457942
+    },
+    {
+      "name": "global_2d.tif",
+      "sha256": "63c91f65c1fb9150535c4c7d55c783a522dea3ed0928f208833fed100586a1f1",
+      "size_bytes": 3513928
+    },
+    {
+      "name": "south_polar_2d.tif",
+      "sha256": "4bdc89144adfc8a9bf59694b5292250613e024c72e0c13774c0e6a2b8b8de3a9",
+      "size_bytes": 1627198
+    }
+  ],
+  "quality_frame_assumption": "MOON_ME_DE421 unconfirmed",
+  "quality_files": [
+    {
+      "filename": "A310_GLDMASK_005.tif",
+      "sha256": "250776ca6d02497942d6b5f6a686057f0cdfa503f33855ce49011e7224aaaa09",
+      "resolution_m": [
+        15.0,
+        15.0
+      ],
+      "bounds_m": [
+        65000.0,
+        110010.0,
+        80990.0,
+        126000.0
+      ],
+      "shape": [
+        1066,
+        1066
+      ],
+      "nodata": null,
+      "crs_wkt": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]",
+      "sample_xy_m": [
+        73002.5,
+        117997.5
+      ],
+      "sample_value": 5.0
+    },
+    {
+      "filename": "A310_GLDSIGM_005.tif",
+      "sha256": "ad03d88d10a8eaecc8a3a4ba8e4528bdd4a5c896b2aada6aec09f6e8017cfaa7",
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "bounds_m": [
+        65000.0,
+        110000.0,
+        81000.0,
+        126000.0
+      ],
+      "shape": [
+        3200,
+        3200
+      ],
+      "nodata": -1.0,
+      "crs_wkt": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]",
+      "sample_xy_m": [
+        73002.5,
+        117997.5
+      ],
+      "sample_value": 0.019999999552965164
+    },
+    {
+      "filename": "A310_GLDSBCT_005.tif",
+      "sha256": "71b1e143a604434b9994caf7c01ef89c756f471dbde1b50f73e58599f904241d",
+      "resolution_m": [
+        15.0,
+        15.0
+      ],
+      "bounds_m": [
+        65000.0,
+        110010.0,
+        80990.0,
+        126000.0
+      ],
+      "shape": [
+        1066,
+        1066
+      ],
+      "nodata": null,
+      "crs_wkt": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]",
+      "sample_xy_m": [
+        73002.5,
+        117997.5
+      ],
+      "sample_value": 3.0
+    }
+  ],
+  "quality_note": "NAC image counts and solar bins are not LOLA shot counts; GLDSIGM definition unconfirmed."
+}

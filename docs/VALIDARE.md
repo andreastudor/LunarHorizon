@@ -1,5 +1,25 @@
 # Validare — toleranțe, rezultate și probleme
 
+## E05 — verificări auxiliare și reproducere (2026-11-14)
+
+Din arhiva Leibnitz au fost extrase cu verificare CRC și SHA-256 local fixat `GLDMASK`, `GLDSBCT` și `GLDSIGM`.
+Pe punctul proiectat X=73002,5 m, Y=117997,5 m, eșantionarea pe fiecare grilă nativă dă: GLDMASK **5**,
+GLDSBCT **3**, GLDSIGM **0,01999999955**. Primele două au de fapt 15 m/pixel, 1066 × 1066, limite
+X 65000–80990 m și Y 110010–126000 m, fără NoData declarat; zero rămâne valoare. GLDSIGM are 5 m/pixel,
+3200 × 3200, NoData −1; nu se atribuie semnificație sau unitate valorii până la clarificarea diferenței
+de nume față de README (`GLDISGM`). Hărțile de contribuție NAC nu sunt hărți ale numărului măsurătorilor LOLA.
+
+NASA SVS oferă textura estetică 2K, cu credit și limite în SOURCES. Au fost generate globul JPEG identic sursei,
+fundalul global equirectangular RGB GeoTIFF și fundalul polar stereografic RGBA; georeferențierea este atribuită
+de script folosind descrierea sursei, nu citită din JPEG. Reproiecția este exclusiv vizuală. Manifestul auxiliar
+consemnează SHA-256, dimensiuni, CRS și eșantioane.
+
+`scripts/verify_e05.py` verifică ambele manifeste de teren contra Pydantic și JSON Schema, sursa/copia de calcul,
+întreaga mască și toate mediile celor două LOD-uri, sumele produselor și eșantioanele de calitate. Au fost testate
+descărcarea selectivă, generarea și verificarea dintr-o copie curată a commit-ului `9fbfd05`, completată cu
+scripturile/manifestul acestei etape, într-un venv nou cu dependențele fixate: **reușit**; testul sintetic de
+eșantionare a trecut. Nu s-a descărcat ZIP-ul integral, deci MD5-ul său publicat rămâne neverificat.
+
 ## E05 — control inițial pe date reale (2026-11-14)
 
 Sursa este rasterul `A310_GLDELEV_005.tif` din [arhiva Zenodo PGDA 104](https://zenodo.org/records/17954508),

@@ -13,6 +13,22 @@ Condițiile de creditare marcate „de stabilit” trebuie citite de la sursă �
 
 ## 1. Relief
 
+**E05 — surse efectiv pregătite (2026-11-14):**
+
+- [PGDA 104](https://pgda.gsfc.nasa.gov/products/104), Bertone et al., DOI 10.3847/PSJ/ae5b70; arhiva
+  [Zenodo 17954508](https://zenodo.org/records/17954508), Leibnitz Beta. Au fost extrase prin HTTP Range
+  rasterul de elevație și membrii GLDMASK, GLDSBCT și GLDSIGM; CRC ZIP și SHA-256 fixat local verificate.
+  README-ul numește GLDMASK numărul de imagini NAC iluminate și GLDSBCT numărul de categorii de azimut solar;
+  acestea nu sunt numărul de măsurători LOLA. README-ul numește produsul de incertitudine `GLDISGM`, dar ZIP-ul
+  conține `GLDSIGM`; identitatea/semnificația exactă nu este confirmată. SHA-urile și metadatele citite sunt în
+  `data/manifests/e05_auxiliary.json`; SHA-256 este calculat de proiect, nu publicat pentru membru de autor.
+- [NASA SVS CGI Moon Kit](https://svs.gsfc.nasa.gov/4720/), `lroc_color_2k.jpg`, 2048 × 1024; credit cerut:
+  **NASA's Scientific Visualization Studio**, vizualizare Ernie Wright, date LROC WAC și LOLA. Hartă adaptată
+  pentru randare, fără garanție de calitate științifică: sursa descrie completare polară cu albedo LOLA mai
+  grosier și corecții de imagine. [Condițiile NASA](https://www.nasa.gov/nasa-brand-center/images-and-media/)
+  permit în general utilizarea informativă a materialelor NASA cu credit, fără a sugera susținerea produsului;
+  materialele terților marcate separat pot avea alte drepturi. D-11 nu este confirmată.
+
 | Sursă | Instituție | Identificator | Ce s-a constatat | Stare |
 |---|---|---|---|---|
 | <https://pgda.gsfc.nasa.gov/products/81> | NASA GSFC, PGDA (autor: M. K. Barker) | South Pole LOLA DEM Mosaic | 87–90°S, 5 m/pixel, stereografică polară sudică, „MOON_ME, DE421”, pixeli goi interpolați; reziduu RMS tipic 30–55 cm față de câmpurile individuale; fișiere și dimensiuni listate | Citită |

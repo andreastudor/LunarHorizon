@@ -1,5 +1,17 @@
 # Stare
 
+## E05 — progres suplimentar, 2026-11-14
+
+Au fost achiziționate selectiv trei produse auxiliare PGDA 104 și textura globală NASA SVS 2K; s-au pregătit
+fundaluri 2D globale și polare, un manifest de proveniență și scriptul `scripts/verify_e05.py`. S-a reprodus
+achiziția și generarea într-o copie curată și într-un mediu virtual nou cu dependențele fixate. Rezultatele și
+condițiile de creditare sunt în VALIDARE și SOURCES. **E05 rămâne parțială:** D-05, D-06 și D-19 nu sunt validate,
+iar D-07 nu este decisă. Propunerile concrete și limitele sunt în [E05_DECIZII.md](E05_DECIZII.md).
+
+Acoperirea până la `d_max`, produsul îndepărtat și convergența sunt D-08/D-09, E09; nu sunt adăugate ca
+test de închidere E05. Extinderea DEM și datele lipsă trebuie totuși afișate onest. Al doilea sit și comparația
+sunt cerințe ulterioare E12, deși D-07 privește alegerea celor două situri.
+
 ## E05 — implementare parțială (2026-11-14)
 
 Există un raster real NASA PGDA 104 pentru Leibnitz Beta Plateau și un punct **reprezentativ provizoriu**, nu

@@ -1,5 +1,20 @@
 # Criterii de acceptanță
 
+## Actualizare E05 — produse tehnice și criterii rămase
+
+| Criteriu | Stare și dovadă |
+|---|---|
+| Achiziție și metadate | Realizate pentru rasterul provizoriu, cele trei auxiliare și textura NASA; SHA-256 fixat după prima achiziție, CRC al membrilor ZIP verificat; MD5 al întregului ZIP neverificat |
+| Calcul, eșantionare, NoData/margini | Realizate și verificate pe pixel real și test sintetic; calculul rămâne separat de afișare |
+| LOD și manifest | Realizate; manifest validat, SHA-256 și toate mediile/măștile verificate; vizualele au 520.950 și 131.661 octeți |
+| Contur și fundaluri | Extinderea rasterului, textura globului și hărțile 2D globală/polară generate; D-11 și aprobarea creditării rămân deschise |
+| Date de calitate | Hărțile NAC count și solar bins inspectate pe grila nativă de 15 m; nu sunt număr de impulsuri LOLA. GLDSIGM există, dar definiția sa nu este confirmată; D-19 rămâne deschisă |
+| Reproducere | Achiziție selectivă, generare și verificare trecute într-o copie curată cu venv nou și versiuni fixate |
+| Finalizare E05 | **Incompletă**: D-05/D-06/D-19 cer validare GEO și D-07 nu este decisă; manifestul este pentru un punct provizoriu |
+
+Convergența orizontului și `d_max` sunt atribuite E09, nu cerințe noi pentru finalizarea E05. Alegerea și
+implementarea celui de-al doilea sit/comparației apar la E12; D-07 trebuie totuși decisă conform proiectului.
+
 ## E05 — stare actuală, 2026-11-14
 
 | Element | Stare | Dovezi / restanțe |
