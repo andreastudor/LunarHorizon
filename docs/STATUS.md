@@ -1,4 +1,16 @@
 # Stare
+## E05 — închidere tehnică, 2026-11-14 (preluare de la Codex)
+
+**Implementare tehnică finalizată; acceptare științifică restantă.** Stare reverificată: 289 teste backend trecute
+(cu kerneluri) și `scripts/verify_e05.py` trecut, fără recreare de date. Utilizatorul a aprobat de produs, pentru
+implementare, D-07 (punct reprezentativ provizoriu Leibnitz Beta, nu loc de aterizare), D-05/D-06/D-10 (sfera de
+1.737.400 m și proiecția citite din raster; `MOON_ME_DE421` rămâne ipoteză, fără conversii), D-19 (NAC și categorii de
+azimut separate, fără praguri, nu număr LOLA) și D-11 (fundaluri NASA SVS provizorii). Acestea nu sunt validări
+[GEO]/[ASTRO]. `GLDSIGM` (investigat 30 de minute: nicio sursă consultată nu îl definește) rămâne neinterpretat și
+exclus din indicatorii validați. Rezoluția auxiliarelor este citită din raster (15 m pentru GLDMASK/GLDSBCT). MD5-ul
+publicat al arhivei complete nu este verificat; CRC-ul membrilor și SHA-256 local sunt. Detalii: [E05_DECIZII.md](E05_DECIZII.md),
+[ACCEPTANCE.md](ACCEPTANCE.md). Restanțe E05: validările [GEO] D-05/D-06/D-10/D-19, D-11 creditare, D-07 final.
+
 
 ## E05 — progres suplimentar, 2026-11-14
 

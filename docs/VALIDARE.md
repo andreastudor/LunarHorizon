@@ -1,4 +1,14 @@
 # Validare — toleranțe, rezultate și probleme
+## E05 — reverificare la preluare (2026-11-14)
+
+Fără modificarea datelor sau a codului de calcul: `pytest` 289/289 (cu kerneluri) și `scripts/verify_e05.py` au trecut din
+nou pe produsele locale. Manifestul auxiliar a fost regenerat de `build_e05_auxiliary.py` cu blocurile
+`quality_indicators`, `resolution_source`, `checksum_kinds` și `product_decisions`; SHA-256 ale fișierelor generate au rămas
+neschimbate (verificate de `verify_e05.py`). Verificări de documentație: pagina PGDA 104, înregistrarea Zenodo 17954508 și
+README-ul de regiuni nu definesc `GLDSIGM`/`GLDISGM`; pagina PGDA 104 și Zenodo declară generic pixel de 5 m, iar `GLDMASK`
+și `GLDSBCT` sunt de fapt la 15 m în fișiere. Tipuri de sume de control: CRC membru ZIP (verificat), SHA-256 local (verificat,
+nepublicat de furnizor), MD5 publicat al arhivei complete (neverificat).
+
 
 ## E05 — verificări auxiliare și reproducere (2026-11-14)
 

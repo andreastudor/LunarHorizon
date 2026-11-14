@@ -101,5 +101,36 @@
       "sample_value": 3.0
     }
   ],
-  "quality_note": "NAC image counts and solar bins are not LOLA shot counts; GLDSIGM definition unconfirmed."
+  "quality_note": "NAC image counts and solar bins are not LOLA shot counts; GLDSIGM definition unconfirmed.",
+  "quality_indicators": {
+    "nac_image_count": {
+      "file": "A310_GLDMASK_005.tif",
+      "native_resolution_m": 15.0,
+      "status": "shown_separately_no_thresholds"
+    },
+    "solar_azimuth_categories": {
+      "file": "A310_GLDSBCT_005.tif",
+      "native_resolution_m": 15.0,
+      "status": "shown_separately_no_thresholds"
+    },
+    "gldsigm": {
+      "file": "A310_GLDSIGM_005.tif",
+      "native_resolution_m": 5.0,
+      "status": "uninterpreted_excluded_from_validated_quality_indicators",
+      "note": "Archive README names GLDISGM; the ZIP contains GLDSIGM; the PGDA 104 page, the Zenodo record page and the regions README do not define it."
+    }
+  },
+  "resolution_source": "read from each GeoTIFF transform; not inferred from the '005' name",
+  "checksum_kinds": {
+    "zip_member_crc": "verified by zipfile when each member is read",
+    "local_sha256": "computed by this project after first acquisition and pinned",
+    "provider_published_md5": "published for whole archives only; whole-archive MD5 not verified"
+  },
+  "product_decisions": {
+    "scope": "product approvals for implementation; not GEO/ASTRO scientific validation",
+    "D-05_D-06_D-10": "sphere 1737400 m and CRS read from raster; MOON_ME_DE421 stays a hypothesis; no frame conversion",
+    "D-07": "PGDA 104 and Leibnitz Beta Plateau representative point for the first provisional demonstration; not a landing site, not a validated two-site selection",
+    "D-11": "NASA SVS backgrounds provisional for display; credit and resolution limits above",
+    "D-19": "NAC counts and solar-azimuth categories shown separately; no invented thresholds; not LOLA measurement counts"
+  }
 }

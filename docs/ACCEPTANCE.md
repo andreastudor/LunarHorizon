@@ -1,4 +1,23 @@
 # Criterii de acceptanță
+## E05 — închidere 2026-11-14: implementare tehnică finalizată; acceptare științifică restantă
+
+Stare declarată exact: **implementare tehnică finalizată; acceptare științifică restantă.** E05 nu este declarată
+complet acceptată. Aprobările de produs ale utilizatorului (D-05, D-06, D-07, D-10, D-11, D-19) permit implementarea,
+dar nu sunt validări [GEO]/[ASTRO]; vezi [E05_DECIZII.md](E05_DECIZII.md).
+
+| Criteriu BACKLOG E05 | Stare | Dovadă |
+|---|---|---|
+| Scripturi de descărcare/inspecție, manifest cu metadate citite din fișier | Îndeplinit | `download_terrain.py`, `download_e05_auxiliary.py`, `verify_e05.py`; rezoluția fiecărui raster citită din transformare |
+| Raster de calcul, eșantionare cu `NoData`/margini | Îndeplinit | `terrain/sampling.py`, `test_terrain_sampling.py`; `calculation.tif` identic cu sursa (SHA-256) |
+| Teren vizual pe LOD și manifest valid; dimensiune consemnată | Îndeplinit | 520.950 și 131.661 octeți; manifest validat Pydantic și JSON Schema |
+| Conturul acoperirii DEM, textura globului, fundaluri 2D | Îndeplinit tehnic | `raster_extent.geojson`, `globe.jpg`, `global_2d.tif`, `south_polar_2d.tif`; credit NASA SVS în SOURCES |
+| Sume de control | Îndeplinit cu distincție | CRC membru ZIP verificat; SHA-256 local fixat și verificat; **MD5 publicat al arhivei complete neverificat** |
+| D-05, D-06, D-19 „închise pe baza metadatelor reale” | **Restant științific** | Metadatele reale sunt consemnate și deciziile de produs aprobate; validarea [GEO] a sferei, a proiecției și a interpretării calității lipsește. `GLDSIGM` neinterpretat, exclus din indicatorii validați |
+| D-07 / D-10 | **Deschise** | Punct reprezentativ provizoriu, nu loc de aterizare; `MOON_ME_DE421` ipoteză |
+
+Acoperirea orizontului, `d_max` și convergența sunt E09; al doilea sit și comparația sunt E12. Rapoartele de mai jos
+descriu istoricul și sunt înlocuite de acest tabel acolo unde diferă.
+
 
 ## Actualizare E05 — produse tehnice și criterii rămase
 
