@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.3.0",
+  "terrain_id": "leibnitz_beta_provisional",
+  "source": {
+    "product_id": "pgda104_leibnitz_beta",
+    "url": "https://zenodo.org/records/17954508/files/A3CLR22_10_Leibnitz_Beta_Plateau.zip?download=1",
+    "sha256": "55352520c0277a902a89fbd003f83956b238e4d0b4529494eaec1b5a51b1a4b1",
+    "citation": "Bertone et al., Enhanced Topography Models, doi:10.3847/PSJ/ae5b70"
+  },
+  "frame_id": "MOON_ME_DE421",
+  "crs": {
+    "proj4": null,
+    "wkt": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]"
+  },
+  "reference_radius_m": 1737400.0,
+  "vertical": {
+    "units": "m",
+    "reference": "Sferă 1737400 m (README produs)",
+    "exaggeration_default_factor": 1
+  },
+  "calc_resolution_m": 5.0,
+  "local_origin": {
+    "latitude_deg": -85.42660397429984,
+    "longitude_deg": 31.74418217323797,
+    "elevation_m": 6398.92041015625
+  },
+  "bounds": {
+    "x_min_m": 65000.0,
+    "x_max_m": 81000.0,
+    "y_min_m": 110000.0,
+    "y_max_m": 126000.0
+  },
+  "nodata": {
+    "present": false,
+    "encoding": "-3.4028234663852886e+38",
+    "area_fraction": 0.0
+  },
+  "interpolated_pixels": {
+    "flagged": false,
+    "note": "Model SfS; contribuția LROC neinspectată. MOON_ME_DE421 este ipoteză neconfirmată."
+  },
+  "lods": [
+    {
+      "level": 0,
+      "visual_resolution_m": 40.0,
+      "width_px": 400,
+      "height_px": 400,
+      "heights_path": "visual_8.tif",
+      "encoding": "GeoTIFF float32; NaN = NoData; blocuri complet valide",
+      "sha256": "e47294023bc1ad6a66c5bca50f5d1ef21118bcd8ea44a2de12092e2c7ba8ff37"
+    },
+    {
+      "level": 1,
+      "visual_resolution_m": 80.0,
+      "width_px": 200,
+      "height_px": 200,
+      "heights_path": "visual_16.tif",
+      "encoding": "GeoTIFF float32; NaN = NoData; blocuri complet valide",
+      "sha256": "517069cafa53d1c7d971ef6225c037d03e23e30101df27f6abe4a2950a2dff03"
+    }
+  ]
+}

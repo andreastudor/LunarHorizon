@@ -1,5 +1,16 @@
 # Criterii de acceptanță
 
+## E05 — stare actuală, 2026-11-14
+
+| Element | Stare | Dovezi / restanțe |
+|---|---|---|
+| Sursă reală și integritate | parțial | PGDA 104 Leibnitz Beta, CRC ZIP și SHA-256 local fixat; MD5 publicat al ZIP-ului complet nu a fost verificat |
+| Raster calcul și eșantionare | implementat | Copie identică; interpolare biliniară cu NoData, NaN și margini necunoscute; teste sintetice și pixel real |
+| Teren vizual și manifest | parțial | GeoTIFF 40/80 m, blocurile cu orice NoData rămân NoData; manifest validat față de Pydantic și JSON Schema |
+| Primul sit D-07 | neconfirmat | Punct reprezentativ provizoriu, nu poziție de aterizare; PGDA 104 necesită aprobare pentru criteriul propus |
+| Acoperire orizont | neconfirmată | `d_max` și convergența rămân deschise; fereastra locală testată nu le dovedește |
+| Fundaluri, contur DEM, D-05/D-06/D-19 | incomplet | Conturul extinderii rasterului este generat; lipsesc globul și hărțile de fundal, iar deciziile GEO nu sunt închise |
+
 ## Actualizare 2026-11-14: retragerea IM-1 și IM-2
 
 La cererea utilizatorului, IM-1 și IM-2 au fost eliminate din catalogul activ și din candidații D-07.

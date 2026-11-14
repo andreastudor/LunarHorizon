@@ -35,9 +35,7 @@ def main() -> int:
     candidate_ids = {c["site_id"] for c in catalog["demo_site_selection"]["candidates"]}
     candidates = [s for s in catalog["sites"] if s["id"] in candidate_ids]
     if not candidate_ids or len(candidates) != len(candidate_ids):
-        raise ValueError(
-            "Select documented catalog candidates before checking PGDA coverage"
-        )
+        raise ValueError("Select documented catalog candidates before checking PGDA coverage")
     with urllib.request.urlopen(URL, timeout=45) as response:
         page = response.read()
     urls = sorted(set(re.findall(r'https[^"<> ]+surf\.tif', page.decode("utf-8"))))
@@ -95,13 +93,9 @@ def main() -> int:
                             "elevation_m": None,
                         }
                         if inside:
-                            pixel = ds.read(
-                                1, window=Window(col, row, 1, 1), masked=True
-                            )
+                            pixel = ds.read(1, window=Window(col, row, 1, 1), masked=True)
                             elevation = valid_elevation(pixel)
-                            result.update(
-                                valid_pixel=elevation is not None, elevation_m=elevation
-                            )
+                            result.update(valid_pixel=elevation is not None, elevation_m=elevation)
                         item["candidates"].append(result)
                 print(url.split("/")[-2], item["candidates"], flush=True)
             except (OSError, ValueError, rasterio.errors.RasterioError) as exc:

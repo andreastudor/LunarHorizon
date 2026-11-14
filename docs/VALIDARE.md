@@ -1,5 +1,29 @@
 # Validare — toleranțe, rezultate și probleme
 
+## E05 — control inițial pe date reale (2026-11-14)
+
+Sursa este rasterul `A310_GLDELEV_005.tif` din [arhiva Zenodo PGDA 104](https://zenodo.org/records/17954508),
+Leibnitz Beta Plateau. SHA-256 al membrului `55352520c0277a902a89fbd003f83956b238e4d0b4529494eaec1b5a51b1a4b1`
+a fost calculat local și fixat pentru descărcările ulterioare; CRC-ul membrului a fost verificat de `zipfile`.
+Nu a fost verificat MD5-ul publicat pentru întreg ZIP-ul. Rasterul are 3200 × 3200 pixeli de 5 m, limite proiectate
+X 65000–81000 m, Y 110000–126000 m, NoData −3,4028234663852886e38. Zero pixeli NoData/NaN au fost găsiți în
+întregul raster citit; aceasta nu dovedește că modelul este măsurat în toate punctele: este un produs SfS.
+
+Punctul reprezentativ este centrul pixelului `(row=1600, col=1600)`, la X=73002,5 m, Y=117997,5 m,
+latitudine −85,4266039743°, longitudine 31,7441821732°E, calculat din CRS-ul rasterului; altitudinea este
+6398,92041015625 m față de sfera de 1.737.400 m, conform README-ului din arhivă. O fereastră 201 × 201 pixeli,
+centrată pe acest punct, conține 100% pixeli valizi. Eșantionarea biliniară la centru coincide cu pixelul sursă.
+Acesta este un punct de lucru al rasterului, nu o poziție publicată de aselenizare. Sursa declară proiecția
+Moon 2015 și legătura cu LOLA; identificarea exactă `MOON_ME_DE421` este ipoteză neconfirmată, păstrată explicit
+în manifest. Fereastra locală nu dovedește acoperirea orizontului până la `d_max`.
+
+Rasterul de calcul este copie octet cu octet; nivelurile vizuale 40 m și 80 m sunt GeoTIFF separate, cu valori
+medii pentru blocuri complet valide și NaN în rest. Manifestele au trecut validarea Pydantic și JSON Schema;
+SHA-256 al nivelurilor a fost reverificat. Testele `test_terrain_sampling.py` acoperă zero, interpolare, NoData,
+NaN, margini și punct exterior. Suita backend: 289 trecute; Ruff și mypy trecute. Conturul extinderii rasterului
+este generat ca GeoJSON; nu dovedește acoperirea orizontului. Fundalurile și
+deciziile necesare închiderii E05 rămân de făcut.
+
 ## Actualizare 2026-11-14: retragerea IM-1 și IM-2
 
 La cererea utilizatorului, IM-1 și IM-2 au fost eliminate din catalogul activ și din candidații D-07.

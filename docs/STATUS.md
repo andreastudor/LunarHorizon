@@ -1,11 +1,26 @@
 # Stare
 
+## E05 — implementare parțială (2026-11-14)
+
+Există un raster real NASA PGDA 104 pentru Leibnitz Beta Plateau și un punct **reprezentativ provizoriu**, nu
+loc de aterizare și nu selecție D-07 confirmată. `scripts/download_terrain.py` descarcă numai membrul ZIP prin
+HTTP Range, verifică CRC ZIP și SHA-256 fixat după prima achiziție (nu MD5-ul arhivei întregi). `scripts/build_terrain.py`
+produce o copie neschimbată pentru calcul și două rastere vizuale separate; `terrain/sampling.py` tratează NoData,
+NaN, zero și marginile. Manifestele sunt în `data/manifests/`; datele mari sunt în `data/_raw/` și `data/_cache/`.
+
+Raster 5 m/pixel, 16 × 16 km, punctul ales −85,4266039743°, 31,7441821732°E; 201 × 201 pixeli în jurul lui
+sunt valizi. Nu se afirmă acoperire completă pentru orizont: `d_max` nu este stabilit. PGDA 104 diferă de produsele
+propuse la D-07, iar `MOON_ME_DE421` este o ipoteză, nu un cadru confirmat. D-05, D-06, D-19, D-07, D-10 și E04
+rămân deschise. Există conturul geografic al extinderii rasterului, nu o garanție a acoperirii orizontului.
+Lipsesc fundalurile globale/2D și un al doilea sit; E05 nu este finalizată.
+Verificări și limite: [VALIDARE.md](VALIDARE.md) și [HANDOFF_CLAUDE.md](HANDOFF_CLAUDE.md).
+
 ## Actualizare 2026-11-14: retragerea IM-1 și IM-2
 
 La cererea utilizatorului, IM-1 și IM-2 au fost eliminate din catalogul activ și din candidații D-07.
 Catalogul are **10 intrări: 9 poziții efective și o țintă planificată**, inclusiv un singur sit CLPS (Blue Ghost 1).
 Nu există încă un sit polar activ; selecția demonstrativă este goală și neconfirmată. E04, D-07 și D-10 rămân deschise.
-E05 nu a început. Referințele la cele două situri în rapoartele și verificările precedente sunt istorice.
+La momentul retragerii E05 nu începuse; situația curentă este în secțiunea de mai sus. Referințele la cele două situri în rapoartele și verificările precedente sunt istorice.
 Rapoartele JSON arhivate rămân nemodificate: versiunea/hash-ul catalogului lor se referă la catalogul anterior,
 nu la cel activ. Nu s-a efectuat o nouă reverificare în rețea a celor 10 poziții rămase.
 

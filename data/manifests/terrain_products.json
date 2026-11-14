@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.3.0",
+  "products": [
+    {
+      "product_id": "pgda104_leibnitz_beta",
+      "title": "PGDA 104 Leibnitz Beta Plateau SDEM (provisional)",
+      "institution": "NASA GSFC",
+      "landing_page_url": "https://pgda.gsfc.nasa.gov/products/104",
+      "citation": "Bertone et al., doi:10.3847/PSJ/ae5b70",
+      "accessed_at": "2026-11-14",
+      "role": "near",
+      "resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "metadata_origin": "read_from_file",
+      "crs_wkt": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]",
+      "reference_radius_m": 1737400.0,
+      "vertical_units": "m",
+      "vertical_reference": "README ZIP: height relative to 1737400 m sphere",
+      "nodata_value": -3.4028234663852886e+38,
+      "gap_handling": "SfS interpolat; masca imagini neinspectata; cadru DE421 ipoteza neconfirmata",
+      "min_latitude_deg": null,
+      "max_latitude_deg": null,
+      "files": [
+        {
+          "kind": "height",
+          "filename": "A310_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_10_Leibnitz_Beta_Plateau.zip?download=1",
+          "sha256": "55352520c0277a902a89fbd003f83956b238e4d0b4529494eaec1b5a51b1a4b1",
+          "size_bytes": 16598431
+        }
+      ]
+    }
+  ]
+}
