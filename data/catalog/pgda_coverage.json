@@ -1,0 +1,312 @@
+{
+  "checked_at_utc": "2026-11-14T16:58:08.632327Z",
+  "source_url": "https://pgda.gsfc.nasa.gov/products/78",
+  "page_sha256": "46d07b37c38c30013e0c71bd61b24e22a9a44d657654328974552e671f376416",
+  "catalog_sha256": "6669e191ba3de6f983de2f0a6b13fda09bc05f9d05cef259f4733b9d01b135ff",
+  "method": "GeoTIFF CRS, bounds and pixel read via HTTP Range; no full-file checksum",
+  "frame_assumption": "Catalog lon/lat adopted in PGDA's MOON_ME DE421; no frame correction",
+  "limitation": "A valid point pixel does not prove sufficient terrain for a horizon calculation",
+  "rasters": [
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/DM1/DM1_final_adj_5mpp_surf.tif",
+      "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "bounds_m": [
+        154000.0,
+        51500.0,
+        174000.0,
+        71500.0
+      ],
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "width": 4000,
+      "height": 4000,
+      "nodata": "NaN",
+      "area_or_point": "Area",
+      "candidates": [
+        {
+          "site_id": "im1_odysseus",
+          "x_m": 7524.44084375543,
+          "y_m": 300012.7671778038,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        },
+        {
+          "site_id": "im2_athena",
+          "x_m": 77108.16927727177,
+          "y_m": 137993.31063879357,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        }
+      ]
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/DM2/DM2_final_adj_5mpp_surf.tif",
+      "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "bounds_m": [
+        147000.0,
+        85000.0,
+        167000.0,
+        105000.0
+      ],
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "width": 4000,
+      "height": 4000,
+      "nodata": "NaN",
+      "area_or_point": "Area",
+      "candidates": [
+        {
+          "site_id": "im1_odysseus",
+          "x_m": 7524.44084375543,
+          "y_m": 300012.7671778038,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        },
+        {
+          "site_id": "im2_athena",
+          "x_m": 77108.16927727177,
+          "y_m": 137993.31063879357,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        }
+      ]
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Haworth/Haworth_final_adj_5mpp_surf.tif",
+      "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "bounds_m": [
+        -52900.0,
+        75600.0,
+        -23100.0,
+        105400.0
+      ],
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "width": 5960,
+      "height": 5960,
+      "nodata": "NaN",
+      "area_or_point": "Area",
+      "candidates": [
+        {
+          "site_id": "im1_odysseus",
+          "x_m": 7524.44084375543,
+          "y_m": 300012.7671778038,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        },
+        {
+          "site_id": "im2_athena",
+          "x_m": 77108.16927727177,
+          "y_m": 137993.31063879357,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        }
+      ]
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM1/LM1_final_adj_5mpp_surf.tif",
+      "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "bounds_m": [
+        2000.0,
+        -2000.0,
+        22000.0,
+        18000.0
+      ],
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "width": 4000,
+      "height": 4000,
+      "nodata": "NaN",
+      "area_or_point": "Area",
+      "candidates": [
+        {
+          "site_id": "im1_odysseus",
+          "x_m": 7524.44084375543,
+          "y_m": 300012.7671778038,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        },
+        {
+          "site_id": "im2_athena",
+          "x_m": 77108.16927727177,
+          "y_m": 137993.31063879357,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        }
+      ]
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM2/LM2_final_adj_5mpp_surf.tif",
+      "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "bounds_m": [
+        2000.0,
+        47000.0,
+        22000.0,
+        67000.0
+      ],
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "width": 4000,
+      "height": 4000,
+      "nodata": "NaN",
+      "area_or_point": "Area",
+      "candidates": [
+        {
+          "site_id": "im1_odysseus",
+          "x_m": 7524.44084375543,
+          "y_m": 300012.7671778038,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        },
+        {
+          "site_id": "im2_athena",
+          "x_m": 77108.16927727177,
+          "y_m": 137993.31063879357,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        }
+      ]
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM3/LM3_final_adj_5mpp_surf.tif",
+      "crs_wkt": "PROJCS[\"unknown\",GEOGCS[\"unknown\",DATUM[\"unknown\",SPHEROID[\"unknown\",1737400,0]],PRIMEM[\"Reference meridian\",0],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH]]",
+      "bounds_m": [
+        4000.0,
+        37000.0,
+        24000.0,
+        57000.0
+      ],
+      "resolution_m": [
+        5.0,
+        5.0
+      ],
+      "width": 4000,
+      "height": 4000,
+      "nodata": "NaN",
+      "area_or_point": "Area",
+      "candidates": [
+        {
+          "site_id": "im1_odysseus",
+          "x_m": 7524.44084375543,
+          "y_m": 300012.7671778038,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        },
+        {
+          "site_id": "im2_athena",
+          "x_m": 77108.16927727177,
+          "y_m": 137993.31063879357,
+          "inside_extent": false,
+          "valid_pixel": null,
+          "elevation_m": null
+        }
+      ]
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM4/LM4_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM5/LM5_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM6/LM6_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM7/LM7_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/LM8/LM8_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/NPA/NPA_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/NPB/NPB_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/NPC/NPC_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/NPD/NPD_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/SL2/SL2_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/SL3/SL3_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Shoemaker/Shoemaker_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site04/Site04_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site06/Site06_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site07/Site07_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site11/Site11_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site20/Site20_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site20v2/Site20v2_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    },
+    {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site42/Site42_final_adj_5mpp_surf.tif",
+      "error": "HTTP response code: 403"
+    }
+  ],
+  "failures": 21
+}
