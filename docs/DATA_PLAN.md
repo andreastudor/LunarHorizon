@@ -87,6 +87,11 @@ un prototip este locația unui turn dintr-un studiu termic NASA, nu un sit; nu e
 catalog nu se află în mozaicul de 5 m/pixel 87–90°S, deci criteriul 1 nu este îndeplinit decât dacă un DEM PGDA 78
 acoperă IM-1 sau IM-2 (de verificat la E05).
 
+**Investigație preliminară:** șase DEM-uri PGDA 78 au fost inspectate numai prin metadate și nu conțin niciunul
+dintre cele două puncte; celelalte 21 sunt neconfirmate după HTTP 403. Dovezi și limitări în [VALIDARE.md](VALIDARE.md)
+§7.7. Produsul PGDA 104 indicat în [SOURCES.md](SOURCES.md) oferă o altă cale de explorare la 5 m/pixel, dar nu este
+un substitut aprobat pentru produsele 78/81, iar acoperirea sa nu a fost verificată.
+
 Studiul de caz IM-2 menționat în specificație cere verificarea separată a poziției de aterizare și a
 acoperirii DEM pentru acea zonă. Nu se presupune că se află în produsele de mai sus.
 

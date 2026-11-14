@@ -29,6 +29,23 @@ doi:10.1016/j.icarus.2010.10.030.
 Citarea setului GDR, așa cum apare în catalog: Neumann, G. A., „2009 Lunar Orbiter Laser Altimeter Raw Data
 Set, LRO-L-LOLA-4-GDR-V1.0”, NASA Planetary Data System, 2010.
 
+### Căi alternative investigate pentru E05 (2026-11-14)
+
+- [NASA PGDA 104](https://pgda.gsfc.nasa.gov/products/104) descrie SDEM-uri obținute din LOLA și imagini LROC,
+  pe grilă de 5 m/pixel, pentru cele 13 regiuni Artemis din 2022. [Arhiva indicată de NASA](https://zenodo.org/records/17954508)
+  listează 13 ZIP-uri, 26,6 GB în total, cu sume MD5 publicate. Este un produs diferit de PGDA 78/81; nu au fost
+  descărcate fișierele și nu sunt cunoscute acoperirea pentru IM-1/IM-2, NoData sau compatibilitatea pentru orizont.
+- [NASA PGDA 90](https://pgda.gsfc.nasa.gov/products/90) oferă COG-uri polare DE421, inclusiv un DEM 80–90°S la
+  20 m/pixel; este un candidat pentru date mai grosiere, nu dovedește îndeplinirea criteriului propus de 5 m/pixel.
+  Limitele exacte și datele valide la situri nu au fost verificate.
+- [Nodul LOLA PDS](https://imbrium.mit.edu/) trimite pentru DEM-urile regionale de 5 m/pixel înapoi la PGDA;
+  nu a fost identificată acolo o oglindă verificată a fișierelor PGDA 78.
+- [USGS](https://www.usgs.gov/data/down-selected-artemis-iii-candidate-landing-site-navigational-grids) spune că
+  regiunile pentru grilele de navigație provin din [LROC QuickMap](https://quickmap.lroc.im-ldi.com/). Acesta este
+  o cale oficială de vizualizare, nu o dovadă că geometria USGS a fost descărcată sau că grilele sunt poligoanele
+  originale. Pagina QuickMap cere JavaScript; browserul interactiv nu este disponibil. ScienceBase rămâne blocat
+  de verificarea de acces observată anterior; nu s-a încercat ocolirea acesteia.
+
 ## 2. Astronomie
 
 | Sursă | Instituție | Ce s-a constatat | Stare |

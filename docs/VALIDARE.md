@@ -290,3 +290,48 @@ Criteriul de finalizare E04 cere verificarea vizuală pe un produs adecvat. Pent
 | `chandrayaan3_vikram` | NAC M1447750764LR | Landerul în caseta albă de 338 m (pagina 1314) |
 | `chandrayaan3_planned_target` | — | Zona primară de 4 km × 2,4 km din jurul valorii ISRO, față de poziția efectivă (369 m distanță) |
 | `change4_lander` | NAC M1357657468LR | Landerul și urmele roverului Yutu-2 (pagina 1168) |
+
+Procedură pentru verificator: deschide QuickMap sau Moon Trek într-un browser funcțional, activează produsul
+georeferențiat și imaginea NAC corespunzătoare; introdu pe rând latitudinea și longitudinea estică din catalog,
+confirmă cadrul și localizează vizual obiectul. Pentru Apollo alege și notează o imagine NAC identificabilă. Pentru
+ținta Chandrayaan-3 compară cu zona ISRO și eticheteaz-o ca planificată, fără să o tratezi ca poziție efectivă.
+Pentru fiecare intrare consemnează produsul, ID-ul imaginii, coordonatele, cadrul, rezultatul, diferența observată,
+eventualele limite, data și persoana; păstrează capturi sau linkuri reproductibile. Nu marca rezultate fără inspecție.
+Browserul interactiv al sesiunii nu este disponibil; pagina QuickMap consultată ca text cere JavaScript. Verificarea
+nu a fost efectuată și criteriul E04 rămâne deschis.
+
+### 7.7. Analiza preliminară PGDA 78 pentru candidații D-07
+
+Pe baza raportului arhivat `data/catalog/pgda_coverage.json`, nu a unei noi descărcări. Distanțele sunt față de
+dreptunghiurile proiectate, în planul stereografic, aproximative; nu sunt distanțe geodezice sau măsurători ale
+pixelilor valizi. Transformarea adoptă provizoriu coordonatele catalogului în ME DE421, fără corecție de cadru.
+
+| Raster | Extindere X/Y (km) | Rezoluție | Distanță IM-1 la dreptunghi (km) | Distanță IM-2 (km) |
+|---|---|---|---:|---:|
+| DM1 | 154–174 / 51,5–71,5 | 5 m/pixel | 271,43 | 101,65 |
+| DM2 | 147–167 / 85–105 | 5 m/pixel | 239,76 | 77,29 |
+| Haworth | −52,9–−23,1 / 75,6–105,4 | 5 m/pixel | 197,01 | 105,38 |
+| LM1 | 2–22 / −2–18 | 5 m/pixel | 282,01 | 132,04 |
+| LM2 | 2–22 / 47–67 | 5 m/pixel | 233,01 | 89,87 |
+| LM3 | 4–24 / 37–57 | 5 m/pixel | 243,01 | 96,85 |
+
+Toate cele șase declară `NoData = NaN`; ambele puncte sunt în afara fiecărei extinderi, deci nu a fost citit niciun
+pixel la pozițiile candidaților (`valid_pixel = null`), nici evaluată proporția de date valide. Niciunul nu poate
+furniza teren local pentru IM-1 sau IM-2. Celelalte 21 de rastere au eșuat cu HTTP 403; acoperirea lor rămâne
+necunoscută. Pentru o selecție sunt necesare extinderi reale, pixelul și vecinătatea validă pentru fiecare sit,
+masca NoData, calitatea/interpolarea și compararea iluminării/vizibilității pentru același interval. Un pixel valid
+singur nu demonstrează acoperirea pentru orizont. Nu există dovezi suficiente pentru a recomanda primul sit.
+
+### 7.8. Cadrele și limita verificării D-10
+
+Toate cele 12 intrări au `frame_id = MOON_ME_DE440_ME421`, dar câmpul este cadrul intern **adoptat**, nu dovada
+cadrului original. Pentru 11 poziții produsul LROC declară `GCS_Moon_2000`, cu sfera și meridianul său, fără a
+identifica realizarea ME/DE. Pentru ținta planificată ISRO cadrul este nedeclarat. Catalogul păstrează coordonatele
+originale, `frame_realization_stated = false` și o notă de adopție; validatorul cere egalitate cu originalul
+normalizat, nu efectuează o transformare între cadre. Incertitudinea publicată este păstrată, dar incertitudinea
+suplimentară a ipotezei nu este cuantificată; o diferență între două realizări cunoscute nu cuantifică un cadru
+de sursă necunoscut. [NAIF](https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/Tutorials/pdf/individual_docs/23_lunar-earth_pck-fk.pdf)
+descrie cadrele ME ca specifice efemeridelor, cu DE440 ME apropiat de DE421 ME; aceasta nu dovedește cadrul LROC
+sau ISRO. D-10 cere confirmarea cadrului ori acceptarea explicită a ipotezei și tratarea incertitudinii de către
+geografie. Nota țintei ISRO afirmă greșit că broșura nu a fost deschisă; corecția catalogului trebuie să țină cont
+de hash-ul catalogului din raportul PGDA și să nu fie interpretată ca schimbare a sursei primare.

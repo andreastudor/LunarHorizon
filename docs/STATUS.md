@@ -35,6 +35,20 @@ Nu există remote configurat și CI GitHub nu a rulat.
   Lucrarea Icarus și PDF-ul LROC au răspuns anterior cu HTTP 403, respectiv 500.
 - E04, D-07 și D-10 rămân deschise: verificarea vizuală cerută și alegerea susținută de acoperire nu sunt demonstrate.
 
+### Investigația pentru deblocarea E05
+
+Cele șase rastere citite sunt la 5 m/pixel și au NoData NaN, dar IM-1 și IM-2 sunt în afara fiecărei extinderi;
+niciun pixel la sit nu a fost citit. Distanțele și limitele analizei sunt în [VALIDARE.md](VALIDARE.md) §7.7.
+Restul de 21 au răspuns cu 403; nu se poate deduce acoperirea lor. Nu există bază suficientă pentru alegerea
+primului sit. D-10 rămâne deschis: cadrul sursei nu este demonstrat și transformarea nu este făcută (§7.8).
+Browserul interactiv este indisponibil; verificarea vizuală nu a fost efectuată, iar procedura este în §7.6.
+
+Au fost identificate produse alternative descrise în [SOURCES.md](SOURCES.md): NASA PGDA 104 cu arhive SDEM
+de 5 m/pixel, PGDA 90 cu DEM-uri mai grosiere și QuickMap ca sursă a regiunilor USGS. Niciunul nu a fost inspectat
+la nivel de pixel sau geometrie în această etapă. PGDA 104 nu este produsul 78 sau 81 numit în criteriul propus D-07;
+acceptarea sa și compatibilitatea pentru calcul ar necesita o decizie documentată. Următorul pas: obținerea legitimă
+a datelor ori a metadatelor de extindere pentru situri și verificarea pixelilor/NoData, apoi decizia D-07 și D-10.
+
 ## Confirmarea E03 (comunicată de utilizator)
 
 Utilizatorul a comunicat că astronomii au confirmat **convențiile, configurația de referință și criteriile de
