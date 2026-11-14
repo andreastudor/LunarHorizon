@@ -1,0 +1,213 @@
+{
+  "description": "Reverificarea pozițiilor din catalog la sursele originale. Valorile din catalog coincid cu documentele deschise la rulare; nu dovedesc acuratețea fizică.",
+  "run_utc": "2026-11-14T16:00:37Z",
+  "catalog_version": "e04-2026-11-14",
+  "pds_zip_sha256": "f0145e0b8871053f3358c599d356a5af05db70e4da2fe8c91264e84b98e4408b",
+  "summary": {
+    "failures": 0,
+    "inaccessible": 0,
+    "manual_pdf_sources": 4
+  },
+  "results": [
+    {
+      "site_id": "apollo11_lm",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "A11_LM",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/938",
+          "checks": {}
+        },
+        {
+          "kind": "not_accessible",
+          "url": "https://doi.org/10.1016/j.icarus.2016.05.011"
+        }
+      ]
+    },
+    {
+      "site_id": "apollo12_lm",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "A12_LM",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/938",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "apollo14_lm",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "A14_LM",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/938",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "apollo15_lm",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "A15_LM",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/938",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "apollo16_lm",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "A16_LM",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/938",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "apollo17_lm",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "A17_LM",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/938",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "im1_odysseus",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "IM1",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/1360",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://www.nasa.gov/missions/lro/nasas-lro-images-intuitive-machines-odysseus-lander/",
+          "checks": {}
+        },
+        {
+          "kind": "pdf_manual",
+          "url": "https://www.nasa.gov/wp-content/uploads/2024/01/np-2023-12-016-jsc-clps-im-press-kit-web-508.pdf"
+        }
+      ]
+    },
+    {
+      "site_id": "im2_athena",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "IM2",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/featured_sites/im2/flip-book",
+          "checks": {}
+        },
+        {
+          "kind": "pdf_manual",
+          "url": "https://www.nasa.gov/wp-content/uploads/2025/02/np-2025-02-005-jsc-clps-intuitive-machines-press-kit-508-2-25-25.pdf"
+        },
+        {
+          "kind": "pdf_manual",
+          "url": "https://www.nasa.gov/wp-content/uploads/2024/01/np-2023-12-016-jsc-clps-im-press-kit-web-508.pdf"
+        }
+      ]
+    },
+    {
+      "site_id": "blueghost1_lander",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "BlueGhost1",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/1407",
+          "checks": {}
+        },
+        {
+          "kind": "pdf_manual",
+          "url": "https://www.nasa.gov/wp-content/uploads/2025/01/np-2025-01-001-jsc-clps-firefly-press-kit-screen-508-1-10-25-final.pdf"
+        }
+      ]
+    },
+    {
+      "site_id": "chandrayaan3_vikram",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "Vikram2",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/1314",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "chandrayaan3_planned_target",
+      "sources": [
+        {
+          "kind": "html_quote",
+          "url": "https://www.isro.gov.in/Chandrayaan3_Details.html",
+          "checks": {}
+        }
+      ]
+    },
+    {
+      "site_id": "change4_lander",
+      "sources": [
+        {
+          "kind": "pds_product",
+          "object_id": "ChangE4",
+          "checks": {}
+        },
+        {
+          "kind": "html_quote",
+          "url": "https://lroc.im-ldi.com/images/1168",
+          "checks": {}
+        }
+      ]
+    }
+  ]
+}

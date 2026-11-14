@@ -1,0 +1,121 @@
+{
+  // Sarcinile se pornesc numai manual (Terminal > Run Task). Niciuna nu rulează la deschiderea folderului.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Backend: teste",
+      "type": "process",
+      "command": "${workspaceFolder}/backend/.venv/bin/python",
+      "windows": { "command": "${workspaceFolder}\\backend\\.venv\\Scripts\\python.exe" },
+      "args": ["-m", "pytest"],
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Backend: ruff",
+      "type": "process",
+      "command": "${workspaceFolder}/backend/.venv/bin/python",
+      "windows": { "command": "${workspaceFolder}\\backend\\.venv\\Scripts\\python.exe" },
+      "args": ["-m", "ruff", "check", ".", "../scripts"],
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Backend: mypy",
+      "type": "process",
+      "command": "${workspaceFolder}/backend/.venv/bin/python",
+      "windows": { "command": "${workspaceFolder}\\backend\\.venv\\Scripts\\python.exe" },
+      "args": ["-m", "mypy"],
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Mediu: verificare",
+      "type": "process",
+      "command": "${workspaceFolder}/backend/.venv/bin/python",
+      "windows": { "command": "${workspaceFolder}\\backend\\.venv\\Scripts\\python.exe" },
+      "args": ["scripts/check_env.py"],
+      "options": { "cwd": "${workspaceFolder}", "env": { "PYTHONUTF8": "1" } },
+      "problemMatcher": []
+    },
+    {
+      "label": "Contracte: verificare (Python)",
+      "type": "process",
+      "command": "${workspaceFolder}/backend/.venv/bin/python",
+      "windows": { "command": "${workspaceFolder}\\backend\\.venv\\Scripts\\python.exe" },
+      "args": ["scripts/generate_contracts.py", "--check"],
+      "options": { "cwd": "${workspaceFolder}", "env": { "PYTHONUTF8": "1" } },
+      "problemMatcher": []
+    },
+    {
+      "label": "Contracte: verificare (TypeScript)",
+      "type": "npm",
+      "script": "contracts:check",
+      "path": "frontend",
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: dev",
+      "type": "npm",
+      "script": "dev",
+      "path": "frontend",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": { "regexp": "^$" },
+        "background": {
+          "activesBegins": true,
+          "beginsPattern": "VITE",
+          "endsPattern": "Local:"
+        }
+      }
+    },
+    {
+      "label": "Frontend: teste",
+      "type": "npm",
+      "script": "test",
+      "path": "frontend",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: lint",
+      "type": "npm",
+      "script": "lint",
+      "path": "frontend",
+      "problemMatcher": []
+    },
+    {
+      "label": "Frontend: typecheck",
+      "type": "npm",
+      "script": "typecheck",
+      "path": "frontend",
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Frontend: build",
+      "type": "npm",
+      "script": "build",
+      "path": "frontend",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Toate verificările",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Backend: ruff",
+        "Backend: mypy",
+        "Backend: teste",
+        "Contracte: verificare (Python)",
+        "Contracte: verificare (TypeScript)",
+        "Frontend: lint",
+        "Frontend: typecheck",
+        "Frontend: teste",
+        "Frontend: build"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

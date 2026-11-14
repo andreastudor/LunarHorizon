@@ -1,0 +1,4 @@
+# Răspunsurile Horizons sunt arhivate octet cu octet (SHA-256 în fișierele .request.json).
+# Git nu le convertește finalurile de linie, indiferent de `* text=auto` din rădăcină sau de core.autocrlf.
+*.response.json -text
+*.error.json -text

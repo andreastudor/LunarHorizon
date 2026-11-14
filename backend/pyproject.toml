@@ -1,0 +1,61 @@
+# Backend LunarHorizon — configurație și dependențe.
+#
+# Proiectul nu se instalează ca pachet. Dependențele sunt grupuri PEP 735, instalate cu pip:
+#   python -m pip install -c constraints.txt --group dev
+# Versiunile directe sunt fixate aici; constraints.txt fixează și dependențele tranzitive.
+# Procedura de actualizare este în CONTRIBUTING.md.
+
+[project]
+name = "lunarhorizon-backend"
+version = "0.1.0"
+description = "LunarHorizon: API și motor de calcul (astronomie SPICE, orizont din relief LOLA)"
+requires-python = ">=3.13,<3.14"
+license = "MIT"
+
+[dependency-groups]
+# Biblioteci folosite de cod. FastAPI și Uvicorn se adaugă la etapa E06.
+runtime = [
+    "numpy==2.5.4",
+    "spiceypy==8.4.0",
+    "rasterio==1.5.2",
+    "pydantic==2.14.3",
+]
+dev = [
+    { include-group = "runtime" },
+    "pytest==9.2.0",
+    "ruff==0.17.5",
+    "mypy==2.4.1",
+    # Validarea fixture-urilor față de schema JSON generată (testele de contract).
+    "jsonschema==4.26.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = ["-ra", "--strict-markers"]
+filterwarnings = ["error"]
+markers = [
+    "kernels: cere kernelurile SPICE din data/kernels (scripts/download_kernels.py); omis dacă lipsesc",
+]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+files = ["lunarhorizon", "tests", "../scripts"]
+
+[[tool.mypy.overrides]]
+# Rasterio 1.5.2 nu publică adnotări de tip (fără py.typed).
+module = ["rasterio", "rasterio.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# jsonschema 4.26 nu publică adnotări; se folosește numai în teste.
+module = ["jsonschema", "jsonschema.*"]
+ignore_missing_imports = true

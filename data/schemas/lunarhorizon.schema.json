@@ -1,0 +1,3385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LunarHorizonContracts",
+  "description": "Contractele de date LunarHorizon. Generat din backend/lunarhorizon/contracts; nu se editează manual (scripts/generate_contracts.py).",
+  "x-schema-version": "0.3.0",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/Catalog"
+    },
+    {
+      "$ref": "#/$defs/KernelManifest"
+    },
+    {
+      "$ref": "#/$defs/DemProductManifest"
+    },
+    {
+      "$ref": "#/$defs/TerrainManifest"
+    },
+    {
+      "$ref": "#/$defs/SimulationRequest"
+    },
+    {
+      "$ref": "#/$defs/SimulationAccepted"
+    },
+    {
+      "$ref": "#/$defs/SimulationStatus"
+    },
+    {
+      "$ref": "#/$defs/SimulationResult"
+    },
+    {
+      "$ref": "#/$defs/ScenarioIndex"
+    },
+    {
+      "$ref": "#/$defs/Health"
+    },
+    {
+      "$ref": "#/$defs/Coverage"
+    },
+    {
+      "$ref": "#/$defs/Problem"
+    }
+  ],
+  "$defs": {
+    "BodyEvents": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "found",
+            "none_in_interval",
+            "unavailable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/Event"
+          },
+          "title": "Events",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "events"
+      ],
+      "title": "BodyEvents",
+      "type": "object"
+    },
+    "BodySeries": {
+      "additionalProperties": false,
+      "properties": {
+        "azimuth_deg": {
+          "items": {
+            "exclusiveMaximum": 360.0,
+            "minimum": 0.0,
+            "type": "number"
+          },
+          "title": "Azimuth Deg",
+          "type": "array"
+        },
+        "elevation_deg": {
+          "items": {
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "type": "number"
+          },
+          "title": "Elevation Deg",
+          "type": "array"
+        },
+        "distance_km": {
+          "items": {
+            "exclusiveMinimum": 0.0,
+            "type": "number"
+          },
+          "title": "Distance Km",
+          "type": "array"
+        },
+        "angular_radius_deg": {
+          "items": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 90.0,
+            "type": "number"
+          },
+          "title": "Angular Radius Deg",
+          "type": "array"
+        },
+        "horizon_elevation_deg": {
+          "items": {
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Horizon Elevation Deg",
+          "type": "array"
+        },
+        "visible": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Visible",
+          "type": "array"
+        }
+      },
+      "required": [
+        "azimuth_deg",
+        "elevation_deg",
+        "distance_km",
+        "angular_radius_deg",
+        "horizon_elevation_deg",
+        "visible"
+      ],
+      "title": "BodySeries",
+      "type": "object"
+    },
+    "Catalog": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "catalog_version": {
+          "minLength": 1,
+          "title": "Catalog Version",
+          "type": "string"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/Site"
+          },
+          "title": "Sites",
+          "type": "array"
+        },
+        "demo_site_selection": {
+          "$ref": "#/$defs/DemoSiteSelection"
+        }
+      },
+      "required": [
+        "schema_version",
+        "catalog_version",
+        "sites",
+        "demo_site_selection"
+      ],
+      "title": "Catalog",
+      "type": "object"
+    },
+    "CatalogSiteSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "site_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "site_id"
+      ],
+      "title": "CatalogSiteSelection",
+      "type": "object"
+    },
+    "ChecksumReference": {
+      "additionalProperties": false,
+      "description": "O sumă de control așteptată, cu originea ei. Nu este suma calculată de proiect.",
+      "properties": {
+        "algorithm": {
+          "enum": [
+            "md5",
+            "sha256"
+          ],
+          "title": "Algorithm",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "published_by_source",
+            "prior_independent_download"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "pattern": "^https?://\\S+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Url"
+        }
+      },
+      "required": [
+        "algorithm",
+        "value",
+        "kind",
+        "source",
+        "source_url"
+      ],
+      "title": "ChecksumReference",
+      "type": "object"
+    },
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "temporal": {
+          "$ref": "#/$defs/TemporalCoverage"
+        },
+        "terrain": {
+          "items": {
+            "$ref": "#/$defs/TerrainCoverage"
+          },
+          "title": "Terrain",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "temporal",
+        "terrain"
+      ],
+      "title": "Coverage",
+      "type": "object"
+    },
+    "CrsDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "proj4": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Proj4"
+        },
+        "wkt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Wkt"
+        }
+      },
+      "required": [
+        "proj4",
+        "wkt"
+      ],
+      "title": "CrsDefinition",
+      "type": "object"
+    },
+    "CustomPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude Deg",
+          "type": "number"
+        },
+        "longitude_deg": {
+          "exclusiveMaximum": 360.0,
+          "minimum": -180.0,
+          "title": "Longitude Deg",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "latitude_deg",
+        "longitude_deg"
+      ],
+      "title": "CustomPoint",
+      "type": "object"
+    },
+    "CustomSiteSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "custom": {
+          "$ref": "#/$defs/CustomPoint"
+        }
+      },
+      "required": [
+        "custom"
+      ],
+      "title": "CustomSiteSelection",
+      "type": "object"
+    },
+    "DemProduct": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "institution": {
+          "minLength": 1,
+          "title": "Institution",
+          "type": "string"
+        },
+        "landing_page_url": {
+          "pattern": "^https?://\\S+$",
+          "title": "Landing Page Url",
+          "type": "string"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "accessed_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Accessed At",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "near",
+            "far"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "resolution_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Resolution M",
+          "type": "number"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "metadata_origin": {
+          "enum": [
+            "declared_by_source",
+            "read_from_file"
+          ],
+          "title": "Metadata Origin",
+          "type": "string"
+        },
+        "crs_wkt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Crs Wkt"
+        },
+        "reference_radius_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reference Radius M"
+        },
+        "vertical_units": {
+          "const": "m",
+          "title": "Vertical Units",
+          "type": "string"
+        },
+        "vertical_reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vertical Reference"
+        },
+        "nodata_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nodata Value"
+        },
+        "gap_handling": {
+          "minLength": 1,
+          "title": "Gap Handling",
+          "type": "string"
+        },
+        "min_latitude_deg": {
+          "anyOf": [
+            {
+              "maximum": 90.0,
+              "minimum": -90.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Min Latitude Deg"
+        },
+        "max_latitude_deg": {
+          "anyOf": [
+            {
+              "maximum": 90.0,
+              "minimum": -90.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Max Latitude Deg"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/ProductFile"
+          },
+          "minItems": 1,
+          "title": "Files",
+          "type": "array"
+        }
+      },
+      "required": [
+        "product_id",
+        "title",
+        "institution",
+        "landing_page_url",
+        "citation",
+        "accessed_at",
+        "role",
+        "resolution_m",
+        "frame_id",
+        "metadata_origin",
+        "crs_wkt",
+        "reference_radius_m",
+        "vertical_units",
+        "vertical_reference",
+        "nodata_value",
+        "gap_handling",
+        "min_latitude_deg",
+        "max_latitude_deg",
+        "files"
+      ],
+      "title": "DemProduct",
+      "type": "object"
+    },
+    "DemProductManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "products": {
+          "items": {
+            "$ref": "#/$defs/DemProduct"
+          },
+          "title": "Products",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "products"
+      ],
+      "title": "DemProductManifest",
+      "type": "object"
+    },
+    "DemProductUse": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "near",
+            "far"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id",
+        "role"
+      ],
+      "title": "DemProductUse",
+      "type": "object"
+    },
+    "DemoCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "site_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Id",
+          "type": "string"
+        },
+        "advantages": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Advantages",
+          "type": "array"
+        },
+        "limits": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Limits",
+          "type": "array"
+        }
+      },
+      "required": [
+        "site_id",
+        "advantages",
+        "limits"
+      ],
+      "title": "DemoCandidate",
+      "type": "object"
+    },
+    "DemoSiteSelection": {
+      "additionalProperties": false,
+      "description": "Starea deciziei D-07. Un candidat documentat NU este un sit demonstrativ aprobat.",
+      "properties": {
+        "decision_id": {
+          "const": "D-07",
+          "title": "Decision Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "unconfirmed",
+            "confirmed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "confirmed_site_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Confirmed Site Ids",
+          "type": "array"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/DemoCandidate"
+          },
+          "title": "Candidates",
+          "type": "array"
+        },
+        "excluded": {
+          "items": {
+            "$ref": "#/$defs/ExcludedCandidate"
+          },
+          "title": "Excluded",
+          "type": "array"
+        },
+        "criteria": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Criteria",
+          "type": "array"
+        }
+      },
+      "required": [
+        "decision_id",
+        "status",
+        "confirmed_site_ids",
+        "candidates",
+        "excluded",
+        "criteria"
+      ],
+      "title": "DemoSiteSelection",
+      "type": "object"
+    },
+    "EarthCriterion": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "center_above_horizon",
+          "title": "Kind",
+          "type": "string"
+        },
+        "min_elevation_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Min Elevation Deg",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "min_elevation_deg"
+      ],
+      "title": "EarthCriterion",
+      "type": "object"
+    },
+    "ErrorCode": {
+      "enum": [
+        "VALIDATION_ERROR",
+        "TOO_MANY_SITES",
+        "INTERVAL_TOO_LONG",
+        "UNSUPPORTED_FRAME",
+        "OUT_OF_EPHEMERIS_COVERAGE",
+        "OUT_OF_DEM_COVERAGE",
+        "SIMULATION_NOT_FOUND",
+        "KERNEL_MISSING",
+        "TERRAIN_DATA_MISSING",
+        "PRECOMPUTED_NOT_AVAILABLE",
+        "INTERNAL_ERROR"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "Event": {
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "enum": [
+            "sun",
+            "earth"
+          ],
+          "title": "Body",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "appearance",
+            "disappearance"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "cause": {
+          "enum": [
+            "terrain",
+            "idealized_horizon"
+          ],
+          "title": "Cause",
+          "type": "string"
+        },
+        "time_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Time Utc",
+          "type": "string"
+        },
+        "azimuth_deg": {
+          "exclusiveMaximum": 360.0,
+          "minimum": 0.0,
+          "title": "Azimuth Deg",
+          "type": "number"
+        },
+        "elevation_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Elevation Deg",
+          "type": "number"
+        },
+        "obstacle_distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Obstacle Distance M"
+        },
+        "refinement_tolerance_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Refinement Tolerance S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "body",
+        "type",
+        "cause",
+        "time_utc",
+        "azimuth_deg",
+        "elevation_deg",
+        "obstacle_distance_m",
+        "refinement_tolerance_s"
+      ],
+      "title": "Event",
+      "type": "object"
+    },
+    "ExcludedCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "reason"
+      ],
+      "title": "ExcludedCandidate",
+      "type": "object"
+    },
+    "FieldError": {
+      "additionalProperties": false,
+      "properties": {
+        "loc": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "title": "Loc",
+          "type": "array"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "loc",
+        "message"
+      ],
+      "title": "FieldError",
+      "type": "object"
+    },
+    "GeoJsonPolygon": {
+      "additionalProperties": false,
+      "description": "Poligon GeoJSON în coordonate lunare: poziții [longitudine_deg, latitudine_deg].",
+      "properties": {
+        "type": {
+          "const": "Polygon",
+          "title": "Type",
+          "type": "string"
+        },
+        "coordinates": {
+          "items": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            "minItems": 4,
+            "type": "array"
+          },
+          "minItems": 1,
+          "title": "Coordinates",
+          "type": "array"
+        }
+      },
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "title": "GeoJsonPolygon",
+      "type": "object"
+    },
+    "Health": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "ok",
+            "degraded"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "app_version": {
+          "minLength": 1,
+          "title": "App Version",
+          "type": "string"
+        },
+        "kernel_profile": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Kernel Profile"
+        },
+        "kernels_loaded": {
+          "title": "Kernels Loaded",
+          "type": "boolean"
+        },
+        "dem_products": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+            "type": "string"
+          },
+          "title": "Dem Products",
+          "type": "array"
+        },
+        "time_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Time Utc",
+          "type": "string"
+        },
+        "issues": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "app_version",
+        "kernel_profile",
+        "kernels_loaded",
+        "dem_products",
+        "time_utc",
+        "issues"
+      ],
+      "title": "Health",
+      "type": "object"
+    },
+    "InterpolatedPixelsInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "flagged": {
+          "title": "Flagged",
+          "type": "boolean"
+        },
+        "note": {
+          "minLength": 1,
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flagged",
+        "note"
+      ],
+      "title": "InterpolatedPixelsInfo",
+      "type": "object"
+    },
+    "KernelFile": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "spk",
+            "binary_pck",
+            "text_pck",
+            "fk",
+            "lsk"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "filename": {
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "url": {
+          "pattern": "^https?://\\S+$",
+          "title": "Url",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256"
+        },
+        "md5": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{32}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Md5"
+        },
+        "size_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Size Bytes"
+        },
+        "retrieved_at_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Retrieved At Utc"
+        },
+        "expected_checksums": {
+          "items": {
+            "$ref": "#/$defs/ChecksumReference"
+          },
+          "title": "Expected Checksums",
+          "type": "array"
+        },
+        "coverage_start_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Start Utc"
+        },
+        "coverage_end_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage End Utc"
+        }
+      },
+      "required": [
+        "role",
+        "filename",
+        "url",
+        "sha256",
+        "md5",
+        "size_bytes",
+        "retrieved_at_utc",
+        "expected_checksums"
+      ],
+      "title": "KernelFile",
+      "type": "object"
+    },
+    "KernelFileUse": {
+      "additionalProperties": false,
+      "properties": {
+        "filename": {
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "filename",
+        "sha256"
+      ],
+      "title": "KernelFileUse",
+      "type": "object"
+    },
+    "KernelManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "default_profile": {
+          "enum": [
+            "de440_me421",
+            "de421"
+          ],
+          "title": "Default Profile",
+          "type": "string"
+        },
+        "profiles": {
+          "items": {
+            "$ref": "#/$defs/KernelProfile"
+          },
+          "minItems": 1,
+          "title": "Profiles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "default_profile",
+        "profiles"
+      ],
+      "title": "KernelManifest",
+      "type": "object"
+    },
+    "KernelProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "profile_id": {
+          "enum": [
+            "de440_me421",
+            "de421"
+          ],
+          "title": "Profile Id",
+          "type": "string"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "pa_frame_id": {
+          "enum": [
+            "MOON_PA_DE440",
+            "MOON_PA_DE421"
+          ],
+          "title": "Pa Frame Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "provisional",
+            "confirmed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/KernelFile"
+          },
+          "minItems": 1,
+          "title": "Files",
+          "type": "array"
+        },
+        "coverage_start_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Start Utc"
+        },
+        "coverage_end_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage End Utc"
+        }
+      },
+      "required": [
+        "profile_id",
+        "frame_id",
+        "pa_frame_id",
+        "status",
+        "files"
+      ],
+      "title": "KernelProfile",
+      "type": "object"
+    },
+    "KernelProfileUse": {
+      "additionalProperties": false,
+      "properties": {
+        "profile_id": {
+          "minLength": 1,
+          "title": "Profile Id",
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/KernelFileUse"
+          },
+          "title": "Files",
+          "type": "array"
+        }
+      },
+      "required": [
+        "profile_id",
+        "files"
+      ],
+      "title": "KernelProfileUse",
+      "type": "object"
+    },
+    "LocalOrigin": {
+      "additionalProperties": false,
+      "properties": {
+        "latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude Deg",
+          "type": "number"
+        },
+        "longitude_deg": {
+          "exclusiveMaximum": 180.0,
+          "minimum": -180.0,
+          "title": "Longitude Deg",
+          "type": "number"
+        },
+        "elevation_m": {
+          "title": "Elevation M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "latitude_deg",
+        "longitude_deg",
+        "elevation_m"
+      ],
+      "title": "LocalOrigin",
+      "type": "object"
+    },
+    "NoDataInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "present": {
+          "title": "Present",
+          "type": "boolean"
+        },
+        "encoding": {
+          "minLength": 1,
+          "title": "Encoding",
+          "type": "string"
+        },
+        "area_fraction": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Area Fraction"
+        }
+      },
+      "required": [
+        "present",
+        "encoding",
+        "area_fraction"
+      ],
+      "title": "NoDataInfo",
+      "type": "object"
+    },
+    "NotComputed": {
+      "additionalProperties": false,
+      "properties": {
+        "group": {
+          "enum": [
+            "series",
+            "events",
+            "summary",
+            "horizon",
+            "terrain"
+          ],
+          "title": "Group",
+          "type": "string"
+        },
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "group",
+        "site_ref",
+        "reason"
+      ],
+      "title": "NotComputed",
+      "type": "object"
+    },
+    "OriginalCoordinates": {
+      "additionalProperties": false,
+      "description": "Coordonatele exact cum apar în sursă, cu descrierea cadrului sau a convenției lor.",
+      "properties": {
+        "latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude Deg",
+          "type": "number"
+        },
+        "longitude_deg": {
+          "title": "Longitude Deg",
+          "type": "number"
+        },
+        "frame_description": {
+          "minLength": 1,
+          "title": "Frame Description",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "latitude_deg",
+        "longitude_deg",
+        "frame_description"
+      ],
+      "title": "OriginalCoordinates",
+      "type": "object"
+    },
+    "Problem": {
+      "additionalProperties": false,
+      "description": "Eroare în formatul `application/problem+json` (RFC 9457), cu un `code` stabil.",
+      "properties": {
+        "type": {
+          "minLength": 1,
+          "title": "Type",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "maximum": 599,
+              "minimum": 100,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Status"
+        },
+        "detail": {
+          "minLength": 1,
+          "title": "Detail",
+          "type": "string"
+        },
+        "code": {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        "field_errors": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/FieldError"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Field Errors"
+        },
+        "coverage_start_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Start Utc"
+        },
+        "coverage_end_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage End Utc"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "detail",
+        "code"
+      ],
+      "title": "Problem",
+      "type": "object"
+    },
+    "ProductFile": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "height",
+            "count",
+            "uncertainty",
+            "slope",
+            "hillshade",
+            "label",
+            "other"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "filename": {
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "url": {
+          "pattern": "^https?://\\S+$",
+          "title": "Url",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256"
+        },
+        "size_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Size Bytes"
+        }
+      },
+      "required": [
+        "kind",
+        "filename",
+        "url",
+        "sha256",
+        "size_bytes"
+      ],
+      "title": "ProductFile",
+      "type": "object"
+    },
+    "Progress": {
+      "additionalProperties": false,
+      "properties": {
+        "stage": {
+          "minLength": 1,
+          "title": "Stage",
+          "type": "string"
+        },
+        "completed_fraction": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Completed Fraction",
+          "type": "number"
+        }
+      },
+      "required": [
+        "stage",
+        "completed_fraction"
+      ],
+      "title": "Progress",
+      "type": "object"
+    },
+    "ProjectedBounds": {
+      "additionalProperties": false,
+      "properties": {
+        "x_min_m": {
+          "title": "X Min M",
+          "type": "number"
+        },
+        "x_max_m": {
+          "title": "X Max M",
+          "type": "number"
+        },
+        "y_min_m": {
+          "title": "Y Min M",
+          "type": "number"
+        },
+        "y_max_m": {
+          "title": "Y Max M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x_min_m",
+        "x_max_m",
+        "y_min_m",
+        "y_max_m"
+      ],
+      "title": "ProjectedBounds",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "app_version": {
+          "minLength": 1,
+          "title": "App Version",
+          "type": "string"
+        },
+        "computed_at_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Computed At Utc",
+          "type": "string"
+        },
+        "source_mode": {
+          "enum": [
+            "live",
+            "precomputed"
+          ],
+          "title": "Source Mode",
+          "type": "string"
+        },
+        "kernel_profile": {
+          "$ref": "#/$defs/KernelProfileUse"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "aberration_correction": {
+          "minLength": 1,
+          "title": "Aberration Correction",
+          "type": "string"
+        },
+        "body_radii_km": {
+          "additionalProperties": {
+            "exclusiveMinimum": 0.0,
+            "type": "number"
+          },
+          "title": "Body Radii Km",
+          "type": "object"
+        },
+        "dem_products": {
+          "items": {
+            "$ref": "#/$defs/DemProductUse"
+          },
+          "title": "Dem Products",
+          "type": "array"
+        },
+        "horizon_parameters": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "title": "Horizon Parameters",
+          "type": "object"
+        },
+        "event_parameters": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "title": "Event Parameters",
+          "type": "object"
+        },
+        "criteria": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "title": "Criteria",
+          "type": "object"
+        }
+      },
+      "required": [
+        "app_version",
+        "computed_at_utc",
+        "source_mode",
+        "kernel_profile",
+        "frame_id",
+        "aberration_correction",
+        "body_radii_km",
+        "dem_products",
+        "horizon_parameters",
+        "event_parameters",
+        "criteria"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "Quality": {
+      "additionalProperties": false,
+      "properties": {
+        "issues": {
+          "items": {
+            "$ref": "#/$defs/QualityIssue"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "not_computed": {
+          "items": {
+            "$ref": "#/$defs/NotComputed"
+          },
+          "title": "Not Computed",
+          "type": "array"
+        },
+        "approximations": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Approximations",
+          "type": "array"
+        },
+        "limits": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Limits",
+          "type": "array"
+        }
+      },
+      "required": [
+        "issues",
+        "not_computed",
+        "approximations",
+        "limits"
+      ],
+      "title": "Quality",
+      "type": "object"
+    },
+    "QualityIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "pattern": "^[a-z0-9_.]+$",
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "warning",
+            "error"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "site_ref": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Site Ref"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Field"
+        },
+        "message_key": {
+          "minLength": 1,
+          "title": "Message Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "site_ref",
+        "field",
+        "message_key"
+      ],
+      "title": "QualityIssue",
+      "type": "object"
+    },
+    "ResultSite": {
+      "additionalProperties": false,
+      "properties": {
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "catalog",
+            "custom"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "catalog_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Catalog Id"
+        },
+        "latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude Deg",
+          "type": "number"
+        },
+        "longitude_deg": {
+          "exclusiveMaximum": 180.0,
+          "minimum": -180.0,
+          "title": "Longitude Deg",
+          "type": "number"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "terrain_elevation_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Terrain Elevation M"
+        },
+        "observer_height_m": {
+          "minimum": 0.0,
+          "title": "Observer Height M",
+          "type": "number"
+        },
+        "on_reference_surface": {
+          "title": "On Reference Surface",
+          "type": "boolean"
+        },
+        "azimuth_convention": {
+          "enum": [
+            "standard",
+            "pole_meridian"
+          ],
+          "title": "Azimuth Convention",
+          "type": "string"
+        },
+        "coordinates_rounded": {
+          "title": "Coordinates Rounded",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "site_ref",
+        "label",
+        "kind",
+        "catalog_id",
+        "latitude_deg",
+        "longitude_deg",
+        "frame_id",
+        "terrain_elevation_m",
+        "observer_height_m",
+        "on_reference_surface",
+        "azimuth_convention",
+        "coordinates_rounded"
+      ],
+      "title": "ResultSite",
+      "type": "object"
+    },
+    "Scenario": {
+      "additionalProperties": false,
+      "properties": {
+        "scenario_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "title_ro": {
+          "minLength": 1,
+          "title": "Title Ro",
+          "type": "string"
+        },
+        "title_en": {
+          "minLength": 1,
+          "title": "Title En",
+          "type": "string"
+        },
+        "site_ids": {
+          "items": {
+            "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+            "type": "string"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Site Ids",
+          "type": "array"
+        },
+        "request": {
+          "$ref": "#/$defs/SimulationRequest"
+        },
+        "result_path": {
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*(/[A-Za-z0-9_-][A-Za-z0-9_.-]*)*$",
+          "title": "Result Path",
+          "type": "string"
+        },
+        "terrain_manifest_paths": {
+          "items": {
+            "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*(/[A-Za-z0-9_-][A-Za-z0-9_.-]*)*$",
+            "type": "string"
+          },
+          "title": "Terrain Manifest Paths",
+          "type": "array"
+        },
+        "result_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Result Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "title_ro",
+        "title_en",
+        "site_ids",
+        "request",
+        "result_path",
+        "terrain_manifest_paths",
+        "result_sha256"
+      ],
+      "title": "Scenario",
+      "type": "object"
+    },
+    "ScenarioIndex": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "scenarios": {
+          "items": {
+            "$ref": "#/$defs/Scenario"
+          },
+          "title": "Scenarios",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "scenarios"
+      ],
+      "title": "ScenarioIndex",
+      "type": "object"
+    },
+    "SimulationAccepted": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "running",
+            "done",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "cache_hit": {
+          "title": "Cache Hit",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "cache_hit"
+      ],
+      "title": "SimulationAccepted",
+      "type": "object"
+    },
+    "SimulationRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "sites": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/CatalogSiteSelection"
+              },
+              {
+                "$ref": "#/$defs/CustomSiteSelection"
+              }
+            ]
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Sites",
+          "type": "array"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "start_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Start Utc",
+          "type": "string"
+        },
+        "end_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "End Utc",
+          "type": "string"
+        },
+        "observer_height_m": {
+          "minimum": 0.0,
+          "title": "Observer Height M",
+          "type": "number"
+        },
+        "solar_criterion": {
+          "const": "disc_center",
+          "title": "Solar Criterion",
+          "type": "string"
+        },
+        "earth_criterion": {
+          "$ref": "#/$defs/EarthCriterion"
+        },
+        "terrain_mode": {
+          "enum": [
+            "dem",
+            "idealized_local_plane"
+          ],
+          "title": "Terrain Mode",
+          "type": "string"
+        },
+        "series_step_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Series Step S"
+        },
+        "panel": {
+          "default": null,
+          "title": "Panel",
+          "type": "null"
+        }
+      },
+      "required": [
+        "sites",
+        "frame_id",
+        "start_utc",
+        "end_utc",
+        "observer_height_m",
+        "solar_criterion",
+        "earth_criterion",
+        "terrain_mode"
+      ],
+      "title": "SimulationRequest",
+      "type": "object"
+    },
+    "SimulationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "request": {
+          "$ref": "#/$defs/SimulationRequest"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/ResultSite"
+          },
+          "maxItems": 4,
+          "minItems": 1,
+          "title": "Sites",
+          "type": "array"
+        },
+        "series": {
+          "items": {
+            "$ref": "#/$defs/SiteSeries"
+          },
+          "title": "Series",
+          "type": "array"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/SiteEvents"
+          },
+          "title": "Events",
+          "type": "array"
+        },
+        "summary": {
+          "items": {
+            "$ref": "#/$defs/SiteSummary"
+          },
+          "title": "Summary",
+          "type": "array"
+        },
+        "horizon": {
+          "items": {
+            "$ref": "#/$defs/SiteHorizon"
+          },
+          "title": "Horizon",
+          "type": "array"
+        },
+        "terrain": {
+          "items": {
+            "$ref": "#/$defs/SiteTerrain"
+          },
+          "title": "Terrain",
+          "type": "array"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "quality": {
+          "$ref": "#/$defs/Quality"
+        }
+      },
+      "required": [
+        "schema_version",
+        "request",
+        "sites",
+        "series",
+        "events",
+        "summary",
+        "horizon",
+        "terrain",
+        "provenance",
+        "quality"
+      ],
+      "title": "SimulationResult",
+      "type": "object"
+    },
+    "SimulationStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "running",
+            "done",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "progress": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Progress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Problem"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SimulationResult"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "status",
+        "progress",
+        "error",
+        "result"
+      ],
+      "title": "SimulationStatus",
+      "type": "object"
+    },
+    "Site": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "mission": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Mission"
+        },
+        "agency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Agency"
+        },
+        "operator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Operator"
+        },
+        "country": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Country"
+        },
+        "status": {
+          "enum": [
+            "landed",
+            "planned",
+            "candidate",
+            "impact",
+            "custom"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "mission_status": {
+          "enum": [
+            "landed",
+            "impacted",
+            "not_landed",
+            "planned",
+            "unknown"
+          ],
+          "title": "Mission Status",
+          "type": "string"
+        },
+        "geometry_type": {
+          "enum": [
+            "point",
+            "region"
+          ],
+          "title": "Geometry Type",
+          "type": "string"
+        },
+        "position_kind": {
+          "enum": [
+            "actual",
+            "planned_target",
+            "representative_point"
+          ],
+          "title": "Position Kind",
+          "type": "string"
+        },
+        "latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude Deg",
+          "type": "number"
+        },
+        "longitude_deg": {
+          "exclusiveMaximum": 180.0,
+          "minimum": -180.0,
+          "title": "Longitude Deg",
+          "type": "number"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "original_coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OriginalCoordinates"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "horizontal_uncertainty_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Horizontal Uncertainty M"
+        },
+        "elevation_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elevation M"
+        },
+        "elevation_reference": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elevation Reference"
+        },
+        "region": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeoJsonPolygon"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "landing_date_utc": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Landing Date Utc"
+        },
+        "related_site_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Related Site Id"
+        },
+        "planned_target_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Planned Target Note"
+        },
+        "source_url": {
+          "pattern": "^https?://\\S+$",
+          "title": "Source Url",
+          "type": "string"
+        },
+        "accessed_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Accessed At",
+          "type": "string"
+        },
+        "position_sources": {
+          "items": {
+            "$ref": "#/$defs/SourceRecord"
+          },
+          "title": "Position Sources",
+          "type": "array"
+        },
+        "position_verification": {
+          "enum": [
+            "verified_at_original",
+            "incomplete",
+            "conflict_open"
+          ],
+          "title": "Position Verification",
+          "type": "string"
+        },
+        "adoption_note": {
+          "minLength": 1,
+          "title": "Adoption Note",
+          "type": "string"
+        },
+        "description_ro": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Description Ro"
+        },
+        "description_en": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Description En"
+        },
+        "terrain_available": {
+          "title": "Terrain Available",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "mission",
+        "agency",
+        "operator",
+        "country",
+        "status",
+        "mission_status",
+        "geometry_type",
+        "position_kind",
+        "latitude_deg",
+        "longitude_deg",
+        "frame_id",
+        "original_coordinates",
+        "horizontal_uncertainty_m",
+        "related_site_id",
+        "planned_target_note",
+        "source_url",
+        "accessed_at",
+        "position_sources",
+        "position_verification",
+        "adoption_note",
+        "description_ro",
+        "description_en",
+        "terrain_available"
+      ],
+      "title": "Site",
+      "type": "object"
+    },
+    "SiteEvents": {
+      "additionalProperties": false,
+      "properties": {
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "sun": {
+          "$ref": "#/$defs/BodyEvents"
+        },
+        "earth": {
+          "$ref": "#/$defs/BodyEvents"
+        }
+      },
+      "required": [
+        "site_ref",
+        "sun",
+        "earth"
+      ],
+      "title": "SiteEvents",
+      "type": "object"
+    },
+    "SiteHorizon": {
+      "additionalProperties": false,
+      "properties": {
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "dem",
+            "idealized_local_plane"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "azimuth_step_deg": {
+          "exclusiveMinimum": 0.0,
+          "maximum": 360.0,
+          "title": "Azimuth Step Deg",
+          "type": "number"
+        },
+        "elevation_deg": {
+          "items": {
+            "anyOf": [
+              {
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Elevation Deg",
+          "type": "array"
+        },
+        "obstacle_distance_m": {
+          "items": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Obstacle Distance M",
+          "type": "array"
+        },
+        "quality": {
+          "items": {
+            "enum": [
+              "complete",
+              "partial",
+              "no_data"
+            ],
+            "type": "string"
+          },
+          "title": "Quality",
+          "type": "array"
+        },
+        "max_search_distance_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Max Search Distance M"
+        },
+        "coverage_fraction": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Coverage Fraction",
+          "type": "number"
+        },
+        "dem_products": {
+          "items": {
+            "$ref": "#/$defs/DemProductUse"
+          },
+          "title": "Dem Products",
+          "type": "array"
+        }
+      },
+      "required": [
+        "site_ref",
+        "mode",
+        "azimuth_step_deg",
+        "elevation_deg",
+        "obstacle_distance_m",
+        "quality",
+        "max_search_distance_m",
+        "coverage_fraction",
+        "dem_products"
+      ],
+      "title": "SiteHorizon",
+      "type": "object"
+    },
+    "SiteSeries": {
+      "additionalProperties": false,
+      "properties": {
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "step_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Step S",
+          "type": "number"
+        },
+        "time_utc": {
+          "items": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Time Utc",
+          "type": "array"
+        },
+        "sun": {
+          "$ref": "#/$defs/BodySeries"
+        },
+        "earth": {
+          "$ref": "#/$defs/BodySeries"
+        }
+      },
+      "required": [
+        "site_ref",
+        "step_s",
+        "time_utc",
+        "sun",
+        "earth"
+      ],
+      "title": "SiteSeries",
+      "type": "object"
+    },
+    "SiteSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "sun_visible_duration_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sun Visible Duration S"
+        },
+        "sun_visible_fraction": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sun Visible Fraction"
+        },
+        "earth_visible_duration_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Earth Visible Duration S"
+        },
+        "both_visible_duration_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Both Visible Duration S"
+        },
+        "sun_intervals": {
+          "items": {
+            "$ref": "#/$defs/TimeInterval"
+          },
+          "title": "Sun Intervals",
+          "type": "array"
+        },
+        "earth_windows": {
+          "items": {
+            "$ref": "#/$defs/TimeInterval"
+          },
+          "title": "Earth Windows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "site_ref",
+        "sun_visible_duration_s",
+        "sun_visible_fraction",
+        "earth_visible_duration_s",
+        "both_visible_duration_s",
+        "sun_intervals",
+        "earth_windows"
+      ],
+      "title": "SiteSummary",
+      "type": "object"
+    },
+    "SiteTerrain": {
+      "additionalProperties": false,
+      "properties": {
+        "site_ref": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Ref",
+          "type": "string"
+        },
+        "available": {
+          "title": "Available",
+          "type": "boolean"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "terrain_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Terrain Id"
+        },
+        "product_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Product Id"
+        },
+        "calc_resolution_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Calc Resolution M"
+        },
+        "visual_resolutions_m": {
+          "items": {
+            "exclusiveMinimum": 0.0,
+            "type": "number"
+          },
+          "title": "Visual Resolutions M",
+          "type": "array"
+        },
+        "frame_id": {
+          "anyOf": [
+            {
+              "enum": [
+                "MOON_ME_DE440_ME421",
+                "MOON_ME_DE421"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Frame Id"
+        }
+      },
+      "required": [
+        "site_ref",
+        "available",
+        "reason",
+        "terrain_id",
+        "product_id",
+        "calc_resolution_m",
+        "visual_resolutions_m",
+        "frame_id"
+      ],
+      "title": "SiteTerrain",
+      "type": "object"
+    },
+    "SourceRecord": {
+      "additionalProperties": false,
+      "description": "Un document sau produs consultat pentru o poziție; citarea completă este în SOURCES.",
+      "properties": {
+        "used_for": {
+          "enum": [
+            "position",
+            "planned_target",
+            "corroboration",
+            "mission_context"
+          ],
+          "title": "Used For",
+          "type": "string"
+        },
+        "institution": {
+          "minLength": 1,
+          "title": "Institution",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "pattern": "^https?://\\S+$",
+          "title": "Url",
+          "type": "string"
+        },
+        "identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Identifier"
+        },
+        "version_or_update": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Version Or Update"
+        },
+        "published": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Published"
+        },
+        "accessed_at": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "title": "Accessed At",
+          "type": "string"
+        },
+        "locator": {
+          "minLength": 1,
+          "title": "Locator",
+          "type": "string"
+        },
+        "access": {
+          "enum": [
+            "opened_original",
+            "not_accessible"
+          ],
+          "title": "Access",
+          "type": "string"
+        },
+        "coordinates": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OriginalCoordinates"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "declared_frame": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Declared Frame"
+        },
+        "frame_realization_stated": {
+          "title": "Frame Realization Stated",
+          "type": "boolean"
+        },
+        "published_uncertainty_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Published Uncertainty M"
+        },
+        "uncertainty_definition": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Uncertainty Definition"
+        },
+        "quote": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quote"
+        },
+        "file_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "File Sha256"
+        }
+      },
+      "required": [
+        "used_for",
+        "institution",
+        "title",
+        "url",
+        "identifier",
+        "version_or_update",
+        "published",
+        "accessed_at",
+        "locator",
+        "access",
+        "coordinates",
+        "declared_frame",
+        "frame_realization_stated",
+        "published_uncertainty_m",
+        "uncertainty_definition",
+        "quote",
+        "file_sha256"
+      ],
+      "title": "SourceRecord",
+      "type": "object"
+    },
+    "TemporalCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "start_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Start Utc",
+          "type": "string"
+        },
+        "end_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "End Utc",
+          "type": "string"
+        },
+        "kernel_profile": {
+          "minLength": 1,
+          "title": "Kernel Profile",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_utc",
+        "end_utc",
+        "kernel_profile"
+      ],
+      "title": "TemporalCoverage",
+      "type": "object"
+    },
+    "TerrainCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "near",
+            "far"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "resolution_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Resolution M",
+          "type": "number"
+        },
+        "footprint": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeoJsonPolygon"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "min_latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Min Latitude Deg",
+          "type": "number"
+        },
+        "max_latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Max Latitude Deg",
+          "type": "number"
+        }
+      },
+      "required": [
+        "product_id",
+        "role",
+        "resolution_m",
+        "footprint",
+        "min_latitude_deg",
+        "max_latitude_deg"
+      ],
+      "title": "TerrainCoverage",
+      "type": "object"
+    },
+    "TerrainLod": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "minimum": 0,
+          "title": "Level",
+          "type": "integer"
+        },
+        "visual_resolution_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Visual Resolution M",
+          "type": "number"
+        },
+        "width_px": {
+          "exclusiveMinimum": 0,
+          "title": "Width Px",
+          "type": "integer"
+        },
+        "height_px": {
+          "exclusiveMinimum": 0,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "heights_path": {
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*(/[A-Za-z0-9_-][A-Za-z0-9_.-]*)*$",
+          "title": "Heights Path",
+          "type": "string"
+        },
+        "encoding": {
+          "minLength": 1,
+          "title": "Encoding",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "level",
+        "visual_resolution_m",
+        "width_px",
+        "height_px",
+        "heights_path",
+        "encoding",
+        "sha256"
+      ],
+      "title": "TerrainLod",
+      "type": "object"
+    },
+    "TerrainManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "0.3.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "terrain_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Terrain Id",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/TerrainSource"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "crs": {
+          "$ref": "#/$defs/CrsDefinition"
+        },
+        "reference_radius_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Reference Radius M",
+          "type": "number"
+        },
+        "vertical": {
+          "$ref": "#/$defs/VerticalInfo"
+        },
+        "calc_resolution_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Calc Resolution M",
+          "type": "number"
+        },
+        "local_origin": {
+          "$ref": "#/$defs/LocalOrigin"
+        },
+        "bounds": {
+          "$ref": "#/$defs/ProjectedBounds"
+        },
+        "nodata": {
+          "$ref": "#/$defs/NoDataInfo"
+        },
+        "interpolated_pixels": {
+          "$ref": "#/$defs/InterpolatedPixelsInfo"
+        },
+        "lods": {
+          "items": {
+            "$ref": "#/$defs/TerrainLod"
+          },
+          "minItems": 1,
+          "title": "Lods",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "terrain_id",
+        "source",
+        "frame_id",
+        "crs",
+        "reference_radius_m",
+        "vertical",
+        "calc_resolution_m",
+        "local_origin",
+        "bounds",
+        "nodata",
+        "interpolated_pixels",
+        "lods"
+      ],
+      "title": "TerrainManifest",
+      "type": "object"
+    },
+    "TerrainSource": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "url": {
+          "pattern": "^https?://\\S+$",
+          "title": "Url",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256"
+        },
+        "citation": {
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id",
+        "url",
+        "sha256",
+        "citation"
+      ],
+      "title": "TerrainSource",
+      "type": "object"
+    },
+    "TimeInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "start_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Start Utc",
+          "type": "string"
+        },
+        "end_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "End Utc",
+          "type": "string"
+        },
+        "truncated_start": {
+          "title": "Truncated Start",
+          "type": "boolean"
+        },
+        "truncated_end": {
+          "title": "Truncated End",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "start_utc",
+        "end_utc",
+        "truncated_start",
+        "truncated_end"
+      ],
+      "title": "TimeInterval",
+      "type": "object"
+    },
+    "VerticalInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "units": {
+          "const": "m",
+          "title": "Units",
+          "type": "string"
+        },
+        "reference": {
+          "minLength": 1,
+          "title": "Reference",
+          "type": "string"
+        },
+        "exaggeration_default_factor": {
+          "const": 1,
+          "title": "Exaggeration Default Factor",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "units",
+        "reference",
+        "exaggeration_default_factor"
+      ],
+      "title": "VerticalInfo",
+      "type": "object"
+    }
+  }
+}

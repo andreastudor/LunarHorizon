@@ -1,0 +1,711 @@
+{
+  "_comment": "Documente SINTETICE pentru testele de contract (E02). Valorile nu sunt rezultate calculate, coordonate reale sau surse verificate. Fiecare cheie este numele unui tip de document din data/schemas/lunarhorizon.schema.json.",
+  "Catalog": {
+    "schema_version": "0.3.0",
+    "catalog_version": "synthetic-0",
+    "sites": [
+      {
+        "id": "synthetic_point_a",
+        "name": "Sit sintetic A (test)",
+        "mission": "Synthetic-A",
+        "agency": null,
+        "operator": null,
+        "country": null,
+        "status": "landed",
+        "mission_status": "landed",
+        "geometry_type": "point",
+        "position_kind": "actual",
+        "latitude_deg": -89.0,
+        "longitude_deg": 10.0,
+        "frame_id": "MOON_ME_DE440_ME421",
+        "original_coordinates": {
+          "latitude_deg": -89.0,
+          "longitude_deg": 10.0,
+          "frame_description": "synthetic",
+          "note": null
+        },
+        "horizontal_uncertainty_m": null,
+        "elevation_m": null,
+        "elevation_reference": null,
+        "region": null,
+        "landing_date_utc": "2000-01-01T00:00:00+02:00",
+        "related_site_id": "synthetic_target_a",
+        "planned_target_note": null,
+        "source_url": "https://example.invalid/synthetic",
+        "accessed_at": "2026-11-14",
+        "position_sources": [
+          {
+            "used_for": "position",
+            "institution": "Synthetic",
+            "title": "Document sintetic (test)",
+            "url": "https://example.invalid/synthetic",
+            "identifier": null,
+            "version_or_update": null,
+            "published": null,
+            "accessed_at": "2026-11-14",
+            "locator": "tabel sintetic, rândul 1",
+            "access": "opened_original",
+            "coordinates": {
+              "latitude_deg": -89.0,
+              "longitude_deg": 10.0,
+              "frame_description": "synthetic",
+              "note": null
+            },
+            "declared_frame": null,
+            "frame_realization_stated": false,
+            "published_uncertainty_m": null,
+            "uncertainty_definition": null,
+            "quote": null,
+            "file_sha256": null
+          }
+        ],
+        "position_verification": "verified_at_original",
+        "adoption_note": "Sintetic: coordonatele adoptate sunt cele originale.",
+        "description_ro": "Date sintetice pentru teste.",
+        "description_en": null,
+        "terrain_available": false
+      },
+      {
+        "id": "synthetic_target_a",
+        "name": "Ținta planificată sintetică A (test)",
+        "mission": "Synthetic-A",
+        "agency": null,
+        "operator": null,
+        "country": null,
+        "status": "planned",
+        "mission_status": "landed",
+        "geometry_type": "point",
+        "position_kind": "planned_target",
+        "latitude_deg": -88.9,
+        "longitude_deg": -10.0,
+        "frame_id": "MOON_ME_DE440_ME421",
+        "original_coordinates": {
+          "latitude_deg": -88.9,
+          "longitude_deg": 350.0,
+          "frame_description": "synthetic",
+          "note": null
+        },
+        "horizontal_uncertainty_m": null,
+        "elevation_m": null,
+        "elevation_reference": null,
+        "region": null,
+        "landing_date_utc": null,
+        "related_site_id": "synthetic_point_a",
+        "planned_target_note": null,
+        "source_url": "https://example.invalid/synthetic-target",
+        "accessed_at": "2026-11-14",
+        "position_sources": [
+          {
+            "used_for": "planned_target",
+            "institution": "Synthetic",
+            "title": "Document sintetic (test)",
+            "url": "https://example.invalid/synthetic-target",
+            "identifier": null,
+            "version_or_update": null,
+            "published": null,
+            "accessed_at": "2026-11-14",
+            "locator": "tabel sintetic, rândul 1",
+            "access": "opened_original",
+            "coordinates": {
+              "latitude_deg": -88.9,
+              "longitude_deg": 350.0,
+              "frame_description": "synthetic",
+              "note": null
+            },
+            "declared_frame": null,
+            "frame_realization_stated": false,
+            "published_uncertainty_m": null,
+            "uncertainty_definition": null,
+            "quote": null,
+            "file_sha256": null
+          }
+        ],
+        "position_verification": "incomplete",
+        "adoption_note": "Sintetic: longitudine 350°E normalizată la -10°.",
+        "description_ro": null,
+        "description_en": null,
+        "terrain_available": false
+      },
+      {
+        "id": "synthetic_region_b",
+        "name": "Regiune sintetică B (test)",
+        "mission": null,
+        "agency": null,
+        "operator": null,
+        "country": null,
+        "status": "candidate",
+        "mission_status": "planned",
+        "geometry_type": "region",
+        "position_kind": "representative_point",
+        "latitude_deg": -88.0,
+        "longitude_deg": -120.0,
+        "frame_id": "MOON_ME_DE440_ME421",
+        "original_coordinates": null,
+        "horizontal_uncertainty_m": null,
+        "elevation_m": 1000.0,
+        "elevation_reference": "synthetic sphere",
+        "region": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-121.0, -88.2],
+              [-119.0, -88.2],
+              [-119.0, -87.8],
+              [-121.0, -87.8],
+              [-121.0, -88.2]
+            ]
+          ]
+        },
+        "landing_date_utc": null,
+        "related_site_id": null,
+        "planned_target_note": null,
+        "source_url": "https://example.invalid/synthetic",
+        "accessed_at": "2026-11-14",
+        "position_sources": [
+          {
+            "used_for": "position",
+            "institution": "Synthetic",
+            "title": "Document sintetic (test)",
+            "url": "https://example.invalid/synthetic",
+            "identifier": null,
+            "version_or_update": null,
+            "published": null,
+            "accessed_at": "2026-11-14",
+            "locator": "tabel sintetic, rândul 1",
+            "access": "not_accessible",
+            "coordinates": null,
+            "declared_frame": null,
+            "frame_realization_stated": false,
+            "published_uncertainty_m": null,
+            "uncertainty_definition": null,
+            "quote": null,
+            "file_sha256": null
+          }
+        ],
+        "position_verification": "incomplete",
+        "adoption_note": "Sintetic: punct reprezentativ; sursa nu a putut fi consultată.",
+        "description_ro": null,
+        "description_en": null,
+        "terrain_available": false
+      }
+    ],
+    "demo_site_selection": {
+      "decision_id": "D-07",
+      "status": "unconfirmed",
+      "confirmed_site_ids": [],
+      "candidates": [
+        {
+          "site_id": "synthetic_point_a",
+          "advantages": ["Sintetic."],
+          "limits": ["Sintetic."]
+        }
+      ],
+      "excluded": [
+        {
+          "label": "Sit exclus sintetic",
+          "reason": "Sintetic."
+        }
+      ],
+      "criteria": ["Criteriu sintetic."]
+    }
+  },
+  "KernelManifest": {
+    "schema_version": "0.3.0",
+    "default_profile": "de440_me421",
+    "profiles": [
+      {
+        "profile_id": "de440_me421",
+        "frame_id": "MOON_ME_DE440_ME421",
+        "pa_frame_id": "MOON_PA_DE440",
+        "status": "provisional",
+        "files": [
+          {
+            "role": "spk",
+            "filename": "synthetic_ephemeris.bsp",
+            "url": "https://example.invalid/synthetic_ephemeris.bsp",
+            "sha256": null,
+            "md5": null,
+            "size_bytes": null,
+            "retrieved_at_utc": null,
+            "expected_checksums": [
+              {
+                "algorithm": "md5",
+                "value": "00000000000000000000000000000000",
+                "kind": "published_by_source",
+                "source": "Sintetic (test)",
+                "source_url": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "DemProductManifest": {
+    "schema_version": "0.3.0",
+    "products": [
+      {
+        "product_id": "synthetic_dem",
+        "title": "DEM sintetic (test)",
+        "institution": "Synthetic",
+        "landing_page_url": "https://example.invalid/synthetic_dem",
+        "citation": "Date sintetice pentru teste.",
+        "accessed_at": "2026-11-14",
+        "role": "near",
+        "resolution_m": 5.0,
+        "frame_id": "MOON_ME_DE421",
+        "metadata_origin": "declared_by_source",
+        "crs_wkt": null,
+        "reference_radius_m": null,
+        "vertical_units": "m",
+        "vertical_reference": null,
+        "nodata_value": null,
+        "gap_handling": "necunoscut până la inspecție",
+        "min_latitude_deg": -90.0,
+        "max_latitude_deg": -87.0,
+        "files": [
+          {
+            "kind": "height",
+            "filename": "synthetic_dem.tif",
+            "url": "https://example.invalid/synthetic_dem.tif",
+            "sha256": null,
+            "size_bytes": null
+          }
+        ]
+      }
+    ]
+  },
+  "TerrainManifest": {
+    "schema_version": "0.3.0",
+    "terrain_id": "synthetic_terrain_a",
+    "source": {
+      "product_id": "synthetic_dem",
+      "url": "https://example.invalid/synthetic_dem.tif",
+      "sha256": null,
+      "citation": "Date sintetice pentru teste."
+    },
+    "frame_id": "MOON_ME_DE421",
+    "crs": {
+      "proj4": "+proj=stere +lat_0=-90 +lon_0=0 +k=1 +x_0=0 +y_0=0 +R=1737400 +units=m +no_defs",
+      "wkt": null
+    },
+    "reference_radius_m": 1737400.0,
+    "vertical": {
+      "units": "m",
+      "reference": "synthetic sphere",
+      "exaggeration_default_factor": 1
+    },
+    "calc_resolution_m": 5.0,
+    "local_origin": {
+      "latitude_deg": -89.0,
+      "longitude_deg": 10.0,
+      "elevation_m": 0.0
+    },
+    "bounds": {
+      "x_min_m": 0.0,
+      "x_max_m": 10000.0,
+      "y_min_m": 20000.0,
+      "y_max_m": 30000.0
+    },
+    "nodata": {
+      "present": true,
+      "encoding": "NaN in float32",
+      "area_fraction": null
+    },
+    "interpolated_pixels": {
+      "flagged": false,
+      "note": "Sintetic: fără informații despre interpolare."
+    },
+    "lods": [
+      {
+        "level": 0,
+        "visual_resolution_m": 40.0,
+        "width_px": 251,
+        "height_px": 251,
+        "heights_path": "terrain/synthetic_terrain_a/lod0.f32",
+        "encoding": "float32 little-endian, row-major",
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
+  },
+  "SimulationRequest": {
+    "sites": [
+      {
+        "site_id": "synthetic_point_a"
+      },
+      {
+        "custom": {
+          "label": "Punct custom sintetic",
+          "latitude_deg": -89.5,
+          "longitude_deg": 359.5
+        }
+      }
+    ],
+    "frame_id": "MOON_ME_DE440_ME421",
+    "start_utc": "2030-01-01T02:00:00+02:00",
+    "end_utc": "2030-01-01T02:00:00Z",
+    "observer_height_m": 2.0,
+    "solar_criterion": "disc_center",
+    "earth_criterion": {
+      "kind": "center_above_horizon",
+      "min_elevation_deg": 0.0
+    },
+    "terrain_mode": "idealized_local_plane",
+    "series_step_s": 3600,
+    "panel": null
+  },
+  "SimulationAccepted": {
+    "id": "synthetic_sim_1",
+    "status": "queued",
+    "cache_hit": false
+  },
+  "SimulationStatus": {
+    "id": "synthetic_sim_2",
+    "status": "failed",
+    "progress": null,
+    "error": {
+      "type": "about:blank",
+      "title": "Interval în afara acoperirii",
+      "status": 422,
+      "detail": "Sintetic: intervalul cerut depășește acoperirea kernelurilor.",
+      "code": "OUT_OF_EPHEMERIS_COVERAGE",
+      "coverage_start_utc": "1849-12-26T00:00:00Z",
+      "coverage_end_utc": "2150-01-22T00:00:00Z"
+    },
+    "result": null
+  },
+  "SimulationResult": {
+    "schema_version": "0.3.0",
+    "request": {
+      "sites": [
+        {
+          "site_id": "synthetic_point_a"
+        },
+        {
+          "custom": {
+            "label": "Punct custom sintetic",
+            "latitude_deg": -89.5,
+            "longitude_deg": 359.5
+          }
+        }
+      ],
+      "frame_id": "MOON_ME_DE440_ME421",
+      "start_utc": "2030-01-01T00:00:00Z",
+      "end_utc": "2030-01-01T02:00:00Z",
+      "observer_height_m": 2.0,
+      "solar_criterion": "disc_center",
+      "earth_criterion": {
+        "kind": "center_above_horizon",
+        "min_elevation_deg": 0.0
+      },
+      "terrain_mode": "idealized_local_plane",
+      "series_step_s": 3600,
+      "panel": null
+    },
+    "sites": [
+      {
+        "site_ref": "s1",
+        "label": "Sit sintetic A (test)",
+        "kind": "catalog",
+        "catalog_id": "synthetic_point_a",
+        "latitude_deg": -89.0,
+        "longitude_deg": 10.0,
+        "frame_id": "MOON_ME_DE440_ME421",
+        "terrain_elevation_m": null,
+        "observer_height_m": 2.0,
+        "on_reference_surface": true,
+        "azimuth_convention": "standard",
+        "coordinates_rounded": false
+      },
+      {
+        "site_ref": "s2",
+        "label": "Punct custom sintetic",
+        "kind": "custom",
+        "catalog_id": null,
+        "latitude_deg": -89.5,
+        "longitude_deg": -0.5,
+        "frame_id": "MOON_ME_DE440_ME421",
+        "terrain_elevation_m": null,
+        "observer_height_m": 2.0,
+        "on_reference_surface": true,
+        "azimuth_convention": "standard",
+        "coordinates_rounded": false
+      }
+    ],
+    "series": [
+      {
+        "site_ref": "s1",
+        "step_s": 3600.0,
+        "time_utc": [
+          "2030-01-01T00:00:00Z",
+          "2030-01-01T01:00:00Z",
+          "2030-01-01T02:00:00Z"
+        ],
+        "sun": {
+          "azimuth_deg": [10.0, 10.5, 11.0],
+          "elevation_deg": [1.2, 1.1, 1.0],
+          "distance_km": [147000000.0, 147000000.0, 147000000.0],
+          "angular_radius_deg": [0.27, 0.27, 0.27],
+          "horizon_elevation_deg": [0.0, 0.0, 0.0],
+          "visible": [true, true, true]
+        },
+        "earth": {
+          "azimuth_deg": [350.0, 350.0, 350.0],
+          "elevation_deg": [-0.5, -0.4, -0.3],
+          "distance_km": [384400.0, 384400.0, 384400.0],
+          "angular_radius_deg": [0.95, 0.95, 0.95],
+          "horizon_elevation_deg": [0.0, 0.0, 0.0],
+          "visible": [false, false, false]
+        }
+      },
+      {
+        "site_ref": "s2",
+        "step_s": 3600.0,
+        "time_utc": [
+          "2030-01-01T00:00:00Z",
+          "2030-01-01T01:00:00Z",
+          "2030-01-01T02:00:00Z"
+        ],
+        "sun": {
+          "azimuth_deg": [12.0, 12.5, 13.0],
+          "elevation_deg": [0.7, 0.6, 0.5],
+          "distance_km": [147000000.0, 147000000.0, 147000000.0],
+          "angular_radius_deg": [0.27, 0.27, 0.27],
+          "horizon_elevation_deg": [0.0, 0.0, 0.0],
+          "visible": [true, null, true]
+        },
+        "earth": {
+          "azimuth_deg": [352.0, 352.0, 352.0],
+          "elevation_deg": [0.4, 0.5, 0.6],
+          "distance_km": [384400.0, 384400.0, 384400.0],
+          "angular_radius_deg": [0.95, 0.95, 0.95],
+          "horizon_elevation_deg": [0.0, 0.0, 0.0],
+          "visible": [true, true, true]
+        }
+      }
+    ],
+    "events": [
+      {
+        "site_ref": "s1",
+        "sun": {
+          "status": "none_in_interval",
+          "reason": null,
+          "events": []
+        },
+        "earth": {
+          "status": "unavailable",
+          "reason": "Sintetic: motiv de test.",
+          "events": []
+        }
+      }
+    ],
+    "summary": [
+      {
+        "site_ref": "s1",
+        "sun_visible_duration_s": 7200.0,
+        "sun_visible_fraction": 1.0,
+        "earth_visible_duration_s": 0.0,
+        "both_visible_duration_s": 0.0,
+        "sun_intervals": [
+          {
+            "start_utc": "2030-01-01T00:00:00Z",
+            "end_utc": "2030-01-01T02:00:00Z",
+            "truncated_start": true,
+            "truncated_end": true
+          }
+        ],
+        "earth_windows": []
+      },
+      {
+        "site_ref": "s2",
+        "sun_visible_duration_s": 7200.0,
+        "sun_visible_fraction": null,
+        "earth_visible_duration_s": 7200.0,
+        "both_visible_duration_s": 7200.0,
+        "sun_intervals": [],
+        "earth_windows": []
+      }
+    ],
+    "horizon": [
+      {
+        "site_ref": "s1",
+        "mode": "idealized_local_plane",
+        "azimuth_step_deg": 90.0,
+        "elevation_deg": [0.0, 0.0, 0.0, 0.0],
+        "obstacle_distance_m": [null, null, null, null],
+        "quality": ["complete", "complete", "complete", "complete"],
+        "max_search_distance_m": null,
+        "coverage_fraction": 1.0,
+        "dem_products": []
+      },
+      {
+        "site_ref": "s2",
+        "mode": "idealized_local_plane",
+        "azimuth_step_deg": 90.0,
+        "elevation_deg": [0.0, 0.0, 0.0, 0.0],
+        "obstacle_distance_m": [null, null, null, null],
+        "quality": ["complete", "complete", "complete", "complete"],
+        "max_search_distance_m": null,
+        "coverage_fraction": 1.0,
+        "dem_products": []
+      }
+    ],
+    "terrain": [
+      {
+        "site_ref": "s1",
+        "available": false,
+        "reason": "Mod idealized_local_plane.",
+        "terrain_id": null,
+        "product_id": null,
+        "calc_resolution_m": null,
+        "visual_resolutions_m": [],
+        "frame_id": null
+      },
+      {
+        "site_ref": "s2",
+        "available": false,
+        "reason": "Mod idealized_local_plane.",
+        "terrain_id": null,
+        "product_id": null,
+        "calc_resolution_m": null,
+        "visual_resolutions_m": [],
+        "frame_id": null
+      }
+    ],
+    "provenance": {
+      "app_version": "0.1.0-synthetic-fixture",
+      "computed_at_utc": "2026-11-14T12:00:00Z",
+      "source_mode": "precomputed",
+      "kernel_profile": {
+        "profile_id": "synthetic_profile",
+        "files": []
+      },
+      "frame_id": "MOON_ME_DE440_ME421",
+      "aberration_correction": "LT+S",
+      "body_radii_km": {},
+      "dem_products": [],
+      "horizon_parameters": {
+        "azimuth_step_deg": 90.0
+      },
+      "event_parameters": {},
+      "criteria": {
+        "solar_criterion": "disc_center",
+        "earth_min_elevation_deg": 0.0
+      }
+    },
+    "quality": {
+      "issues": [
+        {
+          "code": "synthetic_no_terrain",
+          "severity": "info",
+          "site_ref": "s1",
+          "field": "sites.terrain_elevation_m",
+          "message_key": "quality.synthetic"
+        },
+        {
+          "code": "synthetic_no_terrain",
+          "severity": "info",
+          "site_ref": "s2",
+          "field": "sites.terrain_elevation_m",
+          "message_key": "quality.synthetic"
+        },
+        {
+          "code": "synthetic_unknown",
+          "severity": "warning",
+          "site_ref": "s2",
+          "field": "series.sun.visible",
+          "message_key": "quality.synthetic"
+        },
+        {
+          "code": "synthetic_unknown",
+          "severity": "warning",
+          "site_ref": "s2",
+          "field": "summary.sun_visible_fraction",
+          "message_key": "quality.synthetic"
+        }
+      ],
+      "not_computed": [
+        {
+          "group": "events",
+          "site_ref": "s2",
+          "reason": "Sintetic: grup necalculat."
+        }
+      ],
+      "approximations": ["Fixture sintetic."],
+      "limits": [
+        "Date sintetice pentru teste de contract; nu sunt rezultate calculate."
+      ]
+    }
+  },
+  "ScenarioIndex": {
+    "schema_version": "0.3.0",
+    "scenarios": [
+      {
+        "scenario_id": "synthetic_scenario",
+        "title_ro": "Scenariu sintetic (test)",
+        "title_en": "Synthetic scenario (test)",
+        "site_ids": ["synthetic_point_a"],
+        "request": {
+          "sites": [
+            {
+              "site_id": "synthetic_point_a"
+            }
+          ],
+          "frame_id": "MOON_ME_DE440_ME421",
+          "start_utc": "2030-01-01T00:00:00Z",
+          "end_utc": "2030-01-02T00:00:00Z",
+          "observer_height_m": 2.0,
+          "solar_criterion": "disc_center",
+          "earth_criterion": {
+            "kind": "center_above_horizon",
+            "min_elevation_deg": 0.0
+          },
+          "terrain_mode": "idealized_local_plane"
+        },
+        "result_path": "scenarios/synthetic_scenario/result.json",
+        "terrain_manifest_paths": [],
+        "result_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ]
+  },
+  "Health": {
+    "status": "degraded",
+    "app_version": "0.1.0",
+    "kernel_profile": null,
+    "kernels_loaded": false,
+    "dem_products": [],
+    "time_utc": "2026-11-14T12:00:00Z",
+    "issues": ["Sintetic: kernelurile nu sunt încărcate."]
+  },
+  "Coverage": {
+    "schema_version": "0.3.0",
+    "temporal": {
+      "start_utc": "1849-12-26T00:00:00Z",
+      "end_utc": "2150-01-22T00:00:00Z",
+      "kernel_profile": "synthetic_profile"
+    },
+    "terrain": [
+      {
+        "product_id": "synthetic_dem",
+        "role": "near",
+        "resolution_m": 5.0,
+        "footprint": null,
+        "min_latitude_deg": -90.0,
+        "max_latitude_deg": -87.0
+      }
+    ]
+  },
+  "Problem": {
+    "type": "about:blank",
+    "title": "Cadru neacceptat",
+    "status": 422,
+    "detail": "Sintetic: cadrul MOON_ME nu este acceptat.",
+    "code": "UNSUPPORTED_FRAME",
+    "field_errors": [
+      {
+        "loc": ["frame_id"],
+        "message": "alias generic"
+      }
+    ]
+  }
+}

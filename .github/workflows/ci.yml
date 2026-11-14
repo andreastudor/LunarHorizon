@@ -1,0 +1,117 @@
+# Verificările rapide ale proiectului. Rulează aceleași comenzi ca README.md și CONTRIBUTING.md.
+# Nu descarcă date mari și nu are nevoie de secrete. Testele care cer kerneluri SPICE sau rastere DEM
+# vor rula separat (decizie la etapele E03 și E05).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: backend/constraints.txt
+      - name: Instalare dependențe
+        run: |
+          python -m pip install pip==26.2.1
+          python -m pip install --only-binary=:all: -c constraints.txt --group dev
+      - name: Ruff (lint)
+        run: python -m ruff check . ../scripts
+      - name: Ruff (format)
+        run: python -m ruff format --check . ../scripts
+      - name: Mypy
+        run: python -m mypy
+      - name: Pytest (include validarea schemelor și a fixture-urilor)
+        run: python -m pytest
+      - name: Schema și vectorii comuni la zi
+        run: python ../scripts/generate_contracts.py --check
+      - name: Verificarea mediului
+        run: python ../scripts/check_env.py
+
+  astro:
+    # Testele care cer kerneluri SPICE (E03). Kernelurile oficiale NAIF (~62 MB) se descarcă la
+    # prima rulare, se verifică față de sumele din manifest și se păstrează în cache după manifest.
+    # Comparațiile cu Horizons folosesc răspunsurile arhivate în repository; CI nu interoghează Horizons.
+    name: Astro cu kerneluri (ubuntu-latest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: backend/constraints.txt
+      - name: Instalare dependențe
+        run: |
+          python -m pip install pip==26.2.1
+          python -m pip install --only-binary=:all: -c constraints.txt --group dev
+      - name: Cache kerneluri
+        uses: actions/cache@v6
+        with:
+          path: data/kernels
+          key: spice-kernels-${{ hashFiles('data/manifests/kernels.json') }}
+      - name: Descărcare și verificare kerneluri
+        run: python ../scripts/download_kernels.py
+      - name: Pytest (marcaj kernels)
+        run: python -m pytest -m kernels
+
+  frontend:
+    name: Frontend (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: frontend/.nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Instalare dependențe
+        run: npm ci
+      - name: Prettier
+        run: npm run format:check
+      - name: Oxlint
+        run: npm run lint
+      - name: Tipurile contractelor la zi
+        run: npm run contracts:check
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Vitest
+        run: npm test
+      - name: Build
+        run: npm run build

@@ -1,0 +1,217 @@
+{
+  "schema_version": "0.3.0",
+  "default_profile": "de440_me421",
+  "profiles": [
+    {
+      "profile_id": "de440_me421",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "pa_frame_id": "MOON_PA_DE440",
+      "status": "provisional",
+      "files": [
+        {
+          "role": "lsk",
+          "filename": "naif0012.tls",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+          "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+          "md5": "25a2fff30b0dedb4d76c06727b1895b1",
+          "size_bytes": 5257,
+          "retrieved_at_utc": "2026-11-14T15:03:30.754Z",
+          "expected_checksums": [
+            {
+              "algorithm": "sha256",
+              "value": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": null,
+          "coverage_end_utc": null
+        },
+        {
+          "role": "text_pck",
+          "filename": "pck00011.tpc",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+          "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+          "md5": "3c0bdc01bb4101d6242cf96ece67a586",
+          "size_bytes": 131226,
+          "retrieved_at_utc": "2026-11-14T15:03:32.164Z",
+          "expected_checksums": [
+            {
+              "algorithm": "sha256",
+              "value": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": null,
+          "coverage_end_utc": null
+        },
+        {
+          "role": "spk",
+          "filename": "de440s.bsp",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp",
+          "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+          "md5": "3917ee56769db332790c751e2168843d",
+          "size_bytes": 32726016,
+          "retrieved_at_utc": "2026-11-14T15:04:00.256Z",
+          "expected_checksums": [
+            {
+              "algorithm": "md5",
+              "value": "3917ee56769db332790c751e2168843d",
+              "kind": "published_by_source",
+              "source": "NAIF, aa_checksums.txt din directorul spk/planets",
+              "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/aa_checksums.txt"
+            },
+            {
+              "algorithm": "sha256",
+              "value": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": "1849-12-25T23:59:18.816Z",
+          "coverage_end_utc": "2150-01-21T23:58:50.816Z"
+        },
+        {
+          "role": "binary_pck",
+          "filename": "moon_pa_de440_200625.bpc",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de440_200625.bpc",
+          "sha256": "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f",
+          "md5": "9f48a8c4cf1c955ac5d3a7d77a127e42",
+          "size_bytes": 12863488,
+          "retrieved_at_utc": "2026-11-14T15:04:15.546Z",
+          "expected_checksums": [
+            {
+              "algorithm": "sha256",
+              "value": "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": "1549-12-30T23:59:18.816Z",
+          "coverage_end_utc": "2650-01-24T23:58:50.816Z"
+        },
+        {
+          "role": "fk",
+          "filename": "moon_de440_250416.tf",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_de440_250416.tf",
+          "sha256": "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768",
+          "md5": "3556dde4bb7ca54a89917c301e650bbf",
+          "size_bytes": 19478,
+          "retrieved_at_utc": "2026-11-14T15:04:16.535Z",
+          "expected_checksums": [
+            {
+              "algorithm": "sha256",
+              "value": "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": null,
+          "coverage_end_utc": null
+        }
+      ],
+      "coverage_start_utc": "1849-12-25T23:59:18.816Z",
+      "coverage_end_utc": "2150-01-21T23:58:50.816Z"
+    },
+    {
+      "profile_id": "de421",
+      "frame_id": "MOON_ME_DE421",
+      "pa_frame_id": "MOON_PA_DE421",
+      "status": "provisional",
+      "files": [
+        {
+          "role": "lsk",
+          "filename": "naif0012.tls",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+          "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+          "md5": "25a2fff30b0dedb4d76c06727b1895b1",
+          "size_bytes": 5257,
+          "retrieved_at_utc": "2026-11-14T15:03:30.754Z",
+          "expected_checksums": [
+            {
+              "algorithm": "sha256",
+              "value": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": null,
+          "coverage_end_utc": null
+        },
+        {
+          "role": "text_pck",
+          "filename": "pck00011.tpc",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+          "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+          "md5": "3c0bdc01bb4101d6242cf96ece67a586",
+          "size_bytes": 131226,
+          "retrieved_at_utc": "2026-11-14T15:03:32.164Z",
+          "expected_checksums": [
+            {
+              "algorithm": "sha256",
+              "value": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+              "kind": "prior_independent_download",
+              "source": "Prototip LunarHorizon separat, descărcare din 2026-11-14 (Anexa B a promptului E03)",
+              "source_url": null
+            }
+          ],
+          "coverage_start_utc": null,
+          "coverage_end_utc": null
+        },
+        {
+          "role": "spk",
+          "filename": "de421.bsp",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp",
+          "sha256": "08b20db2ae22488650641c5a9033e5bfda4b1c4b440cfeaf20f621cfa18ecdb3",
+          "md5": "25814bb3622904d0c444c52a4051eaf7",
+          "size_bytes": 16790528,
+          "retrieved_at_utc": "2026-11-14T15:04:31.872Z",
+          "expected_checksums": [
+            {
+              "algorithm": "md5",
+              "value": "25814bb3622904d0c444c52a4051eaf7",
+              "kind": "published_by_source",
+              "source": "NAIF, aa_checksums.txt din directorul spk/planets/a_old_versions",
+              "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/aa_checksums.txt"
+            }
+          ],
+          "coverage_start_utc": "1899-07-28T23:59:18.817Z",
+          "coverage_end_utc": "2053-10-08T23:58:50.818Z"
+        },
+        {
+          "role": "binary_pck",
+          "filename": "moon_pa_de421_1900-2050.bpc",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de421_1900-2050.bpc",
+          "sha256": "656f90616403d75a75f0cd6c8830fc5b44f8cb4facb5ccb8915e752b397520cf",
+          "md5": "c96640467fa62bf6e217a7e64b9c4e0b",
+          "size_bytes": 1770496,
+          "retrieved_at_utc": "2026-11-14T15:04:34.594Z",
+          "expected_checksums": [],
+          "coverage_start_utc": "1899-12-31T23:59:18.816Z",
+          "coverage_end_utc": "2050-12-31T23:58:50.816Z"
+        },
+        {
+          "role": "fk",
+          "filename": "moon_080317.tf",
+          "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_080317.tf",
+          "sha256": "78732477b96f9863e7b0d65bcee3c22b8707ca5ed0db56d1173319cb2e8c7993",
+          "md5": "93b7d5f7c2c3678590149a652e9d8835",
+          "size_bytes": 21437,
+          "retrieved_at_utc": "2026-11-14T15:04:35.639Z",
+          "expected_checksums": [],
+          "coverage_start_utc": null,
+          "coverage_end_utc": null
+        }
+      ],
+      "coverage_start_utc": "1899-12-31T23:59:18.816Z",
+      "coverage_end_utc": "2050-12-31T23:58:50.816Z"
+    }
+  ]
+}

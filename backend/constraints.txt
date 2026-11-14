@@ -1,0 +1,33 @@
+# Lockfile al backendului: versiunile exacte ale tuturor pachetelor din grupul dev, inclusiv tranzitive.
+# Generat cu: python -m pip freeze (Python 3.13, pip 26.2.1, Windows) din mediul instalat cu pyproject.toml.
+# Folosit ca fișier de constrângeri: python -m pip install -c constraints.txt --group dev
+# Nu se editează manual; procedura de regenerare este în CONTRIBUTING.md.
+affine==3.0.1
+annotated-types==0.8.0
+ast_serialize==0.13.1
+attrs==26.1.0
+certifi==2026.10.23
+click==8.5.1
+colorama==0.4.6
+iniconfig==2.3.1
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+librt==0.16.0
+mypy==2.4.1
+mypy_extensions==1.2.0
+numpy==2.5.4
+packaging==26.3
+pathspec==1.1.1
+pluggy==1.7.0
+pydantic==2.14.3
+pydantic_core==2.50.4
+Pygments==2.21.0
+pyparsing==3.3.3
+pytest==9.2.0
+rasterio==1.5.2
+referencing==0.37.0
+rpds-py==2026.9.1
+ruff==0.17.5
+spiceypy==8.4.0
+typing-inspection==0.4.5
+typing_extensions==4.16.0

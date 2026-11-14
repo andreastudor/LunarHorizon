@@ -1,0 +1,34 @@
+{
+  "case_id": "r11_antimeridian_east",
+  "body": "sun",
+  "kind": "observer",
+  "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&CENTER=%27coord%40301%27&COORD_TYPE=%27GEODETIC%27&SITE_COORD=%27179.9999000000%2C-30.0000000000%2C0.002000000000%27&TLIST=%272026-11-14%2012%3A00%3A00.000%27&TLIST_TYPE=%27CAL%27&TIME_TYPE=%27UT%27&TIME_DIGITS=%27FRACSEC%27&CAL_TYPE=%27GREGORIAN%27&QUANTITIES=%274%2C20%27&ANG_FORMAT=%27DEG%27&APPARENT=%27AIRLESS%27&EXTRA_PREC=%27YES%27&RANGE_UNITS=%27KM%27&CSV_FORMAT=%27YES%27",
+  "params": {
+    "format": "json",
+    "COMMAND": "'10'",
+    "MAKE_EPHEM": "'YES'",
+    "EPHEM_TYPE": "'OBSERVER'",
+    "CENTER": "'coord@301'",
+    "COORD_TYPE": "'GEODETIC'",
+    "SITE_COORD": "'179.9999000000,-30.0000000000,0.002000000000'",
+    "TLIST": "'2026-11-14 12:00:00.000'",
+    "TLIST_TYPE": "'CAL'",
+    "TIME_TYPE": "'UT'",
+    "TIME_DIGITS": "'FRACSEC'",
+    "CAL_TYPE": "'GREGORIAN'",
+    "QUANTITIES": "'4,20'",
+    "ANG_FORMAT": "'DEG'",
+    "APPARENT": "'AIRLESS'",
+    "EXTRA_PREC": "'YES'",
+    "RANGE_UNITS": "'KM'",
+    "CSV_FORMAT": "'YES'"
+  },
+  "time_input": {
+    "utc": "2026-11-14T12:00:00Z"
+  },
+  "retrieved_at_utc": "2026-11-14T15:07:56.19Z",
+  "http_status": 200,
+  "response_file": "sun_observer.response.json",
+  "response_bytes": 8296,
+  "response_sha256": "903925a4e0a6909ea35c31c3ff536005cd0f231dee9cb103d8a9f2e947ec75e8"
+}

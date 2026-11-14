@@ -1,0 +1,35 @@
+{
+  "case_id": "a11_catalog",
+  "body": "sun",
+  "kind": "vectors",
+  "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27coord%40301%27&COORD_TYPE=%27GEODETIC%27&SITE_COORD=%2723.4731400000%2C0.6741600000%2C-1.924000000000%27&TLIST=%272026-11-14%2012%3A01%3A09.182721%27&TLIST_TYPE=%27CAL%27&TIME_TYPE=%27TDB%27&TIME_DIGITS=%27FRACSEC%27&REF_SYSTEM=%27ICRF%27&REF_PLANE=%27FRAME%27&VEC_CORR=%27NONE%27&VEC_TABLE=%271%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27",
+  "params": {
+    "format": "json",
+    "COMMAND": "'10'",
+    "MAKE_EPHEM": "'YES'",
+    "EPHEM_TYPE": "'VECTORS'",
+    "CENTER": "'coord@301'",
+    "COORD_TYPE": "'GEODETIC'",
+    "SITE_COORD": "'23.4731400000,0.6741600000,-1.924000000000'",
+    "TLIST": "'2026-11-14 12:01:09.182721'",
+    "TLIST_TYPE": "'CAL'",
+    "TIME_TYPE": "'TDB'",
+    "TIME_DIGITS": "'FRACSEC'",
+    "REF_SYSTEM": "'ICRF'",
+    "REF_PLANE": "'FRAME'",
+    "VEC_CORR": "'NONE'",
+    "VEC_TABLE": "'1'",
+    "OUT_UNITS": "'KM-S'",
+    "CSV_FORMAT": "'YES'"
+  },
+  "time_input": {
+    "utc": "2026-11-14T12:00:00Z",
+    "tdb_calendar": "2026-11-14 12:01:09.182721",
+    "tdb_from": "SPICE str2et/timout, profil de440_me421"
+  },
+  "retrieved_at_utc": "2026-11-14T15:07:31.993Z",
+  "http_status": 200,
+  "response_file": "sun_vectors.response.json",
+  "response_bytes": 6115,
+  "response_sha256": "38dd060e968e805f9258ea2ce0a32f61033b1d3dc924761d2970d6d390b00569"
+}

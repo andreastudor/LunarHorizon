@@ -1,0 +1,43 @@
+# Medii și dependențe instalate
+.venv/
+venv/
+node_modules/
+
+# Rezultate de build și cache-uri ale uneltelor
+dist/
+dist-ssr/
+coverage/
+htmlcov/
+.coverage
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.tsbuildinfo
+
+# Date mari sau generate (obținute prin scripts/, vezi docs/DATA_PLAN.md)
+data/_raw/
+data/_cache/
+data/kernels/
+
+# Configurație locală și secrete
+.env
+.env.*
+!.env.example
+*.local
+
+# Jurnale
+*.log
+npm-debug.log*
+
+# Sistem de operare și editoare
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json

@@ -1,0 +1,838 @@
+{
+  "description": "Vectori de test comuni Python și TypeScript. Intrări fixate în backend/lunarhorizon/core/reference_vectors.py; ieșiri calculate de implementarea Python. Nu sunt valori validate fizic. Se regenerează cu scripts/generate_contracts.py.",
+  "source": "python-reference",
+  "schema_version": "0.3.0",
+  "conventions": {
+    "reference_radius_m": 1737400.0,
+    "supported_frames": [
+      "MOON_ME_DE440_ME421",
+      "MOON_ME_DE421"
+    ],
+    "default_frame": "MOON_ME_DE440_ME421",
+    "rejected_frame_aliases": [
+      "MOON_ME",
+      "MOON_PA",
+      "IAU_MOON"
+    ],
+    "longitude_output_range_deg": [
+      -180.0,
+      180.0
+    ],
+    "longitude_input_range_deg": [
+      -180.0,
+      360.0
+    ],
+    "unit_suffixes": [
+      "_deg",
+      "_m",
+      "_km",
+      "_s",
+      "_utc",
+      "_fraction",
+      "_factor",
+      "_px",
+      "_bytes",
+      "_count"
+    ],
+    "provisional_decisions": {
+      "DEFAULT_FRAME": "D-01",
+      "REFERENCE_RADIUS_M": "D-05",
+      "POLAR_STEREOGRAPHIC": "D-06",
+      "POLE_AZIMUTH_CONVENTION": "D-03"
+    },
+    "polar_stereographic": {
+      "proj4": "+proj=stere +lat_0=-90 +lon_0=0.0 +k=1.0 +x_0=0 +y_0=0 +R=1737400.0 +units=m +no_defs",
+      "status": "provisional"
+    }
+  },
+  "tolerances": {
+    "T-04": {
+      "angle_deg": 1e-09,
+      "length_m": 1e-06
+    },
+    "T-05": {
+      "angle_deg": 1e-09,
+      "length_m": 1e-06,
+      "unit_vector": 1e-12,
+      "scale_factor": 1e-12
+    }
+  },
+  "utc": {
+    "valid": [
+      {
+        "input": "2026-11-14T12:00:00Z",
+        "canonical": "2026-11-14T12:00:00Z"
+      },
+      {
+        "input": "2026-11-14T12:00:00.5Z",
+        "canonical": "2026-11-14T12:00:00.5Z"
+      },
+      {
+        "input": "2026-11-14T12:00:00.120Z",
+        "canonical": "2026-11-14T12:00:00.12Z"
+      },
+      {
+        "input": "2026-11-14T12:00:00.001Z",
+        "canonical": "2026-11-14T12:00:00.001Z"
+      },
+      {
+        "input": "2026-11-14T14:30:00+02:00",
+        "canonical": "2026-11-14T12:30:00Z"
+      },
+      {
+        "input": "2026-11-14T08:30:00-03:30",
+        "canonical": "2026-11-14T12:00:00Z"
+      },
+      {
+        "input": "2026-11-14T23:59:59.999-00:01",
+        "canonical": "2026-11-15T00:00:59.999Z"
+      },
+      {
+        "input": "2028-02-29T00:00:00Z",
+        "canonical": "2028-02-29T00:00:00Z"
+      },
+      {
+        "input": "2026-01-01T01:00:00+01:00",
+        "canonical": "2026-01-01T00:00:00Z"
+      },
+      {
+        "input": "1999-12-31T23:59:59Z",
+        "canonical": "1999-12-31T23:59:59Z"
+      },
+      {
+        "input": "0099-06-15T12:00:00Z",
+        "canonical": "0099-06-15T12:00:00Z"
+      }
+    ],
+    "invalid": [
+      {
+        "input": "2026-11-14T12:00:00",
+        "reason": "missing_timezone"
+      },
+      {
+        "input": "2026-11-14 12:00:00Z",
+        "reason": "invalid_format"
+      },
+      {
+        "input": "2026-11-14T12:00Z",
+        "reason": "invalid_format"
+      },
+      {
+        "input": "2026-11-14T12:00:00.1234Z",
+        "reason": "invalid_format"
+      },
+      {
+        "input": "2026-11-14T12:00:00z",
+        "reason": "invalid_format"
+      },
+      {
+        "input": "2026-11-14",
+        "reason": "invalid_format"
+      },
+      {
+        "input": "2026-02-29T00:00:00Z",
+        "reason": "invalid_date"
+      },
+      {
+        "input": "2026-13-01T00:00:00Z",
+        "reason": "invalid_date"
+      },
+      {
+        "input": "2026-11-14T24:00:00Z",
+        "reason": "invalid_date"
+      },
+      {
+        "input": "2026-11-14T12:60:00Z",
+        "reason": "invalid_date"
+      },
+      {
+        "input": "2016-12-31T23:59:60Z",
+        "reason": "leap_second_unsupported"
+      },
+      {
+        "input": "2026-11-14T12:00:00+24:00",
+        "reason": "invalid_offset"
+      },
+      {
+        "input": "2026-11-14T12:00:00+02:60",
+        "reason": "invalid_offset"
+      },
+      {
+        "input": "0000-01-01T00:00:00Z",
+        "reason": "invalid_date"
+      },
+      {
+        "input": "9999-12-31T23:30:00-01:00",
+        "reason": "invalid_date"
+      },
+      {
+        "input": "0001-01-01T00:30:00+01:00",
+        "reason": "invalid_date"
+      },
+      {
+        "input": " 2026-11-14T12:00:00Z",
+        "reason": "invalid_format"
+      }
+    ]
+  },
+  "longitude_normalization": [
+    {
+      "input": 0.0,
+      "output": 0.0
+    },
+    {
+      "input": -180.0,
+      "output": -180.0
+    },
+    {
+      "input": 180.0,
+      "output": -180.0
+    },
+    {
+      "input": 179.999999,
+      "output": 179.999999
+    },
+    {
+      "input": -179.999999,
+      "output": -179.999999
+    },
+    {
+      "input": 359.5,
+      "output": -0.5
+    },
+    {
+      "input": 270.0,
+      "output": -90.0
+    },
+    {
+      "input": -0.0,
+      "output": 0.0
+    },
+    {
+      "input": 90.0,
+      "output": 90.0
+    },
+    {
+      "input": 359.999999999,
+      "output": -9.999894245993346e-10
+    },
+    {
+      "input": 360.0,
+      "error": "longitude_out_of_range"
+    },
+    {
+      "input": -180.0001,
+      "error": "longitude_out_of_range"
+    },
+    {
+      "input": 400.0,
+      "error": "longitude_out_of_range"
+    }
+  ],
+  "latitude_invalid": [
+    {
+      "input": 90.0000001,
+      "error": "latitude_out_of_range"
+    },
+    {
+      "input": -90.5,
+      "error": "latitude_out_of_range"
+    },
+    {
+      "input": 180.0,
+      "error": "latitude_out_of_range"
+    }
+  ],
+  "geographic_to_me": [
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": 0.0,
+      "height_m": 0.0,
+      "me_m": [
+        1737400.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": 90.0,
+      "height_m": 0.0,
+      "me_m": [
+        1.0638506744193057e-10,
+        1737400.0,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": -90.0,
+      "height_m": 0.0,
+      "me_m": [
+        1.0638506744193057e-10,
+        -1737400.0,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": -180.0,
+      "height_m": 0.0,
+      "me_m": [
+        -1737400.0,
+        -2.1277013488386114e-10,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 90.0,
+      "longitude_deg": 0.0,
+      "height_m": 0.0,
+      "me_m": [
+        1.0638506744193057e-10,
+        0.0,
+        1737400.0
+      ]
+    },
+    {
+      "latitude_deg": -90.0,
+      "longitude_deg": 0.0,
+      "height_m": 0.0,
+      "me_m": [
+        1.0638506744193057e-10,
+        0.0,
+        -1737400.0
+      ]
+    },
+    {
+      "latitude_deg": -90.0,
+      "longitude_deg": 135.0,
+      "height_m": 1500.0,
+      "me_m": [
+        -7.529054930939496e-11,
+        7.529054930939497e-11,
+        -1738900.0
+      ]
+    },
+    {
+      "latitude_deg": -89.9,
+      "longitude_deg": 179.999999,
+      "height_m": -2500.0,
+      "me_m": [
+        -3027.9701819968936,
+        5.284804990783848e-05,
+        -1734897.3575968628
+      ]
+    },
+    {
+      "latitude_deg": -89.9,
+      "longitude_deg": -179.999999,
+      "height_m": -2500.0,
+      "me_m": [
+        -3027.9701819968936,
+        -5.284804990783848e-05,
+        -1734897.3575968628
+      ]
+    },
+    {
+      "latitude_deg": -87.5,
+      "longitude_deg": 45.0,
+      "height_m": 1200.0,
+      "me_m": [
+        53624.62140874739,
+        53624.62140874739,
+        -1736945.238042218
+      ]
+    },
+    {
+      "latitude_deg": -85.0,
+      "longitude_deg": -120.0,
+      "height_m": 6000.0,
+      "me_m": [
+        -75973.66095313356,
+        -131590.24080783915,
+        -1736765.8366531492
+      ]
+    },
+    {
+      "latitude_deg": 23.4,
+      "longitude_deg": 3.6,
+      "height_m": -1800.0,
+      "me_m": [
+        1589711.7929891425,
+        100016.18848511485,
+        689289.8789857251
+      ]
+    },
+    {
+      "latitude_deg": -12.75,
+      "longitude_deg": -77.3,
+      "height_m": 250.0,
+      "me_m": [
+        372596.1348970594,
+        -1653339.440645659,
+        -383494.8979651114
+      ]
+    }
+  ],
+  "enu_basis": [
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": 0.0,
+      "east": [
+        -0.0,
+        1.0,
+        0.0
+      ],
+      "north": [
+        -0.0,
+        -0.0,
+        1.0
+      ],
+      "up": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": 90.0,
+      "east": [
+        -1.0,
+        6.123233995736766e-17,
+        0.0
+      ],
+      "north": [
+        -0.0,
+        -0.0,
+        1.0
+      ],
+      "up": [
+        6.123233995736766e-17,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": -90.0,
+      "east": [
+        1.0,
+        6.123233995736766e-17,
+        0.0
+      ],
+      "north": [
+        -0.0,
+        0.0,
+        1.0
+      ],
+      "up": [
+        6.123233995736766e-17,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 0.0,
+      "longitude_deg": -180.0,
+      "east": [
+        1.2246467991473532e-16,
+        -1.0,
+        0.0
+      ],
+      "north": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "up": [
+        -1.0,
+        -1.2246467991473532e-16,
+        0.0
+      ]
+    },
+    {
+      "latitude_deg": 90.0,
+      "longitude_deg": 0.0,
+      "east": [
+        -0.0,
+        1.0,
+        0.0
+      ],
+      "north": [
+        -1.0,
+        -0.0,
+        6.123233995736766e-17
+      ],
+      "up": [
+        6.123233995736766e-17,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "latitude_deg": -90.0,
+      "longitude_deg": 0.0,
+      "east": [
+        -0.0,
+        1.0,
+        0.0
+      ],
+      "north": [
+        1.0,
+        0.0,
+        6.123233995736766e-17
+      ],
+      "up": [
+        6.123233995736766e-17,
+        0.0,
+        -1.0
+      ]
+    },
+    {
+      "latitude_deg": -90.0,
+      "longitude_deg": 135.0,
+      "east": [
+        -0.7071067811865476,
+        -0.7071067811865475,
+        0.0
+      ],
+      "north": [
+        -0.7071067811865475,
+        0.7071067811865476,
+        6.123233995736766e-17
+      ],
+      "up": [
+        -4.329780281177466e-17,
+        4.329780281177467e-17,
+        -1.0
+      ]
+    },
+    {
+      "latitude_deg": -89.9,
+      "longitude_deg": 179.999999,
+      "east": [
+        -1.745329271141835e-08,
+        -0.9999999999999999,
+        0.0
+      ],
+      "north": [
+        -0.9999984769132876,
+        1.7453266128540138e-08,
+        0.0017453283658982615
+      ],
+      "up": [
+        -0.0017453283658982613,
+        3.046172684756383e-11,
+        -0.9999984769132877
+      ]
+    },
+    {
+      "latitude_deg": -89.9,
+      "longitude_deg": -179.999999,
+      "east": [
+        1.745329271141835e-08,
+        -0.9999999999999999,
+        0.0
+      ],
+      "north": [
+        -0.9999984769132876,
+        -1.7453266128540138e-08,
+        0.0017453283658982615
+      ],
+      "up": [
+        -0.0017453283658982613,
+        -3.046172684756383e-11,
+        -0.9999984769132877
+      ]
+    },
+    {
+      "latitude_deg": -87.5,
+      "longitude_deg": 45.0,
+      "east": [
+        -0.7071067811865476,
+        0.7071067811865476,
+        0.0
+      ],
+      "north": [
+        0.7064337722128922,
+        0.7064337722128922,
+        0.04361938736533601
+      ],
+      "up": [
+        0.030843564597231907,
+        0.030843564597231907,
+        -0.9990482215818578
+      ]
+    },
+    {
+      "latitude_deg": -85.0,
+      "longitude_deg": -120.0,
+      "east": [
+        0.8660254037844387,
+        -0.4999999999999998,
+        0.0
+      ],
+      "north": [
+        -0.49809734904587255,
+        -0.862729915662821,
+        0.08715574274765814
+      ],
+      "up": [
+        -0.04357787137382905,
+        -0.0754790873051733,
+        -0.9961946980917455
+      ]
+    },
+    {
+      "latitude_deg": 23.4,
+      "longitude_deg": 3.6,
+      "east": [
+        -0.06279051952931337,
+        0.9980267284282716,
+        0.0
+      ],
+      "north": [
+        -0.39636420999241906,
+        -0.024937122382928802,
+        0.9177546256839811
+      ],
+      "up": [
+        0.9159436465712967,
+        0.057626289747127704,
+        0.39714789063478056
+      ]
+    },
+    {
+      "latitude_deg": -12.75,
+      "longitude_deg": -77.3,
+      "east": [
+        0.9755345439458566,
+        0.21984620435283755,
+        0.0
+      ],
+      "north": [
+        0.04851949339988402,
+        -0.21529797162372039,
+        0.9753423205085127
+      ],
+      "up": [
+        0.21442530710848526,
+        -0.9514801258283654,
+        -0.2206974350215011
+      ]
+    }
+  ],
+  "az_el": [
+    {
+      "enu": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "azimuth_deg": 0.0,
+      "elevation_deg": 0.0
+    },
+    {
+      "enu": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "azimuth_deg": 90.0,
+      "elevation_deg": 0.0
+    },
+    {
+      "enu": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "azimuth_deg": 180.0,
+      "elevation_deg": 0.0
+    },
+    {
+      "enu": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "azimuth_deg": 270.0,
+      "elevation_deg": 0.0
+    },
+    {
+      "enu": [
+        -1e-12,
+        1.0,
+        0.0
+      ],
+      "azimuth_deg": 359.9999999999427,
+      "elevation_deg": 0.0
+    },
+    {
+      "enu": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "azimuth_deg": 45.0,
+      "elevation_deg": 35.264389682754654
+    },
+    {
+      "enu": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "azimuth_deg": 0.0,
+      "elevation_deg": 90.0
+    },
+    {
+      "enu": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "azimuth_deg": 0.0,
+      "elevation_deg": -90.0
+    },
+    {
+      "enu": [
+        -3.0,
+        -4.0,
+        0.5
+      ],
+      "azimuth_deg": 216.86989764584402,
+      "elevation_deg": 5.710593137499642
+    }
+  ],
+  "polar_stereographic": [
+    {
+      "latitude_deg": -90.0,
+      "longitude_deg": 0.0,
+      "x_m": 0.0,
+      "y_m": 0.0,
+      "scale_factor": 1.0
+    },
+    {
+      "latitude_deg": -89.0,
+      "longitude_deg": 0.0,
+      "x_m": 0.0,
+      "y_m": 30324.120199328685,
+      "scale_factor": 1.0000761582214375
+    },
+    {
+      "latitude_deg": -87.0,
+      "longitude_deg": 90.0,
+      "x_m": 90990.84026861087,
+      "y_m": 5.57158206433412e-12,
+      "scale_factor": 1.0006857024884277
+    },
+    {
+      "latitude_deg": -88.5,
+      "longitude_deg": -135.0,
+      "x_m": -32164.607196988807,
+      "y_m": -32164.607196988803,
+      "scale_factor": 1.0001713668737953
+    },
+    {
+      "latitude_deg": -80.0,
+      "longitude_deg": 179.999999,
+      "x_m": 0.005305898862683689,
+      "y_m": -304005.6080198807,
+      "scale_factor": 1.0076542662455523
+    },
+    {
+      "latitude_deg": -80.0,
+      "longitude_deg": -179.999999,
+      "x_m": -0.005305898862683689,
+      "y_m": -304005.6080198807,
+      "scale_factor": 1.0076542662455523
+    },
+    {
+      "latitude_deg": -60.0,
+      "longitude_deg": 45.0,
+      "x_m": 658365.8074225372,
+      "y_m": 658365.8074225372,
+      "scale_factor": 1.0717967697244908
+    },
+    {
+      "latitude_deg": -89.99,
+      "longitude_deg": -90.0,
+      "x_m": -303.2335050112277,
+      "y_m": 1.8567697065311645e-14,
+      "scale_factor": 1.0000000076154354
+    }
+  ],
+  "local_enu": [
+    {
+      "origin": {
+        "latitude_deg": -89.5,
+        "longitude_deg": 0.0,
+        "height_m": 1000.0
+      },
+      "point": {
+        "latitude_deg": -89.4,
+        "longitude_deg": 10.0,
+        "height_m": 1500.0
+      },
+      "enu_m": [
+        3162.0265910995813,
+        2758.3205486315474,
+        494.93738281602367
+      ]
+    },
+    {
+      "origin": {
+        "latitude_deg": -87.0,
+        "longitude_deg": 45.0,
+        "height_m": 0.0
+      },
+      "point": {
+        "latitude_deg": -87.0,
+        "longitude_deg": 45.01,
+        "height_m": 0.0
+      },
+      "enu_m": [
+        15.870015328798132,
+        -0.0013830221238073648,
+        -7.248111820806757e-05
+      ]
+    },
+    {
+      "origin": {
+        "latitude_deg": -90.0,
+        "longitude_deg": 0.0,
+        "height_m": 0.0
+      },
+      "point": {
+        "latitude_deg": -89.99,
+        "longitude_deg": 90.0,
+        "height_m": 100.0
+      },
+      "enu_m": [
+        303.2509559945102,
+        -1.0637262028986596e-10,
+        99.97353636170737
+      ]
+    },
+    {
+      "origin": {
+        "latitude_deg": -88.0,
+        "longitude_deg": 179.99,
+        "height_m": 200.0
+      },
+      "point": {
+        "latitude_deg": -88.0,
+        "longitude_deg": -179.99,
+        "height_m": 200.0
+      },
+      "enu_m": [
+        21.167829377367674,
+        -0.003692232639514959,
+        -0.00012893560491440958
+      ]
+    }
+  ]
+}
