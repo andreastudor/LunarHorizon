@@ -60,7 +60,8 @@ TARGET_SERIES_POINTS = 1500
 
 ProgressCallback = Callable[[str, float], None]
 Interval = tuple[int, int, bool, bool]  # start_ms, end_ms, truncated_start, truncated_end
-Direction = tuple[float, float, float, float]  # azimut, elevație, distanță_km, rază_unghiulară
+# azimut (None la zenit/nadir), elevație, distanță_km, rază_unghiulară
+Direction = tuple[float | None, float, float, float]
 
 
 @dataclass(frozen=True)
@@ -114,12 +115,6 @@ class _Evaluator:
         with SPICE_LOCK:
             activate(self.profile)
             result = body_direction(self.profile, self.observer, body, utc, APPARENT_CORRECTION)
-        if result.azimuth_deg is None:
-            raise LunarHorizonError(
-                ErrorCode.INTERNAL_ERROR,
-                f"azimutul nu este definit la zenit sau nadir ({body}, {utc}); "
-                "contractul 0.3.0 nu acceptă azimut null, deci simularea nu poate continua",
-            )
         value = (
             result.azimuth_deg,
             result.elevation_deg,
@@ -128,6 +123,16 @@ class _Evaluator:
         )
         self._memo[key] = value
         return value
+
+
+def _azimuth_issue(site_ref: str, field: str) -> QualityIssue:
+    return QualityIssue(
+        code="azimuth_undefined",
+        severity="info",
+        site_ref=site_ref,
+        field=field,
+        message_key="quality.azimuth_undefined_zenith_nadir",
+    )
 
 
 def _intervals(
@@ -237,7 +242,8 @@ def simulate_idealized(
     """Rezultatul complet pentru `terrain_mode = idealized_local_plane`.
 
     `request.series_step_s` trebuie să fie deja stabilit. Ridică `LunarHorizonError` pentru
-    acoperire temporală sau când azimutul nu poate fi reprezentat.
+    acoperire temporală. Azimutul nedefinit (zenit/nadir) devine `null`, cu motiv în
+    `quality.issues`.
     """
     if request.terrain_mode != "idealized_local_plane":
         raise LunarHorizonError(
@@ -305,6 +311,11 @@ def simulate_idealized(
                 coordinates_rounded=False,
             )
         )
+        for body in BODIES:
+            if any(value is None for value in body_series[body].azimuth_deg):
+                issues.append(_azimuth_issue(site.site_ref, f"series.{body}.azimuth_deg"))
+            if any(event.azimuth_deg is None for event in body_events[body].events):
+                issues.append(_azimuth_issue(site.site_ref, f"events.{body}.azimuth_deg"))
         issues.append(
             QualityIssue(
                 code="terrain_elevation_not_used",
@@ -354,7 +365,7 @@ def simulate_idealized(
             SiteTerrain(
                 site_ref=site.site_ref,
                 available=False,
-                reason="idealized_local_plane: relieful local nu este inclus în acest mod",
+                reason="Idealized mode: local terrain is not included.",
                 terrain_id=None,
                 product_id=None,
                 calc_resolution_m=None,
@@ -401,18 +412,19 @@ def simulate_idealized(
         issues=issues,
         not_computed=[],
         approximations=[
-            "Mod idealizat: orizont plan la 0°, fără relief local; nu este un rezultat cu teren.",
-            "Criteriul centrului discului pentru Soare (fără raza unghiulară); fără refracție.",
-            "Poziții aparente cu corecția LT+S, provizorie (D-02 [ASTRO] deschisă).",
-            "Observatorul este pe sfera de referință; elevația din catalog nu este folosită.",
+            "Idealized mode: flat local horizon at 0°, local terrain not included; "
+            "this is not a terrain-based result.",
+            "Sun visibility uses the disc centre (angular radius not applied); no refraction.",
+            "Apparent positions with the LT+S correction (provisional, D-02 [ASTRO] open).",
+            "The observer is on the reference sphere; the catalog elevation is not used.",
         ],
         limits=[
-            f"Evenimentele se caută pe o grilă de {scan_s} s și se rafinează la "
-            f"{REFINEMENT_MS / 1000.0} s; două treceri între eșantioane vecine nu sunt detectate.",
-            "Pașii se numără pe scala civilă UTC, fără secundă intercalară inserată.",
-            "Acoperirea orizontului din DEM nu este validată; modul dem nu este disponibil la E06.",
-            "Pragul Pământului și criteriile de vizibilitate sunt provizorii (D-04, D-16 [ASTRO]).",
-            "Coordonatele din catalog sunt adoptate în MOON_ME_DE440_ME421 prin ipoteză (E04).",
+            f"Events are searched on a {scan_s} s grid and refined to "
+            f"{REFINEMENT_MS / 1000.0} s; two crossings between neighbouring samples are missed.",
+            "Steps are counted on the civil UTC scale; no leap second is inserted.",
+            "DEM horizon coverage is not validated; terrain mode 'dem' is not available yet.",
+            "Earth threshold and visibility criteria are provisional (D-04, D-16 [ASTRO]).",
+            "Catalog coordinates are adopted in MOON_ME_DE440_ME421 as a hypothesis (E04).",
         ],
     )
     return SimulationResult(

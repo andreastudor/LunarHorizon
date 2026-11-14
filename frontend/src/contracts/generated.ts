@@ -1,7 +1,7 @@
 /**
  * GENERAT AUTOMAT din data/schemas/lunarhorizon.schema.json — nu se editează manual.
  * Regenerare: scripts/generate_contracts.py (rădăcină), apoi `npm run contracts:generate`.
- * Versiunea schemei: 0.3.0
+ * Versiunea schemei: 0.4.0
  */
 
 /**
@@ -34,7 +34,7 @@ export type ErrorCode =
   | 'INTERNAL_ERROR'
 
 export interface Catalog {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   catalog_version: string
   sites: Site[]
   demo_site_selection: DemoSiteSelection
@@ -132,7 +132,7 @@ export interface ExcludedCandidate {
   reason: string
 }
 export interface KernelManifest {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   default_profile: 'de440_me421' | 'de421'
   /**
    * @minItems 1
@@ -174,7 +174,7 @@ export interface ChecksumReference {
   source_url: string | null
 }
 export interface DemProductManifest {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   products: DemProduct[]
 }
 export interface DemProduct {
@@ -216,7 +216,7 @@ export interface ProductFile {
   size_bytes: number | null
 }
 export interface TerrainManifest {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   terrain_id: string
   source: TerrainSource
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -342,7 +342,7 @@ export interface FieldError {
   message: string
 }
 export interface SimulationResult {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   request: SimulationRequest
   /**
    * @minItems 1
@@ -382,7 +382,7 @@ export interface SiteSeries {
   earth: BodySeries
 }
 export interface BodySeries {
-  azimuth_deg: number[]
+  azimuth_deg: (number | null)[]
   elevation_deg: number[]
   distance_km: number[]
   angular_radius_deg: number[]
@@ -404,7 +404,7 @@ export interface Event {
   type: 'appearance' | 'disappearance'
   cause: 'terrain' | 'idealized_horizon'
   time_utc: string
-  azimuth_deg: number
+  azimuth_deg: number | null
   elevation_deg: number
   obstacle_distance_m: number | null
   refinement_tolerance_s: number
@@ -497,7 +497,7 @@ export interface NotComputed {
   reason: string
 }
 export interface ScenarioIndex {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   scenarios: Scenario[]
 }
 export interface Scenario {
@@ -524,7 +524,7 @@ export interface Health {
   issues: string[]
 }
 export interface Coverage {
-  schema_version: '0.3.0'
+  schema_version: '0.4.0'
   temporal: TemporalCoverage
   terrain: TerrainCoverage[]
 }

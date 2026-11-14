@@ -3,8 +3,12 @@
 Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Convențiile de unități, timp
 și cadre sunt în [SPEC_FIZICA.md](SPEC_FIZICA.md).
 
-> **Versiunea de schemă curentă: 0.3.0 (E04, 2026-11-14).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
+> **Versiunea de schemă curentă: 0.4.0 (E07, 2026-11-14).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
 > Istoric:
+> - **0.4.0 (E07)** — `BodySeries.azimuth_deg[]` și `Event.azimuth_deg` acceptă `null` numai la zenit/nadir (azimut
+>   nedefinit). Fiecare `null` cere o intrare în `quality.issues` cu același `site_ref` și câmpul
+>   `series.<corp>.azimuth_deg`, respectiv `events.<corp>.azimuth_deg` (cod `azimuth_undefined`). Simularea nu mai eșuează
+>   în acest caz și azimutul nu este înlocuit cu zero. Celelalte documente au aceeași structură ca în 0.3.0.
 > - **0.3.0 (E04)** — `Catalog`/`Site`: câmpuri noi `mission_status`, `related_site_id`, `planned_target_note`,
 >   `position_sources[]` (`SourceRecord`: instituție, titlu, URL, identificator, versiune, dată publicată și accesată,
 >   locator, starea accesului, coordonate originale, cadru declarat, citat, SHA-256 al fișierului citit),
@@ -28,7 +32,7 @@ Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Conven
 >
 > Regulile dintre câmpuri (de exemplu „`null` cere un motiv”, „grup prezent sau declarat necalculat”) nu pot
 > fi exprimate în JSON Schema. Le impun validatorii Pydantic, adică backendul care produce rezultatele.
-> Endpointurile sunt implementate la E06 (2026-11-14), fără schimbarea versiunii de schemă (0.3.0); vezi §8.
+> Endpointurile sunt implementate la E06 (2026-11-14), inițial cu schema 0.3.0; vezi §8.
 
 Valorile din exemple sunt substituenți (`<...>`), nu rezultate. Exemple complete, sintetice și valide, pentru
 fiecare tip de document: [tests/fixtures/contracts/synthetic_valid_documents.json](../tests/fixtures/contracts/synthetic_valid_documents.json).
@@ -381,8 +385,8 @@ inițială:
   ≥ `earth_criterion.min_elevation_deg`. Grila de scanare are pasul ≥ 900 s (mărit pentru intervale lungi, cel mult
   20.000 de puncte); fiecare trecere se rafinează prin bisecție la 1 ms (`refinement_tolerance_s = 0.001`).
   Intervalele deschise la capete au `truncated_start`/`truncated_end`. Seria folosește aceleași funcții de vizibilitate.
-- **Azimut nedefinit** (zenit/nadir): contractul 0.3.0 nu acceptă `null`; simularea eșuează explicit
-  (`status: failed`, `INTERNAL_ERROR` cu motivul). O schimbare a schemei rămâne decizie deschisă.
+- **Azimut nedefinit** (zenit/nadir): din schema 0.4.0 azimutul este `null` cu motiv în `quality.issues`
+  (`azimuth_undefined`); simularea continuă.
 - **`GET /api/coverage`** primește opțional `frame_id` (implicit cadrul profilului implicit). Lista `terrain` conține
   numai produsele al căror raster de calcul există pe disc; conturul este dreptunghiul rasterului, nu acoperirea
   orizontului. **`GET /api/terrain/manifest`** întoarce manifestul de teren al rasterului care conține punctul

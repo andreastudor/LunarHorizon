@@ -28,7 +28,7 @@ def _iso_date(value: str) -> str:
     return value
 
 
-SchemaVersion = Literal["0.3.0"]
+SchemaVersion = Literal["0.4.0"]
 FrameId = FrameIdLiteral
 
 # Acceptă UTC cu `Z` sau cu offset; valoarea stocată este forma canonică UTC cu `Z`.

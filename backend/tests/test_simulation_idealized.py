@@ -80,9 +80,9 @@ def test_result_conforms_to_json_schema(result: SimulationResult) -> None:
 def test_idealized_mode_is_explicit_and_has_no_terrain(result: SimulationResult) -> None:
     assert {h.mode for h in result.horizon} == {"idealized_local_plane"}
     assert all(set(h.elevation_deg) == {0.0} for h in result.horizon)
-    assert all(not t.available and "idealized" in (t.reason or "") for t in result.terrain)
+    assert all(not t.available and "idealized" in (t.reason or "").lower() for t in result.terrain)
     assert result.provenance.dem_products == []
-    assert any("fără relief" in text for text in result.quality.approximations)
+    assert any("local terrain not included" in text for text in result.quality.approximations)
     assert all(s.on_reference_surface and s.terrain_elevation_m is None for s in result.sites)
     assert {i.field for i in result.quality.issues} == {"sites.terrain_elevation_m"}
 
@@ -178,19 +178,35 @@ def test_dem_mode_is_never_replaced_silently(profile: LoadedProfile) -> None:
     assert info.value.code == ErrorCode.OUT_OF_DEM_COVERAGE
 
 
-def test_undefined_azimuth_fails_explicitly(
+def test_undefined_azimuth_is_null_with_a_reason_not_zero_or_failure(
     monkeypatch: pytest.MonkeyPatch, profile: LoadedProfile
 ) -> None:
     real = bodies.body_direction
 
     def zenith(*args: Any, **kwargs: Any) -> Any:
-        return replace(real(*args, **kwargs), azimuth_deg=None)
+        direction = real(*args, **kwargs)
+        return replace(direction, azimuth_deg=None) if args[2] == "sun" else direction
 
     monkeypatch.setattr("lunarhorizon.simulation.idealized.body_direction", zenith)
-    with pytest.raises(LunarHorizonError) as info:
-        simulate_idealized(make_request(), SITES[:1], profile)
-    assert info.value.code == ErrorCode.INTERNAL_ERROR
-    assert "azimutul nu este definit" in info.value.detail
+    result = simulate_idealized(make_request(), SITES, profile)
+    sun = result.series[0].sun
+    assert set(sun.azimuth_deg) == {None}
+    assert None not in result.series[0].earth.azimuth_deg
+    fields = {(i.code, i.field) for i in result.quality.issues}
+    assert ("azimuth_undefined", "series.sun.azimuth_deg") in fields
+    assert ("azimuth_undefined", "events.sun.azimuth_deg") in fields
+    assert all(e.azimuth_deg is None for e in result.events[0].sun.events)
+    schema = document_schema(read_json(SCHEMA_PATH), "SimulationResult")
+    Draft202012Validator(schema).validate(result.model_dump(mode="json"))
+
+
+def test_null_azimuth_without_a_reason_is_rejected_by_the_contract(
+    result: SimulationResult,
+) -> None:
+    data = result.model_dump(mode="json")
+    data["series"][0]["sun"]["azimuth_deg"][0] = None
+    with pytest.raises(ValueError, match=r"series\.sun\.azimuth_deg"):
+        SimulationResult.model_validate(data)
 
 
 def test_concurrent_simulations_with_two_profiles_match_sequential_results() -> None:

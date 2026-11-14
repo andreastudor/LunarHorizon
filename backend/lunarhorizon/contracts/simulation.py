@@ -116,7 +116,8 @@ class ResultSite(Contract):
 
 
 class BodySeries(Contract):
-    azimuth_deg: list[Azimuth]
+    # `null` la zenit sau nadir (azimut nedefinit), cu o intrare în `quality.issues` (schema 0.4.0).
+    azimuth_deg: list[Azimuth | None]
     elevation_deg: list[Elevation]
     distance_km: list[Positive]
     angular_radius_deg: list[AngularRadius]
@@ -157,7 +158,8 @@ class Event(Contract):
     type: Literal["appearance", "disappearance"]
     cause: Literal["terrain", "idealized_horizon"]
     time_utc: UtcTimestamp
-    azimuth_deg: Azimuth
+    # `null` numai la zenit sau nadir, cu motiv în `quality.issues` (schema 0.4.0).
+    azimuth_deg: Azimuth | None
     elevation_deg: Elevation
     obstacle_distance_m: NonNegative | None
     refinement_tolerance_s: Positive
@@ -396,9 +398,14 @@ class SimulationResult(Contract):
         for series in self.series:
             for body in ("sun", "earth"):
                 body_series: BodySeries = getattr(series, body)
-                for name in ("horizon_elevation_deg", "visible"):
+                for name in ("azimuth_deg", "horizon_elevation_deg", "visible"):
                     if any(value is None for value in getattr(body_series, name)):
                         require(series.site_ref, f"series.{body}.{name}")
+        for site_events in self.events:
+            for body in ("sun", "earth"):
+                group: BodyEvents = getattr(site_events, body)
+                if any(event.azimuth_deg is None for event in group.events):
+                    require(site_events.site_ref, f"events.{body}.azimuth_deg")
         for horizon in self.horizon:
             if any(value is None for value in horizon.elevation_deg):
                 require(horizon.site_ref, "horizon.elevation_deg")

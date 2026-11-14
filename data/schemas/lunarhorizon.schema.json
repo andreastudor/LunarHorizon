@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LunarHorizonContracts",
   "description": "Contractele de date LunarHorizon. Generat din backend/lunarhorizon/contracts; nu se editează manual (scripts/generate_contracts.py).",
-  "x-schema-version": "0.3.0",
+  "x-schema-version": "0.4.0",
   "anyOf": [
     {
       "$ref": "#/$defs/Catalog"
@@ -86,9 +86,16 @@
       "properties": {
         "azimuth_deg": {
           "items": {
-            "exclusiveMaximum": 360.0,
-            "minimum": 0.0,
-            "type": "number"
+            "anyOf": [
+              {
+                "exclusiveMaximum": 360.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "title": "Azimuth Deg",
           "type": "array"
@@ -165,7 +172,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -265,7 +272,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -543,7 +550,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -750,10 +757,17 @@
           "type": "string"
         },
         "azimuth_deg": {
-          "exclusiveMaximum": 360.0,
-          "minimum": 0.0,
-          "title": "Azimuth Deg",
-          "type": "number"
+          "anyOf": [
+            {
+              "exclusiveMaximum": 360.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Azimuth Deg"
         },
         "elevation_deg": {
           "maximum": 90.0,
@@ -1113,7 +1127,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1977,7 +1991,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -2121,7 +2135,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3208,7 +3222,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.3.0",
+          "const": "0.4.0",
           "title": "Schema Version",
           "type": "string"
         },
