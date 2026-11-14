@@ -35,6 +35,9 @@ Set, LRO-L-LOLA-4-GDR-V1.0”, NASA Planetary Data System, 2010.
   pe grilă de 5 m/pixel, pentru cele 13 regiuni Artemis din 2022. [Arhiva indicată de NASA](https://zenodo.org/records/17954508)
   listează 13 ZIP-uri, 26,6 GB în total, cu sume MD5 publicate. Este un produs diferit de PGDA 78/81; nu au fost
   descărcate fișierele și nu sunt cunoscute acoperirea pentru IM-1/IM-2, NoData sau compatibilitatea pentru orizont.
+  Actualizare: antetele rasterelor de elevație din toate cele 13 ZIP-uri au fost citite parțial; niciun raster
+  nu conține IM-1 sau IM-2 în extindere, sub ipoteza de cadru. NoData este declarat în antete; pixelii și
+  compatibilitatea pentru orizont rămân neverificate. Rezultatele detaliate sunt în VALIDARE §7.9.
 - [NASA PGDA 90](https://pgda.gsfc.nasa.gov/products/90) oferă COG-uri polare DE421, inclusiv un DEM 80–90°S la
   20 m/pixel; este un candidat pentru date mai grosiere, nu dovedește îndeplinirea criteriului propus de 5 m/pixel.
   Limitele exacte și datele valide la situri nu au fost verificate.

@@ -37,6 +37,12 @@ Nu există remote configurat și CI GitHub nu a rulat.
 
 ### Investigația pentru deblocarea E05
 
+**Actualizare PGDA 104:** metadatele rasterelor de elevație din toate cele 13 arhive au fost citite prin HTTP
+Range; IM-1 și IM-2 se află în afara tuturor extinderilor, sub ipoteza de cadru consemnată. Nu există bază pentru
+o propunere D-07 privind aceste două situri. `d_max` nu are încă valoare numerică stabilită; analiza, sursele și
+limitele sunt în [VALIDARE.md](VALIDARE.md) §7.9 și `data/catalog/pgda104_extent_check.json`. PGDA 90 este mai
+grosier decât 5 m/pixel. E05 nu a început; D-07 și D-10 rămân deschise.
+
 Cele șase rastere citite sunt la 5 m/pixel și au NoData NaN, dar IM-1 și IM-2 sunt în afara fiecărei extinderi;
 niciun pixel la sit nu a fost citit. Distanțele și limitele analizei sunt în [VALIDARE.md](VALIDARE.md) §7.7.
 Restul de 21 au răspuns cu 403; nu se poate deduce acoperirea lor. Nu există bază suficientă pentru alegerea

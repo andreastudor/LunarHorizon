@@ -335,3 +335,34 @@ descrie cadrele ME ca specifice efemeridelor, cu DE440 ME apropiat de DE421 ME; 
 sau ISRO. D-10 cere confirmarea cadrului ori acceptarea explicită a ipotezei și tratarea incertitudinii de către
 geografie. Nota țintei ISRO afirmă greșit că broșura nu a fost deschisă; corecția catalogului trebuie să țină cont
 de hash-ul catalogului din raportul PGDA și să nu fie interpretată ca schimbare a sursei primare.
+
+### 7.9. Evaluare preliminară PGDA 104 (2026-11-14)
+
+**Aria cerută.** Nu există încă o rază numerică fixată pentru calcul: `d_max`, produsul îndepărtat și pasul se
+aleg prin convergență la D-08/D-09 ([SPEC_FIZICA.md](SPEC_FIZICA.md) §6.3, T-07). Calculul cere probe pe toate
+azimuturile până la `d_max`, pe două niveluri de teren; lipsurile dau rezultat `partial` sau `no_data`. Decupajul
+vizual este separat, iar dimensiunea sa se reglează la E08. Nu se poate valida o arie numerică nedefinită.
+
+**Inventar și metodă.** [PGDA 104](https://pgda.gsfc.nasa.gov/products/104) indică 13 regiuni din 2022,
+SDEM-uri rezultate din LOLA și LROC NAC, produse auxiliare și [Zenodo](https://zenodo.org/records/17954508)
+ca arhivă. API-ul listează 13 ZIP-uri (26.559.678.852 octeți în total) și un README; MD5-urile sunt publicate de
+Zenodo, dar arhivele integrale nu au fost descărcate sau verificate. HTTP Range a returnat 206. Din fiecare ZIP
+s-au citit indexul și primul MiB decomprimat al rasterului `GLDELEV_005.tif`; metadatele tuturor celor 13 sunt în
+`data/catalog/pgda104_extent_check.json` (hash-ul catalogului inclus). Nu s-au testat pixelii sau integritatea
+integrală a rasterelor. Toate declară 5 m/pixel, NoData −3,4028234663852886e38 și proiecție stereografică
+polară sudică Moon 2015, IAU:30135, sferă de 1.737.400 m. README-ul regiunii Leibnitz indică înălțimi față de
+aceeași sferă. Eticheta proiecției singură nu confirmă realizarea cadrului fizic al coordonatelor.
+
+**Rezultat pentru candidați.** Presupunând coordonatele catalogului compatibile cu cadrul raster, ambele puncte
+se află în afara tuturor celor 13 dreptunghiuri raster. Cel mai apropiat dreptunghi de IM-2 este Leibnitz Beta
+Plateau, la aproximativ 11,99 km în planul proiectat; de IM-1, Malapert Massif, la aproximativ 168,01 km.
+Aceste distanțe nu sunt geodezice și nu cuantifică incertitudinea cadrului. Nu există pixel central în aceste
+rastere; nu au fost verificate valori valide sau suprafețe complete în jurul candidaților. Nu se poate propune
+IM-1 sau IM-2 drept primul sit pe baza PGDA 104. Nici iluminarea comparativă, nici vizibilitatea Pământului,
+nici D-10 nu sunt confirmate de această verificare.
+
+**Alternativă mai grosieră.** [PGDA 90](https://pgda.gsfc.nasa.gov/products/90) declară 80–90°S la 20 m/pixel,
+respectiv 83–90°S la 10 m/pixel. Pe baza latitudinilor catalogului, IM-1 și IM-2 sunt în banda nominală de 20 m,
+iar IM-2 și în cea de 10 m; extinderea reală, pixelii și NoData nu au fost inspectate. Nici 10 m, nici 20 m nu
+îndeplinesc criteriul propus D-07 de 5 m/pixel. Produsele rămân eventuale surse pentru teren îndepărtat, după
+verificarea compatibilității și decizia D-08; nu se aprobă relaxarea criteriilor.
