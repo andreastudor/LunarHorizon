@@ -72,9 +72,10 @@ din `data/catalog/sites.json`. Reverificarea automată: `scripts/verify_catalog_
 | NASA NTRS 20240009936, „Thermoplastic Space Point Design (TSPD) Tall Tower Lunar Thermal Analysis” (Will Grier, NASA Langley), pagina 8 | NASA | **Respinsă ca sursă de sit**: punctul „Shackleton Connecting Ridge” (-89.46752°, -138.012788°) este locația unui turn într-un studiu termic, „chosen to match available average seasonal surface temperature flight data from LRO” | Nu declară cadrul | Deschis; nu folosit în catalog |
 | Crossref, metadate pentru doi:10.1016/j.icarus.2016.05.011 | Crossref | Identificarea lucrării (Icarus 283, 92–103, 2017-02) | — | Deschis |
 
-**Neîncercate sau neconfirmate:** broșura ISRO `LVM3M4_Chandrayaan3_brochure.pdf` (indicată de căutare, neîncercată);
-paginile NSSDCA (au răspuns cu XML gol, fără conținut); QuickMap și Moon Trek (verificarea vizuală este a colegilor de
-geografie); documentele oficiale cu geometria regiunilor candidate Artemis III din 2024 (neîncercate; planul s-a schimbat).
+**Neconfirmate:** paginile NSSDCA (au răspuns cu XML gol, fără conținut); QuickMap și Moon Trek (verificarea vizuală
+este a colegilor de geografie); fișierele geometrice ale regiunilor candidate Artemis III din 2024.
+
+**Actualizare 2026-11-14:** [broșura ISRO](https://www.isro.gov.in/media_isro/pdf/Missions/LVM3/LVM3M4_Chandrayaan3_brochure.pdf), pagina 6, a fost citită și coroborează coordonatele țintei planificate (69,367621°S, 32,348126°E); nu reprezintă poziția efectivă. [USGS, grile Artemis III](https://www.usgs.gov/data/down-selected-artemis-iii-candidate-landing-site-navigational-grids), publicat 2024-12-05, descrie grile și regiuni din selecția 2024; fișierele geometrice nu au fost inspectate deoarece ScienceBase a afișat o verificare de acces.
 
 Citarea cerută de produs: Wagner, R. V., Nelson, D. M., Plescia, J. B., Robinson, M. S., Speyerer, E. J., & Mazarico,
 E. (2017). Coordinates of anthropogenic features on the Moon. *Icarus, 283*, 92–103. doi:10.1016/j.icarus.2016.05.011.

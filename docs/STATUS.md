@@ -21,8 +21,19 @@ niciodată (fără remote). Dovezile sunt în [ACCEPTANCE.md](ACCEPTANCE.md) §7
 | Catalog de 12 intrări (6 Apollo, 3 CLPS, 2 internaționale și o țintă planificată), cu proveniență; cititor; script de reverificare la surse (E04) | Verificarea vizuală a pozițiilor de către geografi; alegerea siturilor demonstrative (D-07); aprobarea D-10 |
 | 288 de teste Python (60 cu kerneluri) și 166 TypeScript | Alegerile E03 listate mai jos; remote GitHub, rulare CI |
 
-Toate fișierele din E00–E04 sunt în arborele de lucru, **fără commit**; commit-ul nu a fost cerut. Kernelurile
-(~62 MB) stau în `data/kernels/`, în afara Git.
+Fișierele E00–E04 sunt în commit-ul local `4fcac8c`; `971c8ca` adaugă o verificare exploratorie PGDA și raportul
+parțial. Ramura curentă este `e04-completare-dovezi`. Kernelurile (~62 MB) stau în `data/kernels/`, în afara Git.
+Nu există remote configurat și CI GitHub nu a rulat.
+
+### Actualizare: verificarea dovezilor PGDA și a surselor
+
+- Raportul `data/catalog/pgda_coverage.json` este incomplet: 27 rastere listate, 6 citite și 21 cu HTTP 403.
+  Pentru cele șase citite, ambele puncte se află în afara extinderii; nu se poate concluziona pentru celelalte 21.
+  Hash-ul catalogului corespunde. Cadrul DE421 este o ipoteză, iar acoperirea unui pixel nu dovedește acoperirea orizontului.
+- Broșura ISRO, pagina 6, coroborează coordonatele **țintei planificate** Chandrayaan-3, nu poziția efectivă.
+  USGS publică grile pentru regiunile Artemis din 2024, dar descărcarea geometriei a fost blocată de verificarea site-ului.
+  Lucrarea Icarus și PDF-ul LROC au răspuns anterior cu HTTP 403, respectiv 500.
+- E04, D-07 și D-10 rămân deschise: verificarea vizuală cerută și alegerea susținută de acoperire nu sunt demonstrate.
 
 ## Confirmarea E03 (comunicată de utilizator)
 
@@ -147,12 +158,12 @@ Constatări care schimbă planul:
 
 ## Restanțe externe (E01–E04)
 
-Cer acordul explicit al utilizatorului și decizia D-15:
+Pentru publicarea ulterioară sunt necesare:
 
 1. Crearea remote-ului GitHub și primul push.
 2. Prima rulare a CI pe GitHub Actions (Ubuntu și Windows, plus jobul `astro`) și corectarea eventualelor diferențe pe Ubuntu.
 3. Verificarea afișării template-urilor de issue și pull request.
-4. Commit-ul fișierelor din E00–E04; poate fi făcut local la cererea utilizatorului.
+4. E00–E04 sunt deja în commit-ul local `4fcac8c`; verificarea și publicarea commit-urilor ulterioare rămân separate.
 
 ## Pași exacți pentru închiderea E03
 
