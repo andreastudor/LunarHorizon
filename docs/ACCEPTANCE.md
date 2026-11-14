@@ -1,5 +1,15 @@
 # Criterii de acceptanță
 
+## Actualizare 2026-11-14: retragerea IM-1 și IM-2
+
+La cererea utilizatorului, IM-1 și IM-2 au fost eliminate din catalogul activ și din candidații D-07.
+Catalogul are **10 intrări: 9 poziții efective și o țintă planificată**, inclusiv un singur sit CLPS (Blue Ghost 1).
+Nu există încă un sit polar activ; selecția demonstrativă este goală și neconfirmată. E04, D-07 și D-10 rămân deschise.
+E05 nu a început. Referințele la cele două situri în rapoartele și verificările precedente sunt istorice.
+Rapoartele JSON arhivate rămân nemodificate: versiunea/hash-ul catalogului lor se referă la catalogul anterior,
+nu la cel activ. Nu s-a efectuat o nouă reverificare în rețea a celor 10 poziții rămase.
+
+
 Criteriile provin din [SPECIFICATIE.md](SPECIFICATIE.md) §2, §3.5, §10.3 și §19. Acest document este și tabelul
 final al cerințelor P0 cerut la livrare.
 
@@ -14,7 +24,7 @@ Etapele E01–E03 au pus fundația tehnică, contractele și motorul astronomic 
 
 | ID | Cerință | Criteriu de acceptanță | Etapă | Stare | Dovadă |
 |---|---|---|---|---|---|
-| P0-01 | Catalog de situri | Catalogul conține situri Apollo, CLPS, alte misiuni și alte țări; fiecare poziție are sursă, dată a accesării și cadru; câmpurile necunoscute sunt goale și explicate | E04 | incomplet | Catalogul E04 are 12 intrări cu surse deschise și reverificate (§7, E04), dar nu a fost verificat vizual de colegii de geografie și are lacune față de cerința „alte țări” (două misiuni internaționale). Vezi §7, E04 |
+| P0-01 | Catalog de situri | Catalogul conține situri Apollo, CLPS, alte misiuni și alte țări; fiecare poziție are sursă, dată a accesării și cadru; câmpurile necunoscute sunt goale și explicate | E04 | incomplet | Catalogul E04 are 10 intrări active cu surse deschise și reverificate (§7, E04), dar nu a fost verificat vizual de colegii de geografie și are lacune față de cerința „alte țări” (două misiuni internaționale). Vezi §7, E04 |
 | P0-02 | Hartă 3D | Toate criteriile din §2 de mai jos | E07, E08, E12 | incomplet | — |
 | P0-03 | Hartă 2D | Vedere polară sudică și globală; aceeași selecție și același timp ca în 3D; comutarea nu pierde starea | E11 | incomplet | — |
 | P0-04 | Puncte custom | Un punct se poate alege prin clic (3D și 2D) și prin introducerea coordonatelor, cu validare; este marcat „custom” | E07, E11, E12 | incomplet | — |
@@ -181,7 +191,9 @@ confirmate de colegii de astronomie și deciziile D-01, D-02, D-03 și D-18 înc
 | Clonă curată fără kerneluri | trecut | 199 trecute, 60 omise explicit (kerneluri), 0 eșuate; frontendul 162/162. Integritatea răspunsurilor arhivate a necesitat `data/reference/horizons/.gitattributes` (`-text`); după corectură, octeții sunt identici după clonare |
 | Reverificare după E04 și confirmare | trecut | `pytest` 288/288 (inclusiv 60 cu kerneluri); `validate_e03.py` cu aceleași maxime; `download_kernels.py --verify` reușit. Nicio toleranță, caz sau rezultat așteptat modificat |
 
-### E04 — Catalog minim verificat (2026-11-14)
+### E04 — Dovezi istorice înaintea retragerii IM-1/IM-2 (2026-11-14)
+
+Starea activă este cea din actualizarea de la începutul documentului; tabelul de mai jos descrie catalogul anterior.
 
 **Stare: implementată, NEÎNCHEIATĂ.** Criteriul de finalizare din [BACKLOG.md](BACKLOG.md) cere ca **geografii să fi verificat
 vizual pozițiile** și ca **cele două situri polare demonstrative să fie alese**. Niciunul nu este îndeplinit.

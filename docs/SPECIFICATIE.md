@@ -628,7 +628,7 @@ La H20, dacă orizontul LOLA încă nu funcționează, echipa păstrează aplica
 | Design și prezentare | Identitate vizuală, texte, demo și video |
 | Testare și coordonare | Scenarii de utilizare, surse, probleme și checklist de depunere |
 
-Povestea IM-2 poate deveni un studiu de caz în prezentare după verificarea surselor. Aplicația trebuie să distingă rezultatele propriei simulări de cauzele documentate ale rezultatului unei misiuni.
+Studiul de caz IM-2 este retras la cererea utilizatorului (2026-11-14). Viitorul studiu de caz va folosi siturile alese prin D-07 și va distinge simulările de observațiile documentate.
 
 ## 19. Definiția finală a MVP-ului
 

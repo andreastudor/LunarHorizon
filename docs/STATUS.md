@@ -1,5 +1,15 @@
 # Stare
 
+## Actualizare 2026-11-14: retragerea IM-1 și IM-2
+
+La cererea utilizatorului, IM-1 și IM-2 au fost eliminate din catalogul activ și din candidații D-07.
+Catalogul are **10 intrări: 9 poziții efective și o țintă planificată**, inclusiv un singur sit CLPS (Blue Ghost 1).
+Nu există încă un sit polar activ; selecția demonstrativă este goală și neconfirmată. E04, D-07 și D-10 rămân deschise.
+E05 nu a început. Referințele la cele două situri în rapoartele și verificările precedente sunt istorice.
+Rapoartele JSON arhivate rămân nemodificate: versiunea/hash-ul catalogului lor se referă la catalogul anterior,
+nu la cel activ. Nu s-a efectuat o nouă reverificare în rețea a celor 10 poziții rămase.
+
+
 Actualizat: 2026-11-14 (după E04 și confirmarea E03).
 
 ## Unde suntem
@@ -18,24 +28,24 @@ niciodată (fără remote). Dovezile sunt în [ACCEPTANCE.md](ACCEPTANCE.md) §7
 | Documentele de proiectare (E00); mediul de lucru, CI, VS Code (E01) | Funcții de produs: hartă 3D, orizont, API, comparație |
 | `core` / `geo`, contracte, schema JSON (acum 0.3.0), tipuri TS generate (E02) | DEM, texturi (E05) |
 | Kerneluri NAIF verificate; motorul `astro`; 26 de referințe Horizons arhivate (E03) | Server backend și `/api/health` (E06) |
-| Catalog de 12 intrări (6 Apollo, 3 CLPS, 2 internaționale și o țintă planificată), cu proveniență; cititor; script de reverificare la surse (E04) | Verificarea vizuală a pozițiilor de către geografi; alegerea siturilor demonstrative (D-07); aprobarea D-10 |
+| Catalog de 10 intrări (6 Apollo, 1 CLPS, 2 internaționale și o țintă planificată), cu proveniență; cititor; script de reverificare la surse (E04) | Verificarea vizuală a pozițiilor de către geografi; alegerea siturilor demonstrative (D-07); aprobarea D-10 |
 | 288 de teste Python (60 cu kerneluri) și 166 TypeScript | Alegerile E03 listate mai jos; remote GitHub, rulare CI |
 
 Fișierele E00–E04 sunt în commit-ul local `4fcac8c`; `971c8ca` adaugă o verificare exploratorie PGDA și raportul
 parțial. Ramura curentă este `e04-completare-dovezi`. Kernelurile (~62 MB) stau în `data/kernels/`, în afara Git.
 Nu există remote configurat și CI GitHub nu a rulat.
 
-### Actualizare: verificarea dovezilor PGDA și a surselor
+### Istoric anterior retragerii: verificarea dovezilor PGDA și a surselor
 
 - Raportul `data/catalog/pgda_coverage.json` este incomplet: 27 rastere listate, 6 citite și 21 cu HTTP 403.
   Pentru cele șase citite, ambele puncte se află în afara extinderii; nu se poate concluziona pentru celelalte 21.
-  Hash-ul catalogului corespunde. Cadrul DE421 este o ipoteză, iar acoperirea unui pixel nu dovedește acoperirea orizontului.
+  Hash-ul corespundea catalogului de la data raportului, anterior retragerii siturilor. Cadrul DE421 este o ipoteză, iar acoperirea unui pixel nu dovedește acoperirea orizontului.
 - Broșura ISRO, pagina 6, coroborează coordonatele **țintei planificate** Chandrayaan-3, nu poziția efectivă.
   USGS publică grile pentru regiunile Artemis din 2024, dar descărcarea geometriei a fost blocată de verificarea site-ului.
   Lucrarea Icarus și PDF-ul LROC au răspuns anterior cu HTTP 403, respectiv 500.
 - E04, D-07 și D-10 rămân deschise: verificarea vizuală cerută și alegerea susținută de acoperire nu sunt demonstrate.
 
-### Investigația pentru deblocarea E05
+### Istoric anterior retragerii: investigația pentru deblocarea E05
 
 **Actualizare PGDA 104:** metadatele rasterelor de elevație din toate cele 13 arhive au fost citite prin HTTP
 Range; IM-1 și IM-2 se află în afara tuturor extinderilor, sub ipoteza de cadru consemnată. Nu există bază pentru
@@ -87,7 +97,7 @@ rulate din nou în implementarea actuală (după E04): suita completă 288/288, 
 `scripts/download_kernels.py --verify` reușit. Aceste rezultate sunt ale implementării curente, distincte de cele ale
 prototipului separat.
 
-## Rezultatul E04
+## Istoric: rezultatul E04 înaintea retragerii siturilor
 
 | Verificare | Rezultat |
 |---|---|
@@ -244,10 +254,10 @@ Propunerile sunt puncte de pornire, nu rezultate validate.
 | D-04 | ASTRO | Criteriul solar al centrului discului este acceptabil pentru MVP? Ce prag minim de elevație are Pământul implicit? | Da; 0° | E10 |
 | D-05 | GEO | Raza de referință și referința înălțimilor din DEM-uri | 1 737 400 m, de confirmat din metadate | E05, E09 |
 | D-06 | GEO | Parametrii proiecției stereografice ai produselor PGDA | De citit din fișiere | E05 |
-| D-07 | GEO | Care sunt cele două situri polare demonstrative? | **DESCHISĂ, fără alegere documentată a colegilor.** Candidați neconfirmați, cu surse, avantaje și limite în `demo_site_selection` (catalog): IM-2 „Athena” (84,79°S) și IM-1 „Odysseus” (80,13°S). Niciunul nu se află în mozaicul de 5 m/pixel 87–90°S; acoperirea DEM de 5 m nu este stabilită. Punctul „Shackleton Connecting Ridge” al prototipului este exclus (locație dintr-un studiu termic) | E04 (închidere), E05 |
+| D-07 | GEO | Care sunt cele două situri polare demonstrative? | **DESCHISĂ.** IM-1/IM-2 retrase la cererea utilizatorului; lista activă de candidați este goală. Sunt necesare poziții citabile și verificarea DEM pentru alte situri. | E04 (închidere), E05 |
 | D-08 | GEO | Ce produs îndepărtat și ce rază de căutare folosim la orizont? | Produs LOLA GDR polar; ales prin convergență | E09 |
 | D-09 | GEO, ASTRO | Pasul azimutal și pasul radial ale orizontului | Alese prin convergență | E09 |
-| D-10 | GEO | Conținutul catalogului și sursele pozițiilor; tratarea cadrelor istorice | **Implementat ca propunere, neconfirmat de geografi**: 12 intrări verificate la documentele originale (produs PDS LROC actual ca sursă primară). Cadrul: nicio sursă nu numește realizarea (DE); adoptarea ca `MOON_ME_DE440_ME421` este o ipoteză consemnată în fiecare intrare. Fără regiuni candidate; ținte planificate numerice numai pentru Chandrayaan-3 | E04 (închidere) |
+| D-10 | GEO | Conținutul catalogului și sursele pozițiilor; tratarea cadrelor istorice | **Implementat ca propunere, neconfirmat de geografi**: 10 intrări active verificate la documentele originale (produs PDS LROC actual ca sursă primară). Cadrul: nicio sursă nu numește realizarea (DE); adoptarea ca `MOON_ME_DE440_ME421` este o ipoteză consemnată în fiecare intrare. Fără regiuni candidate; ținte planificate numerice numai pentru Chandrayaan-3 | E04 (închidere) |
 | D-11 | GEO | Textura globului și fundalurile 2D; texte de creditare | Mozaicul LROC WAC; umbrirea PGDA | E05 |
 | D-12 | ASTRO, GEO | Toleranțele T-01 – T-09 | T-04, T-05 stabilite (E02). **T-02 (0,1 km) și T-03 (0,001°) confirmate (comunicat)**. **T-01 deschis**: 0,001° (propus) sau ≤ 1·10⁻⁵° (recomandat). T-06–T-09 neconfirmate | E03 (T-01); E09–E10 |
 | D-13 | ASTRO | Intervalele demonstrației (date de început, durată) | Intervale cu evenimente pentru ambele corpuri | E15 |

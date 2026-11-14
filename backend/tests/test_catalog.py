@@ -57,10 +57,11 @@ def test_catalog_validates_for_pydantic_and_json_schema() -> None:
 
 def test_expected_minimal_content() -> None:
     ids = [site.id for site in CATALOG.sites]
-    assert len(ids) == len(set(ids)) == 12
+    assert len(ids) == len(set(ids)) == 10
     assert all(re.fullmatch(r"[a-z0-9][a-z0-9_.-]{0,63}", i) for i in ids)
     assert set(APOLLO_IDS) <= set(ids)
-    assert {"im1_odysseus", "im2_athena", "blueghost1_lander"} <= set(ids)  # CLPS
+    assert "blueghost1_lander" in ids  # CLPS
+    assert {"im1_odysseus", "im2_athena"}.isdisjoint(ids)
     assert {"chandrayaan3_vikram", "change4_lander"} <= set(ids)  # internațional
     assert {s.country for s in CATALOG.sites} >= {"United States", "India", "China"}
 
@@ -99,7 +100,7 @@ def test_planned_target_and_actual_position_are_distinct_linked_entries() -> Non
 
 
 def test_named_only_targets_are_not_invented_as_coordinates() -> None:
-    for site_id in ("im1_odysseus", "im2_athena", "blueghost1_lander"):
+    for site_id in ("blueghost1_lander",):
         site = get_site(CATALOG, site_id)
         assert site.planned_target_note is not None
         assert "coordonate numerice" in site.planned_target_note
@@ -113,17 +114,6 @@ def test_no_region_or_representative_point_is_presented_as_a_landing() -> None:
         assert site.geometry_type == "point"
         assert site.position_kind != "representative_point"
         assert site.region is None
-
-
-def test_outdated_im2_target_is_documented_as_superseded() -> None:
-    im2 = get_site(CATALOG, "im2_athena")
-    assert im2.planned_target_note is not None
-    assert "Mons Mouton" in im2.planned_target_note
-    assert "Shackleton Connecting Ridge" in im2.planned_target_note
-    assert "nu mai descrie planul" in im2.planned_target_note
-    quotes = [s.quote or "" for s in im2.position_sources]
-    assert any("Shackleton Connecting Ridge" in q for q in quotes)
-    assert any("Mons Mouton" in q for q in quotes)
 
 
 # --- Zero, necunoscut ------------------------------------------------------------------------
@@ -140,7 +130,7 @@ def test_unknown_is_null_not_zero() -> None:
     ce4 = get_site(CATALOG, "change4_lander")
     assert ce4.agency is None and ce4.operator is None
     for site in CATALOG.sites:
-        assert site.landing_date_utc is None or site.id == "im1_odysseus"
+        assert site.landing_date_utc is None
         assert site.terrain_available is False  # relieful real nu este verificat înainte de E05
 
 
@@ -179,7 +169,7 @@ def test_pds_product_sources_are_hashed_and_dated() -> None:
         for s in site.position_sources
         if "OBJECT_ID=" in (s.identifier or "")
     ]
-    assert len(pds_sources) == 11  # toate pozițiile efective; ținta ISRO are altă sursă
+    assert len(pds_sources) == 9  # toate pozițiile efective; ținta ISRO are altă sursă
     assert {s.file_sha256 for s in pds_sources} == {PDS_ZIP_SHA256}
     assert all("2026-08-14" in (s.version_or_update or "") for s in pds_sources)
 
@@ -239,8 +229,6 @@ def test_corroborating_sources_agree_within_the_documented_bound() -> None:
             worst[site.id] = max(worst.get(site.id, 0.0), distance)
             assert distance <= CORROBORATION_BOUND_M, (site.id, source.url, distance)
     assert worst["apollo11_lm"] < 0.01  # aceeași valoare în produs și în tabelul din 2016
-    assert worst["im1_odysseus"] > 50.0  # rotunjirea la 2 zecimale este vizibilă
-    assert "rotunj" in get_site(CATALOG, "im1_odysseus").adoption_note
 
 
 def test_differences_between_sources_are_kept_not_averaged() -> None:
@@ -285,10 +273,7 @@ def test_demo_selection_is_unconfirmed_and_candidates_are_documented() -> None:
     assert selection.decision_id == "D-07"
     assert selection.status == "unconfirmed"
     assert selection.confirmed_site_ids == []
-    assert [c.site_id for c in selection.candidates] == ["im2_athena", "im1_odysseus"]
-    for candidate in selection.candidates:
-        assert candidate.advantages and candidate.limits
-        assert any("5 m" in limit and "E05" in limit for limit in candidate.limits)
+    assert selection.candidates == []
     assert "Shackleton Connecting Ridge" in " ".join(e.label for e in selection.excluded)
     assert "studiu termic" in " ".join(e.reason for e in selection.excluded)
 
@@ -334,10 +319,14 @@ def test_planned_target_rules() -> None:
 
 def test_duplicate_ids_and_unknown_candidates_are_rejected() -> None:
     _rejects(lambda d: _site(d, "apollo12_lm").update(id="apollo11_lm"))
-    _rejects(lambda d: d["demo_site_selection"]["candidates"][0].update(site_id="inexistent"))
     _rejects(
-        lambda d: d["demo_site_selection"]["candidates"][0].update(
-            site_id="chandrayaan3_planned_target"
+        lambda d: d["demo_site_selection"]["candidates"].append(
+            dict(site_id="inexistent", advantages=["test"], limits=["test"])
+        )
+    )
+    _rejects(
+        lambda d: d["demo_site_selection"]["candidates"].append(
+            dict(site_id="chandrayaan3_planned_target", advantages=["test"], limits=["test"])
         )
     )
 
@@ -367,10 +356,14 @@ def test_unframed_values_and_unknown_fields_are_rejected() -> None:
 
 def test_source_verification_report_covers_the_catalog_and_has_no_failures() -> None:
     report = read_json(REPO_ROOT / "data" / "catalog" / "source_verification.json")
-    assert report["catalog_version"] == CATALOG.catalog_version
+    # Archived verification predates the user-requested removal; no new network claim.
+    assert report["catalog_version"] == "e04-2026-11-14"
+    assert CATALOG.catalog_version == "e04-2026-11-14-without-im"
     assert report["summary"]["failures"] == 0
     assert report["summary"]["inaccessible"] == 0
-    assert {r["site_id"] for r in report["results"]} == {s.id for s in CATALOG.sites}
+    assert {r["site_id"] for r in report["results"]} == (
+        {s.id for s in CATALOG.sites} | {"im1_odysseus", "im2_athena"}
+    )
     pds = [x for r in report["results"] for x in r["sources"] if x["kind"] == "pds_product"]
     assert len(pds) == 11 and all(not x["checks"] for x in pds)
     assert report["pds_zip_sha256"] == PDS_ZIP_SHA256

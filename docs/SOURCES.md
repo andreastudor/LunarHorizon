@@ -160,3 +160,24 @@ de container (E16).
 - Textele exacte de creditare pentru LROC WAC, LOLA, PGDA și NAIF.
 - Sursele fiecărei poziții din catalog.
 - Configurația și data fiecărei interogări Horizons.
+
+## Sursă secundară autorizată: Ahammad204/Nasa-moon
+
+Consultat la 2026-11-14: https://github.com/Ahammad204/Nasa-moon,
+README.md și src/data/sites.json (ramura main; conținutul acestei ramuri se poate schimba).
+Proiect educațional independent, nu produs NASA. README declară cod MIT și calcule geometrice fără relief.
+Nu este dovadă de acoperire DEM și nu înlocuiește datele de elevație cerute de E05.
+Fișierul sites.json are 14 intrări; 11 nu au coordonate. Cele trei piste numerice sunt:
+
+| Pistă | Latitudine / longitudine est (grade), conform repository-ului | Sursa primară indicată; verificare în acest proiect |
+|---|---|---|
+| Malapert Massif | -85.99 / -2.93 | https://science.nasa.gov/image-detail/20100618/ ; neefectuată |
+| Mons Mouton | -84.6 / 31.0 | https://planetarynames.wr.usgs.gov/Feature/16070 ; neefectuată |
+| Shackleton | -89.67 / 129.78 | https://planetarynames.wr.usgs.gov/Feature/5450 ; neefectuată |
+
+Acestea sunt poziții aproximative de regiune/centre de formațiuni, nu poziții de aterizare validate.
+Centrul craterului Shackleton nu reprezintă automat un punct pe marginea craterului.
+Lista Artemis din repository este etichetată 2022; nu se tratează drept geometria regiunilor din 2024.
+Datele sunt consemnate ca piste; nu au fost importate în catalogul activ și nu s-a copiat cod.
+Înainte de adoptare: verificare la sursa primară, cadru, extindere DEM, pixeli valizi/NoData,
+suprafață necesară pentru orizont și criteriile de comparație D-07.

@@ -31,15 +31,18 @@ def valid_elevation(pixel: Any) -> float | None:
 
 
 def main() -> int:
+    catalog = json.loads((ROOT / "data/catalog/sites.json").read_text(encoding="utf-8"))
+    candidate_ids = {c["site_id"] for c in catalog["demo_site_selection"]["candidates"]}
+    candidates = [s for s in catalog["sites"] if s["id"] in candidate_ids]
+    if not candidate_ids or len(candidates) != len(candidate_ids):
+        raise ValueError(
+            "Select documented catalog candidates before checking PGDA coverage"
+        )
     with urllib.request.urlopen(URL, timeout=45) as response:
         page = response.read()
     urls = sorted(set(re.findall(r'https[^"<> ]+surf\.tif', page.decode("utf-8"))))
     if not urls:
         raise ValueError("PGDA page contains no surface GeoTIFF links")
-    catalog = json.loads((ROOT / "data/catalog/sites.json").read_text(encoding="utf-8"))
-    candidates = [s for s in catalog["sites"] if s["id"] in ("im1_odysseus", "im2_athena")]
-    if {s["id"] for s in candidates} != {"im1_odysseus", "im2_athena"} or len(candidates) != 2:
-        raise ValueError("Catalog must contain both candidate sites exactly once")
     report: dict[str, Any] = {
         "checked_at_utc": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         "source_url": URL,
@@ -92,9 +95,13 @@ def main() -> int:
                             "elevation_m": None,
                         }
                         if inside:
-                            pixel = ds.read(1, window=Window(col, row, 1, 1), masked=True)
+                            pixel = ds.read(
+                                1, window=Window(col, row, 1, 1), masked=True
+                            )
                             elevation = valid_elevation(pixel)
-                            result.update(valid_pixel=elevation is not None, elevation_m=elevation)
+                            result.update(
+                                valid_pixel=elevation is not None, elevation_m=elevation
+                            )
                         item["candidates"].append(result)
                 print(url.split("/")[-2], item["candidates"], flush=True)
             except (OSError, ValueError, rasterio.errors.RasterioError) as exc:

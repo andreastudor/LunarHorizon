@@ -81,19 +81,11 @@ Criterii propuse:
 Candidați din lista PGDA 78: „Connecting ridge” (Site01), „Shackleton rim” (Site04), „de Gerlache rim” (Site11),
 „Peak near Shackleton” (Site07). Coordonatele lor nu apar pe pagină și se iau din fișiere.
 
-**Stare la E04:** D-07 nu este decisă de colegi. Candidații documentați (neconfirmați) sunt IM-2 „Athena” și IM-1
-„Odysseus” (vezi `demo_site_selection` în `data/catalog/sites.json`). Punctul „Shackleton Connecting Ridge” folosit de
-un prototip este locația unui turn dintr-un studiu termic NASA, nu un sit; nu este candidat. Nicio intrare din
-catalog nu se află în mozaicul de 5 m/pixel 87–90°S, deci criteriul 1 nu este îndeplinit decât dacă un DEM PGDA 78
-acoperă IM-1 sau IM-2 (de verificat la E05).
-
-**Investigație preliminară:** șase DEM-uri PGDA 78 au fost inspectate numai prin metadate și nu conțin niciunul
-dintre cele două puncte; celelalte 21 sunt neconfirmate după HTTP 403. Dovezi și limitări în [VALIDARE.md](VALIDARE.md)
-§7.7. Produsul PGDA 104 indicat în [SOURCES.md](SOURCES.md) oferă o altă cale de explorare la 5 m/pixel, dar nu este
-un substitut aprobat pentru produsele 78/81, iar acoperirea sa nu a fost verificată.
-
-Studiul de caz IM-2 menționat în specificație cere verificarea separată a poziției de aterizare și a
-acoperirii DEM pentru acea zonă. Nu se presupune că se află în produsele de mai sus.
+**Decizie utilizator, 2026-11-14:** IM-1 și IM-2 au fost eliminate din catalog și din selecția D-07.
+Nu există încă situri polare active sau candidați confirmați. Criteriile de mai sus rămân de evaluat.
+Rapoartele PGDA 78/104 pentru cele două poziții retrase sunt dovezi istorice, nu blocaje ale viitoarei selecții.
+Repository-ul Ahammad204/Nasa-moon poate furniza piste și surse pentru alte situri (vezi SOURCES).
+Coordonatele sale aproximative trebuie verificate la sursa originală și în DEM înainte de adoptare.
 
 ### 3.2. Catalogul
 
@@ -105,8 +97,8 @@ documentele originale, nu și vizual de geografi. Sursa primară a pozițiilor e
 | Categorie | Conținut vizat | Sursa pozițiilor |
 |---|---|---|
 | Apollo | Cele șase situri de aterizare (modulul lunar) | Implementat: produs PDS LROC; coroborare cu tabelul LROC din 2016 |
-| Polare | IM-1 și IM-2 (poziții efective); candidați D-07 neconfirmați | Implementat: produs PDS LROC și pagini LROC/NASA. Regiunile candidate nu sunt incluse |
-| CLPS | IM-1, IM-2, Blue Ghost 1; ținta planificată doar ca regiune numită | Implementat: produs PDS LROC; kituri de presă NASA CLPS |
+| Polare | De ales; catalogul activ nu conține situri polare | D-07 rămâne deschisă |
+| CLPS | Blue Ghost 1; ținta planificată doar ca regiune numită | Implementat: produs PDS LROC; kituri de presă NASA CLPS |
 | Alte țări | Chandrayaan-3 (poziție efectivă și țintă planificată ISRO), Chang'e 4 | Implementat: produs PDS LROC; pagina ISRO pentru țintă |
 
 **[GEO] D-10.** Nicio coordonată nu intră în catalog fără URL, data accesării și cadrul din sursă. Coordonatele

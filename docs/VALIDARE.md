@@ -1,5 +1,15 @@
 # Validare — toleranțe, rezultate și probleme
 
+## Actualizare 2026-11-14: retragerea IM-1 și IM-2
+
+La cererea utilizatorului, IM-1 și IM-2 au fost eliminate din catalogul activ și din candidații D-07.
+Catalogul are **10 intrări: 9 poziții efective și o țintă planificată**, inclusiv un singur sit CLPS (Blue Ghost 1).
+Nu există încă un sit polar activ; selecția demonstrativă este goală și neconfirmată. E04, D-07 și D-10 rămân deschise.
+E05 nu a început. Referințele la cele două situri în rapoartele și verificările precedente sunt istorice.
+Rapoartele JSON arhivate rămân nemodificate: versiunea/hash-ul catalogului lor se referă la catalogul anterior,
+nu la cel activ. Nu s-a efectuat o nouă reverificare în rețea a celor 10 poziții rămase.
+
+
 Cerințele vin din [SPECIFICATIE.md](SPECIFICATIE.md) §14. Acest document are trei roluri: fixează toleranțele
 înaintea implementării fiecărui modul, descrie testele și consemnează rezultatele obținute efectiv.
 
@@ -366,3 +376,9 @@ respectiv 83–90°S la 10 m/pixel. Pe baza latitudinilor catalogului, IM-1 și 
 iar IM-2 și în cea de 10 m; extinderea reală, pixelii și NoData nu au fost inspectate. Nici 10 m, nici 20 m nu
 îndeplinesc criteriul propus D-07 de 5 m/pixel. Produsele rămân eventuale surse pentru teren îndepărtat, după
 verificarea compatibilității și decizia D-08; nu se aprobă relaxarea criteriilor.
+
+### Verificări după retragerea IM-1/IM-2
+
+288 de teste backend au trecut; Ruff și mypy au trecut (45 fișiere sursă pentru mypy).
+Un test specific țintei IM-2 a fost eliminat odată cu intrarea; celelalte teste au fost adaptate
+la cele 10 situri și la raportul istoric păstrat. Nu s-au efectuat verificări DEM sau vizuale noi.

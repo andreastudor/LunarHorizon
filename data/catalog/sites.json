@@ -1,6 +1,6 @@
 {
   "schema_version": "0.3.0",
-  "catalog_version": "e04-2026-11-14",
+  "catalog_version": "e04-2026-11-14-without-im",
   "sites": [
     {
       "id": "apollo11_lm",
@@ -532,257 +532,6 @@
       "terrain_available": false
     },
     {
-      "id": "im1_odysseus",
-      "name": "IM-1 „Odysseus” (Intuitive Machines Nova-C)",
-      "mission": "IM-1 (CLPS)",
-      "agency": "NASA (CLPS)",
-      "operator": "Intuitive Machines",
-      "country": "United States",
-      "status": "landed",
-      "mission_status": "landed",
-      "geometry_type": "point",
-      "position_kind": "actual",
-      "latitude_deg": -80.1276,
-      "longitude_deg": 1.4367,
-      "frame_id": "MOON_ME_DE440_ME421",
-      "original_coordinates": {
-        "latitude_deg": -80.1276,
-        "longitude_deg": 1.4367,
-        "frame_description": "GCS_Moon_2000 / D_Moon_2000 / SPHEROID Moon_2000_IAU_IAG, R = 1 737 400 m, PRIMEM Reference_Meridian 0° (fișierul .PRJ). Produsul nu numește sistemul ME și nu numește o realizare (DE).",
-        "note": "Câmpul LONGITUDE (domeniul −180…180, est pozitiv); LON_360 = 1.4367. COORD_SRC: NAC DTM"
-      },
-      "horizontal_uncertainty_m": 10.0,
-      "elevation_m": 2580.4,
-      "elevation_reference": "Înălțime față de sfera GCS_Moon_2000 (R = 1 737 400 m), calculată din câmpul RADIUS al produsului PDS (RADIUS − 1 737 400 m); sursa câmpului RADIUS: NAC DTM",
-      "region": null,
-      "landing_date_utc": "2024-02-22T23:23:53Z",
-      "related_site_id": null,
-      "planned_target_note": "Ținta planificată: „aproape de craterul Malapert A” (regiune numită, kit de presă NASA CLPS IM-1, ianuarie 2024). Sursele consultate nu publică coordonate numerice pentru țintă.",
-      "source_url": "https://data.lroc.im-ldi.com/lroc/view_rdr/SHAPEFILE_ANTHROPOGENIC_OBJECTS",
-      "accessed_at": "2026-11-14",
-      "position_sources": [
-        {
-          "used_for": "position",
-          "institution": "LROC (NASA/GSFC/Arizona State University)",
-          "title": "Anthropogenic (man-made) Features on the Moon — shapefile ANTHROPOGENIC_OBJECTS_180",
-          "url": "https://data.lroc.im-ldi.com/lroc/view_rdr/SHAPEFILE_ANTHROPOGENIC_OBJECTS",
-          "identifier": "LRO-L-LROC-5-RDR-V1.0 / LROLRC_2001 / EXTRAS/SHAPEFILE/ANTHROPOGENIC_OBJECTS; OBJECT_ID=IM1",
-          "version_or_update": "Last updated: 2026-08-14 (README.TXT; fișierele ZIP dau aceeași dată)",
-          "published": null,
-          "accessed_at": "2026-11-14",
-          "locator": "ANTHROPOGENIC_OBJECTS_180.ZIP → ANTHROPOGENIC_OBJECTS_180.DBF, înregistrarea OBJECT_ID=IM1 (LATITUDE, LONGITUDE, UNCERTAIN, COORD_SRC)",
-          "access": "opened_original",
-          "coordinates": {
-            "latitude_deg": -80.1276,
-            "longitude_deg": 1.4367,
-            "frame_description": "GCS_Moon_2000 / D_Moon_2000 / SPHEROID Moon_2000_IAU_IAG, R = 1 737 400 m, PRIMEM Reference_Meridian 0° (fișierul .PRJ). Produsul nu numește sistemul ME și nu numește o realizare (DE).",
-            "note": "Câmpul LONGITUDE (domeniul −180…180, est pozitiv); LON_360 = 1.4367. COORD_SRC: NAC DTM"
-          },
-          "declared_frame": "GCS_Moon_2000 (sferă IAU/IAG, R = 1 737 400 m)",
-          "frame_realization_stated": false,
-          "published_uncertainty_m": 10.0,
-          "uncertainty_definition": "Câmpul UNCERTAIN: „Uncertainty of the coordinates in meters” (README); metoda și nivelul de încredere nu sunt definite în README",
-          "quote": "OBJECT_ID IM1: LATITUDE -80.1276, LONGITUDE 1.4367, UNCERTAIN 10.0, COORD_SRC \"NAC DTM\", DATE 20240222",
-          "file_sha256": "f0145e0b8871053f3358c599d356a5af05db70e4da2fe8c91264e84b98e4408b"
-        },
-        {
-          "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
-          "title": "Intuitive Machines IM-1 On The Moon!",
-          "url": "https://lroc.im-ldi.com/images/1360",
-          "identifier": "LROC NAC M1463440322L (imagine după aterizare)",
-          "version_or_update": null,
-          "published": "Published by Mark Robinson on 26 February 2024",
-          "accessed_at": "2026-11-14",
-          "locator": "textul paginii, paragraful despre poziția de repaus",
-          "access": "opened_original",
-          "coordinates": {
-            "latitude_deg": -80.13,
-            "longitude_deg": 1.44,
-            "frame_description": "nedeclarat în text",
-            "note": "Valori rotunjite la două zecimale"
-          },
-          "declared_frame": null,
-          "frame_realization_stated": false,
-          "published_uncertainty_m": null,
-          "uncertainty_definition": null,
-          "quote": "Odysseus came to rest at 80.13°S, 1.44°E , 2579 m elevation, within a degraded one-kilometer diameter crater where the local terrain is sloped at a sporty 12°.",
-          "file_sha256": null
-        },
-        {
-          "used_for": "corroboration",
-          "institution": "NASA (Goddard Digital Team)",
-          "title": "NASA’s LRO Images Intuitive Machine’s Odysseus Lander",
-          "url": "https://www.nasa.gov/missions/lro/nasas-lro-images-intuitive-machines-odysseus-lander/",
-          "identifier": null,
-          "version_or_update": null,
-          "published": "Feb 26, 2024",
-          "accessed_at": "2026-11-14",
-          "locator": "textul articolului, legenda imaginii și paragraful următor",
-          "access": "opened_original",
-          "coordinates": {
-            "latitude_deg": -80.13,
-            "longitude_deg": 1.44,
-            "frame_description": "nedeclarat în text",
-            "note": "„80.13 degrees south latitude, 1.44 degrees east longitude”"
-          },
-          "declared_frame": null,
-          "frame_realization_stated": false,
-          "published_uncertainty_m": null,
-          "uncertainty_definition": null,
-          "quote": "Odysseus landed at 80.13 degrees south latitude, 1.44 degrees east longitude, at an elevation of 8,461 feet (2,579 meters).",
-          "file_sha256": null
-        },
-        {
-          "used_for": "mission_context",
-          "institution": "NASA (JSC), Commercial Lunar Payload Services",
-          "title": "Commercial Lunar Payload Services Intuitive Machines IM-1 Mission Press Kit",
-          "url": "https://www.nasa.gov/wp-content/uploads/2024/01/np-2023-12-016-jsc-clps-im-press-kit-web-508.pdf",
-          "identifier": "np-2023-12-016-jsc-clps-im-press-kit-web-508",
-          "version_or_update": "PDF: creat 2024-01-31 (metadate); Last-Modified HTTP 2024-01-31",
-          "published": null,
-          "accessed_at": "2026-11-14",
-          "locator": "pagina 6, „IM-1 Landing Site”",
-          "access": "opened_original",
-          "coordinates": null,
-          "declared_frame": null,
-          "frame_realization_stated": false,
-          "published_uncertainty_m": null,
-          "uncertainty_definition": null,
-          "quote": "The IM-1 Nova-C lander, named Odysseus in homage to the Greek hero of The Odyssey, intends to land near the Malapert A crater in the South Pole region.",
-          "file_sha256": null
-        }
-      ],
-      "position_verification": "verified_at_original",
-      "adoption_note": "Adoptat: valorile din produsul PDS (-80.1276, 1.4367), mai precise și mai noi decât cele rotunjite din paginile LROC și NASA (-80.13, 1.44), cu care sunt compatibile în limita rotunjirii (±0,005°). Prototipul separat folosea valorile rotunjite. Altitudinea derivată din RADIUS (2580,4 m) diferă cu 1,4 m de valoarea rotunjită publicată de pagini (2579 m). Cadru: coordonatele sunt adoptate ca MOON_ME_DE440_ME421 PRIN IPOTEZĂ. Produsul actual declară numai GCS_Moon_2000 (sferă de 1 737 400 m, ca în proiect); pagina LROC din 2016 declară ME fără realizare. NAIF raportează între realizările ME DE421 și DE440 o diferență de ordinul unui metru (≈ 0,5–1 m); ipoteza nu a fost verificată și nu a fost confirmată de colegii de geografie (D-10).",
-      "description_ro": "Aterizare CLPS în regiunea polului sud, într-un crater degradat de ~1 km cu pantă locală de ~12° (LROC). Poziția efectivă; ținta planificată este doar o regiune numită.",
-      "description_en": null,
-      "terrain_available": false
-    },
-    {
-      "id": "im2_athena",
-      "name": "IM-2 „Athena” (Intuitive Machines Nova-C)",
-      "mission": "IM-2 (CLPS)",
-      "agency": "NASA (CLPS)",
-      "operator": "Intuitive Machines",
-      "country": "United States",
-      "status": "landed",
-      "mission_status": "landed",
-      "geometry_type": "point",
-      "position_kind": "actual",
-      "latitude_deg": -84.7906,
-      "longitude_deg": 29.19567,
-      "frame_id": "MOON_ME_DE440_ME421",
-      "original_coordinates": {
-        "latitude_deg": -84.7906,
-        "longitude_deg": 29.19567,
-        "frame_description": "GCS_Moon_2000 / D_Moon_2000 / SPHEROID Moon_2000_IAU_IAG, R = 1 737 400 m, PRIMEM Reference_Meridian 0° (fișierul .PRJ). Produsul nu numește sistemul ME și nu numește o realizare (DE).",
-        "note": "Câmpul LONGITUDE (domeniul −180…180, est pozitiv); LON_360 = 29.19567. COORD_SRC: NAC DTM"
-      },
-      "horizontal_uncertainty_m": 5.0,
-      "elevation_m": 5321.38,
-      "elevation_reference": "Înălțime față de sfera GCS_Moon_2000 (R = 1 737 400 m), calculată din câmpul RADIUS al produsului PDS (RADIUS − 1 737 400 m); sursa câmpului RADIUS: NAC DTM",
-      "region": null,
-      "landing_date_utc": null,
-      "related_site_id": null,
-      "planned_target_note": "Ținta planificată: „Mons Mouton” (kit de presă NASA CLPS IM-2, 25 februarie 2025), fără coordonate numerice. Kitul NASA IM-1 din 31 ianuarie 2024 listase pentru IM-2 „Shackleton Connecting Ridge”; denumirea veche nu mai descrie planul misiunii.",
-      "source_url": "https://data.lroc.im-ldi.com/lroc/view_rdr/SHAPEFILE_ANTHROPOGENIC_OBJECTS",
-      "accessed_at": "2026-11-14",
-      "position_sources": [
-        {
-          "used_for": "position",
-          "institution": "LROC (NASA/GSFC/Arizona State University)",
-          "title": "Anthropogenic (man-made) Features on the Moon — shapefile ANTHROPOGENIC_OBJECTS_180",
-          "url": "https://data.lroc.im-ldi.com/lroc/view_rdr/SHAPEFILE_ANTHROPOGENIC_OBJECTS",
-          "identifier": "LRO-L-LROC-5-RDR-V1.0 / LROLRC_2001 / EXTRAS/SHAPEFILE/ANTHROPOGENIC_OBJECTS; OBJECT_ID=IM2",
-          "version_or_update": "Last updated: 2026-08-14 (README.TXT; fișierele ZIP dau aceeași dată)",
-          "published": null,
-          "accessed_at": "2026-11-14",
-          "locator": "ANTHROPOGENIC_OBJECTS_180.ZIP → ANTHROPOGENIC_OBJECTS_180.DBF, înregistrarea OBJECT_ID=IM2 (LATITUDE, LONGITUDE, UNCERTAIN, COORD_SRC)",
-          "access": "opened_original",
-          "coordinates": {
-            "latitude_deg": -84.7906,
-            "longitude_deg": 29.19567,
-            "frame_description": "GCS_Moon_2000 / D_Moon_2000 / SPHEROID Moon_2000_IAU_IAG, R = 1 737 400 m, PRIMEM Reference_Meridian 0° (fișierul .PRJ). Produsul nu numește sistemul ME și nu numește o realizare (DE).",
-            "note": "Câmpul LONGITUDE (domeniul −180…180, est pozitiv); LON_360 = 29.19567. COORD_SRC: NAC DTM"
-          },
-          "declared_frame": "GCS_Moon_2000 (sferă IAU/IAG, R = 1 737 400 m)",
-          "frame_realization_stated": false,
-          "published_uncertainty_m": 5.0,
-          "uncertainty_definition": "Câmpul UNCERTAIN: „Uncertainty of the coordinates in meters” (README); metoda și nivelul de încredere nu sunt definite în README",
-          "quote": "OBJECT_ID IM2: LATITUDE -84.7906, LONGITUDE 29.19567, UNCERTAIN 5.0, COORD_SRC \"NAC DTM\", DATE 20250306",
-          "file_sha256": "f0145e0b8871053f3358c599d356a5af05db70e4da2fe8c91264e84b98e4408b"
-        },
-        {
-          "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University)",
-          "title": "IM2: Flip Book (featured site)",
-          "url": "https://lroc.im-ldi.com/featured_sites/im2/flip-book",
-          "identifier": null,
-          "version_or_update": null,
-          "published": null,
-          "accessed_at": "2026-11-14",
-          "locator": "textul paginii, primul paragraf",
-          "access": "opened_original",
-          "coordinates": {
-            "latitude_deg": -84.7906,
-            "longitude_deg": 29.1957,
-            "frame_description": "nedeclarat în text",
-            "note": "„84.7906°S, 29.1957°E”, 5321 m elevație"
-          },
-          "declared_frame": null,
-          "frame_realization_stated": false,
-          "published_uncertainty_m": null,
-          "uncertainty_definition": null,
-          "quote": "On 6 March 2025, Athena landed in an off-nominal orientation (84.7906°S, 29.1957°E, 5321 meters elevation) in a 20-meter-diameter crater.",
-          "file_sha256": null
-        },
-        {
-          "used_for": "mission_context",
-          "institution": "NASA (JSC), Commercial Lunar Payload Services",
-          "title": "Commercial Lunar Payload Services Intuitive Machines-2 Lunar Mission Press Kit",
-          "url": "https://www.nasa.gov/wp-content/uploads/2025/02/np-2025-02-005-jsc-clps-intuitive-machines-press-kit-508-2-25-25.pdf",
-          "identifier": "np-2025-02-005-jsc-clps-intuitive-machines-press-kit-508-2-25-25",
-          "version_or_update": "PDF: creat 2025-02-25 (metadate); Last-Modified HTTP 2025-02-25",
-          "published": null,
-          "accessed_at": "2026-11-14",
-          "locator": "pagina 3 și pagina 4, „IM-2 Landing Site”",
-          "access": "opened_original",
-          "coordinates": null,
-          "declared_frame": null,
-          "frame_realization_stated": false,
-          "published_uncertainty_m": null,
-          "uncertainty_definition": null,
-          "quote": "Intuitive Machines’ Nova-C lander will land at Mons Mouton, a lunar plateau near the Moon’s South Pole.",
-          "file_sha256": null
-        },
-        {
-          "used_for": "mission_context",
-          "institution": "NASA (JSC), Commercial Lunar Payload Services",
-          "title": "Commercial Lunar Payload Services Intuitive Machines IM-1 Mission Press Kit (listă de situri CLPS, stare din ianuarie 2024)",
-          "url": "https://www.nasa.gov/wp-content/uploads/2024/01/np-2023-12-016-jsc-clps-im-press-kit-web-508.pdf",
-          "identifier": "np-2023-12-016-jsc-clps-im-press-kit-web-508",
-          "version_or_update": "PDF: creat 2024-01-31 (metadate)",
-          "published": null,
-          "accessed_at": "2026-11-14",
-          "locator": "pagina 7, „COMMERCIAL LUNAR PAYLOAD SERVICES LANDING SITES”",
-          "access": "opened_original",
-          "coordinates": null,
-          "declared_frame": null,
-          "frame_realization_stated": false,
-          "published_uncertainty_m": null,
-          "uncertainty_definition": null,
-          "quote": "Intuitive Machines IM-2 LANDING SITE: Shackleton Connecting Ridge",
-          "file_sha256": null
-        }
-      ],
-      "position_verification": "verified_at_original",
-      "adoption_note": "Adoptat: valorile din produsul PDS (-84.7906, 29.19567); pagina LROC dă -84.7906, 29.1957 (rotunjire la a patra zecimală), deci diferență sub 0,5 m. Altitudinea derivată din RADIUS (5321,38 m) coincide cu cea publicată (5321 m). Landerul a ajuns în orientare off-nominal; poziția este a vehiculului în repaus, nu a țintei. Cadru: coordonatele sunt adoptate ca MOON_ME_DE440_ME421 PRIN IPOTEZĂ. Produsul actual declară numai GCS_Moon_2000 (sferă de 1 737 400 m, ca în proiect); pagina LROC din 2016 declară ME fără realizare. NAIF raportează între realizările ME DE421 și DE440 o diferență de ordinul unui metru (≈ 0,5–1 m); ipoteza nu a fost verificată și nu a fost confirmată de colegii de geografie (D-10).",
-      "description_ro": "Aterizare CLPS pe Mons Mouton, în apropierea polului sud; landerul s-a oprit în orientare off-nominal într-un crater de ~20 m (LROC).",
-      "description_en": null,
-      "terrain_available": false
-    },
-    {
       "id": "blueghost1_lander",
       "name": "Blue Ghost Mission 1 (Firefly Aerospace)",
       "mission": "Blue Ghost Mission 1 (CLPS)",
@@ -1122,32 +871,7 @@
     "decision_id": "D-07",
     "status": "unconfirmed",
     "confirmed_site_ids": [],
-    "candidates": [
-      {
-        "site_id": "im2_athena",
-        "advantages": [
-          "Poziție efectivă publicată de LROC (NAC DTM), cu incertitudine publicată de 5 m, în regiunea polului sud (84,79°S).",
-          "Ținta (Mons Mouton) și poziția efectivă sunt documentate separat; landerul a fost localizat într-un crater de ~20 m."
-        ],
-        "limits": [
-          "Se află în afara mozaicului PGDA 87–90°S de 5 m/pixel; acoperirea DEM de 5 m nu este stabilită (de verificat la E05).",
-          "Landerul s-a oprit în orientare off-nominal; poziția este a vehiculului în repaus.",
-          "Criteriul de iluminare și vizibilitate a Pământului (DATA_PLAN §3.1, criteriul 2) nu a fost evaluat."
-        ]
-      },
-      {
-        "site_id": "im1_odysseus",
-        "advantages": [
-          "Poziție efectivă publicată de LROC (NAC DTM, incertitudine publicată 10 m), coroborată de LROC și NASA (80,13°S, 1,44°E).",
-          "Kitul NASA prezintă regiunea ca loc în care Pământul se află jos pe orizontul lunar, un contrast posibil față de IM-2."
-        ],
-        "limits": [
-          "Se află în afara mozaicului PGDA 87–90°S; acoperirea DEM de 5 m nu este stabilită (de verificat la E05).",
-          "Panta locală de ~12° într-un crater degradat de ~1 km (LROC); poziția pe versant este sensibilă la rezoluție.",
-          "Criteriul 2 nu a fost evaluat; afirmația despre Pământul jos pe orizont este a kitului NASA, nu o măsurătoare a proiectului."
-        ]
-      }
-    ],
+    "candidates": [],
     "excluded": [
       {
         "label": "„Shackleton Connecting Ridge”, punctul din prototip (-89,46752°, -138,012788°)",
@@ -1156,12 +880,20 @@
       {
         "label": "Regiunile candidate Artemis III din 2024",
         "reason": "Neincluse: nu a fost deschis un document oficial cu geometrie; prototipul avertizează că planul Artemis III s-a schimbat, deci un strat mai vechi poate păstra o țintă care nu mai descrie planul actual. Nu sunt prezentate ca poziții confirmate."
+      },
+      {
+        "label": "IM-1 Odysseus",
+        "reason": "Eliminat din catalog și din selecția demonstrativă la cererea utilizatorului, 2026-11-14. Rapoartele anterioare sunt păstrate numai ca istoric."
+      },
+      {
+        "label": "IM-2 Athena",
+        "reason": "Eliminat din catalog și din selecția demonstrativă la cererea utilizatorului, 2026-11-14. Rapoartele anterioare sunt păstrate numai ca istoric."
       }
     ],
     "criteria": [
       "DATA_PLAN §3.1, criteriul 1: acoperire de 5 m/pixel (mozaicul 87–90°S sau DEM de sit PGDA 78) — neverificat pentru candidați.",
       "DATA_PLAN §3.1, criteriul 2: condiții de iluminare și de vizibilitate a Pământului care diferă vizibil — neevaluat în E04.",
-      "DATA_PLAN §3.1, criteriul 3: nume și poziție cu sursă citabilă — îndeplinit pentru ambii candidați."
+      "DATA_PLAN §3.1, criteriul 3: nume și poziție cu sursă citabilă — de verificat pentru noii candidați."
     ]
   }
 }
