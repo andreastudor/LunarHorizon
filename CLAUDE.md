@@ -51,6 +51,7 @@ folosește explicit `py -3.13` (lansatorul `py` are implicit 3.15), nu Python-ul
 | Teste, lint, tipuri backend | `backend/` | `.venv\Scripts\python -m pytest`, `-m ruff check . ..\scripts`, `-m ruff format --check . ..\scripts`, `-m mypy` |
 | Verificarea mediului | rădăcină | `backend\.venv\Scripts\python scripts\check_env.py` (cu `PYTHONUTF8=1` pentru diacritice) |
 | Verificări frontend | `frontend/` | `npm run format:check`, `npm run lint`, `npm run contracts:check`, `npm run typecheck`, `npm test`, `npm run build` |
+| Test de browser (WebGL) | `frontend/` | `npm run test:e2e` (Playwright; pornește/reutilizează API și Vite; cere `globe.jpg` din E05; o dată: `npx playwright install chromium`) |
 | Catalog de situri | rădăcină | `backend\.venv\Scripts\python scripts\verify_catalog_sources.py [--write-report]` (rețea); testele offline sunt în `pytest` |
 | Kerneluri SPICE | rădăcină | `backend\.venv\Scripts\python scripts\download_kernels.py [--verify]`; testele `-m kernels` le cer |
 | Horizons | rădăcină | `scripts\query_horizons.py` (rețea, arhivează răspunsurile originale); `scripts\validate_e03.py` (fără rețea) |

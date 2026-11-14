@@ -15,7 +15,8 @@ E18 numai după P0. O etapă pe rând; următoarea etapă este **E08** (neîncep
   `idealized_local_plane` (fără efectele terenului local); `dem` este refuzat. Detalii: [API.md](API.md) §8.
 - E03 și E04 rămân deschise (D-02, T-01, D-07, D-10 etc.); nu au blocat implementarea tehnică E06.
 - **Schema 0.4.0:** azimut `null` cu motiv la zenit/nadir (commit separat).
-- **E07: implementare tehnică finalizată, verificată în Chrome; acceptare științifică restantă.** Interfața este în
+- **E07: încheiată tehnic** (inclusiv criteriul WebGL, prin testul Playwright `npm run test:e2e`); **acceptare
+  științifică restantă**. Interfața este în
   **engleză** (decizia utilizatorului; documentele de cerințe actualizate). Vezi STATUS, ACCEPTANCE, VALIDARE.
 
 ## Instalare, pornire, verificare
@@ -60,6 +61,8 @@ backend\.venv\Scripts\python scripts\generate_contracts.py --check
 backend\.venv\Scripts\python scripts\verify_e05.py   # cere datele E05 din data\_raw și data\_cache
 cd frontend
 npm.cmd run format:check; npm.cmd run lint; npm.cmd run contracts:check; npm.cmd run typecheck; npm.cmd test; npm.cmd run build
+npx.cmd playwright install chromium   # o singură dată
+npm.cmd run test:e2e                  # WebGL în Chromium headless; pornește/reutilizează API și Vite
 ```
 
 Cereri de probă (cu serverul pornit; `curl.exe` în PowerShell):
@@ -87,8 +90,8 @@ produs DEM în `health`/`coverage` numai dacă `data\_cache\terrain\leibnitz_bet
 - Azimutul nedefinit este `null` cu motiv din schema 0.4.0 și apare „Undefined” în interfață.
 - Cache-ul simulărilor este în memorie; limita duratei (366 de zile, D-20) și criteriile D-04/D-16 sunt provizorii.
 - Acoperirea orizontului, `d_max` și convergența țin de E09; al doilea sit și comparația, de E12.
-- E07 restant: niciun test automat de randare WebGL (verificare manuală în Chrome); 3D/2D (E11) și Compare (E12)
-  nu fac parte din E07.
+- E07: testul WebGL folosește SwiftShader și nu este încă în CI (cere textura E05 neversionată). 3D/2D (E11) și
+  Compare (E12) nu fac parte din E07.
 - **Primul pas E08:** servește static `visual_8.tif`/`visual_16.tif` și manifestul de teren (`GET /api/terrain/manifest`),
   apoi construiește în frontend scena locală (`LocalSceneFrame` din `geo/scene.ts`) pentru punctul Leibnitz Beta
   provizoriu, cu NoData vizibil și exagerare verticală numai vizuală; nu prezenta textura globală ca teren.

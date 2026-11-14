@@ -1,5 +1,5 @@
 # Criterii de acceptanță
-## E07 — stare 2026-11-14: implementare tehnică finalizată; acceptare științifică restantă
+## E07 — stare 2026-11-14: **încheiată tehnic** (toate criteriile BACKLOG îndeplinite); acceptare științifică restantă
 
 | Criteriu BACKLOG E07 | Stare | Dovadă |
 |---|---|---|
@@ -10,7 +10,7 @@
 | Direcțiile Soare/Pământ la situl activ, din rezultat | Îndeplinit | `bodyDirectionScene` + teste; săgeți și lumină în Chrome |
 | Teste: transformări scenă ↔ coordonate | Îndeplinit | `geo/globe.test.ts` (axe, sensul longitudinii, UV, fețe, direcții) |
 | Teste UI: catalog, clic pe glob, slider fără cereri noi, rezultate depășite | Îndeplinit | `App.test.tsx` (10 teste) |
-| Verificarea timpurie a randării WebGL în mediul de test | **Parțial** | jsdom nu are WebGL: se testează starea „WebGL unavailable”; randarea reală verificată manual în Chrome, fără test automat |
+| Verificarea timpurie a randării WebGL în mediul de test | Îndeplinit (2026-11-14) | Test automat Playwright 1.65.1 în Chromium headless (`frontend/e2e/webgl.spec.ts`, `npm run test:e2e`): context WebGL2 (SwiftShader), textura 200, cadru randat cu pixeli citiți înapoi (suprafață ≠ fundal, valori variate), fără erori JS; control negativ fără textură → eșec |
 | Criteriu de finalizare: punct în 3D → simulare → derularea timpului actualizează direcțiile | Îndeplinit | Verificat în Chrome cu backend real (Chandrayaan-3, punct Leibnitz, Chang'e 4) |
 
 Restant științific: valorile afișate provin din modul idealizat E06 (fără relief) și depind de deciziile ASTRO/GEO

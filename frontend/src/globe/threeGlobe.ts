@@ -191,9 +191,48 @@ export const createThreeGlobe: GlobeFactory = (
   renderer.domElement.addEventListener('pointerdown', onPointerDown)
   renderer.domElement.addEventListener('pointerup', onPointerUp)
 
+  // Render probe for the automated browser smoke test (frontend/e2e): after the first frame drawn
+  // with the texture, a few pixels are read in the same callback (reliable without
+  // preserveDrawingBuffer) and published once as data- attributes. Visual diagnostics only.
+  container.dataset.webgl = renderer.capabilities.isWebGL2 ? 'webgl2' : 'webgl1'
+  let probed = false
+  const probe = () => {
+    const gl = renderer.getContext()
+    const width = gl.drawingBufferWidth
+    const height = gl.drawingBufferHeight
+    const samples: string[] = []
+    const pixel = new Uint8Array(4)
+    for (const [fx, fy] of [
+      [0.5, 0.5],
+      [0.42, 0.5],
+      [0.58, 0.5],
+      [0.5, 0.42],
+      [0.5, 0.58],
+      [0.03, 0.03],
+    ]) {
+      gl.readPixels(
+        Math.floor(width * fx),
+        Math.floor(height * fy),
+        1,
+        1,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        pixel,
+      )
+      samples.push(`${pixel[0]},${pixel[1]},${pixel[2]}`)
+    }
+    container.dataset.renderedFrames = String(renderer.info.render.frame)
+    container.dataset.textured = 'true'
+    container.dataset.samples = samples.join(';')
+  }
+
   renderer.setAnimationLoop(() => {
     controls.update()
     renderer.render(scene, camera)
+    if (!probed && material.map && material.map.image) {
+      probed = true
+      probe()
+    }
   })
 
   return {

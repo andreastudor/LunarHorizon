@@ -82,9 +82,12 @@ Toate pachetele backend s-au instalat din wheels (`--only-binary=:all:`) pe Wind
 | Hartă 2D | OpenLayers (`ol`) | 10.11.0 | Proiecții proprii prin `proj4` ≥ 2.8 și `ol/proj/proj4.register` | E11 |
 | Grafice | Plotly (`plotly.js-dist-min`) | 4.3.0 | Pachet de aproximativ 6,2 MB nearhivat | E10 |
 
-Neverificate încă: Playwright, proj4.
+Neverificate încă: proj4.
 
 **Instalate la E07 (2026-11-14):** Three.js 0.187.0 (`three`, rulare) și `@types/three` 0.187.0 (dezvoltare), fixate cu `--save-exact`. Modulul 3D se încarcă leneș (bucată separată la build).
+
+**Instalat pentru criteriul WebGL E07:** `@playwright/test` 1.65.1 (dezvoltare, `--save-exact`) cu Chromium 1255
+(`npx playwright install chromium`); testele de browser sunt în `frontend/e2e/` și rulează cu `npm run test:e2e`.
 
 **Instalate la E06 (2026-11-14):** FastAPI 0.162.7 și Uvicorn 0.54.0 (rulare); `httpx2` 2.16.0 (dezvoltare,
 requis de `fastapi.testclient`; Starlette 1.10 declară `httpx` depreciat). Dependențele tranzitive sunt în
@@ -285,4 +288,5 @@ Din E02, CI verifică și schemele: fixture-urile se validează prin Pydantic ș
 de manifest și se păstrează în cache după hash-ul manifestului. Comparațiile cu Horizons folosesc răspunsurile
 arhivate; CI nu interoghează Horizons. În joburile `backend` obișnuite, aceste teste sunt omise automat.
 Testele cu rastere DEM se decid la E05. Randarea WebGL în browser fără
-interfață grafică este un risc cunoscut pentru testele de interfață și se verifică la E07.
+interfață grafică este un risc cunoscut pentru testele de interfață și se verifică la E07: verificată cu
+Playwright în Chromium headless cu SwiftShader (`frontend/e2e/webgl.spec.ts`); testul nu este încă în CI.

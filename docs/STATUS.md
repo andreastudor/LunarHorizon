@@ -1,4 +1,14 @@
 # Stare
+## E07 — criteriul WebGL închis, 2026-11-14
+
+Formularea BACKLOG („Verificarea timpurie a randării WebGL **în mediul de test**”) și ARCHITECTURE §12 („randarea WebGL
+în browser **fără interfață grafică** … se verifică la E07”, unealta de interfață fiind Playwright) cer o verificare
+automată; verificarea manuală în Chrome nu era suficientă. S-a adăugat un smoke test Playwright 1.65.1 în Chromium
+headless, cu WebGL software (SwiftShader), rulat de `npm run test:e2e`: trece pornind singur backendul și Vite și eșuează
+dacă textura lipsește. **E07 este încheiată tehnic.** Acceptarea științifică rămâne restantă: valorile vin din modul
+idealizat E06 (fără relief) și din deciziile ASTRO/GEO deschise. Restanță tehnică (nu criteriu E07): testul nu rulează
+încă în CI, pentru că cere textura E05 din `data/_cache/` (neversionată). E08 nu a fost începută.
+
 ## E07 — interfața de bază și globul 3D, 2026-11-14
 
 **Implementare tehnică finalizată și verificată în browser; acceptare științifică restantă (ca la E03–E06).**

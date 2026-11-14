@@ -41,3 +41,7 @@ Thumbs.db
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
+
+# Rezultatele Playwright (frontend/e2e)
+frontend/test-results/
+frontend/playwright-report/

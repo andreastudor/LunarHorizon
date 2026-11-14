@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "contracts:generate": "node scripts/generate-contract-types.mjs",
     "contracts:check": "node scripts/generate-contract-types.mjs --check",
     "preview": "vite preview"
@@ -25,6 +26,7 @@
     "three": "0.187.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.1",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@types/node": "26.6.6",

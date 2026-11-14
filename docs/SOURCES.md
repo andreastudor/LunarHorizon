@@ -162,6 +162,7 @@ Proiectul însuși este sub licență MIT ([LICENSE](../LICENSE)).
 | React, React DOM | 19.3.1 | MIT | Frontend |
 | Three.js (`three`) | 0.187.0 | MIT | Frontend (globul 3D, din E07) |
 | @types/three | 0.187.0 | MIT | Dezvoltare (tipuri, din E07) |
+| @playwright/test | 1.65.1 | Apache-2.0 | Dezvoltare (testul de randare WebGL, din E07) |
 | Vite | 8.3.8 | MIT | Build |
 | @vitejs/plugin-react | 6.3.0 | MIT | Build |
 | TypeScript | 7.0.2 | Apache-2.0 | Dezvoltare |

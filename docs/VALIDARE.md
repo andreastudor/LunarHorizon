@@ -1,4 +1,25 @@
 # Validare — toleranțe, rezultate și probleme
+## E07 — smoke test WebGL automat (2026-11-14)
+
+`frontend/e2e/webgl.spec.ts`, rulat cu `npm run test:e2e` (Playwright 1.65.1, Chromium headless 1255, argumente
+`--use-angle=swiftshader --enable-unsafe-swiftshader`). Controlerul globului publică, după primul cadru randat cu
+textura legată, atributele `data-webgl`, `data-rendered-frames`, `data-textured` și șase pixeli citiți cu `readPixels` din
+acel cadru. Testul verifică: răspunsul `/api/assets/globe.jpg` 200 `image/jpeg`; contextul `webgl2`; cel puțin un cadru
+randat; cinci pixeli centrali diferiți de fundal (> 40 pe canal) și neuniformi (textură, nu culoare plată); colțul egal cu
+fundalul (≤ 12); un singur canvas > 200 × 200 px; lipsa mesajelor „WebGL unavailable” și „texture could not be loaded”;
+nicio eroare `pageerror` sau `console.error`.
+
+Rulări în această sesiune:
+- cu serverele deja pornite: **trecut** — `webgl2`, renderer „ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)
+  (0x0000C0DE)), SwiftShader driver)”, pixeli `148,148,151 151,149,148 138,134,131 145,145,146 149,151,156` și colț `5,7,11`;
+- din pornire curată (Playwright a lansat Uvicorn și Vite și le-a oprit): **trecut**, aceleași valori;
+- control negativ, cu `globe.jpg` redenumit temporar: **eșuat** (API 503 în loc de 200); fișierul a fost restaurat,
+  SHA-256 `f7130a18…` egal cu manifestul.
+
+Vitest rulează în continuare numai `src/**/*.test.{ts,tsx}` (186 teste trecute); formatare, oxlint, `tsc`, contracte și
+build trecute. Testul folosește WebGL software; randarea cu GPU a fost verificată anterior manual în Chrome. Testul nu
+este încă în CI (necesită textura E05 neversionată).
+
 ## E07 — verificări (2026-11-14)
 
 Rulate: backend `pytest` 330/330 (cu kerneluri), Ruff, `ruff format --check`, mypy, `generate_contracts.py --check`,
@@ -25,7 +46,8 @@ Verificare reală în Chrome (Uvicorn 127.0.0.1:8000 + Vite 127.0.0.1:5173 cu pr
 
 Probleme găsite și corectate în timpul verificării: depășire orizontală în panoul stâng, câmpul de oră afișat în format
 12 h (înlocuit cu HH:MM UTC), adnotări românești în catalog („autor”, „autori”, „pagina … imagine”), câmpuri fără `name`,
-o eroare de fixture în teste și normalizarea care altera longitudini deja valide. Nu există test automat de randare WebGL.
+o eroare de fixture în teste și normalizarea care altera longitudini deja valide. (Testul automat de randare WebGL a
+fost adăugat ulterior; vezi secțiunea „smoke test WebGL automat”.)
 
 ## E06 — verificări (2026-11-14)
 
