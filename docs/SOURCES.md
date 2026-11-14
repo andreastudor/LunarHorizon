@@ -160,6 +160,8 @@ Proiectul însuși este sub licență MIT ([LICENSE](../LICENSE)).
 | Ruff | 0.17.5 | MIT | Dezvoltare |
 | mypy | 2.4.1 | MIT | Dezvoltare |
 | React, React DOM | 19.3.1 | MIT | Frontend |
+| Three.js (`three`) | 0.187.0 | MIT | Frontend (globul 3D, din E07) |
+| @types/three | 0.187.0 | MIT | Dezvoltare (tipuri, din E07) |
 | Vite | 8.3.8 | MIT | Build |
 | @vitejs/plugin-react | 6.3.0 | MIT | Build |
 | TypeScript | 7.0.2 | Apache-2.0 | Dezvoltare |
@@ -202,3 +204,22 @@ Lista Artemis din repository este etichetată 2022; nu se tratează drept geomet
 Datele sunt consemnate ca piste; nu au fost importate în catalogul activ și nu s-a copiat cod.
 Înainte de adoptare: verificare la sursa primară, cadru, extindere DEM, pixeli valizi/NoData,
 suprafață necesară pentru orizont și criteriile de comparație D-07.
+
+## E07 — referință de design „Nasa-moon” (2026-11-14)
+
+Repository [Ahammad204/Nasa-moon](https://github.com/Ahammad204/Nasa-moon), commit
+`dcc3f0a5ee693ed3fe2ab4cf0b0ed2134770176c` (2026-11-13), licență **MIT**, „Copyright (c) 2026 Kazi Ahammad Ullah”.
+Proiect educațional independent (NASA Space Apps 2026), nu sursă oficială NASA. Inspectat local, numai în citire,
+timp de aproximativ 30 de minute (README, `src/components/navigator/*`, `src/lib/astro`, `src/data`).
+
+Ce s-a preluat sau adaptat (cu atribuire în fișiere și în subsolul interfeței):
+
+| Material | Unde în LunarHorizon | Natura |
+|---|---|---|
+| `fmtDuration` și convenția „UTC mereu etichetat” din `src/components/navigator/format.ts` | `frontend/src/ui/format.ts` | Cod adaptat (MIT), cu antet de atribuire |
+| Organizarea cardurilor Soare/Pământ din `SunEarthCards.tsx`: insignă text + simbol (nu numai culoare), „next event in …”, totaluri pe interval | `frontend/src/components/ResultsPanel.tsx` | Idee de prezentare, reimplementată pe rezultatele API |
+| Eticheta explicită „terrain not included” pentru estimări geometrice | insigna „Idealized — local terrain not included” | Idee de prezentare |
+
+Ce **nu** s-a preluat: motorul astronomic (`src/lib/astro`), datele (`missions.json`, `sites.json` — gol la acest
+commit, gazetteer-ul USGS), paginile suplimentare, modelele GLB. Nicio coordonată sau valoare științifică nu provine
+din acest repository.

@@ -395,3 +395,16 @@ inițială:
 - **Erori** au tipul de conținut `application/problem+json`; `type` este `urn:lunarhorizon:problem:<cod>`. Erorile
   neașteptate nu expun detalii interne. Rutele inexistente folosesc răspunsul implicit Starlette.
 - CORS permite numai originile serverului Vite local (`localhost:5173`, `127.0.0.1:5173`).
+
+## 9. Completări E07 (2026-11-14)
+
+- **`GET /api/assets/{name}`** servește fundalurile E05 (în prezent `globe.jpg`, textura NASA SVS 2K) din
+  `data/_cache/e05_auxiliary/`, numai dacă numele figurează în `data/manifests/e05_auxiliary.json` și SHA-256 corespunde;
+  altfel `TERRAIN_DATA_MISSING` (503) sau `VALIDATION_ERROR` (422) pentru un nume nelistat. Textura este produs estetic,
+  nu date științifice și nu DEM.
+- În dezvoltare, frontendul accesează API-ul prin proxy-ul Vite (`/api` → `http://127.0.0.1:8000`), deci CORS nu este
+  necesar pentru serverul de dezvoltare.
+- Interfața afișează mesaje în engleză după `code`; câmpul `detail` (scris pentru dezvoltatori) nu este afișat.
+- Catalogul (`catalog_version` `e07-2026-11-14-english-names`): câmpul `name` și adnotările proiectului din
+  `position_sources[].institution`/titlul paginii Chang'e 4 au formulare în engleză; pozițiile, sursele și titlurile
+  originale nu s-au schimbat.

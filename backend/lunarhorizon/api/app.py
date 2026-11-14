@@ -7,6 +7,8 @@ Schema OpenAPI este la `/api/openapi.json` și se generează din aceleași model
 E06 calculează numai modul `idealized_local_plane` (fără efectele terenului local).
 """
 
+import hashlib
+import json
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -16,7 +18,7 @@ from typing import Annotated, Any
 from fastapi import FastAPI, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 from lunarhorizon import __version__
@@ -125,6 +127,40 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 issues=issues,
             )
         )
+
+    verified_assets: dict[str, str] = {}
+
+    @app.get(
+        "/api/assets/{name}",
+        response_class=FileResponse,
+        responses={200: {"content": {"image/jpeg": {}}}, **PROBLEM_RESPONSES},
+    )
+    def asset(name: str) -> Response:
+        """Fundal E05 (NASA SVS) servit din cache, numai dacă SHA-256 corespunde manifestului."""
+        try:
+            manifest = json.loads(config.auxiliary_manifest_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as error:
+            raise LunarHorizonError(
+                ErrorCode.TERRAIN_DATA_MISSING, "manifestul fundalurilor nu poate fi citit"
+            ) from error
+        expected = {entry["name"]: entry["sha256"] for entry in manifest.get("files", [])}
+        if name not in expected or not name.endswith(".jpg"):
+            raise LunarHorizonError(ErrorCode.VALIDATION_ERROR, f"resursa {name!r} nu este servită")
+        path = config.auxiliary_dir / name
+        if not path.is_file():
+            raise LunarHorizonError(
+                ErrorCode.TERRAIN_DATA_MISSING,
+                f"{name} lipsește; rulați scripts/download_e05_auxiliary.py și "
+                "scripts/build_e05_auxiliary.py",
+            )
+        if verified_assets.get(name) != expected[name]:
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            if digest != expected[name]:
+                raise LunarHorizonError(
+                    ErrorCode.TERRAIN_DATA_MISSING, f"{name}: SHA-256 diferă de manifest"
+                )
+            verified_assets[name] = digest
+        return FileResponse(path, media_type="image/jpeg")
 
     @app.get("/api/sites", response_model=Catalog)
     def sites() -> Response:

@@ -79,11 +79,12 @@ Toate pachetele backend s-au instalat din wheels (`--only-binary=:all:`) pe Wind
 
 | Componentă | Alegere | Versiune observată | Cerințe observate | Etapă |
 |---|---|---|---|---|
-| Hartă 3D | Three.js | 0.187.0 | — | E07 |
 | Hartă 2D | OpenLayers (`ol`) | 10.11.0 | Proiecții proprii prin `proj4` ≥ 2.8 și `ol/proj/proj4.register` | E11 |
 | Grafice | Plotly (`plotly.js-dist-min`) | 4.3.0 | Pachet de aproximativ 6,2 MB nearhivat | E10 |
 
 Neverificate încă: Playwright, proj4.
+
+**Instalate la E07 (2026-11-14):** Three.js 0.187.0 (`three`, rulare) și `@types/three` 0.187.0 (dezvoltare), fixate cu `--save-exact`. Modulul 3D se încarcă leneș (bucată separată la build).
 
 **Instalate la E06 (2026-11-14):** FastAPI 0.162.7 și Uvicorn 0.54.0 (rulare); `httpx2` 2.16.0 (dezvoltare,
 requis de `fastapi.testclient`; Starlette 1.10 declară `httpx` depreciat). Dependențele tranzitive sunt în
@@ -176,7 +177,7 @@ Reguli:
 | `sky/`, `charts/` | Vederea locală a cerului; graficele de elevație, benzile, profilul orizontului |
 | `compare/` | Coloanele de comparație |
 | `export/` | CSV și JSON |
-| `i18n/` | Texte în română (implicit) și engleză, prin chei |
+| `i18n/` | Texte în engleză, prin chei (`en.ts`); structură pregătită pentru alte limbi (decizia din 2026-11-14) |
 
 Reguli:
 
@@ -185,7 +186,7 @@ Reguli:
 - **Calculul pornește după confirmarea selecției** sau după o scurtă pauză, nu la fiecare mișcare.
 - **Camera nu face parte din starea fizică.** Rotirea, zoomul și exagerarea verticală nu ating timpul, selecția sau rezultatele.
 - **Aceleași identificatoare și culori** pentru situri în 3D, 2D și comparație, atribuite în starea comună.
-- **Mesajele din specificație date în engleză** („Currently hidden”, „Local terrain not included” etc.) devin chei de text cu traducere în română. **[ECHIPĂ] D-17** confirmă formulările.
+- **Mesajele din specificație date în engleză** („Currently hidden”, „Local terrain not included” etc.) sunt chei de text în engleză, limba interfeței (decizia din 2026-11-14). **[ECHIPĂ] D-17** confirmă formulările.
 
 ## 6. Harta 3D
 

@@ -1,10 +1,10 @@
 {
   "schema_version": "0.4.0",
-  "catalog_version": "e04-2026-11-14-without-im",
+  "catalog_version": "e07-2026-11-14-english-names",
   "sites": [
     {
       "id": "apollo11_lm",
-      "name": "Apollo 11 — modulul lunar „Eagle”",
+      "name": "Apollo 11 — Lunar Module “Eagle”",
       "mission": "Apollo 11",
       "agency": "NASA",
       "operator": "NASA",
@@ -58,7 +58,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Spacecraft Related Coordinates - 2016 Update",
           "url": "https://lroc.im-ldi.com/images/938",
           "identifier": "Wagner et al. (2017), Icarus 283, 92-103, doi:10.1016/j.icarus.2016.05.011",
@@ -82,7 +82,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "Elsevier (Icarus); autori: Wagner, Nelson, Plescia, Robinson, Speyerer, Mazarico",
+          "institution": "Elsevier (Icarus); authors: Wagner, Nelson, Plescia, Robinson, Speyerer, Mazarico",
           "title": "Coordinates of anthropogenic features on the Moon",
           "url": "https://doi.org/10.1016/j.icarus.2016.05.011",
           "identifier": "doi:10.1016/j.icarus.2016.05.011; Icarus 283, 92-103 (Crossref: publicat 2017-02)",
@@ -108,7 +108,7 @@
     },
     {
       "id": "apollo12_lm",
-      "name": "Apollo 12 — modulul lunar „Intrepid”",
+      "name": "Apollo 12 — Lunar Module “Intrepid”",
       "mission": "Apollo 12",
       "agency": "NASA",
       "operator": "NASA",
@@ -162,7 +162,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Spacecraft Related Coordinates - 2016 Update",
           "url": "https://lroc.im-ldi.com/images/938",
           "identifier": "Wagner et al. (2017), Icarus 283, 92-103, doi:10.1016/j.icarus.2016.05.011",
@@ -193,7 +193,7 @@
     },
     {
       "id": "apollo14_lm",
-      "name": "Apollo 14 — modulul lunar „Antares”",
+      "name": "Apollo 14 — Lunar Module “Antares”",
       "mission": "Apollo 14",
       "agency": "NASA",
       "operator": "NASA",
@@ -247,7 +247,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Spacecraft Related Coordinates - 2016 Update",
           "url": "https://lroc.im-ldi.com/images/938",
           "identifier": "Wagner et al. (2017), Icarus 283, 92-103, doi:10.1016/j.icarus.2016.05.011",
@@ -278,7 +278,7 @@
     },
     {
       "id": "apollo15_lm",
-      "name": "Apollo 15 — modulul lunar „Falcon”",
+      "name": "Apollo 15 — Lunar Module “Falcon”",
       "mission": "Apollo 15",
       "agency": "NASA",
       "operator": "NASA",
@@ -332,7 +332,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Spacecraft Related Coordinates - 2016 Update",
           "url": "https://lroc.im-ldi.com/images/938",
           "identifier": "Wagner et al. (2017), Icarus 283, 92-103, doi:10.1016/j.icarus.2016.05.011",
@@ -363,7 +363,7 @@
     },
     {
       "id": "apollo16_lm",
-      "name": "Apollo 16 — modulul lunar „Orion”",
+      "name": "Apollo 16 — Lunar Module “Orion”",
       "mission": "Apollo 16",
       "agency": "NASA",
       "operator": "NASA",
@@ -417,7 +417,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Spacecraft Related Coordinates - 2016 Update",
           "url": "https://lroc.im-ldi.com/images/938",
           "identifier": "Wagner et al. (2017), Icarus 283, 92-103, doi:10.1016/j.icarus.2016.05.011",
@@ -448,7 +448,7 @@
     },
     {
       "id": "apollo17_lm",
-      "name": "Apollo 17 — modulul lunar „Challenger”",
+      "name": "Apollo 17 — Lunar Module “Challenger”",
       "mission": "Apollo 17",
       "agency": "NASA",
       "operator": "NASA",
@@ -502,7 +502,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Spacecraft Related Coordinates - 2016 Update",
           "url": "https://lroc.im-ldi.com/images/938",
           "identifier": "Wagner et al. (2017), Icarus 283, 92-103, doi:10.1016/j.icarus.2016.05.011",
@@ -587,7 +587,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Blue Ghost Lunar Lander Seen From Above",
           "url": "https://lroc.im-ldi.com/images/1407",
           "identifier": "LROC NAC M1495619099LR / M1495619099R",
@@ -637,7 +637,7 @@
     },
     {
       "id": "chandrayaan3_vikram",
-      "name": "Chandrayaan-3 — landerul Vikram (Statio Shiv Shakti)",
+      "name": "Chandrayaan-3 — Vikram lander (Statio Shiv Shakti)",
       "mission": "Chandrayaan-3",
       "agency": "ISRO",
       "operator": "ISRO",
@@ -691,7 +691,7 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
           "title": "Chandrayaan-3 Landing Site",
           "url": "https://lroc.im-ldi.com/images/1314",
           "identifier": "LROC NAC M1447750764LR",
@@ -722,7 +722,7 @@
     },
     {
       "id": "chandrayaan3_planned_target",
-      "name": "Chandrayaan-3 — ținta planificată (zona primară de aterizare)",
+      "name": "Chandrayaan-3 — planned target (primary landing zone)",
       "mission": "Chandrayaan-3",
       "agency": "ISRO",
       "operator": "ISRO",
@@ -783,7 +783,7 @@
     },
     {
       "id": "change4_lander",
-      "name": "Chang'e 4 — lander (Statio Tianhe, partea îndepărtată)",
+      "name": "Chang'e 4 — lander (Statio Tianhe, far side)",
       "mission": "Chang'e 4",
       "agency": null,
       "operator": null,
@@ -837,8 +837,8 @@
         },
         {
           "used_for": "corroboration",
-          "institution": "LROC (NASA/GSFC/Arizona State University); autor: Mark Robinson",
-          "title": "Chang'e 4 lander (pagina LROC, imagine 1168)",
+          "institution": "LROC (NASA/GSFC/Arizona State University); author: Mark Robinson",
+          "title": "Chang'e 4 lander (LROC page, image 1168)",
           "url": "https://lroc.im-ldi.com/images/1168",
           "identifier": "LROC NAC M1357657468LR",
           "version_or_update": null,

@@ -1,4 +1,27 @@
 # Stare
+## E07 — interfața de bază și globul 3D, 2026-11-14
+
+**Implementare tehnică finalizată și verificată în browser; acceptare științifică restantă (ca la E03–E06).**
+Interfața web este **în engleză** (decizia utilizatorului; documentele de cerințe actualizate). Ecranul are cele patru
+zone: catalog și parametri (stânga), glob 3D Three.js (centru, vederea implicită), situl activ, cerul local și rezultatele
+(dreapta), controlul timpului (jos). Globul folosește textura E05 `globe.jpg` (NASA SVS, creditată), servită verificat de
+`GET /api/assets/globe.jpg`; are rotire, zoom, deplasare, resetare, orientare inițială spre polul sud, grilă, marcaje,
+conturul rasterului DEM din `/api/coverage` și eticheta nivelului de detaliu (textură globală, nu teren local). Selecția
+se face din catalog, prin clic pe glob (clic distins de rotire) sau prin coordonate validate. Simularea pornește din
+interfață, se urmărește prin polling, iar sliderul și redarea folosesc seria deja primită; direcțiile Soarelui și
+Pământului (săgeți și lumină) vin din azimutul/elevația API. Răspunsurile depășite sunt ignorate la schimbarea selecției.
+
+Schema 0.4.0: azimutul nedefinit (zenit/nadir) este `null` cu motiv în `quality.issues`, afișat „Undefined”, fără
+săgeată; simularea nu mai eșuează. Catalogul `e07-2026-11-14-english-names`: formulări în engleză pentru `name` și
+adnotările proiectului; pozițiile neschimbate. Referința de design Nasa-moon (MIT, commit `dcc3f0a5`) este atribuită în
+SOURCES; nu s-au preluat date sau motorul ei astronomic.
+
+Verificări: backend pytest 330/330, Ruff, mypy, contracte; frontend 186 teste, Prettier, oxlint, `tsc`, contracte, build;
+verificare reală în Chrome cu backend și Vite pornite (vezi VALIDARE). Restanțe E07: nu există test automat de randare
+WebGL (jsdom fără WebGL; randarea verificată manual în Chrome); comutatorul 3D/2D (E11) și butonul Compare (E12) nu
+sunt în E07. **Primul pas E08:** terenul 3D local pentru primul sit polar din `visual_8.tif`/`visual_16.tif` și
+manifestul `GET /api/terrain/manifest`, servite static, cu exagerarea verticală numai vizuală.
+
 ## E06 — API și simulare în modul idealizat, 2026-11-14
 
 **Implementare tehnică finalizată; acceptare științifică dependentă de E03/E04/E05 rămase deschise.** FastAPI
@@ -323,7 +346,7 @@ Propunerile sunt puncte de pornire, nu rezultate validate.
 | D-14 | ECHIPĂ | Înălțimea implicită a echipamentului | 2 m | E06 |
 | D-15 | ECHIPĂ | Remote GitHub și vizibilitate; găzduire; unde stau terenul vizual și scenariile (Git LFS sau descărcare) | — | E01 (parțial), E15, E16 |
 | D-16 | ECHIPĂ | Rămânem la Plotly pentru grafice? | Da, încărcat la cerere | E10 |
-| D-17 | ECHIPĂ | Mesajele date în engleză în specificație se traduc în interfața românească? | Da, prin chei de text | E13 |
+| D-17 | ECHIPĂ | Formulările mesajelor în engleză din specificație | Interfața este în engleză din 2026-11-14 (decizia utilizatorului); formulările rămân de confirmat | E13 |
 | D-18 | ASTRO | Potrivirea configurației Horizons: referința altitudinii, cadrul, convenția azimutului | **CONFIRMATĂ (comunicat)**. Dovezi E03, din antetele celor 26 de răspunsuri: raze 1737,4 km (aceeași sferă), `MEAN_ME (high precision)`, longitudine estică, fără refracție, DE441, cu devierea luminii; azimutul confirmat numeric ([VALIDARE.md](VALIDARE.md) §3) | — |
 | D-19 | GEO | Cum intră pixelii interpolați ai DEM-ului în indicatorul de calitate? | Folosirea hărții numărului de măsurători | E05, E09 |
 | D-20 | ECHIPĂ | Durata maximă a intervalului și pasul minim al seriei în modul live | De stabilit după primele măsurători de performanță | E06 |

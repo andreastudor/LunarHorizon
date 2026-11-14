@@ -26,7 +26,7 @@
 - Calculele numerice provin din motorul științific. Umbrele și iluminarea randate în browser sunt vizualizări și nu reprezintă singure calculul vizibilității.
 - Dacă o resursă externă nu este accesibilă, se implementează adaptorul și starea de eroare, se documentează blocajul și se continuă părțile independente. Un fallback idealizat nu înseamnă că integrarea LOLA sau cerința de relief 3D real este finalizată.
 - Documentația actuală și compatibilitatea dependențelor se verifică înainte de integrare; versiunile utilizate se fixează. Sursele enumerate în specificație sunt puncte de pornire, nu dovezi că au fost accesate.
-- Interfața implicită este în română, cu structură pregătită pentru engleză. Identificatorii tehnici ai surselor și exporturilor rămân neambigui.
+- Interfața este în engleză (decizia utilizatorului din 2026-11-14, care înlocuiește cerința inițială de interfață în română), cu texte prin chei și structură pregătită pentru alte limbi, fără selector de limbă. Identificatorii tehnici, câmpurile API, titlurile originale ale surselor și denumirile oficiale ale siturilor nu se traduc.
 - După fiecare etapă se rulează verificările relevante și se remediază erorile observate. Raportul final spune exact ce funcționează, comenzile de pornire, testele executate și cerințele încă incomplete.
 
 Harta 3D face parte din MVP pe tot parcursul proiectului.

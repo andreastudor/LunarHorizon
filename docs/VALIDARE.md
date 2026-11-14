@@ -1,4 +1,32 @@
 # Validare — toleranțe, rezultate și probleme
+## E07 — verificări (2026-11-14)
+
+Rulate: backend `pytest` 330/330 (cu kerneluri), Ruff, `ruff format --check`, mypy, `generate_contracts.py --check`,
+`verify_e05.py`; frontend `format:check`, `lint` (oxlint, fără avertismente), `contracts:check`, `typecheck`, `npm test`
+186/186 (din care noi: `geo/globe.test.ts` și 10 teste UI în `App.test.tsx`), `npm run build` (Three.js într-o bucată
+separată încărcată leneș). Datele din testele UI sunt sintetice (`synthetic_`).
+
+Verificare reală în Chrome (Uvicorn 127.0.0.1:8000 + Vite 127.0.0.1:5173 cu proxy `/api`):
+- textura `globe.jpg` 200 (457.942 octeți, SHA-256 din manifest); marcajele cad pe formațiunile așteptate: Apollo 11 în
+  SV Mare Tranquillitatis, Blue Ghost 1 în Mare Crisium (est, dreapta), Apollo 12/14 în Oceanus Procellarum (vest), deci
+  textura nu este oglindită și longitudinea crește spre est;
+- clic în centrul globului focalizat pe Chandrayaan-3 → 69,3740° S, 32,3187° E; clic la dreapta → 62,64° E (est); clic
+  mai sus → latitudine mai nordică; un drag de 60 px nu schimbă selecția;
+- simulare reală 30 de zile Chandrayaan-3: Soarele −0,06° la 00:00, apare la 00:18:44 UTC; săgeata Soarelui spre est la
+  az ≈ 95°, a Pământului spre NV la az 325,6°, iar terminatorul trece prin sit (lumina urmează direcția API);
+- slider: pasul 700 → 2026-11-28 14:00 UTC, fără nicio cerere nouă `/api/simulations`; Play avansează timpul;
+- rezultat depășit: rulare Apollo 11 (90 de zile) în curs, apoi selecția Apollo 12 → nu apare niciun rezultat Apollo 11;
+- `terrain_mode=dem` și cadrul `MOON_ME_DE421` pentru un sit din catalog → mesaje în engleză cu codurile
+  `OUT_OF_DEM_COVERAGE`, `UNSUPPORTED_FRAME`; nicio substituire;
+- punctul Leibnitz Beta introdus manual ca „Selected point” (nu sit) și conturul cyan al rasterului PGDA 104 vizibil la zoom;
+- textul paginii, cu toate secțiunile deschise după o simulare reală, nu conține diacritice sau cuvinte românești;
+- consola: numai cele două răspunsuri 422 provocate intenționat și anularea de dezvoltare (StrictMode) a primei cereri;
+  nicio resursă inexistentă. Vedere îngustă (800 px) verificată prin emulare: zonele se așază vertical.
+
+Probleme găsite și corectate în timpul verificării: depășire orizontală în panoul stâng, câmpul de oră afișat în format
+12 h (înlocuit cu HH:MM UTC), adnotări românești în catalog („autor”, „autori”, „pagina … imagine”), câmpuri fără `name`,
+o eroare de fixture în teste și normalizarea care altera longitudini deja valide. Nu există test automat de randare WebGL.
+
 ## E06 — verificări (2026-11-14)
 
 Rulate în această sesiune: `pytest` 327/327 (cu kerneluri), Ruff, `ruff format --check`, mypy strict, `generate_contracts.py

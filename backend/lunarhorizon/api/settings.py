@@ -21,6 +21,9 @@ class Settings:
     terrain_calculation_raster: Path = (
         DATA_DIR / "_cache" / "terrain" / "leibnitz_beta" / "calculation.tif"
     )
+    # Fundalurile E05 (NASA SVS) și manifestul lor; se servesc numai fișierele listate în manifest.
+    auxiliary_dir: Path = DATA_DIR / "_cache" / "e05_auxiliary"
+    auxiliary_manifest_path: Path = DATA_DIR / "manifests" / "e05_auxiliary.json"
     # Limita duratei unei simulări (D-20, provizoriu): 366 de zile.
     max_interval_days: int = 366
     max_series_points: int = 20_000

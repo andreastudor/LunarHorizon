@@ -113,6 +113,7 @@ def test_openapi_lists_all_endpoints(client: TestClient) -> None:
         "/api/terrain/manifest",
         "/api/simulations",
         "/api/simulations/{simulation_id}",
+        "/api/assets/{name}",
     }
 
 
@@ -414,3 +415,39 @@ class TestSimulationFlow:
                 wait_done(small, accepted.json()["id"])
             assert small.get(f"/api/simulations/{ids[0]}").status_code == 404
             assert small.get(f"/api/simulations/{ids[2]}").status_code == 200
+
+
+# --- resurse statice E05 --------------------------------------------------------------------
+
+
+def asset_client(tmp_path: Path, content: bytes, listed_sha: str) -> TestClient:
+    (tmp_path / "globe.jpg").write_bytes(content)
+    manifest = tmp_path / "aux.json"
+    manifest.write_text(
+        json.dumps({"files": [{"name": "globe.jpg", "sha256": listed_sha}]}), encoding="utf-8"
+    )
+    return TestClient(
+        create_app(Settings(auxiliary_dir=tmp_path, auxiliary_manifest_path=manifest))
+    )
+
+
+def test_asset_is_served_only_when_listed_and_checksum_matches(tmp_path: Path) -> None:
+    import hashlib
+
+    content = b"synthetic_jpeg"
+    good = hashlib.sha256(content).hexdigest()
+    with asset_client(tmp_path, content, good) as served:
+        response = served.get("/api/assets/globe.jpg")
+        assert response.status_code == 200 and response.content == content
+        assert response.headers["content-type"] == "image/jpeg"
+        assert_problem(served.get("/api/assets/other.jpg"), 422, ErrorCode.VALIDATION_ERROR)
+    with asset_client(tmp_path, content, "0" * 64) as altered:
+        assert_problem(altered.get("/api/assets/globe.jpg"), 503, ErrorCode.TERRAIN_DATA_MISSING)
+
+
+def test_missing_asset_is_reported_not_replaced(tmp_path: Path) -> None:
+    manifest = tmp_path / "aux.json"
+    manifest.write_text(json.dumps({"files": [{"name": "globe.jpg", "sha256": "0" * 64}]}))
+    settings = Settings(auxiliary_dir=tmp_path / "absent", auxiliary_manifest_path=manifest)
+    with TestClient(create_app(settings)) as missing:
+        assert_problem(missing.get("/api/assets/globe.jpg"), 503, ErrorCode.TERRAIN_DATA_MISSING)

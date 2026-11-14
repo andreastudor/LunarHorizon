@@ -168,7 +168,7 @@ E03, E04 și E05 pot avansa în paralel, pe roluri (fizică, cartografie, progra
 
 - **Obiectiv.** Aceleași rezultate, prezentate pe două niveluri, cu sursele și limitele vizibile.
 - **Dependențe.** E12. Decizia D-17.
-- **Livrabil.** Comutatorul simplu/expert conform [SPECIFICATIE.md](SPECIFICATIE.md) §3.4; panoul de proveniență și calitate; rezumatul limitelor; texte în română și structura pentru engleză.
+- **Livrabil.** Comutatorul simplu/expert conform [SPECIFICATIE.md](SPECIFICATIE.md) §3.4; panoul de proveniență și calitate; rezumatul limitelor; texte în engleză prin chei, cu structura pentru alte limbi (decizia din 2026-11-14).
 - **Teste.** Ambele moduri afișează valori provenite din același rezultat; fiecare sursă folosită apare în interfață; nicio cheie de text lipsă.
 - **Criteriu de finalizare.** Un utilizator poate identifica sursa și calitatea datelor pentru orice valoare afișată.
 

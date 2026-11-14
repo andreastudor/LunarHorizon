@@ -358,7 +358,8 @@ def test_source_verification_report_covers_the_catalog_and_has_no_failures() -> 
     report = read_json(REPO_ROOT / "data" / "catalog" / "source_verification.json")
     # Archived verification predates the user-requested removal; no new network claim.
     assert report["catalog_version"] == "e04-2026-11-14"
-    assert CATALOG.catalog_version == "e04-2026-11-14-without-im"
+    # E07: numai `name` a primit formulare în engleză (UI în engleză); pozițiile sunt neschimbate.
+    assert CATALOG.catalog_version == "e07-2026-11-14-english-names"
     assert report["summary"]["failures"] == 0
     assert report["summary"]["inaccessible"] == 0
     assert {r["site_id"] for r in report["results"]} == (

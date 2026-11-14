@@ -39,7 +39,7 @@ comparația între situri.
 - La sfârșitul fiecărei etape: rulează verificările, actualizează `docs/STATUS.md`, `docs/VALIDARE.md` și `docs/ACCEPTANCE.md`.
 - Fixează versiunile dependențelor și verifică documentația oficială înainte de integrare.
 - Nu crea remote-uri, nu publica și nu face push fără acordul explicit al utilizatorului. Nu rescrie istoria Git.
-- Interfața este în română, cu texte prin chei, pregătită pentru engleză.
+- **Interfața web este în engleză** (decizia utilizatorului, 2026-11-14), cu texte prin chei în `frontend/src/i18n/en.ts`, fără selector de limbă. Documentația internă rămâne în română. Nu se traduc identificatorii, câmpurile API, titlurile originale ale surselor și denumirile oficiale ale siturilor.
 
 ## Comenzi
 

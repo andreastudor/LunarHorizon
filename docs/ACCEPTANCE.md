@@ -1,4 +1,21 @@
 # Criterii de acceptanță
+## E07 — stare 2026-11-14: implementare tehnică finalizată; acceptare științifică restantă
+
+| Criteriu BACKLOG E07 | Stare | Dovadă |
+|---|---|---|
+| Cele patru zone; starea comună; sursa de date API | Îndeplinit | `frontend/src/App.tsx`, `api/dataSource.ts`; test „four zones” |
+| Glob: rotire, zoom, deplasare, resetare, orientare spre polul sud, grilă, marcaje, contur DEM, eticheta LOD | Îndeplinit | `globe/threeGlobe.ts`; verificat în Chrome (capturi descrise în VALIDARE) |
+| Selecție prin raycasting cu distincția clic/rotire; coordonate manuale validate | Îndeplinit | `geo/globe.ts` + teste; în Chrome: clic central = situl focalizat, est la dreapta, drag ignorat |
+| Control temporal: dată, oră UTC, interval, slider, redare/pauză | Îndeplinit | `ParamsForm`, `TimeBar`; Chrome: slider și Play |
+| Direcțiile Soare/Pământ la situl activ, din rezultat | Îndeplinit | `bodyDirectionScene` + teste; săgeți și lumină în Chrome |
+| Teste: transformări scenă ↔ coordonate | Îndeplinit | `geo/globe.test.ts` (axe, sensul longitudinii, UV, fețe, direcții) |
+| Teste UI: catalog, clic pe glob, slider fără cereri noi, rezultate depășite | Îndeplinit | `App.test.tsx` (10 teste) |
+| Verificarea timpurie a randării WebGL în mediul de test | **Parțial** | jsdom nu are WebGL: se testează starea „WebGL unavailable”; randarea reală verificată manual în Chrome, fără test automat |
+| Criteriu de finalizare: punct în 3D → simulare → derularea timpului actualizează direcțiile | Îndeplinit | Verificat în Chrome cu backend real (Chandrayaan-3, punct Leibnitz, Chang'e 4) |
+
+Restant științific: valorile afișate provin din modul idealizat E06 (fără relief) și depind de deciziile ASTRO/GEO
+deschise; globul texturat nu este DEM local (E08). Criteriile de acceptanță nu au fost modificate.
+
 ## E06 — stare 2026-11-14: implementare tehnică finalizată; acceptare științifică restantă
 
 | Criteriu BACKLOG E06 | Stare | Dovadă |

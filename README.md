@@ -90,7 +90,7 @@ npm run dev
 
 Pagina este la <http://localhost:5173>.
 
-Serverul API (din E06), în alt terminal, din `backend/`:
+Interfața (E07, în engleză) folosește API-ul prin proxy-ul Vite (`/api` → `127.0.0.1:8000`), deci pornește și serverul API, în alt terminal, din `backend/`:
 
 ```powershell
 $env:PYTHONUTF8 = '1'
