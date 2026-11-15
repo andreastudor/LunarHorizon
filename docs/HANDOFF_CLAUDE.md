@@ -37,6 +37,7 @@ astronomilor).
 - **E08b (extindere obligatorie): încheiată tehnic pentru lista vizată.** 13 regiuni PGDA 104 cu teren real, 2 poziții
   Chandrayaan-3 „Coverage unverified”. Schema 0.6.0. Date: `acquire_pgda104.py --all` (≈ 399 MB), apoi
   `build_pgda104_regions.py` și `verify_terrain_products.py`. Vezi [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md).
+  Revizia cadrelor: nicio conversie; catalogul nu se reinterpretează; punctele DEM se numesc „DEM representative point”.
 
 ## Instalare, pornire, verificare
 

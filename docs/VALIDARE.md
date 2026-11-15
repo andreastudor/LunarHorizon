@@ -1,4 +1,17 @@
 # Validare — toleranțe, rezultate și probleme
+## Revizia E08b — cadre și etichete (2026-11-15)
+
+Rulate: backend `pytest` 354/354 (`test_catalog.py`: numele conțin „DEM representative point” și „raster centre”, fără
+„landing site”/„candidate”/„official centre”; descrierile spun „not the official centre of the region”, „not a landing
+site”, „not an approved landing candidate”), Ruff, mypy, contracte la zi; `verify_terrain_products.py` 13/13 după
+regenerarea catalogului. Frontend 215/215 (noi: sit de catalog în alt cadru refuzat, fără buton, cadru cerut neschimbat;
+punctul DEM selectat din catalog cu sursa și cadrul propriu, marker `dem_point`; reinterpretarea punctului utilizatorului
+cu explicație și notă „no conversion”), formatare, oxlint, `tsc`, build. Playwright 4/4 (nou `frames.spec.ts`: 13 puncte
+etichetate, legendă, punct utilizator în `MOON_ME_DE440_ME421` refuzat cu 0 vârfuri → reinterpretare explicită →
+teren gata; punctul DEM Haworth revine la `MOON_ME_DE421` fără buton de reinterpretare). Verificarea manuală în Chrome
+DevTools nu a putut fi finalizată (browserul se reconecta la fiecare apel); o citire a paginii a confirmat legenda și cele
+13 etichete.
+
 ## E08b — verificări (2026-11-15)
 
 Backend `pytest` 354/354 (noi: `test_terrain_regions.py` 10 — zonele distincte selectează produsul propriu, suprapunerea

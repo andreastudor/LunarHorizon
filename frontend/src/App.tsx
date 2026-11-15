@@ -53,6 +53,8 @@ function App({
   const [terrainStatuses, setTerrainStatuses] = useState<
     Record<string, string>
   >({})
+  // The frame declared by the registered DEM products, when they all declare the same one.
+  const [demFrame, setDemFrame] = useState<string | null>(null)
   const [coverage, setCoverage] = useState<Loadable<Coverage>>({
     status: 'loading',
   })
@@ -86,11 +88,13 @@ function App({
       })
     source
       .terrainStatus(controller.signal)
-      .then((report) =>
+      .then((report) => {
         setTerrainStatuses(
           Object.fromEntries(report.sites.map((s) => [s.site_id, s.status])),
-        ),
-      )
+        )
+        const frames = new Set(report.products.map((p) => p.frame_id))
+        setDemFrame(frames.size === 1 ? [...frames][0] : null)
+      })
       .catch(() => {
         // Badges are omitted when the status report is unavailable; selection still works.
       })
@@ -225,7 +229,7 @@ function App({
         setParams((previous) =>
           previous.frameId === frameId ? previous : { ...previous, frameId },
         )
-        setFrameNote(en.coverage.frameAdopted(frameId))
+        setFrameNote(en.coverage.frameNotes.demPoint(frameId))
       }
       select({ kind: 'custom', label, latitudeDeg, longitudeDeg })
     },
@@ -242,12 +246,24 @@ function App({
         longitudeDeg,
         null,
       )
-      selectTerrainPoint(
-        manifest.local_origin.latitude_deg,
-        manifest.local_origin.longitude_deg,
-        en.terrain.representativeLabel,
-        manifest.frame_id,
+      // Prefer the catalog entry of this DEM representative point: it keeps its provenance.
+      const origin = manifest.local_origin
+      const catalogPoint = sites.find(
+        (site) =>
+          site.position_kind === 'representative_point' &&
+          Math.abs(site.latitude_deg - origin.latitude_deg) < 1e-9 &&
+          Math.abs(site.longitude_deg - origin.longitude_deg) < 1e-9,
       )
+      if (catalogPoint) {
+        selectSite(catalogPoint.id)
+      } else {
+        selectTerrainPoint(
+          origin.latitude_deg,
+          origin.longitude_deg,
+          en.terrain.representativeFallback(manifest.terrain_id),
+          manifest.frame_id,
+        )
+      }
       setCenterView('terrain')
     } catch (error) {
       setFrameNote(describeError(error).message)
@@ -276,7 +292,8 @@ function App({
       id: site.id,
       latitudeDeg: site.latitude_deg,
       longitudeDeg: site.longitude_deg,
-      kind: 'catalog',
+      kind:
+        site.position_kind === 'representative_point' ? 'dem_point' : 'catalog',
       selected: selection?.kind === 'catalog' && selection.siteId === site.id,
     }))
     if (selection?.kind === 'custom') {
@@ -431,14 +448,19 @@ function App({
                 )
               }
               onRetry={() => setTerrainReload((n) => n + 1)}
+              demFrame={demFrame}
               onAdoptFrame={
-                selection?.kind === 'custom'
+                // Only a user point may be re-interpreted (never converted); catalog positions
+                // keep the frame of their source and stay refused.
+                selection?.kind === 'custom' && demFrame
                   ? () => {
                       setParams((previous) => ({
                         ...previous,
-                        frameId: 'MOON_ME_DE421',
+                        frameId: demFrame as SimulationParams['frameId'],
                       }))
-                      setFrameNote(en.coverage.frameAdopted('MOON_ME_DE421'))
+                      setFrameNote(
+                        en.coverage.frameNotes.reinterpreted(demFrame),
+                      )
                     }
                   : undefined
               }

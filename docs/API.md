@@ -428,8 +428,9 @@ inițială:
   GeoTIFF-ului trebuie să corespundă manifestului (altfel `503 TERRAIN_DATA_MISSING`). Nivel necunoscut: `422`.
 - Interfața folosește nivelul 0 (40 m/pixel) pentru mesh; rasterul de calcul (5 m) numai pentru altitudinea
   observatorului. Rezoluțiile sunt declarate separat (`calc_resolution_m`, `visual_resolution_m`).
-- **Cadre.** Manifestul de teren declară `MOON_ME_DE421` (ipoteză de lucru). Pentru punctul reprezentativ și pentru
-  punctele alese pe teren, interfața adoptă în cerere cadrul declarat de produs și o spune explicit; direcțiile Soare/Pământ
+- **Cadre.** Manifestul de teren declară `MOON_ME_DE421` (ipoteză de lucru). Punctul reprezentativ DEM folosește în cerere
+  cadrul declarat de produs (coordonatele vin din DEM); un punct al utilizatorului se reinterpretează în acest cadru numai
+  la cererea explicită, cu mențiunea că nu se face conversie; pozițiile din catalog nu se reinterpretează (revizia E08b); direcțiile Soare/Pământ
   se desenează pe teren numai dacă rezultatul are același `frame_id` ca terenul. Nicio conversie între cadre.
 
 ## 11. Completări E08b — mai multe regiuni (2026-11-15)

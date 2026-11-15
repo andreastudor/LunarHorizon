@@ -32,7 +32,7 @@ test('several real DEM regions load their own terrain without accumulating GPU r
     page.getByText(en.catalog.terrainBadge.terrain_available).first(),
   ).toBeVisible({ timeout: 30_000 })
 
-  await selectSite(page, 'Haworth', /Haworth — PGDA 104/)
+  await selectSite(page, 'Haworth', /Haworth — DEM representative point/)
   await page.getByRole('tab', { name: /Local terrain/ }).click()
   const canvas = page.locator('.terrain-canvas')
   await expect(canvas).toHaveAttribute('data-terrain-ready', 'true', {
@@ -44,7 +44,11 @@ test('several real DEM regions load their own terrain without accumulating GPU r
   await page.waitForTimeout(500)
   const geometriesHaworth = Number(await data(canvas, 'geometries'))
 
-  await selectSite(page, 'Malapert', /Malapert Massif — PGDA 104/)
+  await selectSite(
+    page,
+    'Malapert',
+    /Malapert Massif — DEM representative point/,
+  )
   await expect
     .poll(() => data(canvas, 'terrain-vertices'), { timeout: 60_000 })
     .toBe(String(525 * 525))
@@ -53,7 +57,7 @@ test('several real DEM regions load their own terrain without accumulating GPU r
   })
   await expect(page.getByText(/^DEM pgda104_malapert_massif/)).toBeVisible()
 
-  await selectSite(page, 'Haworth', /Haworth — PGDA 104/)
+  await selectSite(page, 'Haworth', /Haworth — DEM representative point/)
   await expect
     .poll(() => data(canvas, 'terrain-vertices'), { timeout: 60_000 })
     .toBe(String(298 * 298))

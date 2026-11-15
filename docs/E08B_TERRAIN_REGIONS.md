@@ -29,8 +29,9 @@ regiuni documentate; neînregistrate). Lista vizată are **15 intrări**: 13 reg
 | Chandrayaan-3 — țintă planificată | 69,3676° S, 32,3481° E — catalog E04 (ISRO) | — | — | MOON_ME_DE440_ME421 (ipoteză) | — | idem | **Coverage unverified** |
 
 Punctul fiecărei regiuni este **pixelul central** al rasterului oficial (rândul = înălțimea // 2, coloana = lățimea // 2;
-metoda LunarHorizon, aceeași ca la E05). Este etichetat „representative point”, cu `status = dem_region`, fără
-misiune; **nu este loc de aterizare, țintă sau selecție curentă**. Numele regiunilor sunt cele din numele arhivelor
+metoda LunarHorizon, aceeași ca la E05). Este etichetat „DEM representative point (PGDA 104 raster centre)”, cu
+`status = dem_region`, fără misiune; **nu este centrul oficial al regiunii și nu este loc de aterizare, candidat aprobat,
+țintă sau selecție curentă**. Numele regiunilor sunt cele din numele arhivelor
 Zenodo (prefix `A3CLR22`); nu s-au importat coordonate din surse secundare. Mesh-ul folosește cel mai fin nivel vizual
 cu cel mult 300.000 de vârfuri (40 m; 100 m pentru Haworth și Malapert la nivelul 1).
 
@@ -51,6 +52,28 @@ deGerlache Rim ∩ deGerlache Rim 2. Stări: **Terrain available**, **Terrain no
 absente), **Coverage unverified** (polar, fără produs inventariat), **No DEM coverage** (în afara domeniului polar al
 inventarului), **Frame mismatch** (DEM declarat în alt cadru; nicio conversie). Disponibilitatea reliefului vizual nu este
 acoperirea necesară orizontului (E09).
+
+## Politica de cadre și etichetele punctelor DEM (revizie 2026-11-15)
+
+Revizia funcției introduse în E08b („Use the DEM frame”). Nu există o transformare justificată între cadrele lunare în
+aplicație, deci **nicio operație nu convertește coordonate**. Regulile, implementate și testate:
+
+| Caz | Comportament |
+|---|---|
+| Poziție din catalog (inclusiv punctele DEM) | Cererea folosește cadrul declarat de intrare. Dacă niciun produs nu o acoperă în acel cadru: refuz („Frame mismatch”) și textul „Catalog positions keep the frame of their source and are not re-interpreted in another frame; without a justified transformation, no terrain is shown.” Nu se oferă reinterpretare; înregistrarea din catalog nu se modifică |
+| Punct introdus sau ales de utilizator | După refuz, butonul „Interpret this point in `<cadru DEM>` (no conversion)”, cu explicația că valorile se păstrează și se **reinterpretează**, nu se convertesc. După acțiune: nota „The same latitude and longitude are now interpreted in … No coordinate conversion was performed: if the point was defined in another frame, this is not guaranteed to be the same physical position.” Cadrul DEM nu mai este fixat în cod: vine din `GET /api/terrain/status` (numai dacă toate produsele declară același cadru; altfel nu se oferă butonul) |
+| Punct DEM (pixelul central al rasterului) | Coordonatele provin din DEM, deci cererea folosește cadrul declarat de produs, cu nota „working hypothesis, not validated … no coordinate conversion is applied”. Butonul „Select its DEM representative point” selectează intrarea de catalog corespunzătoare (sursa, `adoption_note`, `position_kind` rămân afișate); un produs fără intrare de catalog primește eticheta „`<terrain_id>` — DEM representative point (raster centre)” (înainte apărea eronat „Leibnitz Beta Plateau” pentru orice produs) |
+
+Etichete: cele 13 intrări se numesc „`<regiune>` — DEM representative point (PGDA 104 raster centre)”; descrierea spune
+că pixelul central este ales de LunarHorizon și că **nu este centrul oficial al regiunii**, nici loc de aterizare, nici
+candidat aprobat, nici selecție curentă. `position_kind` se afișează „DEM representative point”. Pe glob, punctele DEM au
+marker propriu (turcoaz) și legenda „DEM representative points (raster centres, not landing sites)”, separat de
+„Catalog positions (landed or planned)”. Interfața nu conține „Landing sites” sau „Approved landing candidates”.
+
+Teste: `App.test.tsx` (refuz pentru sit de catalog fără buton de reinterpretare; selecția punctului DEM păstrează
+proveniența și cadrul; marker `dem_point`; reinterpretarea punctului utilizatorului cu explicație), `test_catalog.py`
+(nume și descrieri), Playwright `frames.spec.ts` (13 puncte etichetate, legendă, refuz → reinterpretare explicită →
+teren, punctul DEM din catalog revine la cadrul propriu).
 
 ## Date, reproducere și verificare
 

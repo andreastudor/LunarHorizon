@@ -234,7 +234,7 @@ def catalog_entry(region: dict[str, Any], built: dict[str, Any], pinned_sha: str
     }
     return {
         "id": f"pgda104_{region['slug']}_point",
-        "name": f"{name} — PGDA 104 DEM region (representative point)",
+        "name": f"{name} — DEM representative point (PGDA 104 raster centre)",
         "mission": None,
         "agency": None,
         "operator": None,
@@ -284,15 +284,16 @@ def catalog_entry(region: dict[str, Any], built: dict[str, Any], pinned_sha: str
         ],
         "position_verification": "verified_at_original",
         "adoption_note": (
-            "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV "
-            "(metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. "
+            "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), "
+            "nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. "
             "IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); "
             "nicio conversie de cadru."
         ),
         "description_ro": None,
         "description_en": (
-            f"Representative point (raster centre pixel) of the {name} region of the PGDA 104 "
-            "DEM product. Not a landing site, not a target and not a current mission selection."
+            f"DEM representative point: the centre pixel of the PGDA 104 raster named {name}, "
+            "chosen by LunarHorizon. It is not the official centre of the region, not a landing "
+            "site, not an approved landing candidate and not a current mission selection."
         ),
         "terrain_available": True,
     }

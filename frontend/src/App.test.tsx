@@ -337,7 +337,23 @@ function terrainMethods(calls: { terrain: number }) {
       schema_version: '0.6.0' as const,
       south_polar_rule: 'synthetic',
       selection_rule: 'synthetic',
-      products: [],
+      products: [
+        {
+          terrain_id: 'synthetic_terrain',
+          product_id: 'synthetic_dem',
+          region_name: 'synthetic region',
+          frame_id: 'MOON_ME_DE421' as const,
+          calc_resolution_m: 5,
+          bounds: {
+            x_min_m: 65000,
+            x_max_m: 81000,
+            y_min_m: 110000,
+            y_max_m: 126000,
+          },
+          status: 'available' as const,
+          reason: 'synthetic',
+        },
+      ],
       sites: [
         {
           site_id: 'synthetic_a',
@@ -709,8 +725,16 @@ describe('E08 local terrain', () => {
       (screen.getByLabelText(en.params.frame) as HTMLSelectElement).value,
     ).toBe('MOON_ME_DE421')
     expect(
-      screen.getByText(en.coverage.frameAdopted('MOON_ME_DE421')),
+      screen.getByText(en.coverage.frameNotes.demPoint('MOON_ME_DE421')),
     ).toBeDefined()
+    // No catalog entry matches this synthetic product: a labelled user point, never “Leibnitz”.
+    const summary = screen.getByLabelText(en.zones.summary)
+    expect(
+      within(summary).getByText(
+        en.terrain.representativeFallback('synthetic_terrain'),
+      ),
+    ).toBeDefined()
+    expect(summary.textContent).not.toMatch(/Leibnitz/)
   })
 
   it('changes the exaggeration without rebuilding the mesh or calling the API', async () => {
@@ -943,7 +967,11 @@ describe('E08b terrain for several regions', () => {
     expect(
       await screen.findByText(en.terrain.unavailable.frame_mismatch),
     ).toBeDefined()
+    expect(screen.getByText(en.terrain.adoptFrameExplanation)).toBeDefined()
     fireEvent.click(screen.getByText(en.terrain.adoptFrame('MOON_ME_DE421')))
+    expect(
+      screen.getByText(en.coverage.frameNotes.reinterpreted('MOON_ME_DE421')),
+    ).toBeDefined()
     await screen.findByText(en.terrain.banner)
     await waitFor(() =>
       expect(terrain.states.at(-1)?.mesh?.vertexCount).toBe(16),
@@ -1029,5 +1057,98 @@ describe('E08b terrain for several regions', () => {
     expect(
       terrain.states.some((state) => (state.mesh?.minHeightM ?? 0) > 7000),
     ).toBe(false)
+  })
+})
+
+describe('E08b frame adoption and DEM representative points', () => {
+  const frameRefusal = () =>
+    new ApiError(
+      422,
+      {
+        type: 'urn:lunarhorizon:problem:unsupported-frame',
+        title: 'x',
+        status: 422,
+        detail: 'frame',
+        code: 'UNSUPPORTED_FRAME',
+      },
+      'refused',
+    )
+
+  it('refuses a catalog site in another frame and offers no re-interpretation', async () => {
+    const frames: (string | null)[] = []
+    const { source } = fakeSource({
+      terrainManifest: async (_lat, _lon, frameId) => {
+        frames.push(frameId)
+        throw frameRefusal()
+      },
+    })
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={fakeTerrain().factory}
+        now={NOW}
+      />,
+    )
+    fireEvent.click(await screen.findByText('synthetic_site_beta'))
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    expect(
+      await screen.findByText(en.terrain.unavailable.frame_mismatch),
+    ).toBeDefined()
+    expect(screen.getByText(en.terrain.catalogFrameRefusal)).toBeDefined()
+    expect(
+      screen.queryByText(en.terrain.adoptFrame('MOON_ME_DE421')),
+    ).toBeNull()
+    // The catalog site keeps the frame of its source; nothing is re-interpreted.
+    expect(frames).toEqual(['MOON_ME_DE440_ME421'])
+    const summary = screen.getByLabelText(en.zones.summary)
+    expect(within(summary).getByText('MOON_ME_DE440_ME421')).toBeDefined()
+  })
+
+  it('selects the catalog DEM representative point, keeps its provenance and marks it distinctly', async () => {
+    const demPoint = {
+      ...syntheticSite(
+        'synthetic_dem_point',
+        'synthetic_dem_point_name',
+        -85.4266,
+        31.7442,
+      ),
+      status: 'dem_region',
+      mission: null,
+      mission_status: 'not_applicable',
+      geometry_type: 'region',
+      position_kind: 'representative_point',
+      frame_id: 'MOON_ME_DE421',
+    } as unknown as Site
+    const catalog = { ...CATALOG, sites: [...CATALOG.sites, demPoint] }
+    const { source } = fakeSource({ sites: async () => catalog })
+    const globe = fakeGlobe()
+    render(
+      <App
+        dataSource={source}
+        globeFactory={globe.factory}
+        terrainFactory={fakeTerrain().factory}
+        now={NOW}
+      />,
+    )
+    await screen.findByText('synthetic_dem_point_name')
+    expect(
+      globe.states.at(-1)?.markers.find((m) => m.id === 'synthetic_dem_point')
+        ?.kind,
+    ).toBe('dem_point')
+    expect(
+      screen.getAllByText(en.catalog.positionKind.representative_point).length,
+    ).toBeGreaterThan(0)
+    fireEvent.click(await screen.findByText(en.coverage.useRepresentative))
+    const summary = screen.getByLabelText(en.zones.summary)
+    await within(summary).findByText('synthetic_dem_point_name')
+    expect(within(summary).getByText('synthetic_source_title')).toBeDefined()
+    expect(within(summary).getByText(en.selection.planNote)).toBeDefined()
+    expect(
+      (screen.getByLabelText(en.params.frame) as HTMLSelectElement).value,
+    ).toBe('MOON_ME_DE421')
+    expect(document.body.textContent).not.toMatch(
+      /Landing sites|Approved landing candidates/,
+    )
   })
 })

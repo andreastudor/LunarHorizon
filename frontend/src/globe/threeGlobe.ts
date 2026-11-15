@@ -27,6 +27,7 @@ const COLORS = {
   background: 0x05070b,
   graticule: 0x9aa4b2,
   catalog: 0xe5e7eb,
+  demPoint: 0x2dd4bf,
   selected: 0xff8a3d,
   custom: 0x4ade80,
   coverage: 0x22d3ee,
@@ -246,7 +247,9 @@ export const createThreeGlobe: GlobeFactory = (
             ? COLORS.custom
             : marker.selected
               ? COLORS.selected
-              : COLORS.catalog
+              : marker.kind === 'dem_point'
+                ? COLORS.demPoint
+                : COLORS.catalog
         const dot = new THREE.Mesh(
           markerGeometry.clone(),
           new THREE.MeshBasicMaterial({ color }),

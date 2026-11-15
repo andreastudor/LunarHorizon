@@ -133,6 +133,24 @@ export function GlobeView({
               {en.globe.focusSelection}
             </button>
           </div>
+          <ul className="globe-legend small" aria-label="Legend">
+            <li>
+              <span className="swatch swatch--catalog" />
+              {en.globe.legend.catalog}
+            </li>
+            <li>
+              <span className="swatch swatch--dem-point" />
+              {en.globe.legend.demPoint}
+            </li>
+            <li>
+              <span className="swatch swatch--observer" />
+              {en.globe.legend.custom}
+            </li>
+            <li>
+              <span className="swatch swatch--selected" />
+              {en.globe.legend.selected}
+            </li>
+          </ul>
           <p className="globe-lod">{en.globe.lod}</p>
           {textureMissing && (
             <p className="globe-overlay globe-overlay--warning" role="status">

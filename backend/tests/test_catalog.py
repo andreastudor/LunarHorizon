@@ -384,11 +384,16 @@ def test_region_points_are_labelled_and_never_landings() -> None:
         assert site.id.startswith("pgda104_") and site.id.endswith("_point")
         assert site.geometry_type == "region" and site.position_kind == "representative_point"
         assert site.mission is None and site.mission_status == "not_applicable"
-        assert "representative point" in site.name
+        assert "DEM representative point" in site.name and "raster centre" in site.name
+        for misleading in ("landing site", "candidate", "official centre"):
+            assert misleading not in site.name.lower()
         assert site.region is not None and site.terrain_available
         assert site.frame_id == "MOON_ME_DE421"
         assert "IPOTEZĂ" in site.adoption_note and "D-10" in site.adoption_note
-        assert site.description_en and "Not a landing site" in site.description_en
+        assert site.description_en
+        assert "not the official centre of the region" in site.description_en
+        assert "not a landing site" in site.description_en
+        assert "not an approved landing candidate" in site.description_en
 
 
 def test_region_points_are_the_centre_pixels_of_the_acquired_rasters() -> None:

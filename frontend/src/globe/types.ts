@@ -9,7 +9,7 @@ export interface GlobeMarker {
   id: string
   latitudeDeg: number
   longitudeDeg: number
-  kind: 'catalog' | 'custom'
+  kind: 'catalog' | 'dem_point' | 'custom'
   selected: boolean
 }
 

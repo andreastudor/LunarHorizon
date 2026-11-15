@@ -10,6 +10,13 @@ filtru „South polar sites only”, teren încărcat pentru produsul selecției
 pentru fiecare stare. Detalii: [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md). E08 inițială rămâne încheiată; E12 nu este
 încheiată; E09 nu a fost începută.
 
+Revizie (2026-11-15) a funcției de adoptare a cadrului DEM: nicio conversie de coordonate; pozițiile din catalog
+rămân în cadrul sursei și sunt refuzate la nepotrivire (fără reinterpretare, catalogul nemodificat); numai punctele
+utilizatorului pot fi reinterpretate, explicit și cu avertismentul că nu este garantat aceeași poziție fizică; punctele
+DEM păstrează proveniența și ipoteza de cadru a produsului. Cele 13 puncte se numesc „DEM representative point (PGDA 104
+raster centre)”, nu centrul oficial al regiunii; marker și legendă proprii pe glob. Verificări: backend 354, frontend
+215, Playwright 4/4. Detalii: [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md#politica-de-cadre-și-etichetele-punctelor-dem-revizie-2026-11-15).
+
 ## E08 — teren local 3D din DEM real, 2026-11-15
 
 **Implementare tehnică finalizată; acceptare științifică restantă.** Backend: `GET /api/terrain/elevation` (altitudine
@@ -23,8 +30,8 @@ momentul sliderului, fără reconstruirea mesh-ului; încărcări depășite ign
 obligatorie „Local terrain is displayed; visibility calculations do not yet include terrain.” este permanentă; umbrele
 sunt declarate vizuale; punctul Leibnitz este marcat ca reprezentativ provizoriu, nu loc de aterizare.
 
-Cadre: terenul declară `MOON_ME_DE421` (ipoteză). Punctul reprezentativ și punctele alese pe teren adoptă acest cadru în
-cerere (afișat utilizatorului); dacă rezultatul folosește alt cadru, direcțiile nu se desenează și se explică motivul.
+Cadre: terenul declară `MOON_ME_DE421` (ipoteză). Punctul reprezentativ DEM folosește cadrul produsului, fără conversie;
+un punct al utilizatorului se reinterpretează în acest cadru numai explicit (revizia E08b); dacă rezultatul folosește alt cadru, direcțiile nu se desenează și se explică motivul.
 
 Verificări: backend 341 teste, Ruff, mypy, contracte, `verify_e05`; frontend 205 teste, formatare, oxlint, `tsc`,
 contracte, build; Playwright 2/2 (globul E07 și terenul real E08); verificare în Chrome (vezi VALIDARE). Restanțe: orizontul

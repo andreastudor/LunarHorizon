@@ -868,7 +868,7 @@
     },
     {
       "id": "pgda104_amundsen_rim_point",
-      "name": "Amundsen Rim — PGDA 104 DEM region (representative point)",
+      "name": "Amundsen Rim — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -1188,14 +1188,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Amundsen Rim region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Amundsen Rim, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_connecting_ridge_point",
-      "name": "Connecting Ridge — PGDA 104 DEM region (representative point)",
+      "name": "Connecting Ridge — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -1515,14 +1515,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Connecting Ridge region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Connecting Ridge, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_connecting_ridge_extension_point",
-      "name": "Connecting Ridge Extension — PGDA 104 DEM region (representative point)",
+      "name": "Connecting Ridge Extension — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -1842,14 +1842,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Connecting Ridge Extension region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Connecting Ridge Extension, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_degerlache_kocher_massif_point",
-      "name": "deGerlache Kocher Massif — PGDA 104 DEM region (representative point)",
+      "name": "deGerlache Kocher Massif — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -2169,14 +2169,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the deGerlache Kocher Massif region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named deGerlache Kocher Massif, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_degerlache_rim_point",
-      "name": "deGerlache Rim — PGDA 104 DEM region (representative point)",
+      "name": "deGerlache Rim — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -2496,14 +2496,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the deGerlache Rim region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named deGerlache Rim, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_degerlache_rim_2_point",
-      "name": "deGerlache Rim 2 — PGDA 104 DEM region (representative point)",
+      "name": "deGerlache Rim 2 — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -2823,14 +2823,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the deGerlache Rim 2 region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named deGerlache Rim 2, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_faustini_rim_a_point",
-      "name": "Faustini Rim A — PGDA 104 DEM region (representative point)",
+      "name": "Faustini Rim A — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -3150,14 +3150,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Faustini Rim A region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Faustini Rim A, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_haworth_point",
-      "name": "Haworth — PGDA 104 DEM region (representative point)",
+      "name": "Haworth — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -3477,14 +3477,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Haworth region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Haworth, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_leibnitz_beta_plateau_point",
-      "name": "Leibnitz Beta Plateau — PGDA 104 DEM region (representative point)",
+      "name": "Leibnitz Beta Plateau — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -3804,14 +3804,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Leibnitz Beta Plateau region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Leibnitz Beta Plateau, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_malapert_massif_point",
-      "name": "Malapert Massif — PGDA 104 DEM region (representative point)",
+      "name": "Malapert Massif — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -4131,14 +4131,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Malapert Massif region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Malapert Massif, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_nobile_rim_1_point",
-      "name": "Nobile Rim 1 — PGDA 104 DEM region (representative point)",
+      "name": "Nobile Rim 1 — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -4458,14 +4458,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Nobile Rim 1 region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Nobile Rim 1, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_nobile_rim_2_point",
-      "name": "Nobile Rim 2 — PGDA 104 DEM region (representative point)",
+      "name": "Nobile Rim 2 — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -4785,14 +4785,14 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Nobile Rim 2 region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Nobile Rim 2, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     },
     {
       "id": "pgda104_peak_near_shackleton_point",
-      "name": "Peak Near Shackleton — PGDA 104 DEM region (representative point)",
+      "name": "Peak Near Shackleton — DEM representative point (PGDA 104 raster centre)",
       "mission": null,
       "agency": null,
       "operator": null,
@@ -5112,9 +5112,9 @@
         }
       ],
       "position_verification": "verified_at_original",
-      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "adoption_note": "Punct reprezentativ DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu centrul oficial al regiunii, nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
       "description_ro": null,
-      "description_en": "Representative point (raster centre pixel) of the Peak Near Shackleton region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "description_en": "DEM representative point: the centre pixel of the PGDA 104 raster named Peak Near Shackleton, chosen by LunarHorizon. It is not the official centre of the region, not a landing site, not an approved landing candidate and not a current mission selection.",
       "terrain_available": true
     }
   ],

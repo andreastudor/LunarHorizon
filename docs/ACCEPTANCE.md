@@ -9,6 +9,7 @@
 | Validare automată a fiecărui produs | Îndeplinit | `verify_terrain_products.py`: 13/13 OK |
 | Interfață: căutare/selecție, stări distincte, încărcare per produs, resurse eliberate | Îndeplinit | teste UI (5 noi), Playwright `regions.spec.ts`, Chrome |
 | Teste: zone distincte, suprapuneri, margini, NoData, fără acoperire, cadre, schimbări rapide, GPU | Îndeplinit | `test_terrain_regions.py` (10), `App.test.tsx`, Playwright |
+| Revizie: cadre fără conversie implicită; etichete „DEM representative point”, nu centrul oficial al regiunii | Îndeplinit | `App.test.tsx`, `test_catalog.py`, Playwright `frames.spec.ts` |
 | Toate intrările listei cu teren real | **Parțial** | 13/15 cu teren real; 2 Chandrayaan-3 „Coverage unverified” (niciun produs inventariat) |
 
 Acceptare științifică restantă: cadrul `MOON_ME_DE421` al produselor PGDA este o ipoteză; punctele sunt pixeli centrali,

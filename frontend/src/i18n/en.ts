@@ -46,7 +46,7 @@ export const en = {
     positionKind: {
       actual: 'Actual position',
       planned_target: 'Planned target',
-      representative_point: 'Representative point',
+      representative_point: 'DEM representative point',
     } as Record<string, string>,
     missionStatus: {
       landed: 'Landed',
@@ -81,9 +81,13 @@ export const en = {
     extentNote:
       'Outline of the raster extent only — not a validated horizon coverage.',
     show: 'Show on globe',
-    useRepresentative: 'Use the representative point',
-    frameAdopted: (frame: string) =>
-      `Frame set to ${frame}, the frame declared by the DEM product (working hypothesis).`,
+    useRepresentative: 'Select its DEM representative point',
+    frameNotes: {
+      demPoint: (frame: string) =>
+        `Request frame set to ${frame}, the frame declared by the DEM product (working hypothesis, not validated). The point's coordinates come from that DEM; no coordinate conversion is applied.`,
+      reinterpreted: (frame: string) =>
+        `The same latitude and longitude are now interpreted in ${frame}, the DEM's declared frame (working hypothesis). No coordinate conversion was performed: if the point was defined in another frame, this is not guaranteed to be the same physical position.`,
+    },
   },
   params: {
     heading: 'Simulation',
@@ -228,6 +232,12 @@ export const en = {
       'The globe texture could not be loaded; the Moon is drawn without imagery.',
     lod: 'Detail: global texture 2048 × 1024 px (≈5.3 km/px at the equator) — imagery only, not local terrain.',
     pickedPoint: (lat: string, lon: string) => `Point ${lat}, ${lon}`,
+    legend: {
+      catalog: 'Catalog positions (landed or planned)',
+      demPoint: 'DEM representative points (raster centres, not landing sites)',
+      custom: 'Point entered or clicked',
+      selected: 'Selected',
+    },
   },
   views: {
     label: 'Map view',
@@ -252,7 +262,12 @@ export const en = {
       frame_mismatch:
         'Frame mismatch: the DEM covering this point is declared in another reference frame, and coordinates are not converted between frames.',
     } as Record<string, string>,
-    adoptFrame: (frame: string) => `Use the DEM frame ${frame}`,
+    adoptFrame: (frame: string) =>
+      `Interpret this point in ${frame} (no conversion)`,
+    adoptFrameExplanation:
+      'Only for a point you entered or clicked: its numbers are kept and re-interpreted in the DEM frame, not converted.',
+    catalogFrameRefusal:
+      'Catalog positions keep the frame of their source and are not re-interpreted in another frame; without a justified transformation, no terrain is shown.',
     error: 'The local terrain could not be loaded.',
     camera: {
       top: 'Top view',
@@ -286,9 +301,9 @@ export const en = {
     shadows:
       'Shadows are visual only; they are not horizon or visibility calculations.',
     representativeNote:
-      'Representative point of the DEM product (raster centre pixel) — not a landing site and not a scientifically approved site.',
-    representativeLabel:
-      'Leibnitz Beta Plateau — provisional representative point',
+      'DEM representative point: the centre pixel of the product’s raster, chosen by LunarHorizon — not the official centre of the region, not a landing site and not an approved landing candidate.',
+    representativeFallback: (terrainId: string) =>
+      `${terrainId} — DEM representative point (raster centre)`,
     legend: {
       observer: 'Observer (green)',
       sun: 'Sun direction (yellow, schematic)',
