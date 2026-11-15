@@ -55,14 +55,13 @@ from lunarhorizon.contracts.simulation import (
     SiteTerrain,
     TimeInterval,
 )
-from lunarhorizon.core.conventions import SCHEMA_VERSION
+from lunarhorizon.core.conventions import APPARENT_CORRECTION, SCHEMA_VERSION
 from lunarhorizon.core.coords import azimuth_convention
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
 from lunarhorizon.core.utc import format_utc, parse_utc
 from lunarhorizon.terrain.horizon import interpolate_horizon
 
 BODIES: tuple[Body, ...] = ("sun", "earth")
-APPARENT_CORRECTION: Final = "LT+S"
 REFINEMENT_MS = 1
 SCAN_STEP_BASE_S = 900
 MAX_SCAN_SAMPLES = 20_000
@@ -495,7 +494,8 @@ def simulate_idealized(
             "Idealized mode: flat local horizon at 0°, local terrain not included; "
             "this is not a terrain-based result.",
             "Sun visibility uses the disc centre (angular radius not applied); no refraction.",
-            "Apparent positions with the LT+S correction (provisional, D-02 [ASTRO] open).",
+            "Apparent positions with the CN+S correction (D-02, confirmed by the astronomers; no "
+            "gravitational light deflection).",
             "The observer is on the reference sphere; the catalog elevation is not used.",
         ],
         limits=[
@@ -711,7 +711,8 @@ def _dem_result(
             "Horizon H(a) from the DEM calculation rasters (near PGDA product, far LOLA GDR "
             "product), linear between sampled azimuths; the display mesh is not used.",
             "The observer stands on the DEM surface (bilinear height) plus the equipment height.",
-            "Apparent positions with the LT+S correction (provisional, D-02 [ASTRO] open).",
+            "Apparent positions with the CN+S correction (D-02, confirmed by the astronomers; no "
+            "gravitational light deflection).",
         ],
         limits=[
             "Horizon parameters (d_max, radial and azimuth steps, far product) are technical "

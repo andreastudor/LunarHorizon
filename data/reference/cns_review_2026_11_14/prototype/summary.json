@@ -1,0 +1,8 @@
+{
+  "checks": 10,
+  "all_pass": true,
+  "max_separation_deg": 3.6053485372275007e-07,
+  "max_LT_CN_separation_deg": 2.6618504008434e-07,
+  "checked_at": "2026-11-14T21:54:54.587976+00:00",
+  "scope": "local prototype only; other-computer application not inspected; conditional on adopted coordinates/frame"
+}

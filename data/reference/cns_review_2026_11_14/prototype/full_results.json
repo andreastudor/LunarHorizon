@@ -1,0 +1,477 @@
+[
+  {
+    "case": "baseline",
+    "calculation": {
+      "utc": "2026-11-14T12:00:00Z",
+      "frame": "MOON_ME_DE440_ME421",
+      "observer_xyz_m": [
+        1591749.1680459378,
+        691225.1332998165,
+        20419.6722761003
+      ],
+      "surface_elevation_m": -1926.6870392689982,
+      "observer_height_m": 2.0,
+      "ephemeris": "DE440s",
+      "apparent_limit": "CN+S: converged light-time and stellar aberration; no gravitational light deflection",
+      "pole_convention": "North/east at exact pole are defined by supplied longitude",
+      "sun": {
+        "geometric": {
+          "azimuth_deg": 91.48569018441597,
+          "elevation_deg": -7.072223555924797,
+          "direction_enu": [
+            0.9920581313187664,
+            -0.025730018250113663,
+            -0.123120389234139
+          ],
+          "range_km": 147798301.27429548,
+          "light_time_s": 493.0020663638426,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 91.48571436496431,
+          "elevation_deg": -7.066568072710614,
+          "direction_enu": [
+            0.99207026436145,
+            -0.02573075189792978,
+            -0.12302243281845074
+          ],
+          "range_km": 147798306.3331541,
+          "light_time_s": 493.0020832383786,
+          "correction": "CN+S"
+        }
+      },
+      "earth": {
+        "geometric": {
+          "azimuth_deg": 277.5871892680162,
+          "elevation_deg": 64.3201362739994,
+          "direction_enu": [
+            -0.42954850444660214,
+            0.05721625776711721,
+            0.9012293726764647
+          ],
+          "range_km": 403744.5519254074,
+          "light_time_s": 1.346746861541818,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 277.587180458052,
+          "elevation_deg": 64.31995263152103,
+          "direction_enu": [
+            -0.4295513765424817,
+            0.057216573112011934,
+            0.9012279837376206
+          ],
+          "range_km": 403710.79473777505,
+          "light_time_s": 1.3466342596843284,
+          "correction": "CN+S"
+        }
+      }
+    },
+    "horizons": {
+      "sun": {
+        "azimuth_deg": 91.485714365,
+        "elevation_deg": -7.066568067,
+        "direction_enu": [
+          0.9920702643736912,
+          -0.025730751898865752,
+          -0.12302243271953883
+        ],
+        "range_km": 147798306.33501828,
+        "reference_file": "results\\cns_decision_review\\horizons\\apollo11_sun_8e245f085f17b4d78b37.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      },
+      "earth": {
+        "azimuth_deg": 277.58718047,
+        "elevation_deg": 64.31995282,
+        "direction_enu": [
+          -0.4295513735918453,
+          0.05721657281014931,
+          0.9012279851631438
+        ],
+        "range_km": 403710.79470413184,
+        "reference_file": "results\\cns_decision_review\\horizons\\apollo11_earth_03eb7070bda79ccf5ca5.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      }
+    }
+  },
+  {
+    "case": "baseline",
+    "calculation": {
+      "utc": "2026-11-14T12:00:00Z",
+      "frame": "MOON_ME_DE440_ME421",
+      "observer_xyz_m": [
+        -12014.88732986475,
+        -10813.398408688185,
+        -1739265.2308356839
+      ],
+      "surface_elevation_m": 1938.3434338543284,
+      "observer_height_m": 2.0,
+      "ephemeris": "DE440s",
+      "apparent_limit": "CN+S: converged light-time and stellar aberration; no gravitational light deflection",
+      "pole_convention": "North/east at exact pole are defined by supplied longitude",
+      "sun": {
+        "geometric": {
+          "azimuth_deg": 258.5284276583324,
+          "elevation_deg": 1.450793489309902,
+          "direction_enu": [
+            -0.9797093428520101,
+            -0.19881796012268793,
+            0.025318417429523808
+          ],
+          "range_km": 147798043.56436124,
+          "light_time_s": 493.0012067360321,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 258.5227709215924,
+          "elevation_deg": 1.4507179716560057,
+          "direction_enu": [
+            -0.9796897417446326,
+            -0.19891469120460456,
+            0.025317099820309497
+          ],
+          "range_km": 147798048.62324077,
+          "light_time_s": 493.0012236106378,
+          "correction": "CN+S"
+        }
+      },
+      "earth": {
+        "geometric": {
+          "azimuth_deg": 136.06370236188866,
+          "elevation_deg": -4.505074992171076,
+          "direction_enu": [
+            0.6917144099338848,
+            -0.7178868165701403,
+            -0.07854739769468887
+          ],
+          "range_km": 405442.22254861466,
+          "light_time_s": 1.3524096811955646,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 136.06351800214065,
+          "elevation_deg": -4.505090962287341,
+          "direction_enu": [
+            0.6917167046725328,
+            -0.7178845750817933,
+            -0.07854767556462343
+          ],
+          "range_km": 405408.29093473114,
+          "light_time_s": 1.352296497514728,
+          "correction": "CN+S"
+        }
+      }
+    },
+    "horizons": {
+      "sun": {
+        "azimuth_deg": 258.522770915,
+        "elevation_deg": 1.450717972,
+        "direction_enu": [
+          -0.979689741721597,
+          -0.198914691317296,
+          0.02531709982631141
+        ],
+        "range_km": 147798048.62510613,
+        "reference_file": "results\\cns_decision_review\\horizons\\scr-study_sun_7176d8528e997a7b01b1.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      },
+      "earth": {
+        "azimuth_deg": 136.063518189,
+        "elevation_deg": -4.505090948,
+        "direction_enu": [
+          0.6917167023448783,
+          -0.7178845773518011,
+          -0.07854767531603273
+        ],
+        "range_km": 405408.29090433836,
+        "reference_file": "results\\cns_decision_review\\horizons\\scr-study_earth_70c22f556a147d3f6d2b.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      }
+    }
+  },
+  {
+    "case": "earth near ideal horizon",
+    "calculation": {
+      "utc": "2026-11-14T12:00:00Z",
+      "frame": "MOON_ME_DE440_ME421",
+      "observer_xyz_m": [
+        138130.25855969742,
+        77184.78820901854,
+        -1735525.6002596861
+      ],
+      "surface_elevation_m": 5321.893511930652,
+      "observer_height_m": 2.0,
+      "ephemeris": "DE440s",
+      "apparent_limit": "CN+S: converged light-time and stellar aberration; no gravitational light deflection",
+      "pole_convention": "North/east at exact pole are defined by supplied longitude",
+      "sun": {
+        "geometric": {
+          "azimuth_deg": 91.4695242986873,
+          "elevation_deg": 1.4291221121251425,
+          "direction_enu": [
+            0.9993601517618833,
+            -0.02563724842564519,
+            0.024940299990723374
+          ],
+          "range_km": 147798044.13760936,
+          "light_time_s": 493.0012086481822,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 91.46388835067329,
+          "elevation_deg": 1.4296117233058774,
+          "direction_enu": [
+            0.9993624556668174,
+            -0.025538939946108896,
+            0.024948842658881597
+          ],
+          "range_km": 147798049.19648606,
+          "light_time_s": 493.0012255227784,
+          "correction": "CN+S"
+        }
+      },
+      "earth": {
+        "geometric": {
+          "azimuth_deg": 328.95878117602405,
+          "elevation_deg": 0.3396254977874284,
+          "direction_enu": [
+            -0.5156455322736154,
+            0.8567815061120637,
+            0.0059275484480101415
+          ],
+          "range_km": 405295.23438178643,
+          "light_time_s": 1.3519193814468355,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 328.9585985725024,
+          "elevation_deg": 0.33959973965581325,
+          "direction_enu": [
+            -0.5156482642357337,
+            0.8567798650116626,
+            0.00592709889170167
+          ],
+          "range_km": 405261.3202377499,
+          "light_time_s": 1.3518062560391355,
+          "correction": "CN+S"
+        }
+      }
+    },
+    "horizons": {
+      "sun": {
+        "azimuth_deg": 91.463888345,
+        "elevation_deg": 1.429611724,
+        "direction_enu": [
+          0.9993624556690439,
+          -0.025538939847146825,
+          0.024948842670992552
+        ],
+        "range_km": 147798049.1983517,
+        "reference_file": "results\\cns_decision_review\\horizons\\im2_sun_06fb74d5be52ebe22696.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      },
+      "earth": {
+        "azimuth_deg": 328.958598758,
+        "elevation_deg": 0.339599764,
+        "direction_enu": [
+          -0.5156482614605725,
+          0.856779866678939,
+          0.005927099316580421
+        ],
+        "range_km": 405261.3202071165,
+        "reference_file": "results\\cns_decision_review\\horizons\\im2_earth_915712d4b15f03a92fb0.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      }
+    }
+  },
+  {
+    "case": "sun near ideal horizon",
+    "calculation": {
+      "utc": "2026-11-15T01:56:29.873658Z",
+      "frame": "MOON_ME_DE440_ME421",
+      "observer_xyz_m": [
+        1591749.1680459378,
+        691225.1332998165,
+        20419.6722761003
+      ],
+      "surface_elevation_m": -1926.6870392689982,
+      "observer_height_m": 2.0,
+      "ephemeris": "DE440s",
+      "apparent_limit": "CN+S: converged light-time and stellar aberration; no gravitational light deflection",
+      "pole_convention": "North/east at exact pole are defined by supplied longitude",
+      "sun": {
+        "geometric": {
+          "azimuth_deg": 91.55713555836724,
+          "elevation_deg": 0.00278273902193287,
+          "direction_enu": [
+            0.9996307230163518,
+            -0.027173796991934354,
+            4.856795813736121e-05
+          ],
+          "range_km": 147817015.22549948,
+          "light_time_s": 493.0644893858519,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 91.55717857276602,
+          "elevation_deg": 0.008457556278408721,
+          "direction_enu": [
+            0.9996306929038653,
+            -0.027174547193571454,
+            0.00014761220319488776
+          ],
+          "range_km": 147817020.26278457,
+          "light_time_s": 493.06450618842644,
+          "correction": "CN+S"
+        }
+      },
+      "earth": {
+        "geometric": {
+          "azimuth_deg": 275.8896635985057,
+          "elevation_deg": 63.58021978687203,
+          "direction_enu": [
+            -0.442595671305721,
+            0.04565711606665273,
+            0.8955582055310053
+          ],
+          "range_km": 403075.99953883275,
+          "light_time_s": 1.3445168108226146,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 275.8896694597579,
+          "elevation_deg": 63.58003598348392,
+          "direction_enu": [
+            -0.44259852439528535,
+            0.0456574561434073,
+            0.8955567781562644
+          ],
+          "range_km": 403040.04502475116,
+          "light_time_s": 1.3443968794730359,
+          "correction": "CN+S"
+        }
+      }
+    },
+    "horizons": {
+      "sun": {
+        "azimuth_deg": 91.557178573,
+        "elevation_deg": 0.008457563,
+        "direction_enu": [
+          0.9996306929037371,
+          -0.02717454719765339,
+          0.00014761232050878524
+        ],
+        "range_km": 147817020.26477665,
+        "reference_file": "results\\cns_decision_review\\horizons\\apollo11_sun_133d7f0d3a5741f829cc.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      },
+      "earth": {
+        "azimuth_deg": 275.889669456,
+        "elevation_deg": 63.580036188,
+        "direction_enu": [
+          -0.44259852121848303,
+          0.045657455786357125,
+          0.8955567797444944
+        ],
+        "range_km": 403040.04497225035,
+        "reference_file": "results\\cns_decision_review\\horizons\\apollo11_earth_a1f1929b8b10970e019d.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      }
+    }
+  },
+  {
+    "case": "earth near ideal horizon",
+    "calculation": {
+      "utc": "2026-11-17T22:40:49.996721Z",
+      "frame": "MOON_ME_DE440_ME421",
+      "observer_xyz_m": [
+        -12014.88732986475,
+        -10813.398408688185,
+        -1739265.2308356839
+      ],
+      "surface_elevation_m": 1938.3434338543284,
+      "observer_height_m": 2.0,
+      "ephemeris": "DE440s",
+      "apparent_limit": "CN+S: converged light-time and stellar aberration; no gravitational light deflection",
+      "pole_convention": "North/east at exact pole are defined by supplied longitude",
+      "sun": {
+        "geometric": {
+          "azimuth_deg": 216.5900641421513,
+          "elevation_deg": 1.1235231506952366,
+          "direction_enu": [
+            -0.5959710469512041,
+            -0.8027664919568936,
+            0.01960792153973174
+          ],
+          "range_km": 147936015.3665768,
+          "light_time_s": 493.4614311297212,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 216.58427895982808,
+          "elevation_deg": 1.123472595733034,
+          "direction_enu": [
+            -0.5958899985071338,
+            -0.8028266772390852,
+            0.01960703935881567
+          ],
+          "range_km": 147936020.29065418,
+          "light_time_s": 493.4614475546752,
+          "correction": "CN+S"
+        }
+      },
+      "earth": {
+        "geometric": {
+          "azimuth_deg": 131.83026253500216,
+          "elevation_deg": 0.0010041176506648051,
+          "direction_enu": [
+            0.7451238458963335,
+            -0.6669261233221607,
+            1.7525159080593993e-05
+          ],
+          "range_km": 395438.88303768885,
+          "light_time_s": 1.319042132266346,
+          "correction": "NONE"
+        },
+        "apparent": {
+          "azimuth_deg": 131.8300748454958,
+          "elevation_deg": 0.0009838817886804524,
+          "direction_enu": [
+            0.7451260306134009,
+            -0.6669236824460806,
+            1.7171976662041035e-05
+          ],
+          "range_km": 395399.27764090843,
+          "light_time_s": 1.3189100228829251,
+          "correction": "CN+S"
+        }
+      }
+    },
+    "horizons": {
+      "sun": {
+        "azimuth_deg": 216.584278953,
+        "elevation_deg": 1.123472596,
+        "direction_enu": [
+          -0.5958899984114041,
+          -0.8028266773100255,
+          0.01960703936347421
+        ],
+        "range_km": 147936020.2928876,
+        "reference_file": "results\\cns_decision_review\\horizons\\scr-study_sun_fd4d9f67cb3feb1aedca.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      },
+      "earth": {
+        "azimuth_deg": 131.830075204,
+        "elevation_deg": 0.00098392,
+        "direction_enu": [
+          0.7451260264403982,
+          -0.6669236871083853,
+          1.7172643575378575e-05
+        ],
+        "range_km": 395399.27750138415,
+        "reference_file": "results\\cns_decision_review\\horizons\\scr-study_earth_79bb1cc981898f63276e.json",
+        "center_frame_header": "MEAN_ME (high precision)        {East-longitude positive}"
+      }
+    }
+  }
+]

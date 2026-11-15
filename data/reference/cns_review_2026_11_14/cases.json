@@ -1,0 +1,160 @@
+{
+  "_comment": "Five site-time configurations of the CN+S review (prototype run 2026-11-14). Inputs are exactly those of the archived Horizons requests: geodetic coordinates, surface height + observer height (radial), UTC. These are historical test references, not catalog entries.",
+  "cases": [
+    {
+      "case_id": "apollo11_20261114T120000",
+      "prototype_site_id": "apollo11",
+      "prototype_case_note": "baseline",
+      "latitude_deg": 0.67416,
+      "longitude_deg": 23.47314,
+      "surface_height_m": -1926.6870392689982,
+      "observer_height_m": 2.0,
+      "utc": "2026-11-14T12:00:00.000000Z",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "references": {
+        "sun": "horizons/apollo11_sun_8e245f085f17b4d78b37.json",
+        "earth": "horizons/apollo11_earth_03eb7070bda79ccf5ca5.json"
+      },
+      "prototype_results": {
+        "sun": {
+          "correction": "CN+S",
+          "azimuth_deg": 91.48571436496431,
+          "elevation_deg": -7.066568072710614,
+          "separation_vs_horizons_deg": 5.7107222630964386e-09,
+          "lt_s_vs_cn_s_deg": 2.8735742266566805e-14
+        },
+        "earth": {
+          "correction": "CN+S",
+          "azimuth_deg": 277.587180458052,
+          "elevation_deg": 64.31995263152103,
+          "separation_vs_horizons_deg": 1.8855006832785311e-07,
+          "lt_s_vs_cn_s_deg": 2.6618504008434e-07
+        }
+      }
+    },
+    {
+      "case_id": "scr_study_20261114T120000",
+      "prototype_site_id": "scr-study",
+      "prototype_case_note": "baseline",
+      "latitude_deg": -89.46752,
+      "longitude_deg": -138.012788,
+      "surface_height_m": 1938.3434338543284,
+      "observer_height_m": 2.0,
+      "utc": "2026-11-14T12:00:00.000000Z",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "references": {
+        "sun": "horizons/scr-study_sun_7176d8528e997a7b01b1.json",
+        "earth": "horizons/scr-study_earth_70c22f556a147d3f6d2b.json"
+      },
+      "prototype_results": {
+        "sun": {
+          "correction": "CN+S",
+          "azimuth_deg": 258.5227709215924,
+          "elevation_deg": 1.4507179716560057,
+          "separation_vs_horizons_deg": 6.599226209975816e-09,
+          "lt_s_vs_cn_s_deg": 3.66549238314097e-14
+        },
+        "earth": {
+          "correction": "CN+S",
+          "azimuth_deg": 136.06351800214065,
+          "elevation_deg": -4.505090962287341,
+          "separation_vs_horizons_deg": 1.8682912635679486e-07,
+          "lt_s_vs_cn_s_deg": 2.6617515456708693e-07
+        }
+      }
+    },
+    {
+      "case_id": "im2_20261114T120000",
+      "prototype_site_id": "im2",
+      "prototype_case_note": "earth near ideal horizon",
+      "latitude_deg": -84.7906,
+      "longitude_deg": 29.1957,
+      "surface_height_m": 5321.893511930652,
+      "observer_height_m": 2.0,
+      "utc": "2026-11-14T12:00:00.000000Z",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "references": {
+        "sun": "horizons/im2_sun_06fb74d5be52ebe22696.json",
+        "earth": "horizons/im2_earth_915712d4b15f03a92fb0.json"
+      },
+      "prototype_results": {
+        "sun": {
+          "correction": "CN+S",
+          "azimuth_deg": 91.46388835067329,
+          "elevation_deg": 1.4296117233058774,
+          "separation_vs_horizons_deg": 5.7138356793926195e-09,
+          "lt_s_vs_cn_s_deg": 3.101976023062978e-14
+        },
+        "earth": {
+          "correction": "CN+S",
+          "azimuth_deg": 328.9585985725024,
+          "elevation_deg": 0.33959973965581325,
+          "separation_vs_horizons_deg": 1.8708500129203725e-07,
+          "lt_s_vs_cn_s_deg": 2.6608385106280384e-07
+        }
+      }
+    },
+    {
+      "case_id": "apollo11_20261115T015629",
+      "prototype_site_id": "apollo11",
+      "prototype_case_note": "sun near ideal horizon",
+      "latitude_deg": 0.67416,
+      "longitude_deg": 23.47314,
+      "surface_height_m": -1926.6870392689982,
+      "observer_height_m": 2.0,
+      "utc": "2026-11-15T01:56:29.873658Z",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "references": {
+        "sun": "horizons/apollo11_sun_133d7f0d3a5741f829cc.json",
+        "earth": "horizons/apollo11_earth_a1f1929b8b10970e019d.json"
+      },
+      "prototype_results": {
+        "sun": {
+          "correction": "CN+S",
+          "azimuth_deg": 91.55717857276602,
+          "elevation_deg": 0.008457556278408721,
+          "separation_vs_horizons_deg": 6.725662874320349e-09,
+          "lt_s_vs_cn_s_deg": 2.815539907255282e-14
+        },
+        "earth": {
+          "correction": "CN+S",
+          "azimuth_deg": 275.8896694597579,
+          "elevation_deg": 63.58003598348392,
+          "separation_vs_horizons_deg": 2.0452291917937385e-07,
+          "lt_s_vs_cn_s_deg": 2.3567327264603497e-07
+        }
+      }
+    },
+    {
+      "case_id": "scr_study_20261117T224049",
+      "prototype_site_id": "scr-study",
+      "prototype_case_note": "earth near ideal horizon",
+      "latitude_deg": -89.46752,
+      "longitude_deg": -138.012788,
+      "surface_height_m": 1938.3434338543284,
+      "observer_height_m": 2.0,
+      "utc": "2026-11-17T22:40:49.996721Z",
+      "frame_id": "MOON_ME_DE440_ME421",
+      "references": {
+        "sun": "horizons/scr-study_sun_fd4d9f67cb3feb1aedca.json",
+        "earth": "horizons/scr-study_earth_79bb1cc981898f63276e.json"
+      },
+      "prototype_results": {
+        "sun": {
+          "correction": "CN+S",
+          "azimuth_deg": 216.58427895982808,
+          "elevation_deg": 1.123472595733034,
+          "separation_vs_horizons_deg": 6.832000659148236e-09,
+          "lt_s_vs_cn_s_deg": 2.8704946516867004e-14
+        },
+        "earth": {
+          "correction": "CN+S",
+          "azimuth_deg": 131.8300748454958,
+          "elevation_deg": 0.0009838817886804524,
+          "separation_vs_horizons_deg": 3.6053485372275007e-07,
+          "lt_s_vs_cn_s_deg": 4.4124483800086626e-08
+        }
+      }
+    }
+  ]
+}

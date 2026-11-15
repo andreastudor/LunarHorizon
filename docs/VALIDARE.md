@@ -1,4 +1,31 @@
 # Validare — toleranțe, rezultate și probleme
+## D-02, T-01, D-04 — integrarea deciziilor și reexecutarea dovezilor (2026-11-15)
+
+Decizii confirmate de astronomi, comunicate de utilizator în această conversație (numele evaluatorilor și data
+evaluării nefurnizate): `CN+S` implicit (D-02); T-01 acceptare 0,001°, diagnostic 0,00001° pe setul fix; criteriul
+solar al oricărei porțiuni cu arie pozitivă a discului (D-04). Confirmarea nu se extinde la D-08/D-09 sau la alte
+puncte restante.
+
+Dovezi arhivate în `data/reference/cns_review_2026_11_14/` (10 răspunsuri Horizons ale pachetului, identificate după
+parametrii cererii și SHA-256, plus rezultatele și scriptul prototipului; `provenance.json`). Pachetul aplatizat avea
+227 de fișiere, dintre care 109 copii identice cu nume nepotrivite; nu s-a suprascris nicio referință existentă.
+
+Reexecutare în motorul actual (`scripts/validate_cns_review.py`, exact aceleași coordonate, altitudini, înălțimi,
+momente cu microsecunde și cadru; profil `de440_me421`, kerneluri identice ca SHA-256 cu ale prototipului):
+10/10 sub 0,001°, maxim **3,605·10⁻⁷°** (SCR, Pământ, 2026-11-17T22:40:49.996721Z), **niciuna peste diagnosticul de
+0,00001°**; |ΔD| ≤ 2,2 m (intervalul Horizons în au, convertit cu 1 au = 149 597 870,7 km); `LT+S` față de `CN+S`
+≤ 2,66·10⁻⁷°; motorul actual față de rezultatele prototipului ≤ 3,2·10⁻¹⁴°. Rezultatele prototipului (maxim
+3,6053485·10⁻⁷°) rămân separate în `prototype/`. Apollo 11 cu altitudinea din catalogul activ (−1926,289 m în loc de
+−1926,687 m), comparat numai motor-motor: ≤ 2,5·10⁻⁸°. IM-2 și „scr-study” sunt referințe istorice de test, nu
+intrări ale catalogului.
+
+E03 (`scripts/validate_e03.py`, 22 de direcții): `de440_CN+S` max 2,676·10⁻⁷°, fără depășiri de diagnostic;
+`de440_LT+S` max 4,748·10⁻⁷° (diagnostic). Rularea `de421_LT+S` semnalează 2 direcții peste 0,00001° (1,28·10⁻⁵°,
+`r02_west_sun_near_zenith`): investigat — nu este o configurație compatibilă cu referințele (cadru MOON_ME_DE421 și
+efemeride DE421 față de Horizons în ME DE440); valoarea coincide cu diferența dintre profiluri T-03, care trece.
+
+Acordul cu Horizons compară implementări JPL înrudite; nu validează coordonatele siturilor sau DEM-ul.
+
 ## E09 — orizontul din DEM (2026-11-15)
 
 Rulate: backend `pytest` 372/372 (17 noi în `test_horizon.py`), Ruff, mypy, contracte (schema 0.7.0),
@@ -233,7 +260,7 @@ le citesc testele din ambele limbaje.
 
 | ID | Mărime comparată | Referință | Propunere de pornire | Motiv | Condiții de validitate | Stare |
 |---|---|---|---|---|---|---|
-| T-01 | Azimut și elevație Soare/Pământ (criteriu: separarea unghiulară a direcțiilor) | Horizons, coordonate aparente, observator pe Lună | Propunere la E03: ≤ 0,001° (pragul prototipului separat). Măsurat: ≤ 4,75·10⁻⁷° (`LT+S`), ≤ 2,68·10⁻⁷° (`CN+S`). Alternativă recomandată spre decizie: ≤ 1·10⁻⁵° (vezi §6) | Eroarea astronomică nu trebuie să domine criteriul de vizibilitate; cu cel puțin un ordin de mărime sub raza unghiulară a Soarelui (~0,27°) | Aceeași poziție, altitudine, cadru și moment; separarea, nu azimutul, lângă zenit | **DESCHIS**: documentele păstrează două valori (0,001° propus; ≤ 1·10⁻⁵° recomandat); confirmarea comunicată nu o alege (D-12) |
+| T-01 | Azimut și elevație Soare/Pământ (criteriu: separarea unghiulară a direcțiilor) | Horizons, coordonate aparente, observator pe Lună | **Acceptare ≤ 0,001°** pentru configurații compatibile; **diagnostic > 0,00001°** pe setul fix versionat (semnalat și investigat separat). Măsurat (`CN+S`, implicit): ≤ 2,68·10⁻⁷° (22 de direcții E03), ≤ 3,61·10⁻⁷° (10 direcții ale pachetului CN+S) | Eroarea astronomică nu trebuie să domine criteriul de vizibilitate | Aceeași poziție, altitudine, cadru, corecție și moment; separarea, nu azimutul, lângă zenit | **CONFIRMAT** de astronomi, comunicat de utilizator în conversația din 2026-11-15 (numele și data evaluării nefurnizate). T-02/T-03 neschimbate |
 | T-02 | Distanța până la corp; vectorul geometric ICRF | Horizons (`delta` în km; vectori `NONE`, ICRF) | Propunere la E03: ≤ 0,1 km pentru ambele. Măsurat: \|ΔD\| ≤ 6,8 m (sub rezoluția de afișare a Horizons pentru Soare, ~10 m); \|Δv\| ≤ 2,29 m | Intră numai în raza unghiulară (ΔD/D ~ 10⁻⁸) | Aceeași corecție de timp de lumină; pentru vectori, momentul TDB raportat de Horizons | **CONFIRMAT** (comunicat de utilizator; fără persoane și dată): 0,1 km pentru distanță și pentru vector (D-12) |
 | T-03 | Diferența dintre profilurile `de440_me421` și `de421` | Calcul propriu, aceleași cazuri | Propunere la E03: ≤ 0,001°. Măsurat: separare ≤ 1,28·10⁻⁵°, \|ΔD\| ≤ 3,3 m | Justifică alegerea profilului (D-01); ordinul de mărime corespunde rotației dintre cadrele ME raportate de NAIF (≤ 5,8·10⁻⁷ rad) | Interval comun de acoperire (1900–2050) | **CONFIRMAT** (comunicat de utilizator; fără persoane și dată): 0,001° (D-12) |
 | T-04 | Conversii de coordonate dus-întors; proiecția față de PROJ | Identitate; PROJ 9.7.1 pentru proiecție | Unghiuri ≤ 1e-9°; lungimi ≤ 1e-6 m (1 µm) | Transformările sunt exacte analitic. 1e-9° ≈ 3·10⁻⁵ m pe suprafață; eroarea de rotunjire `float64` la raza lunară este ~2·10⁻¹⁰ m. Pragurile sunt cu 3–4 ordine peste rotunjire și cu 6 ordine sub pixelul DEM de 5 m | Longitudinea se compară ca distanță orizontală (Δlon·R·cos lat), fiindcă la pol nu este definită | STABILIT (E02), toleranță numerică |

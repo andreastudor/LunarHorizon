@@ -26,7 +26,10 @@ deschise.
   fost verificat (CRC de membru ZIP și SHA-256 local au fost).
 - **E06: implementare tehnică finalizată; acceptare științifică restantă.** API-ul FastAPI calculează numai modul
   `idealized_local_plane` (fără efectele terenului local); `dem` este refuzat. Detalii: [API.md](API.md) §8.
-- E03 și E04 rămân deschise (D-02, T-01, D-07, D-10 etc.); nu au blocat implementarea tehnică E06.
+- D-02 (`CN+S` implicit), T-01 (0,001°; diagnostic 0,00001°) și D-04 (disc cu arie pozitivă vizibilă) sunt
+  confirmate de astronomi, comunicate de utilizator (2026-11-15; numele și data evaluării nefurnizate). E03 nu se
+  închide automat: celelalte criterii (D-01, D-03, D-18, coordonatele E04 etc.) se verifică separat. E04 rămâne
+  deschisă (D-07, D-10).
 - **Schema 0.4.0:** azimut `null` cu motiv la zenit/nadir (commit separat).
 - **E07: încheiată tehnic** (inclusiv criteriul WebGL, prin testul Playwright `npm run test:e2e`); **acceptare
   științifică restantă**. Interfața este în

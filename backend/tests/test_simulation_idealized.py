@@ -13,6 +13,7 @@ from lunarhorizon.astro.bodies import ObserverSite, body_direction
 from lunarhorizon.astro.kernels import DEFAULT_KERNEL_DIR, LoadedProfile, load_profile
 from lunarhorizon.contracts.export import document_schema
 from lunarhorizon.contracts.simulation import SimulationRequest, SimulationResult
+from lunarhorizon.core.conventions import APPARENT_CORRECTION
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
 from lunarhorizon.core.utc import format_utc, parse_utc
 from lunarhorizon.simulation.idealized import SiteInput, simulate_idealized
@@ -92,7 +93,9 @@ def test_series_equals_engine_samples(result: SimulationResult, profile: LoadedP
     for body in ("sun", "earth"):
         data = getattr(series, body)
         for index in (0, 7, len(series.time_utc) - 1):
-            direct = body_direction(profile, APOLLO, body, series.time_utc[index], "LT+S")
+            direct = body_direction(
+                profile, APOLLO, body, series.time_utc[index], APPARENT_CORRECTION
+            )
             assert data.azimuth_deg[index] == direct.azimuth_deg
             assert data.elevation_deg[index] == direct.elevation_deg
             assert data.distance_km[index] == direct.distance_km
@@ -114,12 +117,16 @@ def test_events_are_real_crossings_refined_to_one_millisecond(
     group = result.events[0].sun
     assert group.status == "found"
     for event in group.events:
-        at = body_direction(profile, APOLLO, "sun", event.time_utc, "LT+S")
+        at = body_direction(profile, APOLLO, "sun", event.time_utc, APPARENT_CORRECTION)
         assert at.elevation_deg == pytest.approx(0.0, abs=1e-4)
         assert event.cause == "idealized_horizon" and event.obstacle_distance_m is None
         assert event.refinement_tolerance_s == 0.001
-        before = body_direction(profile, APOLLO, "sun", shifted(event.time_utc, -2000), "LT+S")
-        after = body_direction(profile, APOLLO, "sun", shifted(event.time_utc, 2000), "LT+S")
+        before = body_direction(
+            profile, APOLLO, "sun", shifted(event.time_utc, -2000), APPARENT_CORRECTION
+        )
+        after = body_direction(
+            profile, APOLLO, "sun", shifted(event.time_utc, 2000), APPARENT_CORRECTION
+        )
         assert (after.elevation_deg > before.elevation_deg) == (event.type == "appearance")
 
 

@@ -160,10 +160,12 @@ distanța și raza unghiulară.
   poziția observatorului dată în cadrul ME explicit și rezultatul exprimat în același cadru la epoca observatorului.
   Semnătura exactă din SpiceyPy se confirmă în etapa E03.
 - Proiecția pe baza `E, N, U` se face în cod propriu (NumPy), cu formulele din §4, ca să nu fie nevoie de câte un cadru topocentric per sit.
-- **[ASTRO] D-02 — DESCHISĂ.** Documentele păstrează două variante, `LT+S` (implicit actual) și `CN+S`, iar
-  confirmarea astronomilor (comunicată de utilizator) nu alege între ele. Corecția propusă este `LT+S` (timp de lumină și aberație stelară), adică direcția aparentă
-  pentru observator. Horizons descrie coordonatele aparente ca incluzând timpul de lumină, deflexia luminii și
-  aberația stelară, deci o diferență mică de model față de `LT+S` este de așteptat și trebuie cuantificată la validare.
+- **[ASTRO] D-02 — `CN+S` implicit (confirmată de astronomi, comunicată de utilizator în această conversație (2026-11-15)).** Numele evaluatorilor și data evaluării lor nu au fost furnizate. Direcția aparentă folosește
+  `CN+S` (timp de lumină convergent și aberație stelară), în convenția de recepție, cu cadrul local evaluat la
+  observator. `LT+S` (o singură iterație a timpului de lumină) rămâne numai pentru diagnostic; `NONE` este geometria
+  simultană (inclusiv viitorul tab E10A). Nu se folosesc `XLT+S`/`XCN+S`. Nu sunt incluse devierea gravitațională a
+  luminii, întârzierile relativiste sau un model de atmosferă. Configurația este centralizată în
+  `core.conventions.APPARENT_CORRECTION`; cheia cache-ului simulărilor include corecția.
 - Luna nu are atmosferă: nu se aplică refracție.
 - Raza unghiulară: `theta = asin(R_corp / d)`, cu `R_corp` citit din kernelul PCK text încărcat (`bodvrd`) și
   înregistrat în proveniență. Pentru Pământ se folosește raza ecuatorială; turtirea este ignorată în MVP (limită documentată).
@@ -201,7 +203,7 @@ observator → corp, exprimat în cadrul ME la epoca observatorului. Versorul es
 Azimutul și elevația se calculează ca în §4. **Azimutul este nedefinit (`None`)** când componenta orizontală a
 versorului este ≤ 10⁻¹² (zenit sau nadir). Elevația rămâne definită: `el = atan2(u, √(e² + n²))`.
 
-**Corecții.** `NONE` (geometric), `LT+S` (implicit; D-02 deschisă) și `CN+S` (disponibilă). Ambele variante
+**Corecții.** `NONE` (geometric), `CN+S` (implicit, D-02 confirmată) și `LT+S` (diagnostic). Ambele variante
 aparente includ timpul de lumină și aberația stelară. Niciuna nu include devierea gravitațională a luminii,
 pe care Horizons o aplică (`Rel. light bend : Sun, EARTH`).
 
@@ -275,14 +277,18 @@ neinclus. Modul permite explorarea astronomică și nu ține loc de integrare LO
 
 | Corp | Criteriu MVP | Parametri |
 |---|---|---|
-| Soare | `c(t) = e(t) − H(a(t)) > 0`, cu `e` elevația centrului discului | `solar_criterion = "disc_center"` |
+| Soare | O parte cu arie pozitivă a discului solar este neascunsă de masca de relief (§7.1) | `solar_criterion = "disc_positive_area"` |
 | Pământ | `e_P(t) > max( H(a_P(t)), e_min )` | `earth_min_elevation_deg`, configurabil |
 
 - Rezultatul pentru Pământ se numește **vizibilitate geometrică spre Pământ**. Nu este o evaluare a unei legături radio.
 - Dacă `H(a)` are starea `no_data` la azimutul corpului, vizibilitatea este `null`, cu motivul în `quality`. Nu este `false`.
 - Dacă starea este `partial`, vizibilitatea se calculează și se marchează ca incertă.
-- **[ASTRO] D-04** confirmă criteriul centrului discului pentru MVP și valoarea implicită a lui `e_min` (propunere: 0°).
-- Extensie (după MVP): fracția vizibilă a discului solar, prin eșantionarea discului față de `H(a)`.
+- **[ASTRO] D-04 — criteriul solar al discului extins (confirmată de astronomi, comunicată de utilizator în această conversație (2026-11-15)).** Numele evaluatorilor și data evaluării lor nu au fost furnizate. Soarele este vizibil
+  dacă orice porțiune cu arie pozitivă a discului se află deasupra orizontului modelat, chiar dacă centrul este
+  ascuns. Contactul tangent exact nu este arie pozitivă. Criteriul centrului (`disc_center`) nu mai este folosit.
+  Pentru Pământ rămâne criteriul centrului cu `e_min` implicit 0°, configurabil. Implementarea: E10 (§7.1).
+- Vizibilitatea privește numai relieful; eclipsele nu sunt incluse. Fracția vizibilă este fracția de arie aparentă
+  a discului, nu fracția de flux și nu putere solară.
 
 ## 8. Evenimente
 

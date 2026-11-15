@@ -19,6 +19,7 @@ from lunarhorizon.astro.kernels import DEFAULT_KERNEL_DIR, load_profile
 from lunarhorizon.catalog import load_catalog
 from lunarhorizon.contracts.export import document_schema
 from lunarhorizon.contracts.manifests import TerrainManifest
+from lunarhorizon.core.conventions import APPARENT_CORRECTION
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
 from tests.support import REPO_ROOT, SCHEMA_PATH, read_json
 
@@ -319,7 +320,9 @@ class TestSimulationFlow:
         observer = ObserverSite(site.latitude_deg, site.longitude_deg, 0.0, 2.0)
         series = result["series"][0]
         for index in (0, 5, len(series["time_utc"]) - 1):
-            direct = body_direction(profile, observer, "sun", series["time_utc"][index], "LT+S")
+            direct = body_direction(
+                profile, observer, "sun", series["time_utc"][index], APPARENT_CORRECTION
+            )
             assert series["sun"]["elevation_deg"][index] == direct.elevation_deg
             assert series["sun"]["azimuth_deg"][index] == direct.azimuth_deg
         assert result["horizon"][0]["mode"] == "idealized_local_plane"

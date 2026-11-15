@@ -3,9 +3,10 @@
 Rulare din rădăcina repository-ului (fără rețea; cere kernelurile din data/kernels):
     backend\\.venv\\Scripts\\python scripts\\validate_e03.py
 
-Scrie data/reference/horizons/e03_comparison.json: fiecare comparație (corecții LT+S și CN+S,
-profilurile DE440 și DE421, vectori ICRF), diferențele dintre profiluri (T-03), antetele Horizons
-relevante pentru D-18 și maximele. Pragurile din raport sunt PROPUSE și nevalidate.
+Scrie data/reference/horizons/e03_comparison.json: fiecare comparație (corecții CN+S — implicită,
+D-02 — și LT+S — diagnostic —, profilurile DE440 și DE421, vectori ICRF), diferențele dintre
+profiluri (T-03), antetele Horizons relevante pentru D-18 și maximele. T-01: acceptare 0,001°,
+diagnostic 0,00001° (confirmate, comunicat de utilizator); T-02/T-03 neschimbate.
 """
 
 import dataclasses
@@ -20,9 +21,10 @@ import numpy as np  # noqa: E402
 import spiceypy  # noqa: E402
 
 from lunarhorizon.astro import reference as ref  # noqa: E402
-from lunarhorizon.astro.bodies import Correction, body_direction  # noqa: E402
+from lunarhorizon.astro.bodies import body_direction  # noqa: E402
 from lunarhorizon.astro.kernels import LoadedProfile, activate, load_profile  # noqa: E402
 from lunarhorizon.contracts.export import dumps  # noqa: E402
+from lunarhorizon.core.conventions import Correction  # noqa: E402
 
 OUTPUT = ref.REFERENCE_DIR / "e03_comparison.json"
 
@@ -37,10 +39,13 @@ def _maxima(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "max_separation_case": f"{worst['case_id']}/{worst['body']}",
         "max_abs_distance_diff_km": abs(worst_distance["distance_diff_km"]),
         "max_abs_distance_case": f"{worst_distance['case_id']}/{worst_distance['body']}",
-        "within_proposed_T01": all(
-            r["separation_deg"] <= ref.PROPOSED_TOLERANCES["T-01_separation_deg"]
+        "within_T01": all(r["separation_deg"] <= ref.T01_ACCEPTANCE_DEG for r in validation),
+        # Diagnostic T-01 (0,00001°) pe setul fix: depășirile se investighează separat.
+        "above_T01_diagnostic": [
+            f"{r['case_id']}/{r['body']}"
             for r in validation
-        ),
+            if r["separation_deg"] > ref.T01_DIAGNOSTIC_DEG
+        ],
         "within_proposed_T02": all(
             abs(r["distance_diff_km"]) <= ref.PROPOSED_TOLERANCES["T-02_distance_km"]
             for r in validation
@@ -57,14 +62,21 @@ def main() -> int:
             "Comparația motorului LunarHorizon (SPICE, kerneluri locale) cu răspunsurile "
             "JPL Horizons "
             "arhivate. Acord între două implementări JPL (DE440s local, DE441 la Horizons), nu "
-            "validare prin observații independente. Pragurile sunt propuse, nevalidate (D-12)."
+            "validare prin observații independente. T-01 (0,001°; diagnostic 0,00001°), T-02 și "
+            "T-03 confirmate de astronomi (comunicat de utilizator)."
         ),
         "environment": {
             "spiceypy": spiceypy.__version__,
             "cspice": spiceypy.tkvrsn("TOOLKIT"),
         },
         "proposed_tolerances": ref.PROPOSED_TOLERANCES,
-        "proposed_tolerances_status": "NEVALIDAT",
+        "proposed_tolerances_status": (
+            "T-01, T-02, T-03 confirmate (comunicat); T-02_vector_km propus"
+        ),
+        "t01_thresholds_deg": {
+            "acceptance": ref.T01_ACCEPTANCE_DEG,
+            "diagnostic": ref.T01_DIAGNOSTIC_DEG,
+        },
         "profiles": {
             p.profile_id: {
                 "frame_id": p.frame_id,
@@ -79,8 +91,8 @@ def main() -> int:
 
     groups: dict[str, list[dict[str, Any]]] = {}
     runs: tuple[tuple[str, LoadedProfile, Correction], ...] = (
-        ("de440_LT+S", de440, "LT+S"),
         ("de440_CN+S", de440, "CN+S"),
+        ("de440_LT+S", de440, "LT+S"),
         ("de421_LT+S", de421, "LT+S"),
     )
     for label, profile, correction in runs:

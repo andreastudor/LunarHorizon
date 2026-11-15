@@ -17,22 +17,29 @@ import numpy as np
 from lunarhorizon.astro import horizons
 from lunarhorizon.astro.bodies import (
     Body,
-    Correction,
     ObserverSite,
     body_direction,
     body_vector_icrf_km,
 )
 from lunarhorizon.astro.kernels import REPO_ROOT, LoadedProfile
+from lunarhorizon.core.conventions import Correction
 from lunarhorizon.core.coords import enu_from_az_el
 
 REFERENCE_DIR: Final = REPO_ROOT / "data" / "reference" / "horizons"
 J2000_JD: Final = 2451545.0
 SECONDS_PER_DAY: Final = 86400.0
 
-# Praguri PROPUSE pentru T-01, T-02, T-03 (docs/VALIDARE.md §2). Stare: NEVALIDAT până la
-# confirmarea colegilor (D-12). Sunt praguri de acord între implementări JPL, nu acuratețe fizică.
-# Valorile pentru
-# T-01 și pentru vectori sunt cele fixate de prototipul separat înaintea comparațiilor lui.
+# Pragurile T-01, T-02, T-03 (docs/VALIDARE.md §2, D-12). Sunt praguri de acord între implementări
+# JPL, nu acuratețe fizică. T-02 (0,1 km) și T-03 (0,001°) au fost confirmate de astronomi
+# (comunicat, 2026-11-14). Pragul pentru vectori (T-02_vector_km) rămâne cel propus. Numele
+# dicționarului este istoric; pentru T-01 se folosesc constantele de mai jos.
+# T-01: acceptare la separare <= 0,001° pentru configurații compatibile (observator, epocă, cadru,
+# corecție) — confirmată de astronomi, comunicată de utilizator în conversația din 2026-11-15.
+# Diagnostic: o separare > 0,00001° pe setul fix versionat de referințe se semnalează și se
+# investighează separat, chiar dacă T-01 trece. Nu schimbă T-02/T-03.
+T01_ACCEPTANCE_DEG: Final = 1e-3
+T01_DIAGNOSTIC_DEG: Final = 1e-5
+
 PROPOSED_TOLERANCES: Final[dict[str, float]] = {
     "T-01_separation_deg": 1e-3,
     "T-02_distance_km": 0.1,

@@ -291,7 +291,7 @@ class Provenance(Contract):
     source_mode: Literal["live", "precomputed"]
     kernel_profile: KernelProfileUse
     frame_id: FrameId
-    # Corecția de aberație folosită (provizoriu „LT+S”, decizia D-02 [ASTRO]).
+    # Corecția de aberație folosită (`CN+S`, D-02 confirmată; `core.conventions`).
     aberration_correction: NonEmptyText
     body_radii_km: dict[str, Positive]
     dem_products: list[DemProductUse]

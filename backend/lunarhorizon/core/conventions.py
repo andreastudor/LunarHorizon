@@ -21,6 +21,16 @@ REJECTED_FRAME_ALIASES: Final[tuple[str, ...]] = ("MOON_ME", "MOON_PA", "IAU_MOO
 # Raza sferei de referință, în metri. Provizoriu: decizia D-05 [GEO].
 REFERENCE_RADIUS_M: Final = 1_737_400.0
 
+# Corecțiile de aberație ale direcțiilor (docs/SPEC_FIZICA.md §5). D-02: `CN+S` (timp de lumină
+# convergent + aberație stelară, recepție, cadrul local la observator) este corecția aparentă
+# implicită — confirmată de astronomi, comunicată de utilizator în conversația din 2026-11-15.
+# `LT+S` rămâne numai pentru diagnostic; `NONE` este geometria simultană (inclusiv viitorul tab
+# E10A). Sursa unică pentru motor și simulări.
+Correction = Literal["NONE", "LT+S", "CN+S"]
+APPARENT_CORRECTION: Final = "CN+S"
+DIAGNOSTIC_CORRECTION: Final = "LT+S"
+GEOMETRIC_CORRECTION: Final = "NONE"
+
 # Sufixele de unitate permise în numele câmpurilor numerice (docs/SPEC_FIZICA.md §1).
 UNIT_SUFFIXES: Final[tuple[str, ...]] = (
     "_deg",

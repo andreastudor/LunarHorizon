@@ -1,0 +1,148 @@
+{
+  "description": "Evidence package for D-02 (CN+S), T-01 and D-04 received from the user in the conversation of 2026-11-15. The decisions are recorded as 'confirmed by the astronomers, communicated by the user in this conversation'; the reviewers' names and the date of their review were not provided.",
+  "received_utc_date": "2026-11-15",
+  "prototype_run_checked_at": "2026-11-14T21:54:54.587976+00:00",
+  "package_notes": [
+    "The package was flattened; 227 files were received, 109 of them as byte-identical copies with suffixes such as '(1)' whose names did not match their content. Files were identified by SHA-256, the request parameters inside each Horizons file and the comparison rows, not by name.",
+    "Archived: the 10 Horizons responses referenced by comparisons.json and the decision evidence. Not archived: the historical prototype report (RAPORT.md, 30 earlier comparisons not re-executed in that run), DEM extracts, other Horizons responses and the IM-1/IM-2 site files of the prototype.",
+    "IM-2 and 'scr-study' are prototype positions kept only as historical test references; they are not entries of the active LunarHorizon catalog and are not reintroduced."
+  ],
+  "files": [
+    {
+      "path": "horizons/apollo11_sun_8e245f085f17b4d78b37.json",
+      "original_name": "apollo11_sun_8e245f085f17b4d78b37.json",
+      "sha256": "aa50ae1959f81910287649aa0e641f6d72d0ea4c2903e20c6a699f074ea61b25",
+      "size_bytes": 9342,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for apollo11 sun at 2026-11-14T12:00:00.000000Z",
+      "retrieved_at_utc": "2026-11-14T21:54:48.363796+00:00"
+    },
+    {
+      "path": "horizons/apollo11_earth_03eb7070bda79ccf5ca5.json",
+      "original_name": "apollo11_earth_03eb7070bda79ccf5ca5.json",
+      "sha256": "2905f38268d065e91aeae6c5772fdd4370afab63897c7fed269fc6286da27198",
+      "size_bytes": 9898,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for apollo11 earth at 2026-11-14T12:00:00.000000Z",
+      "retrieved_at_utc": "2026-11-14T21:54:49.045163+00:00"
+    },
+    {
+      "path": "horizons/scr-study_sun_7176d8528e997a7b01b1.json",
+      "original_name": "scr-study_sun_7176d8528e997a7b01b1.json",
+      "sha256": "8c770e1a044e36527df52bbe98291aff33efe72542ec876a71e8e2cfbf5e054b",
+      "size_bytes": 9348,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for scr-study sun at 2026-11-14T12:00:00.000000Z",
+      "retrieved_at_utc": "2026-11-14T21:54:49.709639+00:00"
+    },
+    {
+      "path": "horizons/scr-study_earth_70c22f556a147d3f6d2b.json",
+      "original_name": "scr-study_earth_70c22f556a147d3f6d2b.json",
+      "sha256": "98cf201d56fc42da7eda77391bdd448e6d502b504aa52e5c97e3b250409d29e9",
+      "size_bytes": 9904,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for scr-study earth at 2026-11-14T12:00:00.000000Z",
+      "retrieved_at_utc": "2026-11-14T21:54:50.415484+00:00"
+    },
+    {
+      "path": "horizons/im2_sun_06fb74d5be52ebe22696.json",
+      "original_name": "im2_sun_06fb74d5be52ebe22696.json",
+      "sha256": "68673af781d434198de89ba4b567b23b870dacc075ffb97f2cd01ffa59a728c1",
+      "size_bytes": 9344,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for im2 sun at 2026-11-14T12:00:00.000000Z",
+      "retrieved_at_utc": "2026-11-14T21:54:51.092563+00:00"
+    },
+    {
+      "path": "horizons/im2_earth_915712d4b15f03a92fb0.json",
+      "original_name": "im2_earth_915712d4b15f03a92fb0.json",
+      "sha256": "aafa6463d1572af1bf40326c83b7a5670ec7828a81dbe96462a6d8cfa4588842",
+      "size_bytes": 9900,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for im2 earth at 2026-11-14T12:00:00.000000Z",
+      "retrieved_at_utc": "2026-11-14T21:54:51.770303+00:00"
+    },
+    {
+      "path": "horizons/apollo11_sun_133d7f0d3a5741f829cc.json",
+      "original_name": "apollo11_sun_133d7f0d3a5741f829cc.json",
+      "sha256": "eba0e9b7aaa222032d013068a65ff7fa3a9cc399fb1a71d4a8f3ca4dac51d434",
+      "size_bytes": 9342,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for apollo11 sun at 2026-11-15T01:56:29.873658Z",
+      "retrieved_at_utc": "2026-11-14T21:54:52.464288+00:00"
+    },
+    {
+      "path": "horizons/apollo11_earth_a1f1929b8b10970e019d.json",
+      "original_name": "apollo11_earth_a1f1929b8b10970e019d.json",
+      "sha256": "45112e060f08a868c6ff239cf2bf3005972741636d3658e5e12a7ce339ad020d",
+      "size_bytes": 9898,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for apollo11 earth at 2026-11-15T01:56:29.873658Z",
+      "retrieved_at_utc": "2026-11-14T21:54:53.148314+00:00"
+    },
+    {
+      "path": "horizons/scr-study_sun_fd4d9f67cb3feb1aedca.json",
+      "original_name": "scr-study_sun_fd4d9f67cb3feb1aedca.json",
+      "sha256": "bc3422b3fa6c56aa9dc1f6361de1964819db360ad3e556146a85d11e71cbc8f9",
+      "size_bytes": 9348,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for scr-study sun at 2026-11-17T22:40:49.996721Z",
+      "retrieved_at_utc": "2026-11-14T21:54:53.831939+00:00"
+    },
+    {
+      "path": "horizons/scr-study_earth_79bb1cc981898f63276e.json",
+      "original_name": "scr-study_earth_79bb1cc981898f63276e.json",
+      "sha256": "dd3137f1acc57045615b7472381c2b49838c6876c86bddb05ba62a48d2a503d0",
+      "size_bytes": 9904,
+      "role": "JPL Horizons OBSERVER response (request URL + raw JSON) for scr-study earth at 2026-11-17T22:40:49.996721Z",
+      "retrieved_at_utc": "2026-11-14T21:54:54.575052+00:00"
+    },
+    {
+      "path": "prototype/DECIZII_CN_S_T01_D04.md",
+      "original_name": "DECIZII_CN_S_T01_D04.md",
+      "sha256": "db76dcceedf5460e90557948bce3b2579b8fb1e0cb21bc7eff5e60dfb5f73472",
+      "size_bytes": 11038,
+      "role": "Analysis and proposals that preceded the decisions (written by an AI assistant; not an approval)"
+    },
+    {
+      "path": "prototype/comparisons.json",
+      "original_name": "comparisons.json",
+      "sha256": "d5467e6623505c2fac13cca1188d742a367c9712dbfeb6e6fa96ad5e0d3551d8",
+      "size_bytes": 8077,
+      "role": "Prototype comparison rows (CN+S vs Horizons), as delivered"
+    },
+    {
+      "path": "prototype/comparisons.csv",
+      "original_name": "comparisons.csv",
+      "sha256": "181d44d4ec1da52e801eb592171cf7f347f5156e0fdd0ca176b787b76c8f26e2",
+      "size_bytes": 3570,
+      "role": "Same rows, CSV, as delivered"
+    },
+    {
+      "path": "prototype/full_results.json",
+      "original_name": "full_results.json",
+      "sha256": "4f724775370f4e74c4aabb1eb59decc23788a51a0751aa9e02804ed6ec219de4",
+      "size_bytes": 16081,
+      "role": "Prototype detailed results for the 5 configurations"
+    },
+    {
+      "path": "prototype/summary.json",
+      "original_name": "summary.json",
+      "sha256": "431576f8e7c3af73fce86902c6035cebd27481f75ef0ef7ff0da9244b9c51901",
+      "size_bytes": 315,
+      "role": "Prototype summary: 10 checks, max separation"
+    },
+    {
+      "path": "prototype/verify_cns_decisions.py",
+      "original_name": "verify_cns_decisions.py",
+      "sha256": "06bed7aebedefe122b068280a754d98982039afa4bbc344dc6f1bf5813f5b6d9",
+      "size_bytes": 4425,
+      "role": "Prototype script that produced the rows (provenance only; not imported)"
+    },
+    {
+      "path": "prototype/lunar_geometry.py",
+      "original_name": "lunar_geometry.py",
+      "sha256": "d4ec6724b01729732f18096c6f105bca774254d9683998efb8d0950067a2c542",
+      "size_bytes": 15060,
+      "role": "Prototype geometry module used by the script (provenance only; not imported)"
+    },
+    {
+      "path": "prototype/manifest.json",
+      "original_name": "manifest.json",
+      "sha256": "e8fac17833a13602dcd9a441466b3103c0cfc29d13b625518321c488ed9a0887",
+      "size_bytes": 1193,
+      "role": "Prototype kernel manifest (SHA-256 identical to data/manifests/kernels.json de440_me421)"
+    }
+  ]
+}

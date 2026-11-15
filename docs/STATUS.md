@@ -243,10 +243,13 @@ Efectul asupra deciziilor, numai în măsura în care conținutul lor este lipsi
 ## Ce mai lipsește pentru E03
 
 Criteriul de finalizare din [BACKLOG.md](BACKLOG.md) cere D-01, D-02, D-03 și D-18 închise și toleranțe confirmate.
-Rămân patru alegeri, toate numite exact:
+Actualizare 2026-11-15: punctele 1 și 2 sunt închise (confirmate de astronomi, comunicate de utilizator în
+conversație; numele și data evaluării nefurnizate). **E03 rămâne deschisă** pentru punctele 3 și 4, care nu au fost
+decise; nu se închide automat.
 
-1. **D-02:** care corecție aparentă este cea de referință, `LT+S` sau `CN+S`. Implicitul din cod și din SPEC_FIZICA este `LT+S`.
-2. **T-01:** valoarea numerică a pragului: 0,001° sau ≤ 1·10⁻⁵°. Rezultatele curente trec ambele (maxim 4,75·10⁻⁷°), dar pragul de 0,001° nu ar detecta sigur folosirea cadrului `IAU_MOON` (abateri de 2,2·10⁻⁴°–3,0·10⁻³°).
+1. ~~**D-02**~~ — **închis:** `CN+S` implicit; `LT+S` diagnostic (centralizat în `core.conventions`).
+2. ~~**T-01**~~ — **închis:** acceptare 0,001°, diagnostic 0,00001° pe setul fix. Diagnosticul acoperă riscul
+   semnalat anterior (folosirea `IAU_MOON` ar da 2,2·10⁻⁴°–3,0·10⁻³°, peste diagnostic). Rezultate: VALIDARE.
 3. **Înălțimea de suprafață de referință a Apollo 11.** Documentele păstrează trei valori: −1926,687 m (`a11_dem`, scalar DEM din prototip), −1926,0 m (`a11_catalog`, catalogul prototipului) și −1926,289 m (catalogul E04, din `RADIUS` LROC). Nu influențează numeric rezultatele: diferențele dintre ele schimbă direcțiile cu ≤ 2,5·10⁻⁸°. Alegerea este una de documentare.
 4. **Înălțimea observatorului:** 2 m este folosită în toate cazurile E03, dar este decizia D-14 (ECHIPĂ, „propunere”), care nu este închisă. O creștere de 8 m schimbă direcțiile cu ≤ 5·10⁻⁷°.
 
@@ -408,9 +411,9 @@ Propunerile sunt puncte de pornire, nu rezultate validate.
 | ID | Cine | Întrebare | Propunere | Blochează |
 |---|---|---|---|---|
 | D-01 | ASTRO | Ce profil de kerneluri folosim: DE440 (`MOON_ME_DE440_ME421`) sau DE421 (`MOON_ME_DE421`)? | **CONFIRMATĂ (comunicat de utilizator; fără persoane și dată)**: DE440 implicit, DE421 ca verificare încrucișată. Dovezi E03: DE440 față de Horizons ≤ 4,75·10⁻⁷°, DE421 ≤ 1,28·10⁻⁵°; DE421 acoperă doar 1900–2050 | — |
-| D-02 | ASTRO | Ce corecții de aberație definesc direcția „aparentă”? | **DESCHISĂ**: documentele păstrează `LT+S` (implicit actual) și `CN+S`; confirmarea comunicată nu alege. Dovezi E03: `CN+S` este mai aproape de Horizons (2,68·10⁻⁷° față de 4,75·10⁻⁷°); niciuna nu include devierea gravitațională a luminii | E03 (închidere) |
+| D-02 | ASTRO | Ce corecții de aberație definesc direcția „aparentă”? | **`CN+S` implicit — confirmată de astronomi, comunicată de utilizator în această conversație (2026-11-15).** Numele evaluatorilor și data evaluării lor nu au fost furnizate. `LT+S` numai diagnostic; `NONE` geometric (inclusiv E10A). Centralizat în `core.conventions` | E03 (închidere) |
 | D-03 | ASTRO | Planul local este perpendicular pe direcția radială? Ce convenție de azimut folosim la pol? | **CONFIRMATĂ (comunicat)**: da; nordul = meridianul longitudinii date; azimut nedefinit la zenit/nadir. Dovezi E03: la polul exact, cu longitudinea 0, Horizons dă același azimut (ΔA = 5,7·10⁻⁹°) | — |
-| D-04 | ASTRO | Criteriul solar al centrului discului este acceptabil pentru MVP? Ce prag minim de elevație are Pământul implicit? | Da; 0° | E10 |
+| D-04 | ASTRO | Criteriul solar și pragul implicit al Pământului | **Soare: orice porțiune cu arie pozitivă a discului deasupra orizontului (contactul tangent nu contează) — confirmată de astronomi, comunicată de utilizator în această conversație (2026-11-15).** Numele evaluatorilor și data evaluării lor nu au fost furnizate. Pământ: centrul, `e_min` implicit 0°, configurabil (criteriul documentat, neschimbat) | E10 |
 | D-05 | GEO | Raza de referință și referința înălțimilor din DEM-uri | 1 737 400 m, de confirmat din metadate | E05, E09 |
 | D-06 | GEO | Parametrii proiecției stereografice ai produselor PGDA | De citit din fișiere | E05 |
 | D-07 | GEO | Care sunt cele două situri polare demonstrative? | **DESCHISĂ.** IM-1/IM-2 retrase la cererea utilizatorului; lista activă de candidați este goală. Sunt necesare poziții citabile și verificarea DEM pentru alte situri. | E04 (închidere), E05 |
@@ -418,7 +421,7 @@ Propunerile sunt puncte de pornire, nu rezultate validate.
 | D-09 | GEO, ASTRO | Pasul azimutal și pasul radial ale orizontului | **Propunere tehnică E09 (neconfirmată):** `Δa` 0,5°, pas 5 m apropiat / 120 m îndepărtat, prag 0,05° | E09 |
 | D-10 | GEO | Conținutul catalogului și sursele pozițiilor; tratarea cadrelor istorice | **Implementat ca propunere, neconfirmat de geografi**: 10 intrări active verificate la documentele originale (produs PDS LROC actual ca sursă primară). Cadrul: nicio sursă nu numește realizarea (DE); adoptarea ca `MOON_ME_DE440_ME421` este o ipoteză consemnată în fiecare intrare. Fără regiuni candidate; ținte planificate numerice numai pentru Chandrayaan-3 | E04 (închidere) |
 | D-11 | GEO | Textura globului și fundalurile 2D; texte de creditare | Mozaicul LROC WAC; umbrirea PGDA | E05 |
-| D-12 | ASTRO, GEO | Toleranțele T-01 – T-09 | T-04, T-05 stabilite (E02). **T-02 (0,1 km) și T-03 (0,001°) confirmate (comunicat)**. **T-01 deschis**: 0,001° (propus) sau ≤ 1·10⁻⁵° (recomandat). T-06–T-09 neconfirmate | E03 (T-01); E09–E10 |
+| D-12 | ASTRO, GEO | Toleranțele T-01 – T-09 | T-04, T-05 stabilite (E02). T-02 (0,1 km) și T-03 (0,001°) confirmate (comunicat). **T-01: acceptare 0,001°, diagnostic 0,00001° pe setul fix — confirmată de astronomi, comunicată de utilizator în această conversație (2026-11-15).** T-06–T-09 neconfirmate | E03 (T-01); E09–E10 |
 | D-13 | ASTRO | Intervalele demonstrației (date de început, durată) | Intervale cu evenimente pentru ambele corpuri | E15 |
 | D-14 | ECHIPĂ | Înălțimea implicită a echipamentului | 2 m | E06 |
 | D-15 | ECHIPĂ | Remote GitHub și vizibilitate; găzduire; unde stau terenul vizual și scenariile (Git LFS sau descărcare) | — | E01 (parțial), E15, E16 |

@@ -4,9 +4,10 @@ Observatorul are poziție constantă în cadrul lunar fix ME: r = (R + h_suprafa
 `spkcpo` întoarce vectorul observator → corp exprimat în același cadru ME, evaluat la epoca
 observatorului (refloc = OBSERVER). Proiecția pe baza E, N, U folosește funcțiile din `core`.
 
-Corecții: `NONE` (geometric) sau aparent. Corecția aparentă implicită este `LT+S` (propunerea
-proiectului pentru D-02, provizorie). `CN+S` este disponibilă pentru comparație. Niciuna nu include
-devierea gravitațională a luminii.
+Corecții: `NONE` (geometric) sau aparent. Corecția aparentă implicită este `CN+S` (D-02,
+confirmată de astronomi, comunicată de utilizator; `core.conventions.APPARENT_CORRECTION`).
+`LT+S` rămâne pentru diagnostic. Niciuna nu include devierea gravitațională a luminii sau un
+model de atmosferă.
 """
 
 import math
@@ -18,7 +19,11 @@ import spiceypy
 
 from lunarhorizon.astro.kernels import SPICE_LOCK, LoadedProfile, activate
 from lunarhorizon.astro.timeconv import require_in_coverage, utc_to_et
-from lunarhorizon.core.conventions import REFERENCE_RADIUS_M
+from lunarhorizon.core.conventions import (
+    APPARENT_CORRECTION,
+    REFERENCE_RADIUS_M,
+    Correction,
+)
 from lunarhorizon.core.coords import (
     AzimuthConvention,
     Vec3,
@@ -33,10 +38,9 @@ from lunarhorizon.core.units import M_PER_KM, rad_to_deg
 from lunarhorizon.core.utc import canonical_utc
 
 Body = Literal["sun", "earth"]
-Correction = Literal["NONE", "LT+S", "CN+S"]
 
-# Provizoriu: decizia D-02 [ASTRO].
-DEFAULT_APPARENT_CORRECTION: Final[Correction] = "LT+S"
+# D-02: aceeași valoare ca `core.conventions.APPARENT_CORRECTION` (nu se definește a doua oară).
+DEFAULT_APPARENT_CORRECTION: Final[Correction] = APPARENT_CORRECTION
 SPICE_BODY_NAMES: Final[dict[Body, str]] = {"sun": "SUN", "earth": "EARTH"}
 # Sub această componentă orizontală a versorului, azimutul nu este definit (zenit sau nadir).
 UNDEFINED_AZIMUTH_HORIZONTAL: Final = 1e-12
@@ -94,12 +98,20 @@ def az_el_or_undefined(direction_enu: Vec3) -> tuple[float | None, float]:
     return azimuth_deg, elevation_deg
 
 
+_RADII_KM: dict[tuple[str, Body], float] = {}
+
+
 def body_radius_km(body: Body, profile: LoadedProfile) -> float:
-    """Raza ecuatorială din kernelul PCK text încărcat (pck00011)."""
-    activate(profile)
+    """Raza ecuatorială din kernelul PCK text al profilului (pck00011); memorată pe profil."""
+    key = (profile.profile_id, body)
+    cached = _RADII_KM.get(key)
+    if cached is not None:
+        return cached
     with SPICE_LOCK:
+        activate(profile)
         _, radii = spiceypy.bodvrd(SPICE_BODY_NAMES[body], "RADII", 3)
-    return float(radii[0])
+    _RADII_KM[key] = float(radii[0])
+    return _RADII_KM[key]
 
 
 def _observer_km(site: ObserverSite, radius_m: float) -> np.ndarray:
@@ -117,6 +129,21 @@ def body_direction(
     canonical = canonical_utc(utc)
     et = utc_to_et(canonical, profile)
     require_in_coverage(et, profile)
+    return body_direction_et(profile, site, body, et, canonical, correction, radius_m)
+
+
+def body_direction_et(
+    profile: LoadedProfile,
+    site: ObserverSite,
+    body: Body,
+    et: float,
+    utc_label: str,
+    correction: Correction = DEFAULT_APPARENT_CORRECTION,
+    radius_m: float = REFERENCE_RADIUS_M,
+) -> BodyDirection:
+    """Același calcul ca `body_direction`, la un ET dat (scanarea evenimentelor, E10).
+
+    Acoperirea efemeridelor se verifică de apelant pentru capetele intervalului."""
     with SPICE_LOCK:
         state, light_time_s = spiceypy.spkcpo(
             SPICE_BODY_NAMES[body],
@@ -141,7 +168,7 @@ def body_direction(
         correction=correction,
         profile_id=profile.profile_id,
         frame_id=profile.frame_id,
-        utc=canonical,
+        utc=utc_label,
         et=et,
         azimuth_deg=azimuth_deg,
         elevation_deg=elevation_deg,

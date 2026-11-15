@@ -1,6 +1,6 @@
 """Simulări asincrone cu cache în memorie (docs/API.md §2.5).
 
-Cheia este SHA-256 al cererii canonice.
+Cheia este SHA-256 al cererii canonice împreună cu identitatea motorului (corecție, versiuni).
 
 Aceeași cerere (după completarea pasului seriei) are același identificator și aceeași simulare.
 Cache-ul este în memorie și se pierde la repornirea procesului; nu este un depozit persistent.
@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 
 from lunarhorizon.api.data import DataRegistry
-from lunarhorizon.api.horizon import HorizonService, require_available
+from lunarhorizon.api.horizon import DEFAULT_PARAMETERS, HorizonService, require_available
 from lunarhorizon.api.problems import from_error, internal_problem
 from lunarhorizon.api.settings import Settings
 from lunarhorizon.astro.kernels import LoadedProfile
@@ -30,6 +30,7 @@ from lunarhorizon.contracts.simulation import (
     SimulationState,
     SimulationStatus,
 )
+from lunarhorizon.core.conventions import APPARENT_CORRECTION, SCHEMA_VERSION
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
 from lunarhorizon.simulation.idealized import DemSiteInput, SiteInput, simulate_idealized
 from lunarhorizon.simulation.service import prepare_request
@@ -37,8 +38,24 @@ from lunarhorizon.simulation.service import prepare_request
 LOGGER = logging.getLogger(__name__)
 
 
-def request_key(request: SimulationRequest) -> str:
-    canonical = json.dumps(request.model_dump(mode="json"), sort_keys=True, separators=(",", ":"))
+def engine_identity() -> dict[str, object]:
+    """Parametrii motorului care schimbă rezultatul și nu apar în cerere (corecție, algoritmi).
+
+    Intră în cheia cache-ului: un rezultat calculat cu altă corecție sau altă versiune de
+    algoritm nu se reutilizează niciodată sub configurația curentă."""
+    return {
+        "aberration_correction": APPARENT_CORRECTION,
+        "schema_version": SCHEMA_VERSION,
+        "horizon_parameters": DEFAULT_PARAMETERS.as_dict(),
+    }
+
+
+def request_key(request: SimulationRequest, identity: dict[str, object] | None = None) -> str:
+    document = {
+        "request": request.model_dump(mode="json"),
+        "engine": engine_identity() if identity is None else identity,
+    }
+    canonical = json.dumps(document, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
