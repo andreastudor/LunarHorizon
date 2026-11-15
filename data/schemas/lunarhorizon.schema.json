@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LunarHorizonContracts",
   "description": "Contractele de date LunarHorizon. Generat din backend/lunarhorizon/contracts; nu se editează manual (scripts/generate_contracts.py).",
-  "x-schema-version": "0.4.0",
+  "x-schema-version": "0.5.0",
   "anyOf": [
     {
       "$ref": "#/$defs/Catalog"
@@ -15,6 +15,9 @@
     },
     {
       "$ref": "#/$defs/TerrainManifest"
+    },
+    {
+      "$ref": "#/$defs/TerrainSample"
     },
     {
       "$ref": "#/$defs/SimulationRequest"
@@ -172,7 +175,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -272,7 +275,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -550,7 +553,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1127,7 +1130,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1991,7 +1994,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -2135,7 +2138,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3222,7 +3225,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.4.0",
+          "const": "0.5.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3295,6 +3298,104 @@
         "lods"
       ],
       "title": "TerrainManifest",
+      "type": "object"
+    },
+    "TerrainSample": {
+      "additionalProperties": false,
+      "description": "Altitudinea terenului într-un punct, din rasterul de calcul (/api/terrain/elevation, E08).\n\nÎnălțimea este față de sfera de referință a produsului (`reference_radius_m` din manifest). La\nmargine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.",
+      "properties": {
+        "schema_version": {
+          "const": "0.5.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "terrain_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Terrain Id",
+          "type": "string"
+        },
+        "product_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "latitude_deg": {
+          "maximum": 90.0,
+          "minimum": -90.0,
+          "title": "Latitude Deg",
+          "type": "number"
+        },
+        "longitude_deg": {
+          "exclusiveMaximum": 180.0,
+          "minimum": -180.0,
+          "title": "Longitude Deg",
+          "type": "number"
+        },
+        "x_m": {
+          "title": "X M",
+          "type": "number"
+        },
+        "y_m": {
+          "title": "Y M",
+          "type": "number"
+        },
+        "elevation_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Elevation M"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "const": "edge_or_nodata",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "calc_resolution_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Calc Resolution M",
+          "type": "number"
+        },
+        "method": {
+          "const": "bilinear",
+          "title": "Method",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "terrain_id",
+        "product_id",
+        "frame_id",
+        "latitude_deg",
+        "longitude_deg",
+        "x_m",
+        "y_m",
+        "elevation_m",
+        "reason",
+        "calc_resolution_m",
+        "method"
+      ],
+      "title": "TerrainSample",
       "type": "object"
     },
     "TerrainSource": {

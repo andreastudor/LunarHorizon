@@ -27,6 +27,9 @@ Stare la 2026-11-14: aplicația nu este implementată. Limitele de mai jos sunt 
 - Efemeridele locale (DE440s) diferă de cele folosite de Horizons (DE441). Acordul cu Horizons compară două implementări JPL; nu este o validare independentă și nu măsoară incertitudinea fizică.
 - La zenit și la nadir azimutul nu este definit; motorul îl raportează ca nedefinit. Din schema 0.4.0 (E07) azimutul nedefinit este transmis ca `null` cu motiv în `quality.issues` și afișat „Undefined”; nu este înlocuit cu zero.
 - Modul idealizat (singurul calculat la E06) are orizontul plan la 0° și nu include efectele terenului local; `terrain_mode=dem` este refuzat, nu înlocuit. Acoperirea orizontului din DEM nu este validată.
+- Terenul local E08 este numai afișare: vizibilitatea și evenimentele rămân idealizate (orizont 0°) până la E09. Umbrele, lumina și exagerarea verticală sunt vizuale. Mesh-ul folosește nivelul de 40 m/pixel; detaliile sub 40 m nu apar în 3D.
+- Rasterul Leibnitz Beta nu are NoData, deci afișarea golurilor (pătrate roșii, fără triunghiuri) este verificată numai pe date sintetice. Terenul acoperă 16 × 16 km; în afara lui nu se generează relief.
+- Cadrul terenului (`MOON_ME_DE421`) este o ipoteză; direcțiile se desenează numai când simularea folosește același cadru. Observatorul din simulare rămâne pe sfera de referință: altitudinea terenului (≈ 6,4 km) nu intră încă în calculul direcțiilor (paralaxa estimată ≈ 0,001° pentru Pământ, estimare neverificată).
 - Evenimentele se caută pe o grilă de scanare (≥ 900 s) și se rafinează la 1 ms; două treceri între eșantioane vecine nu sunt detectate. Cache-ul simulărilor este în memorie și se pierde la repornire.
 - Coordonatele și altitudinile siturilor sunt intrări. Pentru Apollo 11, cazul de referință E03 folosește valori preluate din materialul unui prototip, neverificate în acest proiect; incertitudinea poziției sitului nu este propagată.
 

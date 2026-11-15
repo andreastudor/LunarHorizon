@@ -1,4 +1,26 @@
 # Stare
+## E08 — teren local 3D din DEM real, 2026-11-15
+
+**Implementare tehnică finalizată; acceptare științifică restantă.** Backend: `GET /api/terrain/elevation` (altitudine
+din rasterul de calcul, `null` cu motiv la margine/NoData) și `GET /api/terrain/{terrain_id}/lods/{level}` (înălțimi
+vizuale verificate prin SHA-256, georeferențiere și cale; numai nivelurile din manifest); schema 0.5.0 (`TerrainSample`).
+Frontend: tabul **Local terrain** cu mesh din rasterul vizual de 40 m (160.000 vârfuri, 318.402 triunghiuri) în metri
+reali, orientat est +x / sus +y / nord −z; NoData exclus din triunghiuri și marcat; conturul rasterului; observator la
+altitudinea din rasterul de calcul + înălțimea echipamentului; vederi de sus, oblică, de la observator și „Go to site”;
+exagerare verticală 1–10× afișată permanent, numai vizuală; direcțiile și lumina Soarelui/Pământului din rezultatul API la
+momentul sliderului, fără reconstruirea mesh-ului; încărcări depășite ignorate; resursele GPU eliberate. Eticheta
+obligatorie „Local terrain is displayed; visibility calculations do not yet include terrain.” este permanentă; umbrele
+sunt declarate vizuale; punctul Leibnitz este marcat ca reprezentativ provizoriu, nu loc de aterizare.
+
+Cadre: terenul declară `MOON_ME_DE421` (ipoteză). Punctul reprezentativ și punctele alese pe teren adoptă acest cadru în
+cerere (afișat utilizatorului); dacă rezultatul folosește alt cadru, direcțiile nu se desenează și se explică motivul.
+
+Verificări: backend 341 teste, Ruff, mypy, contracte, `verify_e05`; frontend 205 teste, formatare, oxlint, `tsc`,
+contracte, build; Playwright 2/2 (globul E07 și terenul real E08); verificare în Chrome (vezi VALIDARE). Restanțe: orizontul
+din DEM și vizibilitatea cu relief sunt E09; afișarea NoData este verificată numai pe date sintetice (rasterul real nu are
+NoData); al doilea sit polar (3D-03 cere două) este E12. **E09 nu a fost începută**: formulele și deciziile astronomilor
+trebuie integrate înainte.
+
 
 ## Cerință nouă obligatorie: E10A — Earth–Moon–Sun
 

@@ -72,6 +72,9 @@ export const en = {
     extentNote:
       'Outline of the raster extent only — not a validated horizon coverage.',
     show: 'Show on globe',
+    useRepresentative: 'Use the representative point',
+    frameAdopted: (frame: string) =>
+      `Frame set to ${frame}, the frame declared by the DEM product (working hypothesis).`,
   },
   params: {
     heading: 'Simulation',
@@ -117,7 +120,13 @@ export const en = {
     sources: 'Position sources',
     accessed: (date: string) => `accessed ${date}`,
     localTerrain: 'Local terrain',
-    localTerrainNone: 'Not available in this version (planned for stage E08).',
+    localTerrainStatus: {
+      none: 'Not checked.',
+      loading: 'Checking DEM coverage…',
+      unavailable: 'No DEM covers this point; no local relief is shown.',
+      error: 'DEM coverage could not be checked.',
+      ready: 'Real DEM terrain available — see the “Local terrain” tab.',
+    } as Record<string, string>,
     planNote:
       'A planned target or representative point is not a landing position.',
   },
@@ -204,6 +213,66 @@ export const en = {
       'The globe texture could not be loaded; the Moon is drawn without imagery.',
     lod: 'Detail: global texture 2048 × 1024 px (≈5.3 km/px at the equator) — imagery only, not local terrain.',
     pickedPoint: (lat: string, lon: string) => `Point ${lat}, ${lon}`,
+  },
+  views: {
+    label: 'Map view',
+    globe: 'Globe',
+    terrain: 'Local terrain',
+    terrainUnavailable: 'Local terrain (no DEM here)',
+  },
+  terrain: {
+    label:
+      'Local 3D terrain from the DEM. Drag to rotate, scroll to zoom, right-drag to pan, click the terrain to choose a point.',
+    banner:
+      'Local terrain is displayed; visibility calculations do not yet include terrain.',
+    noSelection: 'Select a point inside a DEM raster to see its local terrain.',
+    loading: 'Loading the local terrain…',
+    unavailable:
+      'Local terrain is not available for this selection: no DEM covers it. No relief is generated.',
+    error: 'The local terrain could not be loaded.',
+    camera: {
+      top: 'Top view',
+      oblique: 'Oblique view',
+      observer: 'Observer view',
+    } as Record<string, string>,
+    goToSite: 'Go to site',
+    details: 'Terrain details and legend',
+    exaggerationControl: 'Vertical exaggeration',
+    exaggeration: (factor: number) =>
+      `Vertical exaggeration: ${factor}× (display only; results unchanged)`,
+    product: (product: string, visualM: number, calcM: number) =>
+      `DEM ${product} · mesh ${visualM} m/pixel (visual level) · calculation raster ${calcM} m/pixel`,
+    frame: (frame: string) =>
+      `DEM frame ${frame} (working hypothesis, not validated); no frame conversion is applied.`,
+    observer: (terrainM: number, equipmentM: number) =>
+      `Observer: terrain ${terrainM.toFixed(1)} m + equipment ${equipmentM} m (heights above the reference sphere).`,
+    observerUnknown:
+      'Terrain height at this point is unknown (raster edge or no data); the observer is not placed.',
+    observerNoHeight: 'Enter a valid observer height to place the observer.',
+    frameMismatch: (simulation: string, terrain: string) =>
+      `Sun and Earth directions are not drawn: the simulation used ${simulation}, the terrain is in ${terrain}. Coordinates are not converted between frames; run the simulation in ${terrain}.`,
+    bodies: (sun: string, earth: string) =>
+      `At the selected time: Sun ${sun}, Earth ${earth} (elevations from the API result).`,
+    lightingSun: (time: string) =>
+      `Lighting follows the computed Sun direction at ${time}.`,
+    lightingSunBelow:
+      'The Sun is below the idealized horizon: no direct light.',
+    lightingNeutral:
+      'Neutral display lighting (no Sun direction available) — not the Sun.',
+    shadows:
+      'Shadows are visual only; they are not horizon or visibility calculations.',
+    representativeNote:
+      'Provisional representative point of the DEM product — not a landing site and not a scientifically approved site.',
+    representativeLabel:
+      'Leibnitz Beta Plateau — provisional representative point',
+    legend: {
+      observer: 'Observer (green)',
+      sun: 'Sun direction (yellow, schematic)',
+      earth: 'Earth direction (blue, schematic)',
+      extent: 'Raster extent (cyan)',
+      noData: (count: number) =>
+        `No data (red, gaps not filled): ${count} pixel${count === 1 ? '' : 's'}`,
+    },
   },
   errors: {
     title: 'Something went wrong',

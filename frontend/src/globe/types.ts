@@ -2,6 +2,7 @@
 // (docs/ARCHITECTURE.md: Three.js in an imperative scene controller wrapped by a thin component).
 // Only types live here, so the interface and its tests never import Three.js.
 
+import type { TerrainMesh } from '../geo/terrain.ts'
 import type { Vec3 } from '../geo/vec3.ts'
 
 export interface GlobeMarker {
@@ -56,3 +57,36 @@ export class WebGLUnavailableError extends Error {
     this.name = 'WebGLUnavailableError'
   }
 }
+
+// --- Local terrain scene (E08) ------------------------------------------------------------------
+
+export type TerrainCameraMode = 'top' | 'oblique' | 'observer'
+
+export interface TerrainSceneState {
+  /** Rebuilt on the GPU only when this object changes (not when time or exaggeration change). */
+  mesh: TerrainMesh | null
+  /** True scene metres (not exaggerated). */
+  observer: { ground: Vec3; eye: Vec3 } | null
+  /** Unit vectors in local scene axes; null when unknown, undefined azimuth or frame mismatch. */
+  sun: Vec3 | null
+  earth: Vec3 | null
+  sunElevationDeg: number | null
+  exaggeration: number
+}
+
+export interface TerrainOptions {
+  /** A click (not a drag) on the terrain, in true scene metres. */
+  onPick: (point: Vec3) => void
+}
+
+export interface TerrainHandle {
+  update(state: TerrainSceneState): void
+  setCamera(mode: TerrainCameraMode): void
+  goToSite(): void
+  dispose(): void
+}
+
+export type TerrainFactory = (
+  container: HTMLElement,
+  options: TerrainOptions,
+) => TerrainHandle

@@ -13,7 +13,12 @@ from pydantic import BaseModel
 from pydantic.json_schema import models_json_schema
 
 from lunarhorizon.contracts.catalog import Catalog
-from lunarhorizon.contracts.manifests import DemProductManifest, KernelManifest, TerrainManifest
+from lunarhorizon.contracts.manifests import (
+    DemProductManifest,
+    KernelManifest,
+    TerrainManifest,
+    TerrainSample,
+)
 from lunarhorizon.contracts.scenarios import ScenarioIndex
 from lunarhorizon.contracts.service import Coverage, Health, Problem
 from lunarhorizon.contracts.simulation import (
@@ -31,6 +36,7 @@ DOCUMENT_MODELS: Final[dict[str, type[BaseModel]]] = {
     "KernelManifest": KernelManifest,
     "DemProductManifest": DemProductManifest,
     "TerrainManifest": TerrainManifest,
+    "TerrainSample": TerrainSample,
     "SimulationRequest": SimulationRequest,
     "SimulationAccepted": SimulationAccepted,
     "SimulationStatus": SimulationStatus,

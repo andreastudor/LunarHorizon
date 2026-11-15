@@ -1,7 +1,7 @@
 {
   "description": "Vectori de test comuni Python și TypeScript. Intrări fixate în backend/lunarhorizon/core/reference_vectors.py; ieșiri calculate de implementarea Python. Nu sunt valori validate fizic. Se regenerează cu scripts/generate_contracts.py.",
   "source": "python-reference",
-  "schema_version": "0.4.0",
+  "schema_version": "0.5.0",
   "conventions": {
     "reference_radius_m": 1737400.0,
     "supported_frames": [

@@ -415,7 +415,7 @@ button.primary:hover:not(:disabled) {
 
 .globe-toolbar {
   position: absolute;
-  top: 0.6rem;
+  top: 3rem;
   right: 0.6rem;
   display: flex;
   gap: 0.4rem;
@@ -432,6 +432,150 @@ button.primary:hover:not(:disabled) {
   color: var(--muted);
   background: rgb(7 10 16 / 75%);
   border-radius: 4px;
+}
+
+/* View tabs and local terrain */
+.view-tabs {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.3rem;
+}
+
+.view-tabs [aria-selected='true'] {
+  border-color: var(--accent);
+  background: #13243a;
+}
+
+.view-panel {
+  position: absolute;
+  inset: 0;
+}
+
+.terrain {
+  position: absolute;
+  inset: 0;
+}
+
+.terrain-canvas {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+}
+
+.terrain-banner {
+  position: absolute;
+  top: 3rem;
+  left: 0.6rem;
+  right: 0.6rem;
+  margin: 0;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--warn);
+  border-radius: 6px;
+  background: rgb(42 32 16 / 92%);
+  color: #fde68a;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.terrain-toolbar {
+  position: absolute;
+  top: 5.2rem;
+  left: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.terrain-toolbar [aria-pressed='true'] {
+  border-color: var(--accent);
+  background: #13243a;
+}
+
+.terrain-exaggeration {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  background: rgb(15 20 29 / 90%);
+  border-radius: 6px;
+  padding: 0.15rem 0.4rem;
+}
+
+.terrain-exaggeration-label {
+  position: absolute;
+  top: 7.6rem;
+  left: 0.6rem;
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgb(7 10 16 / 85%);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.terrain-info {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  max-width: min(26rem, 60%);
+  max-height: 55%;
+  overflow-y: auto;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: rgb(15 20 29 / 92%);
+}
+
+.terrain-info summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.terrain-info p {
+  margin: 0.2rem 0;
+}
+
+.legend {
+  list-style: none;
+  margin: 0.3rem 0 0;
+  padding: 0;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 2px;
+}
+
+.swatch--observer {
+  background: #4ade80;
+}
+
+.swatch--sun {
+  background: var(--sun);
+}
+
+.swatch--earth {
+  background: var(--earth);
+}
+
+.swatch--extent {
+  background: #22d3ee;
+}
+
+.swatch--nodata {
+  background: #ef4444;
 }
 
 /* Results */

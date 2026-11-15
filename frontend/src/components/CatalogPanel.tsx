@@ -18,6 +18,7 @@ interface Props {
     label: string,
   ) => void
   onShowCoverage: (latitudeDeg: number, longitudeDeg: number) => void
+  onUseRepresentative: (latitudeDeg: number, longitudeDeg: number) => void
   onRetry: () => void
 }
 
@@ -28,6 +29,7 @@ export function CatalogPanel({
   onSelectSite,
   onSelectPoint,
   onShowCoverage,
+  onUseRepresentative,
   onRetry,
 }: Props) {
   const [query, setQuery] = useState('')
@@ -166,6 +168,20 @@ export function CatalogPanel({
                           }
                         >
                           {en.coverage.show}
+                        </button>
+                      )}
+                      {center && (
+                        <button
+                          type="button"
+                          className="link-button"
+                          onClick={() =>
+                            onUseRepresentative(
+                              center.latitude,
+                              center.longitude,
+                            )
+                          }
+                        >
+                          {en.coverage.useRepresentative}
                         </button>
                       )}
                     </li>

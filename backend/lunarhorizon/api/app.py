@@ -10,11 +10,15 @@ E06 calculează numai modul `idealized_local_plane` (fără efectele terenului l
 import hashlib
 import json
 import logging
+import math
+import re
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 from typing import Annotated, Any
 
+import numpy as np
+import rasterio
 from fastapi import FastAPI, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
@@ -33,7 +37,7 @@ from lunarhorizon.api.problems import (
 )
 from lunarhorizon.api.settings import Settings
 from lunarhorizon.contracts.catalog import Catalog
-from lunarhorizon.contracts.manifests import TerrainManifest
+from lunarhorizon.contracts.manifests import TerrainManifest, TerrainSample
 from lunarhorizon.contracts.service import Coverage, Health, Problem, TemporalCoverage
 from lunarhorizon.contracts.simulation import (
     SimulationAccepted,
@@ -43,7 +47,9 @@ from lunarhorizon.contracts.simulation import (
 from lunarhorizon.core.conventions import SCHEMA_VERSION
 from lunarhorizon.core.coords import normalize_longitude_deg
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
+from lunarhorizon.core.projection import SouthPolarStereographic
 from lunarhorizon.core.utc import format_utc
+from lunarhorizon.terrain.sampling import sample_bilinear
 
 LOGGER = logging.getLogger(__name__)
 
@@ -179,6 +185,116 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 ),
                 terrain=[terrain_coverage(entry) for entry in registry.available_terrain()],
             )
+        )
+
+    verified_lods: dict[str, str] = {}
+    identifier = r"^[a-z0-9][a-z0-9_.-]{0,63}$"
+
+    @app.get("/api/terrain/elevation", response_model=TerrainSample, responses=PROBLEM_RESPONSES)
+    def terrain_elevation(
+        terrain_id: Annotated[str, Query(pattern=identifier)],
+        latitude_deg: Annotated[float, Query(ge=-90.0, le=90.0)],
+        longitude_deg: Annotated[float, Query(ge=-180.0, lt=360.0)],
+    ) -> Response:
+        """Altitudinea terenului din rasterul de calcul (bilinear), pentru observatorul scenei."""
+        entry = registry.terrain_by_id(terrain_id)
+        if not entry.available:
+            raise LunarHorizonError(
+                ErrorCode.TERRAIN_DATA_MISSING,
+                "rasterul de calcul lipsește; rulați scripts/build_terrain.py",
+            )
+        longitude = normalize_longitude_deg(longitude_deg)
+        if not point_in_terrain(entry, latitude_deg, longitude):
+            return _problem_response(
+                make_problem(
+                    ErrorCode.OUT_OF_DEM_COVERAGE,
+                    "punctul nu se află în dreptunghiul rasterului",
+                    status=404,
+                )
+            )
+        manifest = entry.manifest
+        x, y = SouthPolarStereographic(radius_m=manifest.reference_radius_m).forward(
+            latitude_deg, longitude
+        )
+        value = sample_bilinear(entry.calculation_raster, x, y)
+        return _json(
+            TerrainSample(
+                schema_version=SCHEMA_VERSION,
+                terrain_id=manifest.terrain_id,
+                product_id=manifest.source.product_id,
+                frame_id=manifest.frame_id,
+                latitude_deg=latitude_deg,
+                longitude_deg=longitude,
+                x_m=x,
+                y_m=y,
+                elevation_m=value,
+                reason=None if value is not None else "edge_or_nodata",
+                calc_resolution_m=manifest.calc_resolution_m,
+                method="bilinear",
+            )
+        )
+
+    @app.get(
+        "/api/terrain/{terrain_id}/lods/{level}",
+        response_class=Response,
+        responses={200: {"content": {"application/octet-stream": {}}}, **PROBLEM_RESPONSES},
+    )
+    def terrain_lod(terrain_id: str, level: int) -> Response:
+        """Înălțimile unui nivel de detaliu vizual: float32 little-endian, rânduri nord → sud,
+        coloane vest → est, NaN = NoData. Numai fișierele listate în manifest, verificate."""
+        if not re.fullmatch(identifier, terrain_id):
+            raise LunarHorizonError(ErrorCode.VALIDATION_ERROR, "terrain_id invalid")
+        entry = registry.terrain_by_id(terrain_id)
+        lod = next((item for item in entry.manifest.lods if item.level == level), None)
+        if lod is None:
+            raise LunarHorizonError(
+                ErrorCode.VALIDATION_ERROR, f"nivelul {level} nu există pentru {terrain_id}"
+            )
+        base = entry.calculation_raster.parent.resolve()
+        path = (base / lod.heights_path).resolve()
+        if not path.is_relative_to(base):
+            raise LunarHorizonError(ErrorCode.VALIDATION_ERROR, "calea nivelului este invalidă")
+        if not path.is_file():
+            raise LunarHorizonError(
+                ErrorCode.TERRAIN_DATA_MISSING,
+                f"{lod.heights_path} lipsește; rulați scripts/build_terrain.py",
+            )
+        if verified_lods.get(str(path)) != lod.sha256:
+            if hashlib.sha256(path.read_bytes()).hexdigest() != lod.sha256:
+                raise LunarHorizonError(
+                    ErrorCode.TERRAIN_DATA_MISSING,
+                    f"{lod.heights_path}: SHA-256 diferă de manifest",
+                )
+            verified_lods[str(path)] = lod.sha256
+        bounds = entry.manifest.bounds
+        with rasterio.open(path) as ds:
+            expected = (
+                lod.visual_resolution_m,
+                0.0,
+                bounds.x_min_m,
+                0.0,
+                -lod.visual_resolution_m,
+                bounds.y_max_m,
+            )
+            actual = tuple(ds.transform)[:6]
+            if (ds.width, ds.height) != (lod.width_px, lod.height_px) or any(
+                not math.isclose(a, b, abs_tol=1e-6) for a, b in zip(actual, expected, strict=True)
+            ):
+                raise LunarHorizonError(
+                    ErrorCode.TERRAIN_DATA_MISSING,
+                    f"{lod.heights_path}: dimensiunile sau georeferențierea diferă de manifest",
+                )
+            data = ds.read(1, masked=True)
+        heights = np.ma.filled(data.astype(np.float32), np.nan)
+        heights[~np.isfinite(heights)] = np.nan
+        return Response(
+            content=heights.astype("<f4").tobytes(),
+            media_type="application/octet-stream",
+            headers={
+                "X-Width": str(lod.width_px),
+                "X-Height": str(lod.height_px),
+                "X-Lod-Level": str(lod.level),
+            },
         )
 
     @app.get("/api/terrain/manifest", response_model=TerrainManifest, responses=PROBLEM_RESPONSES)

@@ -114,6 +114,8 @@ def test_openapi_lists_all_endpoints(client: TestClient) -> None:
         "/api/simulations",
         "/api/simulations/{simulation_id}",
         "/api/assets/{name}",
+        "/api/terrain/elevation",
+        "/api/terrain/{terrain_id}/lods/{level}",
     }
 
 

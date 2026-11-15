@@ -116,7 +116,7 @@ class ResultSite(Contract):
 
 
 class BodySeries(Contract):
-    # `null` la zenit sau nadir (azimut nedefinit), cu o intrare în `quality.issues` (schema 0.4.0).
+    # `null` la zenit sau nadir (azimut nedefinit), cu intrare în `quality.issues` (din 0.4.0).
     azimuth_deg: list[Azimuth | None]
     elevation_deg: list[Elevation]
     distance_km: list[Positive]
@@ -158,7 +158,7 @@ class Event(Contract):
     type: Literal["appearance", "disappearance"]
     cause: Literal["terrain", "idealized_horizon"]
     time_utc: UtcTimestamp
-    # `null` numai la zenit sau nadir, cu motiv în `quality.issues` (schema 0.4.0).
+    # `null` numai la zenit sau nadir, cu motiv în `quality.issues` (din schema 0.4.0).
     azimuth_deg: Azimuth | None
     elevation_deg: Elevation
     obstacle_distance_m: NonNegative | None

@@ -10,9 +10,16 @@ interface Props {
   selection: Selection
   site: Site | null
   frameId: string
+  /** Status of the local DEM terrain for this selection (useLocalTerrain). */
+  terrainStatus: string
 }
 
-export function SiteSummary({ selection, site, frameId }: Props) {
+export function SiteSummary({
+  selection,
+  site,
+  frameId,
+  terrainStatus,
+}: Props) {
   if (!selection) {
     return (
       <section className="panel" aria-labelledby="summary-heading">
@@ -37,7 +44,9 @@ export function SiteSummary({ selection, site, frameId }: Props) {
             <code>{frameId}</code>
           </dd>
           <dt>{en.selection.localTerrain}</dt>
-          <dd>{en.selection.localTerrainNone}</dd>
+          <dd>
+            {en.selection.localTerrainStatus[terrainStatus] ?? terrainStatus}
+          </dd>
         </dl>
       </section>
     )
@@ -108,7 +117,9 @@ export function SiteSummary({ selection, site, frameId }: Props) {
             site.position_verification}
         </dd>
         <dt>{en.selection.localTerrain}</dt>
-        <dd>{en.selection.localTerrainNone}</dd>
+        <dd>
+          {en.selection.localTerrainStatus[terrainStatus] ?? terrainStatus}
+        </dd>
       </dl>
       <h3>{en.selection.sources}</h3>
       <ul className="plain-list sources">

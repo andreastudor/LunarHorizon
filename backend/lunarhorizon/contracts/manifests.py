@@ -224,3 +224,30 @@ class TerrainManifest(Contract):
         if len(levels) != len(set(levels)):
             raise ValueError("nivelurile de detaliu trebuie să fie unice")
         return self
+
+
+class TerrainSample(Contract):
+    """Altitudinea terenului într-un punct, din rasterul de calcul (/api/terrain/elevation, E08).
+
+    Înălțimea este față de sfera de referință a produsului (`reference_radius_m` din manifest). La
+    margine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.
+    """
+
+    schema_version: SchemaVersion
+    terrain_id: Identifier
+    product_id: Identifier
+    frame_id: FrameId
+    latitude_deg: Latitude
+    longitude_deg: Longitude
+    x_m: float
+    y_m: float
+    elevation_m: float | None
+    reason: Literal["edge_or_nodata"] | None
+    calc_resolution_m: Positive
+    method: Literal["bilinear"]
+
+    @model_validator(mode="after")
+    def _unknown_has_reason(self) -> "TerrainSample":
+        if (self.elevation_m is None) != (self.reason is not None):
+            raise ValueError("elevation_m este null dacă și numai dacă reason este prezent")
+        return self

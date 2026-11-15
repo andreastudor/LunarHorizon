@@ -20,12 +20,16 @@ import type {
   SimulationResult,
   SimulationStatus,
   Site,
+  TerrainManifest,
+  TerrainSample,
 } from './contracts/generated.ts'
 import {
   WebGLUnavailableError,
   type GlobeFactory,
   type GlobeOptions,
   type GlobeState,
+  type TerrainFactory,
+  type TerrainSceneState,
 } from './globe/types.ts'
 import { en } from './i18n/en.ts'
 
@@ -91,7 +95,7 @@ function syntheticSite(
 }
 
 const CATALOG: Catalog = {
-  schema_version: '0.4.0',
+  schema_version: '0.5.0',
   catalog_version: 'synthetic',
   sites: [
     syntheticSite('synthetic_a', 'synthetic_site_alpha', 0.5, 23.5),
@@ -108,7 +112,7 @@ const CATALOG: Catalog = {
 } as unknown as Catalog
 
 const COVERAGE: Coverage = {
-  schema_version: '0.4.0',
+  schema_version: '0.5.0',
   temporal: {
     start_utc: '1849-12-25T23:59:18.816Z',
     end_utc: '2150-01-21T23:58:50.816Z',
@@ -155,7 +159,7 @@ function syntheticResult(
     visible: elevation.map((e) => e >= 0),
   })
   return {
-    schema_version: '0.4.0',
+    schema_version: '0.5.0',
     request: Object.assign(
       {
         frame_id: 'MOON_ME_DE440_ME421',
@@ -265,10 +269,115 @@ function deferred<T>(): Deferred<T> {
   return { promise, resolve }
 }
 
+// Synthetic terrain: a 4 × 4 grid over the representative point's raster (tests only).
+const TERRAIN_MANIFEST = {
+  schema_version: '0.5.0',
+  terrain_id: 'synthetic_terrain',
+  source: {
+    product_id: 'synthetic_dem',
+    url: 'https://example.invalid/synthetic',
+    sha256: null,
+    citation: 'synthetic',
+  },
+  frame_id: 'MOON_ME_DE421',
+  crs: { proj4: null, wkt: null },
+  reference_radius_m: 1737400,
+  vertical: {
+    units: 'm',
+    reference: 'synthetic',
+    exaggeration_default_factor: 1,
+  },
+  calc_resolution_m: 5,
+  local_origin: {
+    latitude_deg: -85.4266,
+    longitude_deg: 31.7442,
+    elevation_m: 6398.92,
+  },
+  bounds: { x_min_m: 65000, x_max_m: 81000, y_min_m: 110000, y_max_m: 126000 },
+  nodata: { present: false, encoding: 'NaN', area_fraction: 0 },
+  interpolated_pixels: { flagged: false, note: 'synthetic' },
+  lods: [
+    {
+      level: 0,
+      visual_resolution_m: 4000,
+      width_px: 4,
+      height_px: 4,
+      heights_path: 'synthetic.tif',
+      encoding: 'synthetic',
+      sha256: '0'.repeat(64),
+    },
+  ],
+} as unknown as TerrainManifest
+
+const outsideDem = () =>
+  new ApiError(
+    404,
+    {
+      type: 'urn:lunarhorizon:problem:out-of-dem-coverage',
+      title: 'x',
+      status: 404,
+      detail: 'synthetic',
+      code: 'OUT_OF_DEM_COVERAGE',
+    },
+    'outside',
+  )
+
+function terrainMethods(calls: { terrain: number }) {
+  return {
+    terrainManifest: async (latitudeDeg: number): Promise<TerrainManifest> => {
+      calls.terrain += 1
+      if (latitudeDeg > -80) throw outsideDem()
+      return TERRAIN_MANIFEST
+    },
+    terrainElevation: async (
+      _id: string,
+      latitudeDeg: number,
+      longitudeDeg: number,
+    ): Promise<TerrainSample> => {
+      calls.terrain += 1
+      return {
+        schema_version: '0.5.0',
+        terrain_id: 'synthetic_terrain',
+        product_id: 'synthetic_dem',
+        frame_id: 'MOON_ME_DE421',
+        latitude_deg: latitudeDeg,
+        longitude_deg: longitudeDeg,
+        x_m: 73000,
+        y_m: 118000,
+        elevation_m: 6398.92,
+        reason: null,
+        calc_resolution_m: 5,
+        method: 'bilinear',
+      }
+    },
+    terrainLod: async () => {
+      calls.terrain += 1
+      return {
+        width: 4,
+        height: 4,
+        heights: Float32Array.from({ length: 16 }, (_, i) => 6390 + i),
+      }
+    },
+  }
+}
+
+function fakeTerrain() {
+  const states: TerrainSceneState[] = []
+  const cameras: string[] = []
+  const factory: TerrainFactory = () => ({
+    update: (state) => states.push(state),
+    setCamera: (mode) => cameras.push(mode),
+    goToSite: () => cameras.push('site'),
+    dispose: vi.fn(),
+  })
+  return { factory, states, cameras }
+}
+
 function fakeSource(overrides: Partial<DataSource> = {}) {
-  const calls = { start: [] as SimulationRequest[], status: 0 }
+  const calls = { start: [] as SimulationRequest[], status: 0, terrain: 0 }
   const source: DataSource = {
     globeTextureUrl: '/synthetic/globe.jpg',
+    ...terrainMethods(calls),
     sites: async () => CATALOG,
     coverage: async () => COVERAGE,
     startSimulation: async (request) => {
@@ -535,5 +644,173 @@ describe('E07 main screen', () => {
     expect(await screen.findByText(en.catalog.error)).toBeDefined()
     fireEvent.click(screen.getByText(en.common.retry))
     expect(await screen.findByText('synthetic_site_alpha')).toBeDefined()
+  })
+})
+
+describe('E08 local terrain', () => {
+  async function openRepresentative(
+    source: DataSource,
+    terrain = fakeTerrain(),
+  ) {
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={terrain.factory}
+        now={NOW}
+        pollMs={0}
+      />,
+    )
+    await screen.findByText('synthetic_site_alpha')
+    fireEvent.click(await screen.findByText(en.coverage.useRepresentative))
+    await screen.findByText(en.terrain.representativeNote)
+    return terrain
+  }
+
+  it('loads the real-terrain view for the representative point, in the DEM frame', async () => {
+    const { source } = fakeSource()
+    const terrain = await openRepresentative(source)
+    expect(screen.getByText(en.terrain.banner)).toBeDefined()
+    expect(screen.getByText(en.terrain.exaggeration(1))).toBeDefined()
+    const state = terrain.states.at(-1)!
+    expect(state.mesh?.vertexCount).toBe(16)
+    expect(state.mesh?.indices.length).toBe(9 * 6)
+    expect(state.observer?.eye[1]).toBeCloseTo(
+      (state.observer?.ground[1] ?? 0) + 2,
+      6,
+    )
+    // No result yet: no directions are drawn.
+    expect(state.sun).toBeNull()
+    expect(
+      (screen.getByLabelText(en.params.frame) as HTMLSelectElement).value,
+    ).toBe('MOON_ME_DE421')
+    expect(
+      screen.getByText(en.coverage.frameAdopted('MOON_ME_DE421')),
+    ).toBeDefined()
+  })
+
+  it('changes the exaggeration without rebuilding the mesh or calling the API', async () => {
+    const { source, calls } = fakeSource()
+    const terrain = await openRepresentative(source)
+    const mesh = terrain.states.at(-1)?.mesh
+    const before = calls.terrain
+    fireEvent.change(screen.getByLabelText(en.terrain.exaggerationControl), {
+      target: { value: '3' },
+    })
+    expect(screen.getByText(en.terrain.exaggeration(3))).toBeDefined()
+    const state = terrain.states.at(-1)!
+    expect(state.exaggeration).toBe(3)
+    expect(state.mesh).toBe(mesh)
+    expect(calls.terrain).toBe(before)
+  })
+
+  it('draws the Sun and Earth from the result only when the frames match, without rebuilding', async () => {
+    const { source, calls } = fakeSource()
+    const terrain = await openRepresentative(source)
+    fireEvent.click(screen.getByText(en.params.run))
+    await screen.findByText(/At the selected time/)
+    expect(calls.start[0].frame_id).toBe('MOON_ME_DE421')
+    const mesh = terrain.states.at(-1)?.mesh
+    expect(terrain.states.at(-1)?.sun).not.toBeNull()
+    fireEvent.change(screen.getByLabelText(en.time.slider), {
+      target: { value: '2' },
+    })
+    const state = terrain.states.at(-1)!
+    expect(state.mesh).toBe(mesh)
+    expect(state.sunElevationDeg).toBe(20.75)
+    // Changing the frame afterwards makes the shown result incompatible: no arrows.
+    fireEvent.change(screen.getByLabelText(en.params.frame), {
+      target: { value: 'MOON_ME_DE440_ME421' },
+    })
+    fireEvent.click(screen.getByText(en.params.run))
+    await screen.findByText(/Sun and Earth directions are not drawn/)
+    expect(terrain.states.at(-1)?.sun).toBeNull()
+  })
+
+  it('reports a selection without DEM and generates no relief', async () => {
+    const { source } = fakeSource()
+    const terrain = fakeTerrain()
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={terrain.factory}
+        now={NOW}
+      />,
+    )
+    fireEvent.click(await screen.findByText('synthetic_site_alpha'))
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    expect(await screen.findByText(en.terrain.unavailable)).toBeDefined()
+    expect(terrain.states.every((state) => state.mesh === null)).toBe(true)
+  })
+
+  it('ignores a terrain response that arrives after the selection changed', async () => {
+    let release!: (value: TerrainManifest) => void
+    const pending = new Promise<TerrainManifest>((resolve) => {
+      release = resolve
+    })
+    const calls = { terrain: 0 }
+    const methods = terrainMethods(calls)
+    const { source } = fakeSource({
+      terrainManifest: (latitudeDeg) =>
+        latitudeDeg < -80 ? pending : methods.terrainManifest(latitudeDeg),
+    })
+    const terrain = fakeTerrain()
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={terrain.factory}
+        now={NOW}
+      />,
+    )
+    await screen.findByText('synthetic_site_alpha')
+    fireEvent.change(screen.getByLabelText(en.point.latitude), {
+      target: { value: '-85.4' },
+    })
+    fireEvent.change(screen.getByLabelText(en.point.longitude), {
+      target: { value: '31.7' },
+    })
+    fireEvent.click(screen.getByText(en.point.use))
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    await screen.findByText(en.terrain.loading)
+    fireEvent.click(screen.getByText('synthetic_site_alpha'))
+    await screen.findByText(en.terrain.unavailable)
+    await act(async () => {
+      release(TERRAIN_MANIFEST)
+      await pending
+    })
+    expect(screen.getByText(en.terrain.unavailable)).toBeDefined()
+    expect(terrain.states.every((state) => state.mesh === null)).toBe(true)
+  })
+
+  it('shows a loading error with Retry', async () => {
+    let attempts = 0
+    const calls = { terrain: 0 }
+    const methods = terrainMethods(calls)
+    const { source } = fakeSource({
+      terrainLod: async () => {
+        attempts += 1
+        if (attempts === 1) throw new ApiError(503, null, 'synthetic')
+        return methods.terrainLod()
+      },
+    })
+    const terrain = fakeTerrain()
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={terrain.factory}
+        now={NOW}
+      />,
+    )
+    await screen.findByText('synthetic_site_alpha')
+    fireEvent.click(await screen.findByText(en.coverage.useRepresentative))
+    expect(
+      await screen.findByText(en.terrain.error, { exact: false }),
+    ).toBeDefined()
+    fireEvent.click(screen.getByText(en.common.retry))
+    await screen.findByText(en.terrain.representativeNote)
+    expect(terrain.states.at(-1)?.mesh?.vertexCount).toBe(16)
   })
 })

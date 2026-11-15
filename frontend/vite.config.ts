@@ -5,6 +5,8 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // Three.js (≈ 570 kB) is a separate chunk loaded only when a 3D view opens.
+  build: { chunkSizeWarningLimit: 700 },
   // The FastAPI backend (backend/: uvicorn on 127.0.0.1:8000) is reached through /api.
   server: {
     proxy: { '/api': 'http://127.0.0.1:8000' },

@@ -5,17 +5,21 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createApiDataSource, type DataSource } from './api/dataSource.ts'
 import { describeError } from './api/errors.ts'
+import { useLocalTerrain } from './api/useLocalTerrain.ts'
 import { useSimulation } from './api/useSimulation.ts'
 import { CatalogPanel } from './components/CatalogPanel.tsx'
 import { GlobeView } from './components/GlobeView.tsx'
+import { LocalTerrainView } from './components/LocalTerrainView.tsx'
 import { ParamsForm } from './components/ParamsForm.tsx'
 import { ResultsPanel } from './components/ResultsPanel.tsx'
 import { SiteSummary } from './components/SiteSummary.tsx'
 import { TimeBar } from './components/TimeBar.tsx'
 import type { Catalog, Coverage } from './contracts/generated.ts'
 import { bodyDirectionScene } from './geo/globe.ts'
-import type { GlobeFactory, GlobeState } from './globe/types.ts'
+import type { GlobeFactory, GlobeState, TerrainFactory } from './globe/types.ts'
 import { en } from './i18n/en.ts'
+import { fmtUtc } from './ui/format.ts'
+import { parseUtc } from './geo/utc.ts'
 import {
   buildRequest,
   defaultParams,
@@ -27,11 +31,18 @@ import type { Loadable, Selection, SimulationParams } from './state/types.ts'
 export interface AppProps {
   dataSource?: DataSource
   globeFactory?: GlobeFactory
+  terrainFactory?: TerrainFactory
   now?: Date
   pollMs?: number
 }
 
-function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
+function App({
+  dataSource,
+  globeFactory,
+  terrainFactory,
+  now,
+  pollMs,
+}: AppProps) {
   const source = useMemo(
     () => dataSource ?? createApiDataSource(),
     [dataSource],
@@ -44,6 +55,9 @@ function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
   })
   const [reloadToken, setReloadToken] = useState(0)
   const [selection, setSelection] = useState<Selection>(null)
+  const [centerView, setCenterView] = useState<'globe' | 'terrain'>('globe')
+  const [terrainReload, setTerrainReload] = useState(0)
+  const [frameNote, setFrameNote] = useState<string | null>(null)
   const [params, setParams] = useState<SimulationParams>(() =>
     defaultParams(now ?? new Date()),
   )
@@ -96,6 +110,43 @@ function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
     : null
   const safeIndex = series ? Math.min(index, series.time_utc.length - 1) : 0
 
+  const terrainPoint = useMemo(() => {
+    if (selection?.kind === 'custom')
+      return {
+        latitudeDeg: selection.latitudeDeg,
+        longitudeDeg: selection.longitudeDeg,
+      }
+    if (selection?.kind === 'catalog' && selectedSite)
+      return {
+        latitudeDeg: selectedSite.latitude_deg,
+        longitudeDeg: selectedSite.longitude_deg,
+      }
+    return null
+  }, [selection, selectedSite])
+  const localTerrain = useLocalTerrain(source, terrainPoint, terrainReload)
+  const bodies = useMemo(() => {
+    if (!series) return null
+    return {
+      sun: {
+        azimuthDeg: series.sun.azimuth_deg[safeIndex],
+        elevationDeg: series.sun.elevation_deg[safeIndex],
+      },
+      earth: {
+        azimuthDeg: series.earth.azimuth_deg[safeIndex],
+        elevationDeg: series.earth.elevation_deg[safeIndex],
+      },
+      timeLabel: fmtUtc(parseUtc(series.time_utc[safeIndex])),
+    }
+  }, [series, safeIndex])
+  const parsedHeight = Number(params.observerHeightM)
+  const equipmentHeightM = result
+    ? result.request.observer_height_m
+    : params.observerHeightM.trim() !== '' &&
+        Number.isFinite(parsedHeight) &&
+        parsedHeight >= 0
+      ? parsedHeight
+      : null
+
   const focusOn = useCallback((latitudeDeg: number, longitudeDeg: number) => {
     setFocusRequest((previous) => ({
       latitudeDeg,
@@ -134,6 +185,45 @@ function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
       }),
     [select],
   )
+
+  // A point chosen on the local terrain or the product's representative point: the request adopts
+  // the frame declared by the DEM product (a working hypothesis, shown to the user), so the scene
+  // and the Sun/Earth directions use the same frame. No coordinates are converted.
+  const selectTerrainPoint = useCallback(
+    (
+      latitudeDeg: number,
+      longitudeDeg: number,
+      label: string,
+      frameId: string,
+    ) => {
+      if (frameId === 'MOON_ME_DE440_ME421' || frameId === 'MOON_ME_DE421') {
+        setParams((previous) =>
+          previous.frameId === frameId ? previous : { ...previous, frameId },
+        )
+        setFrameNote(en.coverage.frameAdopted(frameId))
+      }
+      select({ kind: 'custom', label, latitudeDeg, longitudeDeg })
+    },
+    [select],
+  )
+
+  const adoptRepresentative = async (
+    latitudeDeg: number,
+    longitudeDeg: number,
+  ) => {
+    try {
+      const manifest = await source.terrainManifest(latitudeDeg, longitudeDeg)
+      selectTerrainPoint(
+        manifest.local_origin.latitude_deg,
+        manifest.local_origin.longitude_deg,
+        en.terrain.representativeLabel,
+        manifest.frame_id,
+      )
+      setCenterView('terrain')
+    } catch (error) {
+      setFrameNote(describeError(error).message)
+    }
+  }
 
   const enterPoint = (
     latitudeDeg: number,
@@ -231,13 +321,24 @@ function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
           }
           onSelectSite={selectSite}
           onSelectPoint={enterPoint}
-          onShowCoverage={focusOn}
+          onShowCoverage={(latitudeDeg, longitudeDeg) => {
+            setCenterView('globe')
+            focusOn(latitudeDeg, longitudeDeg)
+          }}
+          onUseRepresentative={(latitudeDeg, longitudeDeg) =>
+            void adoptRepresentative(latitudeDeg, longitudeDeg)
+          }
           onRetry={() => {
             setCatalog({ status: 'loading' })
             setCoverage({ status: 'loading' })
             setReloadToken((n) => n + 1)
           }}
         />
+        {frameNote && (
+          <p className="notice notice--info small" role="status">
+            {frameNote}
+          </p>
+        )}
         <ParamsForm
           params={params}
           errors={built.errors}
@@ -251,14 +352,59 @@ function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
       </aside>
 
       <main className="zone zone--center" aria-label={en.zones.globe}>
-        <GlobeView
-          state={globeState}
-          textureUrl={source.globeTextureUrl}
-          onPick={pickPoint}
-          focusTarget={focusTarget}
-          focusRequest={focusRequest}
-          factory={globeFactory}
-        />
+        <div className="view-tabs" role="tablist" aria-label={en.views.label}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={centerView === 'globe'}
+            onClick={() => setCenterView('globe')}
+          >
+            {en.views.globe}
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={centerView === 'terrain'}
+            onClick={() => setCenterView('terrain')}
+          >
+            {localTerrain.status === 'unavailable'
+              ? en.views.terrainUnavailable
+              : en.views.terrain}
+          </button>
+        </div>
+        {/* One WebGL renderer at a time: the inactive view is unmounted and its GPU resources freed. */}
+        <div className="view-panel" role="tabpanel">
+          {centerView === 'globe' ? (
+            <GlobeView
+              state={globeState}
+              textureUrl={source.globeTextureUrl}
+              onPick={pickPoint}
+              focusTarget={focusTarget}
+              focusRequest={focusRequest}
+              factory={globeFactory}
+            />
+          ) : (
+            <LocalTerrainView
+              terrain={localTerrain}
+              point={terrainPoint}
+              equipmentHeightM={equipmentHeightM}
+              bodies={bodies}
+              simulationFrame={result ? result.request.frame_id : null}
+              onPick={(latitudeDeg, longitudeDeg) =>
+                selectTerrainPoint(
+                  latitudeDeg,
+                  longitudeDeg,
+                  en.point.defaultLabel,
+                  localTerrain.status === 'ready'
+                    ? localTerrain.manifest.frame_id
+                    : params.frameId,
+                )
+              }
+              onRetry={() => setTerrainReload((n) => n + 1)}
+              factory={terrainFactory}
+            />
+          )}
+        </div>
       </main>
 
       <aside className="zone zone--right" aria-label={en.zones.summary}>
@@ -266,6 +412,7 @@ function App({ dataSource, globeFactory, now, pollMs }: AppProps) {
           selection={selection}
           site={selectedSite}
           frameId={params.frameId}
+          terrainStatus={localTerrain.status}
         />
         <ResultsPanel
           view={view}

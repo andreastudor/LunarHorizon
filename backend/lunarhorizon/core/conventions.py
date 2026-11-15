@@ -7,7 +7,7 @@ că `frontend/src/geo/conventions.ts` le folosește identic.
 
 from typing import Final, Literal
 
-SCHEMA_VERSION: Final = "0.4.0"
+SCHEMA_VERSION: Final = "0.5.0"
 
 # Cadre acceptate (docs/SPEC_FIZICA.md §3.1). Aliasurile generice nu se acceptă niciodată.
 FRAME_ME_DE440: Final = "MOON_ME_DE440_ME421"

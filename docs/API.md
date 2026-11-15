@@ -3,8 +3,11 @@
 Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Convențiile de unități, timp
 și cadre sunt în [SPEC_FIZICA.md](SPEC_FIZICA.md).
 
-> **Versiunea de schemă curentă: 0.4.0 (E07, 2026-11-14).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
+> **Versiunea de schemă curentă: 0.5.0 (E08, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
 > Istoric:
+> - **0.5.0 (E08)** — document nou `TerrainSample` (răspunsul `GET /api/terrain/elevation`): `terrain_id`, `product_id`,
+>   `frame_id`, `latitude_deg`, `longitude_deg`, `x_m`, `y_m`, `elevation_m` (`null` dacă și numai dacă `reason =
+>   "edge_or_nodata"`), `calc_resolution_m`, `method = "bilinear"`. Celelalte documente au aceeași structură ca în 0.4.0.
 > - **0.4.0 (E07)** — `BodySeries.azimuth_deg[]` și `Event.azimuth_deg` acceptă `null` numai la zenit/nadir (azimut
 >   nedefinit). Fiecare `null` cere o intrare în `quality.issues` cu același `site_ref` și câmpul
 >   `series.<corp>.azimuth_deg`, respectiv `events.<corp>.azimuth_deg` (cod `azimuth_undefined`). Simularea nu mai eșuează
@@ -408,3 +411,20 @@ inițială:
 - Catalogul (`catalog_version` `e07-2026-11-14-english-names`): câmpul `name` și adnotările proiectului din
   `position_sources[].institution`/titlul paginii Chang'e 4 au formulare în engleză; pozițiile, sursele și titlurile
   originale nu s-au schimbat.
+
+## 10. Completări E08 — teren local (2026-11-15)
+
+- **`GET /api/terrain/elevation?terrain_id=&latitude_deg=&longitude_deg=`** → `TerrainSample`. Înălțimea terenului
+  față de sfera produsului, interpolată biliniar din **rasterul de calcul** (5 m/pixel), pentru observatorul scenei locale.
+  La margine sau în `NoData`: `elevation_m = null`, `reason = "edge_or_nodata"` (niciodată 0). Punct în afara rasterului:
+  `404 OUT_OF_DEM_COVERAGE`; `terrain_id` necunoscut sau invalid: `422 VALIDATION_ERROR`.
+- **`GET /api/terrain/{terrain_id}/lods/{level}`** → `application/octet-stream`: înălțimile nivelului vizual ca float32
+  little-endian, rânduri nord → sud, coloane vest → est, `NaN` = NoData; antete `X-Width`, `X-Height`, `X-Lod-Level`.
+  Se servesc numai nivelurile listate în manifest; calea `heights_path` (fără `..`, după contract) se rezolvă în dosarul
+  produsului și trebuie să rămână în el; SHA-256 trebuie să fie cel din manifest, iar dimensiunile și georeferențierea
+  GeoTIFF-ului trebuie să corespundă manifestului (altfel `503 TERRAIN_DATA_MISSING`). Nivel necunoscut: `422`.
+- Interfața folosește nivelul 0 (40 m/pixel) pentru mesh; rasterul de calcul (5 m) numai pentru altitudinea
+  observatorului. Rezoluțiile sunt declarate separat (`calc_resolution_m`, `visual_resolution_m`).
+- **Cadre.** Manifestul de teren declară `MOON_ME_DE421` (ipoteză de lucru). Pentru punctul reprezentativ și pentru
+  punctele alese pe teren, interfața adoptă în cerere cadrul declarat de produs și o spune explicit; direcțiile Soare/Pământ
+  se desenează pe teren numai dacă rezultatul are același `frame_id` ca terenul. Nicio conversie între cadre.

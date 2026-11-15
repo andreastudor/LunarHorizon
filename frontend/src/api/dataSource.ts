@@ -9,6 +9,8 @@ import type {
   SimulationAccepted,
   SimulationRequest,
   SimulationStatus,
+  TerrainManifest,
+  TerrainSample,
 } from '../contracts/generated.ts'
 
 export class ApiError extends Error {
@@ -39,8 +41,33 @@ export interface DataSource {
     signal?: AbortSignal,
   ): Promise<SimulationAccepted>
   simulation(id: string, signal?: AbortSignal): Promise<SimulationStatus>
+  /** Terrain manifest of the DEM raster containing the point (404 OUT_OF_DEM_COVERAGE otherwise). */
+  terrainManifest(
+    latitudeDeg: number,
+    longitudeDeg: number,
+    signal?: AbortSignal,
+  ): Promise<TerrainManifest>
+  /** Terrain height at a point, sampled from the calculation raster. */
+  terrainElevation(
+    terrainId: string,
+    latitudeDeg: number,
+    longitudeDeg: number,
+    signal?: AbortSignal,
+  ): Promise<TerrainSample>
+  /** Heights of a visual level of detail (row 0 = north, NaN = NoData). */
+  terrainLod(
+    terrainId: string,
+    level: number,
+    signal?: AbortSignal,
+  ): Promise<TerrainLodData>
   /** URL of the globe texture served by the backend (E05 product, NASA SVS). */
   readonly globeTextureUrl: string
+}
+
+export interface TerrainLodData {
+  width: number
+  height: number
+  heights: Float32Array
 }
 
 const isProblem = (value: unknown): value is Problem =>
@@ -78,6 +105,49 @@ async function requestJson<T>(url: string, init: RequestInit = {}): Promise<T> {
   return body as T
 }
 
+async function requestHeights(
+  url: string,
+  signal?: AbortSignal,
+): Promise<TerrainLodData> {
+  let response: Response
+  try {
+    response = await fetch(url, { signal })
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError')
+      throw error
+    throw new NetworkError(String(error))
+  }
+  if (!response.ok) {
+    let body: unknown = null
+    try {
+      body = await response.json()
+    } catch {
+      body = null
+    }
+    throw new ApiError(
+      response.status,
+      isProblem(body) ? body : null,
+      `HTTP ${response.status} for ${url}`,
+    )
+  }
+  const width = Number(response.headers.get('X-Width'))
+  const height = Number(response.headers.get('X-Height'))
+  const buffer = await response.arrayBuffer()
+  // The server sends float32 little-endian; DataView keeps this independent of the platform.
+  const view = new DataView(buffer)
+  const heights = new Float32Array(buffer.byteLength / 4)
+  for (let i = 0; i < heights.length; i++)
+    heights[i] = view.getFloat32(i * 4, true)
+  if (!(width > 0 && height > 0) || heights.length !== width * height) {
+    throw new ApiError(
+      response.status,
+      null,
+      `Inconsistent heights from ${url}`,
+    )
+  }
+  return { width, height, heights }
+}
+
 export function createApiDataSource(baseUrl = '/api'): DataSource {
   return {
     globeTextureUrl: `${baseUrl}/assets/globe.jpg`,
@@ -91,6 +161,22 @@ export function createApiDataSource(baseUrl = '/api'): DataSource {
         body: JSON.stringify(request),
         signal,
       }),
+    terrainManifest: (latitudeDeg, longitudeDeg, signal) =>
+      requestJson<TerrainManifest>(
+        `${baseUrl}/terrain/manifest?latitude_deg=${latitudeDeg}&longitude_deg=${longitudeDeg}`,
+        { signal },
+      ),
+    terrainElevation: (terrainId, latitudeDeg, longitudeDeg, signal) =>
+      requestJson<TerrainSample>(
+        `${baseUrl}/terrain/elevation?terrain_id=${encodeURIComponent(terrainId)}` +
+          `&latitude_deg=${latitudeDeg}&longitude_deg=${longitudeDeg}`,
+        { signal },
+      ),
+    terrainLod: (terrainId, level, signal) =>
+      requestHeights(
+        `${baseUrl}/terrain/${encodeURIComponent(terrainId)}/lods/${level}`,
+        signal,
+      ),
     simulation: (id, signal) =>
       requestJson<SimulationStatus>(
         `${baseUrl}/simulations/${encodeURIComponent(id)}`,

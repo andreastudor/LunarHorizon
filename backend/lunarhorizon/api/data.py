@@ -108,6 +108,14 @@ class DataRegistry:
             if product.product_id == manifest.source.product_id
         ]
 
+    def terrain_by_id(self, terrain_id: str) -> TerrainEntry:
+        for entry in self.terrain_entries():
+            if entry.manifest.terrain_id == terrain_id:
+                return entry
+        raise LunarHorizonError(
+            ErrorCode.VALIDATION_ERROR, f"terrain_id {terrain_id!r} nu este cunoscut"
+        )
+
     def available_terrain(self) -> list[TerrainEntry]:
         return [entry for entry in self.terrain_entries() if entry.available]
 

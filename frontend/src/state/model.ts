@@ -106,9 +106,27 @@ export function requestDiffers(
   b: SimulationRequest,
 ): boolean {
   if (!a) return false
+  // The server normalizes coordinates (e.g. longitude), which can change the last float digits:
+  // sites are compared with a 1e-9° tolerance, everything else exactly.
+  const sameSites =
+    a.sites.length === b.sites.length &&
+    a.sites.every((site, i) => {
+      const other = b.sites[i]
+      if ('site_id' in site || 'site_id' in other)
+        return (
+          'site_id' in site &&
+          'site_id' in other &&
+          site.site_id === other.site_id
+        )
+      return (
+        site.custom.label === other.custom.label &&
+        Math.abs(site.custom.latitude_deg - other.custom.latitude_deg) < 1e-9 &&
+        Math.abs(site.custom.longitude_deg - other.custom.longitude_deg) < 1e-9
+      )
+    })
+  if (!sameSites) return true
   const pick = (r: SimulationRequest) =>
     JSON.stringify([
-      r.sites,
       r.frame_id,
       r.start_utc,
       r.end_utc,

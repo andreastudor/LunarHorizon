@@ -1,7 +1,7 @@
 /**
  * GENERAT AUTOMAT din data/schemas/lunarhorizon.schema.json — nu se editează manual.
  * Regenerare: scripts/generate_contracts.py (rădăcină), apoi `npm run contracts:generate`.
- * Versiunea schemei: 0.4.0
+ * Versiunea schemei: 0.5.0
  */
 
 /**
@@ -12,6 +12,7 @@ export type LunarHorizonContracts =
   | KernelManifest
   | DemProductManifest
   | TerrainManifest
+  | TerrainSample
   | SimulationRequest
   | SimulationAccepted
   | SimulationStatus
@@ -34,7 +35,7 @@ export type ErrorCode =
   | 'INTERNAL_ERROR'
 
 export interface Catalog {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   catalog_version: string
   sites: Site[]
   demo_site_selection: DemoSiteSelection
@@ -132,7 +133,7 @@ export interface ExcludedCandidate {
   reason: string
 }
 export interface KernelManifest {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   default_profile: 'de440_me421' | 'de421'
   /**
    * @minItems 1
@@ -174,7 +175,7 @@ export interface ChecksumReference {
   source_url: string | null
 }
 export interface DemProductManifest {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   products: DemProduct[]
 }
 export interface DemProduct {
@@ -216,7 +217,7 @@ export interface ProductFile {
   size_bytes: number | null
 }
 export interface TerrainManifest {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   terrain_id: string
   source: TerrainSource
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -276,6 +277,26 @@ export interface TerrainLod {
   heights_path: string
   encoding: string
   sha256: string
+}
+/**
+ * Altitudinea terenului într-un punct, din rasterul de calcul (/api/terrain/elevation, E08).
+ *
+ * Înălțimea este față de sfera de referință a produsului (`reference_radius_m` din manifest). La
+ * margine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.
+ */
+export interface TerrainSample {
+  schema_version: '0.5.0'
+  terrain_id: string
+  product_id: string
+  frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
+  latitude_deg: number
+  longitude_deg: number
+  x_m: number
+  y_m: number
+  elevation_m: number | null
+  reason: 'edge_or_nodata' | null
+  calc_resolution_m: number
+  method: 'bilinear'
 }
 export interface SimulationRequest {
   /**
@@ -342,7 +363,7 @@ export interface FieldError {
   message: string
 }
 export interface SimulationResult {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   request: SimulationRequest
   /**
    * @minItems 1
@@ -497,7 +518,7 @@ export interface NotComputed {
   reason: string
 }
 export interface ScenarioIndex {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   scenarios: Scenario[]
 }
 export interface Scenario {
@@ -524,7 +545,7 @@ export interface Health {
   issues: string[]
 }
 export interface Coverage {
-  schema_version: '0.4.0'
+  schema_version: '0.5.0'
   temporal: TemporalCoverage
   terrain: TerrainCoverage[]
 }

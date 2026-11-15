@@ -1,4 +1,31 @@
 # Validare — toleranțe, rezultate și probleme
+## E08 — verificări (2026-11-15)
+
+Rulate: backend `pytest` 341/341 (noi: `test_api_terrain.py`, 10 — altitudinea la originea manifestului = 6398,92 m
+± 1 mm, `null` cu motiv la margine, 404 în afara rasterului, 422 pentru identificatori și parametri invalizi, octeții
+nivelurilor egali cu GeoTIFF-urile, NoData rămâne NaN și zero rămâne zero pe raster sintetic, SHA-256 alterat sau fișier
+lipsă → 503); Ruff, mypy, contracte, `verify_e05`. Frontend: 205 teste (noi: `geo/terrain.test.ts` 10 — vârfurile la
+centrul pixelului proiectat și la înălțimea lui, distanța dintre vârfuri 40 m / k · (R + h) / R, nord = −z, NoData fără
+triunghiuri și marcat, zero valid, contur, observator +2 m, exagerarea nu schimbă datele, axele direcțiilor și rotația
+exactă la 5 km de origine, azimut null → fără direcție; `App.test.tsx` 6 teste E08; `state/model.test.ts` 2), formatare,
+oxlint, `tsc`, contracte, build.
+
+Playwright (Chromium headless, SwiftShader, backend și DEM reale) — `e2e/terrain.spec.ts` **trecut** și `webgl.spec.ts`
+**trecut**: 160.000 vârfuri și 318.402 triunghiuri (400 × 400), 0 NoData, o singură construire a mesh-ului; pixeli citiți din
+cadrul randat diferiți de fundal; după o simulare reală de o zi în `MOON_ME_DE421`, direcția luminii se schimbă cu sliderul
+fără reconstruire; exagerarea 5× nu schimbă elevația afișată a Soarelui; cele trei camere și „Go to site”; selecția Apollo 11
+→ „no DEM”, 0 vârfuri, mai puține geometrii GPU; revenirea → același număr de geometrii ca la prima încărcare (fără scurgere);
+nicio eroare în consolă în afara 404-ului contractual `OUT_OF_DEM_COVERAGE`, tolerat explicit în test.
+
+Chrome (Uvicorn + Vite): punctul reprezentativ (85,4266° S, 31,7442° E) în `MOON_ME_DE421`, simulare de 30 de zile: la
+2026-11-15 00:00 UTC Soarele 2,13° la az 82,83°, Pământul 0,22° la az 325,70°; vectorul luminii (0,9915; 0,0372; −0,1247)
+= (sin az · cos el; sin el; −cos az · cos el), corect. Vederea de sus are nordul sus, iar pătratul rasterului apare rotit
+≈ 32° (grila stereografică la 31,7° E); vederea de la observator privește spre azimutul Soarelui; la 5× mesh-ul nu este
+reconstruit. Rețea: un singur nivel descărcat, o singură eșantionare a altitudinii, nicio cerere la mișcarea sliderului,
+camerei sau exagerării. Probleme găsite și corectate: textul „Local terrain: Not available (E08)” rămas din E07, lumina
+neutră prea înaltă (relief plat), avertizarea falsă „parameters changed” cauzată de zgomotul float al normalizării
+longitudinii pe server (comparație cu toleranță 1e-9°, test nou), `PCFSoftShadowMap` eliminat în Three r187.
+
 ## E07 — smoke test WebGL automat (2026-11-14)
 
 `frontend/e2e/webgl.spec.ts`, rulat cu `npm run test:e2e` (Playwright 1.65.1, Chromium headless 1255, argumente

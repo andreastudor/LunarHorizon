@@ -1,4 +1,21 @@
 # Criterii de acceptanță
+## E08 — stare 2026-11-15: încheiată tehnic; acceptare științifică restantă
+
+| Criteriu BACKLOG E08 | Stare | Dovadă |
+|---|---|---|
+| Endpointul `terrain/manifest` (+ niveluri vizuale și altitudine) | Îndeplinit | `api/app.py`; `tests/test_api_terrain.py` (10) |
+| Mesh din DEM, NoData vizibil | Îndeplinit | `geo/terrain.ts` + `terrain.test.ts`; NoData verificat sintetic (real: 0 pixeli NoData) |
+| Observator la altitudinea terenului + echipament | Îndeplinit | `observerScene`; Chrome: „terrain 6398.9 m + equipment 2 m” |
+| Direcții Soare/Pământ; lumină după vectorul solar | Îndeplinit | `bodyDirectionLocal` + teste de axe; Playwright: `data-light` se schimbă cu sliderul |
+| Vedere de sus, oblică, de la observator; „Go to site” | Îndeplinit | `threeTerrain.ts`; Playwright și capturi Chrome |
+| Exagerare verticală afișată permanent | Îndeplinit | eticheta „Vertical exaggeration: N×”; mesh neschimbat, rezultatul neschimbat |
+| Încărcare, eroare (Retry), lipsă de date; eliberarea resurselor GPU | Îndeplinit | teste UI; Playwright: geometrii GPU revin la aceeași valoare după schimbarea sitului |
+| Teste: vârfuri față de vectori; altitudine; exagerarea/camera nu schimbă rezultatele (T-09); resurse GPU; interfață | Îndeplinit | `terrain.test.ts`, `App.test.tsx` (6 teste E08), `e2e/terrain.spec.ts`; toleranța T-09 rămâne nevalidată |
+| Criteriu: relief real în 3D; corpurile și lumina urmează sliderul | Îndeplinit | Chrome și Playwright cu backend și DEM reale |
+
+Restant științific: cadrul DEM (`MOON_ME_DE421`) este ipoteză; rezultatele sunt idealizate (fără orizont din DEM, E09);
+punctul Leibnitz Beta este provizoriu (D-07). Criteriile nu au fost modificate.
+
 ## E07 — stare 2026-11-14: **încheiată tehnic** (toate criteriile BACKLOG îndeplinite); acceptare științifică restantă
 
 | Criteriu BACKLOG E07 | Stare | Dovadă |

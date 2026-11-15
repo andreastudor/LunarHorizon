@@ -13,7 +13,8 @@ Această actualizare este numai de planificare, nu o implementare sau o validare
 
 
 Actualizat 2026-11-14. Termen: **15 noiembrie 2026, ora 13:00 Europe/Bucharest**. Prioritate P0 până la E17;
-E18 numai după P0. O etapă pe rând; următoarea etapă este **E08** (neînceput).
+E18 numai după P0. O etapă pe rând; următoarea etapă este **E09** (neîncepută; cere întâi formulele și deciziile
+astronomilor).
 
 ## Stare și istoric
 
@@ -30,6 +31,9 @@ E18 numai după P0. O etapă pe rând; următoarea etapă este **E08** (neîncep
 - **E07: încheiată tehnic** (inclusiv criteriul WebGL, prin testul Playwright `npm run test:e2e`); **acceptare
   științifică restantă**. Interfața este în
   **engleză** (decizia utilizatorului; documentele de cerințe actualizate). Vezi STATUS, ACCEPTANCE, VALIDARE.
+- **E08: încheiată tehnic; acceptare științifică restantă.** Tab „Local terrain”: mesh din DEM real (40 m), observator
+  din rasterul de calcul + echipament, trei camere și „Go to site”, exagerare numai vizuală, direcții și lumină din API.
+  Schema 0.5.0 (`TerrainSample`). Terenul este numai afișare; vizibilitatea rămâne idealizată până la E09.
 
 ## Instalare, pornire, verificare
 
@@ -64,7 +68,7 @@ Verificări:
 
 ```powershell
 cd backend
-.venv\Scripts\python -m pytest                      # 330 de teste la această dată; -m kernels cere kernelurile
+.venv\Scripts\python -m pytest                      # 341 de teste la această dată; -m kernels cere kernelurile
 .venv\Scripts\python -m ruff check . ..\scripts
 .venv\Scripts\python -m ruff format --check . ..\scripts
 .venv\Scripts\python -m mypy
@@ -104,7 +108,9 @@ produs DEM în `health`/`coverage` numai dacă `data\_cache\terrain\leibnitz_bet
 - Acoperirea orizontului, `d_max` și convergența țin de E09; al doilea sit și comparația, de E12.
 - E07: testul WebGL folosește SwiftShader și nu este încă în CI (cere textura E05 neversionată). 3D/2D (E11) și
   Compare (E12) nu fac parte din E07.
-- **Primul pas E08:** servește static `visual_8.tif`/`visual_16.tif` și manifestul de teren (`GET /api/terrain/manifest`),
-  apoi construiește în frontend scena locală (`LocalSceneFrame` din `geo/scene.ts`) pentru punctul Leibnitz Beta
-  provizoriu, cu NoData vizibil și exagerare verticală numai vizuală; nu prezenta textura globală ca teren.
+- E08: terenul folosește `MOON_ME_DE421` (ipoteză); direcțiile apar numai dacă simularea are același cadru. NoData
+  verificat doar sintetic (rasterul real nu are goluri). `npm run test:e2e` rulează globul și terenul (2 teste).
+- **Înainte de E09:** integrează formulele și deciziile astronomilor (D-08/D-09 pentru `d_max` și produsul îndepărtat,
+  criteriile D-04/D-16, D-02). Primul pas tehnic E09: profilul de orizont H(az) din rasterul de calcul în jurul
+  observatorului, cu acoperirea declarată; abia apoi `terrain_mode=dem` în simulare. Tabul E10A urmează după E10.
 - Nu confunda terenul vizual cu rasterul de calcul; nu marca E05/E06 acceptate științific fără validările [GEO]/[ASTRO].
