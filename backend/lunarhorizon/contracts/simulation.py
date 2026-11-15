@@ -140,7 +140,7 @@ class BodySeries(Contract):
     state_reason: list[UndeterminedReason | None]
     # Soare: fracția de arie aparentă neascunsă (nu flux, nu putere); Pământ: mereu `null`.
     visible_fraction: list[Fraction | None]
-    visible_fraction_uncertainty: list[Fraction | None]
+    visible_uncertainty_fraction: list[Fraction | None]
 
     def lengths(self) -> set[int]:
         return {
@@ -153,7 +153,7 @@ class BodySeries(Contract):
             len(self.state),
             len(self.state_reason),
             len(self.visible_fraction),
-            len(self.visible_fraction_uncertainty),
+            len(self.visible_uncertainty_fraction),
         }
 
     @model_validator(mode="after")

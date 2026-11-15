@@ -13,6 +13,7 @@ import type { SimulationView } from '../api/useSimulation.ts'
 import { parseUtc } from '../geo/utc.ts'
 import { en } from '../i18n/en.ts'
 import { fmtDeg, fmtDuration, fmtKm, fmtPercent, fmtUtc } from '../ui/format.ts'
+import { ElevationChart } from './ElevationChart.tsx'
 import { SkyView } from './SkyView.tsx'
 
 interface Props {
@@ -41,6 +42,7 @@ export function ResultsPanel({
       <p className="mode-badge">
         {terrainMode === 'dem' ? en.results.modeDem : en.results.mode}
       </p>
+      <p className="small muted">{en.results.reliefOnly}</p>
       <StatusLine view={view} hasResult={Boolean(result)} />
       {stale && result && (
         <p className="notice notice--warning" role="status">
@@ -116,6 +118,7 @@ function ResultBody({
       <p className="time-readout" aria-live="polite">
         {en.results.at(fmtUtc(nowMs))}
       </p>
+      <Combination sun={series.sun.state[i]} earth={series.earth.state[i]} />
       <div className="cards">
         <BodyCard
           body="sun"
@@ -145,6 +148,7 @@ function ResultBody({
         }}
       />
       <p className="muted small">{en.results.directions}</p>
+      <ElevationChart series={series} index={i} />
       {notComputed.length > 0 && (
         <div className="notice notice--info">
           <p>{en.results.notComputedHeading}</p>
@@ -164,27 +168,71 @@ function ResultBody({
   )
 }
 
-function visibilityLabel(body: 'sun' | 'earth', value: boolean | null) {
-  if (value === null) return en.results.visibilityUnknown
-  if (body === 'sun')
-    return value ? en.results.sunVisible : en.results.sunHidden
-  return value ? en.results.earthVisible : en.results.earthHidden
+function stateLabel(body: 'sun' | 'earth', state: string): string {
+  return body === 'sun'
+    ? (en.results.sunStates[state] ?? state)
+    : (en.results.earthStates[state] ?? state)
 }
 
+/** The four combinations when both states are determined; a distinct state otherwise. */
+function Combination({ sun, earth }: { sun: string; earth: string }) {
+  const sunUp = sun === 'partially_visible' || sun === 'fully_visible'
+  const earthUp = earth === 'visible'
+  const known = sun !== 'undetermined' && earth !== 'undetermined'
+  const text = known
+    ? en.results.combination[
+        `${sunUp ? 'v' : 'h'}${earthUp ? 'v' : 'h'}` as
+          'vv' | 'vh' | 'hv' | 'hh'
+      ]
+    : en.results.combination.unknown(
+        stateLabel('sun', sun),
+        stateLabel('earth', earth),
+      )
+  return (
+    <p
+      className={`combination ${known ? '' : 'combination--unknown'}`}
+      data-combination={
+        known ? `${sunUp ? 'v' : 'h'}${earthUp ? 'v' : 'h'}` : 'unknown'
+      }
+      aria-live="polite"
+    >
+      <strong>{en.results.combination.heading}:</strong> {text}
+    </p>
+  )
+}
+
+/** Next event relative to the slider, from refined events only (never from the series). */
 function nextEventText(
   body: 'sun' | 'earth',
   events: BodyEvents | null,
+  state: string,
   nowMs: number,
 ): string {
   const name = body === 'sun' ? en.results.sun : en.results.earth
   const next = events?.events.find((event) => parseUtc(event.time_utc) > nowMs)
-  if (!next) return en.results.noMoreEvents(name)
+  const prefix =
+    state === 'hidden' ? `${en.results.currentlyHidden(name)} ` : ''
+  if (!next) {
+    if (events?.status === 'unavailable' && events.reason)
+      return prefix + en.results.eventUnavailable(events.reason)
+    return prefix + en.results.noEventInInterval
+  }
   const at = parseUtc(next.time_utc)
   const make =
     next.type === 'appearance'
       ? en.results.nextAppearance
-      : en.results.nextDisappearance
-  return make(name, fmtDuration(at - nowMs), fmtUtc(at))
+      : next.type === 'disappearance'
+        ? en.results.nextDisappearance
+        : en.results.nextContact
+  const window =
+    next.quality === 'window'
+      ? ` (${en.results.windowNote(
+          fmtDuration(
+            parseUtc(next.window_end_utc) - parseUtc(next.window_start_utc),
+          ),
+        )})`
+      : ''
+  return prefix + make(name, fmtDuration(at - nowMs), fmtUtc(at)) + window
 }
 
 function BodyCard({
@@ -203,23 +251,46 @@ function BodyCard({
   showTerrainHorizon: boolean
 }) {
   const terrainHorizon = series.horizon_elevation_deg[index]
-  const visible = series.visible[index]
+  const state = series.state[index]
+  const reason = series.state_reason[index]
+  const fraction = series.visible_fraction[index]
+  const uncertainty = series.visible_uncertainty_fraction[index]
   const title = body === 'sun' ? en.results.sun : en.results.earth
+  const tone =
+    state === 'undetermined'
+      ? 'status--unknown'
+      : state === 'hidden'
+        ? 'status--down'
+        : 'status--up'
+  const glyph =
+    state === 'undetermined'
+      ? '?'
+      : state === 'hidden'
+        ? '○'
+        : state === 'partially_visible'
+          ? '◐'
+          : '●'
   return (
     <article className={`card card--${body}`} aria-label={title}>
       <header className="card-header">
         <h3>
           <span aria-hidden="true">{body === 'sun' ? '☀' : '⊕'}</span> {title}
         </h3>
-        <span
-          className={`status ${visible === null ? 'status--unknown' : visible ? 'status--up' : 'status--down'}`}
-        >
-          <span aria-hidden="true">
-            {visible === null ? '?' : visible ? '●' : '○'}
-          </span>{' '}
-          {visibilityLabel(body, visible)}
+        <span className={`status ${tone}`} data-state={state}>
+          <span aria-hidden="true">{glyph}</span> {stateLabel(body, state)}
         </span>
       </header>
+      {reason && (
+        <p className="small">{en.results.reasons[reason] ?? reason}</p>
+      )}
+      {body === 'sun' && fraction !== null && state !== 'hidden' && (
+        <p className="small" data-fraction={fraction}>
+          {en.results.fraction(
+            fmtPercent(fraction),
+            fmtPercent(uncertainty ?? 0),
+          )}
+        </p>
+      )}
       <dl className="readouts">
         <dt>{en.results.elevation}</dt>
         <dd className="big">{fmtDeg(series.elevation_deg[index], 2)}</dd>
@@ -238,7 +309,12 @@ function BodyCard({
           </>
         )}
       </dl>
-      <p className="small">{nextEventText(body, events, nowMs)}</p>
+      <p className="small next-event">
+        {nextEventText(body, events, state, nowMs)}
+      </p>
+      <p className="small muted">
+        {body === 'sun' ? en.results.fractionNote : en.results.earthNote}
+      </p>
     </article>
   )
 }
@@ -267,6 +343,12 @@ function Totals({
         <dd>{duration(summary.earth_visible_duration_s)}</dd>
         <dt>{en.results.bothTotal}</dt>
         <dd>{duration(summary.both_visible_duration_s)}</dd>
+        <dt>{en.results.sunUnknown}</dt>
+        <dd>{duration(summary.sun_unknown_duration_s)}</dd>
+        <dt>{en.results.earthUnknown}</dt>
+        <dd>{duration(summary.earth_unknown_duration_s)}</dd>
+        <dt>{en.results.bothUnknown}</dt>
+        <dd>{duration(summary.both_unknown_duration_s)}</dd>
       </dl>
     </>
   )
@@ -289,10 +371,15 @@ function EventList({ sun, earth }: { sun: BodyEvents; earth: BodyEvents }) {
             <li key={`${event.body}-${event.time_utc}`}>
               {fmtUtc(parseUtc(event.time_utc))} —{' '}
               {event.body === 'sun' ? en.results.sun : en.results.earth}{' '}
-              {event.type === 'appearance'
-                ? en.results.appearance
-                : en.results.disappearance}{' '}
-              (az {fmtDeg(event.azimuth_deg)})
+              {en.results.eventTypes[event.type]} (az{' '}
+              {fmtDeg(event.azimuth_deg)})
+              {event.quality === 'window' &&
+                ` — ${en.results.windowNote(
+                  fmtDuration(
+                    parseUtc(event.window_end_utc) -
+                      parseUtc(event.window_start_utc),
+                  ),
+                )}`}
             </li>
           ))}
         </ul>

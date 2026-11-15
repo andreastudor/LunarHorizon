@@ -270,7 +270,7 @@ def _series(
             state=[s.state for s in states],
             state_reason=[s.reason for s in states],
             visible_fraction=[s.fraction if isinstance(s, SunVisibility) else None for s in states],
-            visible_fraction_uncertainty=[
+            visible_uncertainty_fraction=[
                 s.fraction_uncertainty if isinstance(s, SunVisibility) else None for s in states
             ],
         )
@@ -431,32 +431,44 @@ def _simulate_site(
     evaluator = _Evaluator(profile, observer, clock)
     assert request.series_step_s is not None
     series_ms = list(range(0, clock.total_ms + 1, request.series_step_s * 1000))
-    sun_series, earth_series = _series(evaluator, model, request, series_ms)
-    e_min = request.earth_criterion.min_elevation_deg
+    # Un sit se calculează sub același lacăt: comutarea profilului între eșantioane ar reîncărca
+    # kernelurile la fiecare apel; alt fir așteaptă terminarea sitului.
+    with SPICE_LOCK:
+        activate(profile)
+        sun_series, earth_series = _series(evaluator, model, request, series_ms)
+        e_min = request.earth_criterion.min_elevation_deg
 
-    def sun_eval(t: float) -> Sample:
-        return _sample(_sun_state(model, evaluator.at("sun", t)), t)
+        def sun_eval(t: float) -> Sample:
+            return _sample(_sun_state(model, evaluator.at("sun", t)), t)
 
-    def earth_eval(t: float) -> Sample:
-        return _sample(_earth_state(model, evaluator.at("earth", t), e_min), t)
+        def earth_eval(t: float) -> Sample:
+            return _sample(_earth_state(model, evaluator.at("earth", t), e_min), t)
 
-    steps = SCAN_STEP_S[mode]
-    scans = {
-        "sun": scan(
-            sun_eval, clock.total_s, steps["sun"], REFINEMENT_TOLERANCE_S, MIN_SUBDIVISION_STEP_S
-        ),
-        "earth": scan(
-            earth_eval,
-            clock.total_s,
-            steps["earth"],
-            REFINEMENT_TOLERANCE_S,
-            MIN_SUBDIVISION_STEP_S,
-        ),
-    }
+        steps = SCAN_STEP_S[mode]
+        scans = {
+            "sun": scan(
+                sun_eval,
+                clock.total_s,
+                steps["sun"],
+                REFINEMENT_TOLERANCE_S,
+                MIN_SUBDIVISION_STEP_S,
+            ),
+            "earth": scan(
+                earth_eval,
+                clock.total_s,
+                steps["earth"],
+                REFINEMENT_TOLERANCE_S,
+                MIN_SUBDIVISION_STEP_S,
+            ),
+        }
+        found_events = {
+            body: _events(body, scans[body].transitions, evaluator, model, request, clock.total_ms)
+            for body in BODIES
+        }
     cuts = {body: _segments_ms(scans[body].segments, clock.total_ms) for body in BODIES}
     groups: dict[Body, BodyEvents] = {}
     for body in BODIES:
-        found = _events(body, scans[body].transitions, evaluator, model, request, clock.total_ms)
+        found = found_events[body]
         data_gaps = any(s == "unknown" and r != "near_threshold" for *_, s, r in cuts[body])
         if found:
             groups[body] = BodyEvents(status="found", reason=None, events=found)

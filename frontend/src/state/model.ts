@@ -89,7 +89,7 @@ export function buildRequest(
       start_utc: formatUtc(startMs),
       end_utc: formatUtc(startMs + params.durationDays * 86_400_000),
       observer_height_m: height,
-      solar_criterion: 'disc_center',
+      solar_criterion: 'disc_positive_area',
       earth_criterion: {
         kind: 'center_above_horizon',
         min_elevation_deg: elevation,

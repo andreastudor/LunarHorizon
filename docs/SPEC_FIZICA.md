@@ -290,10 +290,32 @@ neinclus. Modul permite explorarea astronomică și nu ține loc de integrare LO
 - Vizibilitatea privește numai relieful; eclipsele nu sunt incluse. Fracția vizibilă este fracția de arie aparentă
   a discului, nu fracția de flux și nu putere solară.
 
+### 7.1. Implementare (E10)
+
+Detaliat în [E10_VISIBILITY.md](E10_VISIBILITY.md); cod în `simulation/visibility.py`.
+
+- Discul: centrul și ρ = asin(R_☉/D) din rezultatul CN+S la fiecare moment; model de disc în planul tangent al
+  cerului (eroare relativă de ordinul ρ²). `g = max_x[y_sus(x) − H(A(x))]` decide aria pozitivă (g > 0); contactul
+  tangent nu este vizibilitate; `h = min_x[y_jos(x) − H(A(x))] > ε` înseamnă complet vizibil. Fracția: integrare pe
+  128 de coloane, cu incertitudine din H ± ε și din integrare.
+- H(A): în modul DEM, profilul E09 la pasul azimutal fin 0,025° (ales prin convergență), liniar între eșantioane;
+  în modul idealizat H ≡ 0, deci criteriul este `e_c + ρ > 0`.
+- Nedeterminat (nu „ascuns”, nu zero): lipsă de date pe disc (`no_data`), profil parțial — limită inferioară —
+  când discul nu este sigur ascuns (`partial_data`), |g| ≤ ε cu ε = max(10⁻⁶°, rugozitatea locală a profilului)
+  (`near_threshold`).
+- Pământ: `e > max(H(A), e_min)`, aceleași reguli pentru date lipsă sau parțiale.
+
 ## 8. Evenimente
 
-Un eveniment este o schimbare de semn a funcției-criteriu. Tipuri în MVP: `appearance` și `disappearance`,
-per corp, cu cauza `terrain` sau `idealized_horizon`. Eclipsele (P1) au tip propriu.
+Un eveniment este o schimbare de semn a funcției-criteriu. Tipuri: `appearance`, `disappearance` și (E10)
+`tangent_contact`, per corp, cu cauza `terrain`, `idealized_horizon` sau `elevation_threshold`. Eclipsele (P1) au tip
+propriu.
+
+**Implementare E10** (`simulation/timeline.py`): grilă de 60 s (Soare) / 300 s (Pământ) în modul DEM, 300 s / 600 s
+în modul idealizat; subdiviziune până la 1 s unde criteriul poate atinge pragul între eșantioane (estimare Lipschitz
+cu factor 2); bisecție la τ = 1 ms. Fiecare eveniment are fereastra în care starea nu poate fi decisă (|g| ≤ ε) și
+calitatea `refined` / `window`. Granițele zonelor fără date nu creează evenimente. Intervalele vizibil / ascuns /
+necunoscut partiționează intervalul cerut.
 
 Detectare:
 

@@ -141,24 +141,59 @@ const COVERAGE: Coverage = {
   ],
 }
 
+interface SunOverride {
+  state: string[]
+  reason: (string | null)[]
+  fraction: (number | null)[]
+}
+
 function syntheticResult(
   request: SimulationRequest,
   siteRef: string,
   sunAzimuth: (number | null)[] = [90, 100, 110],
+  sunOverride: SunOverride | null = null,
+  sunEvents: SimulationResult['events'][number]['sun'] | null = null,
 ): SimulationResult {
   const times = [
     '2026-11-14T00:00:00Z',
     '2026-11-14T01:00:00Z',
     '2026-11-14T02:00:00Z',
   ]
-  const body = (azimuth: (number | null)[], elevation: number[]) => ({
-    azimuth_deg: azimuth,
-    elevation_deg: elevation,
-    distance_km: [1.5e8, 1.5e8, 1.5e8],
-    angular_radius_deg: [0.27, 0.27, 0.27],
-    horizon_elevation_deg: [0, 0, 0],
-    visible: elevation.map((e) => e >= 0),
-  })
+  const body = (
+    azimuth: (number | null)[],
+    elevation: number[],
+    sun: boolean,
+  ) => {
+    const state =
+      sun && sunOverride
+        ? sunOverride.state
+        : elevation.map((e) =>
+            e < 0 ? 'hidden' : sun ? 'fully_visible' : 'visible',
+          )
+    return {
+      azimuth_deg: azimuth,
+      elevation_deg: elevation,
+      distance_km: [1.5e8, 1.5e8, 1.5e8],
+      angular_radius_deg: [0.27, 0.27, 0.27],
+      horizon_elevation_deg: [0, 0, 0],
+      visible: state.map((st) =>
+        st === 'undetermined' ? null : st !== 'hidden',
+      ),
+      state,
+      state_reason:
+        sun && sunOverride
+          ? sunOverride.reason
+          : state.map(() => null as string | null),
+      visible_fraction: sun
+        ? sunOverride
+          ? sunOverride.fraction
+          : state.map((st) => (st === 'hidden' ? 0 : 1))
+        : state.map(() => null),
+      visible_uncertainty_fraction: sun
+        ? state.map((st) => (st === 'undetermined' ? null : 0.01))
+        : state.map(() => null),
+    } as SimulationResult['series'][number]['sun']
+  }
   return {
     schema_version: '0.8.0',
     request: Object.assign(
@@ -167,7 +202,7 @@ function syntheticResult(
         start_utc: '2026-11-14T00:00:00Z',
         end_utc: '2026-11-14T02:00:00Z',
         observer_height_m: 2,
-        solar_criterion: 'disc_center',
+        solar_criterion: 'disc_positive_area',
         earth_criterion: { kind: 'center_above_horizon', min_elevation_deg: 0 },
         terrain_mode: 'idealized_local_plane',
         panel: null,
@@ -196,14 +231,14 @@ function syntheticResult(
         site_ref: siteRef,
         step_s: 3600,
         time_utc: times,
-        sun: body(sunAzimuth, [-1.25, 10.5, 20.75]),
-        earth: body([200, 201, 202], [45, 45.5, 46]),
+        sun: body(sunAzimuth, [-1.25, 10.5, 20.75], true),
+        earth: body([200, 201, 202], [45, 45.5, 46], false),
       },
     ],
     events: [
       {
         site_ref: siteRef,
-        sun: {
+        sun: sunEvents ?? {
           status: 'found',
           reason: null,
           events: [
@@ -211,9 +246,13 @@ function syntheticResult(
               body: 'sun',
               type: 'appearance',
               cause: 'idealized_horizon',
+              criterion: 'sun_disc_positive_area',
               time_utc: '2026-11-14T00:07:00Z',
+              window_start_utc: '2026-11-14T00:07:00Z',
+              window_end_utc: '2026-11-14T00:07:00Z',
+              quality: 'refined',
               azimuth_deg: 91,
-              elevation_deg: 0,
+              elevation_deg: -0.27,
               obstacle_distance_m: null,
               refinement_tolerance_s: 0.001,
             },
@@ -229,8 +268,39 @@ function syntheticResult(
         sun_visible_fraction: 6780 / 7200,
         earth_visible_duration_s: 7200,
         both_visible_duration_s: 6780,
+        sun_unknown_duration_s: 0,
+        earth_unknown_duration_s: 0,
+        both_unknown_duration_s: 0,
         sun_intervals: [],
         earth_windows: [],
+        sun_timeline: [
+          {
+            start_utc: '2026-11-14T00:00:00Z',
+            end_utc: '2026-11-14T00:07:00Z',
+            state: 'hidden',
+            reason: null,
+            truncated_start: true,
+            truncated_end: false,
+          },
+          {
+            start_utc: '2026-11-14T00:07:00Z',
+            end_utc: '2026-11-14T02:00:00Z',
+            state: 'visible',
+            reason: null,
+            truncated_start: false,
+            truncated_end: true,
+          },
+        ],
+        earth_timeline: [
+          {
+            start_utc: '2026-11-14T00:00:00Z',
+            end_utc: '2026-11-14T02:00:00Z',
+            state: 'visible',
+            reason: null,
+            truncated_start: true,
+            truncated_end: true,
+          },
+        ],
       },
     ],
     horizon: [],
@@ -241,7 +311,7 @@ function syntheticResult(
       source_mode: 'live',
       kernel_profile: { profile_id: 'de440_me421', files: [] },
       frame_id: 'MOON_ME_DE440_ME421',
-      aberration_correction: 'LT+S',
+      aberration_correction: 'CN+S',
       body_radii_km: {},
       dem_products: [],
       horizon_parameters: {},
@@ -633,7 +703,7 @@ describe('E07 main screen', () => {
     })
     const sunCard = screen.getByRole('article', { name: en.results.sun })
     expect(within(sunCard).getByText('-1.25°')).toBeDefined()
-    expect(within(sunCard).getByText(en.results.sunHidden)).toBeDefined()
+    expect(within(sunCard).getByText(en.results.sunStates.hidden)).toBeDefined()
     const statusCalls = calls.status
     fireEvent.change(screen.getByLabelText(en.time.slider), {
       target: { value: '2' },
@@ -1329,5 +1399,153 @@ describe('E09 horizon profile', () => {
     fireEvent.click(screen.getByText(en.common.retry))
     await screen.findByRole('img', { name: /Horizon profile/ })
     expect(attempts).toBe(2)
+  })
+})
+
+describe('E10 visibility, events and indicators', () => {
+  function resultSource(
+    sunOverride: SunOverride | null,
+    sunEvents: SimulationResult['events'][number]['sun'] | null = null,
+  ) {
+    return fakeSource({
+      simulation: async (): Promise<SimulationStatus> => ({
+        id: 'sim-synthetic',
+        status: 'done',
+        progress: null,
+        error: null,
+        result: syntheticResult(
+          {
+            sites: [{ site_id: 'synthetic_a' }],
+          } as unknown as SimulationRequest,
+          'synthetic_a',
+          [90, 100, 110],
+          sunOverride,
+          sunEvents,
+        ),
+      }),
+    }).source
+  }
+
+  async function run(source: DataSource) {
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={fakeTerrain().factory}
+        now={NOW}
+      />,
+    )
+    fireEvent.click(await screen.findByText('synthetic_site_alpha'))
+    fireEvent.click(screen.getByText(en.params.run))
+    return screen.findByRole('article', { name: en.results.sun })
+  }
+
+  it('shows the combination at the slider time and the next refined event', async () => {
+    const sunCard = await run(resultSource(null))
+    const combination = () =>
+      document
+        .querySelector('[data-combination]')
+        ?.getAttribute('data-combination')
+    expect(combination()).toBe('hv') // Sun hidden, Earth visible
+    expect(screen.getByText(en.results.combination.hv)).toBeDefined()
+    // Ascuns acum: „currently hidden” și timpul până la apariția rafinată (7 min).
+    expect(
+      within(sunCard).getByText(/Sun currently hidden\. Sun appears in 7 min/),
+    ).toBeDefined()
+    fireEvent.change(screen.getByLabelText(en.time.slider), {
+      target: { value: '1' },
+    })
+    expect(combination()).toBe('vv')
+    expect(
+      within(sunCard).getByText(en.results.sunStates.fully_visible),
+    ).toBeDefined()
+    expect(
+      within(sunCard).getByText(en.results.noEventInInterval),
+    ).toBeDefined()
+    expect(screen.getAllByText(en.results.reliefOnly).length).toBeGreaterThan(0)
+  })
+
+  it('shows partial visibility with its fraction and uncertainty', async () => {
+    const sunCard = await run(
+      resultSource({
+        state: ['partially_visible', 'fully_visible', 'fully_visible'],
+        reason: [null, null, null],
+        fraction: [0.42, 1, 1],
+      }),
+    )
+    expect(
+      within(sunCard).getByText(en.results.sunStates.partially_visible),
+    ).toBeDefined()
+    expect(
+      within(sunCard).getByText(en.results.fraction('42.0%', '1.0%')),
+    ).toBeDefined()
+    expect(screen.getByText(en.results.combination.vv)).toBeDefined()
+  })
+
+  it('never forces one of the four combinations when a state is undetermined', async () => {
+    const sunCard = await run(
+      resultSource(
+        {
+          state: ['undetermined', 'fully_visible', 'fully_visible'],
+          reason: ['no_data', null, null],
+          fraction: [null, 1, 1],
+        },
+        {
+          status: 'unavailable',
+          reason: 'synthetic: horizon data missing',
+          events: [],
+        },
+      ),
+    )
+    expect(
+      document
+        .querySelector('[data-combination]')
+        ?.getAttribute('data-combination'),
+    ).toBe('unknown')
+    expect(
+      within(sunCard).getByText(en.results.sunStates.undetermined),
+    ).toBeDefined()
+    expect(within(sunCard).getByText(en.results.reasons.no_data)).toBeDefined()
+    expect(
+      within(sunCard).getByText(
+        en.results.eventUnavailable('synthetic: horizon data missing'),
+      ),
+    ).toBeDefined()
+    for (const text of Object.values(en.results.combination)) {
+      if (typeof text === 'string' && text !== en.results.combination.heading)
+        expect(screen.queryByText(text)).toBeNull()
+    }
+  })
+
+  it('draws bands from the backend timelines and marks the slider', async () => {
+    await run(resultSource(null))
+    const sunBand = document.querySelector('[data-band="sun"]')
+    const states = [...(sunBand?.querySelectorAll('[data-state]') ?? [])].map(
+      (el) => el.getAttribute('data-state'),
+    )
+    expect(states).toEqual(['hidden', 'visible'])
+    const both = document.querySelector('[data-band="both"]')
+    expect(
+      [...(both?.querySelectorAll('[data-state]') ?? [])].map((el) =>
+        el.getAttribute('data-state'),
+      ),
+    ).toEqual(['hidden', 'visible'])
+    expect(sunBand?.querySelector('.band-event--appearance')).not.toBeNull()
+    expect(sunBand?.querySelector('.bands-cursor')).not.toBeNull()
+    expect(screen.getByRole('img', { name: en.chart.label })).toBeDefined()
+  })
+
+  it('shows the computed states in the local 3D scene at the slider time', async () => {
+    await run(resultSource(null))
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    const list = await screen.findByRole('list', {
+      name: en.terrain.indicators,
+    })
+    expect(within(list).getByText(/Sun: Hidden/)).toBeDefined()
+    fireEvent.change(screen.getByLabelText(en.time.slider), {
+      target: { value: '2' },
+    })
+    expect(within(list).getByText(/Sun: Fully visible/)).toBeDefined()
+    expect(within(list).getByText(/Earth: In view/)).toBeDefined()
   })
 })

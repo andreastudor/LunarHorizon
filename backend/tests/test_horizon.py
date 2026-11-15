@@ -5,6 +5,7 @@ Terenul sintetic are prefixul `synthetic_`; nu înlocuiește date reale în apli
 
 import json
 import math
+import time
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
@@ -17,6 +18,7 @@ from jsonschema import Draft202012Validator
 from lunarhorizon.api.app import create_app
 from lunarhorizon.api.settings import DATA_DIR, Settings
 from lunarhorizon.contracts.export import build_schema, document_schema
+from lunarhorizon.core.utc import parse_utc
 from lunarhorizon.terrain.horizon import (
     HeightGrid,
     HorizonInputError,
@@ -357,42 +359,111 @@ def test_horizon_request_is_validated(api: TestClient) -> None:
     assert response.status_code == 422 and response.json()["code"] == "UNSUPPORTED_FRAME"
 
 
-@real
-def test_dem_simulation_uses_the_profile_and_leaves_visibility_to_e10(api: TestClient) -> None:
-    site = next(s for s in api.get("/api/sites").json()["sites"] if "leibnitz" in s["id"])
-    body = {
-        "sites": [{"site_id": site["id"]}],
-        "frame_id": site["frame_id"],
-        "start_utc": "2026-11-15T00:00:00Z",
-        "end_utc": "2026-11-16T00:00:00Z",
-        "observer_height_m": 2,
-        "solar_criterion": "disc_positive_area",
-        "earth_criterion": {"kind": "center_above_horizon", "min_elevation_deg": 0},
-        "terrain_mode": "dem",
-        "series_step_s": 3600,
-    }
-    accepted = api.post("/api/simulations", json=body)
+def run_simulation(client: TestClient, body: dict[str, Any]) -> dict[str, Any]:
+    accepted = client.post("/api/simulations", json=body)
     assert accepted.status_code in (200, 202), accepted.text
     simulation_id = accepted.json()["id"]
+    deadline = time.monotonic() + 300.0
     status: dict[str, Any] = {}
-    for _ in range(600):
-        status = api.get(f"/api/simulations/{simulation_id}").json()
+    while time.monotonic() < deadline:
+        status = client.get(f"/api/simulations/{simulation_id}").json()
         if status["status"] in ("done", "failed"):
             break
+        time.sleep(0.2)
     assert status["status"] == "done", json.dumps(status.get("error"))
-    result = status["result"]
+    result: dict[str, Any] = status["result"]
+    return result
+
+
+def seconds(utc: str) -> float:
+    return parse_utc(utc).timestamp()
+
+
+@real
+def test_dem_simulation_end_to_end_for_leibnitz_beta() -> None:
+    """E10 cap-coadă pe date reale: orizont, geometrie, vizibilitate, evenimente, indicatori."""
+    with TestClient(create_app(Settings())) as client:
+        site = next(s for s in client.get("/api/sites").json()["sites"] if "leibnitz" in s["id"])
+        body = {
+            "sites": [{"site_id": site["id"]}],
+            "frame_id": site["frame_id"],
+            "start_utc": "2026-11-15T00:00:00Z",
+            "end_utc": "2026-12-15T00:00:00Z",
+            "observer_height_m": 2,
+            "solar_criterion": "disc_positive_area",
+            "earth_criterion": {"kind": "center_above_horizon", "min_elevation_deg": 0},
+            "terrain_mode": "dem",
+            "series_step_s": 3600,
+        }
+        result = run_simulation(client, body)
+        again = run_simulation(client, body)  # aceeași cerere: același rezultat (cache)
+        profile = horizon(client, site_id=site["id"], observer_height_m=2)
     Draft202012Validator(document_schema(SCHEMA, "SimulationResult")).validate(result)
+    assert again["summary"] == result["summary"] and again["events"] == result["events"]
     (site_horizon,) = result["horizon"]
-    assert site_horizon["mode"] == "dem" and len(site_horizon["elevation_deg"]) == 720
-    profile = horizon(api, site_id=site["id"], observer_height_m=2)
-    assert site_horizon["elevation_deg"] == profile["elevation_deg"]
-    series = result["series"][0]
-    assert any(abs(h) > 0.01 for h in series["sun"]["horizon_elevation_deg"] if h is not None)
-    assert set(series["sun"]["visible"]) == {None}
-    assert {(n["group"], n["site_ref"]) for n in result["quality"]["not_computed"]} == {
-        ("events", site["id"]),
-        ("summary", site["id"]),
-    }
+    assert (
+        site_horizon["mode"] == "dem" and site_horizon["elevation_deg"] == profile["elevation_deg"]
+    )
+    provenance = result["provenance"]
+    assert provenance["aberration_correction"] == "CN+S"
+    assert provenance["criteria"]["solar_criterion"] == "disc_positive_area"
+    assert provenance["criteria"]["eclipses"] == "not_included"
+    assert provenance["horizon_parameters"]["visibility_azimuth_step_deg"] == 0.025
+    assert result["quality"]["not_computed"] == []
     assert result["sites"][0]["on_reference_surface"] is False
-    assert result["terrain"][0]["available"] is True
-    assert result["provenance"]["horizon_parameters"]["mode"] == "dem"
+
+    total = seconds(body["end_utc"]) - seconds(body["start_utc"])
+    summary = result["summary"][0]
+    for body_name, visible_key in (
+        ("sun", "sun_visible_duration_s"),
+        ("earth", "earth_visible_duration_s"),
+    ):
+        timeline = summary[f"{body_name}_timeline"]
+        assert (
+            timeline[0]["start_utc"] == body["start_utc"]
+            and timeline[-1]["end_utc"] == body["end_utc"]
+        )
+        assert timeline[0]["truncated_start"] and timeline[-1]["truncated_end"]
+        spans: dict[str, float] = {}
+        for interval in timeline:
+            spans[interval["state"]] = spans.get(interval["state"], 0.0) + (
+                seconds(interval["end_utc"]) - seconds(interval["start_utc"])
+            )
+        assert sum(spans.values()) == pytest.approx(total, abs=1e-3)
+        assert spans.get("visible", 0.0) == pytest.approx(summary[visible_key], abs=1e-3)
+        assert spans.get("unknown", 0.0) == pytest.approx(
+            summary[f"{body_name}_unknown_duration_s"], abs=1e-3
+        )
+        # Evenimentele corespund schimbărilor din linia de stare (apariție: după ea vizibil).
+        for event in result["events"][0][body_name]["events"]:
+            after = seconds(event["window_end_utc"]) + 0.002
+            state = next(
+                i["state"]
+                for i in timeline
+                if seconds(i["start_utc"]) <= after < seconds(i["end_utc"])
+            )
+            if event["type"] == "appearance":
+                assert state == "visible"
+            elif event["type"] == "disappearance":
+                assert state == "hidden"
+        # Stările seriei (slider) coincid cu linia de stare la aceleași momente.
+        series = result["series"][0]
+        for when, state in zip(series["time_utc"], series[body_name]["state"], strict=True):
+            t = seconds(when)
+            interval = (
+                next(i for i in timeline if seconds(i["start_utc"]) <= t < seconds(i["end_utc"]))
+                if t < seconds(body["end_utc"])
+                else timeline[-1]
+            )
+            expected = {
+                "visible": ("partially_visible", "fully_visible", "visible"),
+                "hidden": ("hidden",),
+                "unknown": ("undetermined",),
+            }[interval["state"]]
+            assert state in expected, (body_name, when, state, interval)
+    assert (
+        summary["both_visible_duration_s"]
+        <= min(summary["sun_visible_duration_s"], summary["earth_visible_duration_s"]) + 1e-3
+    )
+    sun_states = set(result["series"][0]["sun"]["state"])
+    assert {"hidden", "partially_visible", "fully_visible"} <= sun_states

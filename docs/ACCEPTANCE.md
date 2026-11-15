@@ -1,4 +1,19 @@
 # Criterii de acceptanță
+## E10 — stare 2026-11-15: încheiată tehnic (M1) pentru Leibnitz Beta; acceptare științifică restantă
+
+| Criteriu BACKLOG | Stare | Dovadă |
+|---|---|---|
+| Criteriile de vizibilitate (D-04 disc, Pământ cu `e_min`) | Îndeplinit | `simulation/visibility.py`, `test_visibility.py` |
+| Detectarea și rafinarea evenimentelor; contacte tangente; intervale scurte | Îndeplinit | `simulation/timeline.py`; T-08 sintetic |
+| Indicatorii (durate, procente, ambele, necunoscute separat) | Îndeplinit | `SiteSummary`, partiția validată în contract |
+| Rezumat, cer local, grafic elevații, benzi, timp până la tranziție | Îndeplinit | `ResultsPanel`, `ElevationChart`, `TimeBands` |
+| Indicatoare vizibil/ascuns în scena 3D, din rezultat | Îndeplinit | `LocalTerrainView` (indicatoare), Playwright `visibility.spec.ts` |
+| Cele patru situații de afișare | Îndeplinit | combinații + stare nedeterminată distinctă; texte §3 |
+| Teste: tranziții scurte, contacte, trunchiere, consistența duratelor, stările UI | Îndeplinit | `test_visibility.py`, `test_horizon.py`, `App.test.tsx` |
+| M1: sit polar real cap-coadă, verificări geometrice consemnate | Îndeplinit tehnic | Leibnitz Beta; VALIDARE (E10), [E10_VISIBILITY.md](E10_VISIBILITY.md) |
+
+Restant științific: D-08/D-09 [GEO], D-10, D-14, T-06–T-09; eclipsele neincluse; un singur sit verificat cap-coadă.
+
 ## E09 — stare 2026-11-15: implementată tehnic; D-08/D-09 deschise; acceptare științifică restantă
 
 | Criteriu BACKLOG | Stare | Dovadă |
@@ -168,8 +183,8 @@ includere în demonstrația offline. E17 trebuie să verifice și această cerin
 | P0-06 | Control temporal | Dată, oră UTC, interval, slider, redare și pauză; toate vederile urmează momentul curent | E07 | incomplet | — |
 | P0-07 | Geometrie astronomică | Azimutul și elevația Soarelui și Pământului respectă toleranțele din [VALIDARE.md](VALIDARE.md) față de cazurile de referință | E03 | implementat, neverificat | Motorul `astro` este implementat. 22 de direcții se încadrează în pragurile **propuse** (separare max 4,75·10⁻⁷° față de pragul de 0,001°), dar T-01–T-03 nu sunt confirmate (D-12), iar D-01, D-02, D-03 și D-18 sunt deschise. Vezi §7, E03 |
 | P0-08 | Orizont LOLA | Profil de orizont din relief real în zonele acoperite, cu indicator de calitate; datele lipsă nu sunt tratate ca altitudine zero | E09 | implementat, neverificat științific | Profil pe două niveluri (PGDA 104 + LOLA GDR), stări complete/partial/unavailable; parametri provizorii (D-08/D-09). Vezi [E09_HORIZON.md](E09_HORIZON.md) |
-| P0-09 | Evenimente | Următoarea apariție și dispariție și timpul rămas, pentru ambele corpuri; cele patru situații de afișare din specificație | E10 | incomplet | — |
-| P0-10 | Indicatori | Durata și procentul luminii, ferestrele de vizibilitate a Pământului, durata cu ambele criterii îndeplinite | E10 | incomplet | — |
+| P0-09 | Evenimente | Următoarea apariție și dispariție și timpul rămas, pentru ambele corpuri; cele patru situații de afișare din specificație | E10 | implementat, neverificat științific | Evenimente rafinate (1 ms) cu ferestre, contacte tangente; afișare din evenimente, nu din serie. [E10_VISIBILITY.md](E10_VISIBILITY.md) |
+| P0-10 | Indicatori | Durata și procentul luminii, ferestrele de vizibilitate a Pământului, durata cu ambele criterii îndeplinite | E10 | implementat, neverificat științific | Din intervalele rafinate; duratele necunoscute separat; lumina parțială inclusă (D-04), nu putere |
 | P0-11 | Moduri de utilizare | Modul simplu și modul expert afișează aceleași rezultate, la niveluri diferite de detaliu | E13 | incomplet | — |
 | P0-12 | Trasabilitate | Sursele, modelele, versiunile și limitele sunt vizibile în interfață și în export | E13, E14 | incomplet | — |
 | P0-13 | Demonstrație de rezervă | Scenariile precalculate rulează offline, inclusiv terenul 3D; combinațiile disponibile sunt indicate explicit | E15 | incomplet | — |
@@ -211,10 +226,10 @@ Metodă: **A** — test automat; **M** — verificare manuală consemnată cu da
 
 | Situație | Afișare cerută | Stare |
 |---|---|---|
-| Corp vizibil și dispariție găsită | Timpul până la dispariție | incomplet |
-| Corp deja ascuns | Starea „ascuns” și timpul până la apariție, dacă există | incomplet |
-| Eveniment negăsit în interval | Mesajul că nu există eveniment în intervalul analizat | incomplet |
-| Date insuficiente | Mesajul că evenimentul este indisponibil, cu motivul | incomplet |
+| Corp vizibil și dispariție găsită | Timpul până la dispariție | implementat (E10) |
+| Corp deja ascuns | Starea „ascuns” și timpul până la apariție, dacă există | implementat (E10): „Currently hidden” |
+| Eveniment negăsit în interval | Mesajul că nu există eveniment în intervalul analizat | implementat (E10): „No event within the simulated interval” |
+| Date insuficiente | Mesajul că evenimentul este indisponibil, cu motivul | implementat (E10): „Event unavailable: …” |
 
 ## 4. Definiția MVP-ului
 

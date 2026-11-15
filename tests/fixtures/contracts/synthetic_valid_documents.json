@@ -517,7 +517,7 @@
             1.0,
             1.0
           ],
-          "visible_fraction_uncertainty": [
+          "visible_uncertainty_fraction": [
             0.0,
             0.0,
             0.0
@@ -569,7 +569,7 @@
             null,
             null
           ],
-          "visible_fraction_uncertainty": [
+          "visible_uncertainty_fraction": [
             null,
             null,
             null
@@ -630,7 +630,7 @@
             null,
             1.0
           ],
-          "visible_fraction_uncertainty": [
+          "visible_uncertainty_fraction": [
             0.0,
             null,
             0.0
@@ -682,7 +682,7 @@
             null,
             null
           ],
-          "visible_fraction_uncertainty": [
+          "visible_uncertainty_fraction": [
             null,
             null,
             null

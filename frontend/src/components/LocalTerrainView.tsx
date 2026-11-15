@@ -40,6 +40,15 @@ interface Props {
   onAdoptFrame?: () => void
   /** The frame declared by the DEM products, when they all declare the same one. */
   demFrame?: string | null
+  /** Terrain mode of the loaded result (selects the banner text). */
+  resultMode?: 'dem' | 'idealized_local_plane' | null
+  /** Computed states at the slider time, from the backend result (never from the shadows). */
+  indicators?: {
+    sun: string
+    earth: string
+    sunState: string
+    earthState: string
+  } | null
   factory?: TerrainFactory
 }
 
@@ -58,6 +67,8 @@ export function LocalTerrainView({
   onRetry,
   onAdoptFrame,
   demFrame,
+  resultMode = null,
+  indicators = null,
   factory,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -198,8 +209,18 @@ export function LocalTerrainView({
         aria-label={en.terrain.label}
       />
       <p className="terrain-banner" role="note">
-        {en.terrain.banner}
+        {resultMode === 'dem' ? en.terrain.bannerDem : en.terrain.banner}
       </p>
+      {indicators && (
+        <ul className="terrain-indicators" aria-label={en.terrain.indicators}>
+          <li data-body="sun" data-state={indicators.sunState}>
+            ☀ {indicators.sun}
+          </li>
+          <li data-body="earth" data-state={indicators.earthState}>
+            ⊕ {indicators.earth}
+          </li>
+        </ul>
+      )}
 
       {phase === 'unavailable' && (
         <p className="globe-overlay globe-overlay--alert" role="alert">

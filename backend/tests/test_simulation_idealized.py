@@ -1,4 +1,4 @@
-"""E06: simularea idealizată față de motorul astronomic, schemă, determinism și concurență."""
+"""E06/E10: simularea idealizată față de motorul astronomic, criteriul D-04, schemă, determinism."""
 
 import threading
 from dataclasses import replace
@@ -17,6 +17,7 @@ from lunarhorizon.core.conventions import APPARENT_CORRECTION
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
 from lunarhorizon.core.utc import format_utc, parse_utc
 from lunarhorizon.simulation.idealized import SiteInput, simulate_idealized
+from lunarhorizon.simulation.visibility import EPS_NUMERIC_DEG, idealized_disc_fraction
 from tests.support import SCHEMA_PATH, read_json
 
 pytestmark = [
@@ -85,7 +86,12 @@ def test_idealized_mode_is_explicit_and_has_no_terrain(result: SimulationResult)
     assert result.provenance.dem_products == []
     assert any("local terrain not included" in text for text in result.quality.approximations)
     assert all(s.on_reference_surface and s.terrain_elevation_m is None for s in result.sites)
-    assert {i.field for i in result.quality.issues} == {"sites.terrain_elevation_m"}
+    fields = {i.field for i in result.quality.issues}
+    assert "sites.terrain_elevation_m" in fields
+    # Singura altă notă permisă: ferestrele nedecidabile (ms) din jurul tranzițiilor, declarate.
+    assert fields <= {"sites.terrain_elevation_m", "summary.unknown_duration"}
+    assert result.provenance.criteria["eclipses"] == "not_included"
+    assert result.provenance.aberration_correction == "CN+S"
 
 
 def test_series_equals_engine_samples(result: SimulationResult, profile: LoadedProfile) -> None:
@@ -105,10 +111,25 @@ def test_series_equals_engine_samples(result: SimulationResult, profile: LoadedP
 
 
 def test_visibility_flags_follow_the_criteria(result: SimulationResult) -> None:
+    """D-04 idealizat: vizibil dacă e + rho > 0, complet dacă e - rho > 0; Pământ: e > 0."""
     for series in result.series:
-        assert series.sun.visible == [e >= 0.0 for e in series.sun.elevation_deg]
-        assert series.earth.visible == [e >= 0.0 for e in series.earth.elevation_deg]
-        assert set(series.sun.horizon_elevation_deg) == {0.0}
+        sun = series.sun
+        for e, rho, state, fraction in zip(
+            sun.elevation_deg, sun.angular_radius_deg, sun.state, sun.visible_fraction, strict=True
+        ):
+            if abs(e + rho) <= EPS_NUMERIC_DEG:
+                assert state == "undetermined"
+                continue
+            if e + rho < 0:
+                assert state == "hidden" and fraction == 0.0
+            elif e - rho > EPS_NUMERIC_DEG:
+                assert state == "fully_visible" and fraction == 1.0
+            else:
+                assert state == "partially_visible"
+                assert fraction == pytest.approx(idealized_disc_fraction(e, rho), abs=2e-3)
+        assert sun.visible == [None if st == "undetermined" else st != "hidden" for st in sun.state]
+        assert series.earth.visible == [e > 0.0 for e in series.earth.elevation_deg]
+        assert set(sun.horizon_elevation_deg) == {0.0}
 
 
 def test_events_are_real_crossings_refined_to_one_millisecond(
@@ -118,8 +139,10 @@ def test_events_are_real_crossings_refined_to_one_millisecond(
     assert group.status == "found"
     for event in group.events:
         at = body_direction(profile, APOLLO, "sun", event.time_utc, APPARENT_CORRECTION)
-        assert at.elevation_deg == pytest.approx(0.0, abs=1e-4)
+        # Disc tangent la orizontul ideal: e_centru + rho = 0 (nu e_centru = 0).
+        assert at.elevation_deg + at.angular_radius_deg == pytest.approx(0.0, abs=1e-5)
         assert event.cause == "idealized_horizon" and event.obstacle_distance_m is None
+        assert event.criterion == "sun_disc_positive_area"
         assert event.refinement_tolerance_s == 0.001
         before = body_direction(
             profile, APOLLO, "sun", shifted(event.time_utc, -2000), APPARENT_CORRECTION
@@ -194,7 +217,14 @@ def test_undefined_azimuth_is_null_with_a_reason_not_zero_or_failure(
         direction = real(*args, **kwargs)
         return replace(direction, azimuth_deg=None) if args[2] == "sun" else direction
 
+    real_et = bodies.body_direction_et
+
+    def zenith_et(*args: Any, **kwargs: Any) -> Any:
+        direction = real_et(*args, **kwargs)
+        return replace(direction, azimuth_deg=None) if args[2] == "sun" else direction
+
     monkeypatch.setattr("lunarhorizon.simulation.idealized.body_direction", zenith)
+    monkeypatch.setattr("lunarhorizon.simulation.idealized.body_direction_et", zenith_et)
     result = simulate_idealized(make_request(), SITES, profile)
     sun = result.series[0].sun
     assert set(sun.azimuth_deg) == {None}

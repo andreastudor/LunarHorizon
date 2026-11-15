@@ -1,4 +1,16 @@
 # Validare — toleranțe, rezultate și probleme
+## E10 — vizibilitate, evenimente și indicatori (2026-11-15)
+
+Rulate: backend `pytest` 396/396, Ruff, mypy, contracte 0.8.0, `verify_terrain_products.py` 13/13; frontend
+227/227, formatare, oxlint, `tsc`, build; Playwright 6/6 (nou `visibility.spec.ts`). Studiul de convergență
+`scripts/visibility_convergence.py` (Leibnitz Beta, 30 de zile, 1 min 45 s) → `data/reference/visibility/
+e10_convergence.json`: pas profil 0,05° / 0,0125° față de 0,025° deplasează evenimentele cu ≤ 0,039 s / ≤ 0,017 s;
+scanarea Soarelui 120 s / 30 s față de 60 s: ≤ 0,001 s; 64 / 256 de coloane față de 128: Δ fracție ≤ 2,5·10⁻⁴.
+Diferențele de durată (≤ 7,2 s) cad în ferestrele nedecidabile, raportate ca necunoscute. Cap-coadă real
+(Leibnitz Beta): Soare apare 2026-11-25T08:26:57.879Z (fereastră 0,26 s), dispare 2026-12-12T06:23:10.361Z
+(18,6 s); Pământ 2026-11-19T03:20:42.302Z – 2026-11-28T08:59:59.017Z. Detalii: [E10_VISIBILITY.md](E10_VISIBILITY.md).
+Un singur sit; nu validează celelalte regiuni. Toleranța de 1 ms este numerică, nu fizică.
+
 ## D-02, T-01, D-04 — integrarea deciziilor și reexecutarea dovezilor (2026-11-15)
 
 Decizii confirmate de astronomi, comunicate de utilizator în această conversație (numele evaluatorilor și data
@@ -267,7 +279,7 @@ le citesc testele din ambele limbaje.
 | T-05 | Concordanța Python ↔ TypeScript | Vectorii comuni `tests/vectors/conventions.json` | Unghiuri ≤ 1e-9°; lungimi ≤ 1e-6 m; componente de versori și factori de scară ≤ 1e-12; texte și coduri de eroare identice | Aceeași formulă în două limbaje; diferențele de 1 ulp dintre bibliotecile matematice (CPython, V8) sunt cu ordine de mărime sub prag | Aceleași intrări; aceleași constante (verificate în test) | STABILIT (E02), toleranță numerică |
 | T-06 | Elevația orizontului pe teren sintetic | Soluție analitică (obstacol cunoscut) | Test: 1·10⁻⁴° (sferă plată), 0,02° (obstacol, pas 5 m); propuse, nevalidate | Verifică algoritmul, nu DEM-ul | Teren sintetic, cu și fără `NoData` (E09) | TRECUT TEHNIC, NEVALIDAT |
 | T-07 | Convergența orizontului (rezoluție, `d_max`, `Δa`) | Calcul propriu la parametri dublați | Propus 0,05° (1/5 din raza Soarelui) | Alegerea parametrilor din D-08, D-09 | Leibnitz Beta complet; Haworth, Peak Near Shackleton redus (E09) | MĂSURAT, PRAG NEVALIDAT; rezoluția apropiată și raza > 300 km neconvergente demonstrabil |
-| T-08 | Momentul unui eveniment — precizie numerică | Rafinare cu toleranță mai strictă | De stabilit | Separă eroarea numerică de cea fizică | — | NEVALIDAT |
+| T-08 | Momentul unui eveniment — precizie numerică | Rafinare cu toleranță mai strictă; pași de scanare și profil dublați | Propus: rădăcină la 1 ms; evenimente stabile ≤ 0,04 s la schimbarea pașilor (E10) | Separă eroarea numerică de cea fizică | Funcții-criteriu sintetice + Leibnitz Beta | MĂSURAT, PRAG NEVALIDAT |
 | T-09 | Poziția obiectelor în scena 3D față de rezultat | Direcția calculată din `az`/`el` | La nivelul erorii `float32` | Scena nu introduce erori proprii | Exagerare verticală 1× | NEVALIDAT |
 
 Acuratețea fizică a momentelor de apariție și dispariție nu are o referință independentă în acest plan.

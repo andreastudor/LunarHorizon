@@ -1,6 +1,6 @@
 // E09 — horizon profile from the DEM in a real browser: the Leibnitz Beta DEM representative point
 // gets a complete two-tier profile (near PGDA 104 + far LOLA GDR), and a simulation in `dem` mode
-// shows the terrain horizon per body while terrain visibility stays explicitly not computed (E10).
+// shows the terrain horizon per body and the computed visibility (E10).
 
 import { expect, test } from '@playwright/test'
 import { en } from '../src/i18n/en.ts'
@@ -39,7 +39,9 @@ test('the horizon profile is computed from the DEM and used by a dem-mode simula
   await expect(page.getByText(en.results.terrainHorizon).first()).toBeVisible({
     timeout: 120_000,
   })
-  await expect(page.getByText(en.results.notComputedHeading)).toBeVisible()
+  // E10: visibility, events and indicators are computed (no group left uncomputed).
+  await expect(page.getByText(en.results.notComputedHeading)).toHaveCount(0)
+  await expect(page.locator('[data-combination]')).toBeVisible()
   // Both mode badges (header, results) name the DEM mode, never the idealized one.
   await expect(page.locator('.mode-badge')).toHaveText([
     en.results.modeDem,

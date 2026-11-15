@@ -16,7 +16,7 @@ const base = (longitude: number, height = 2): SimulationRequest => ({
   start_utc: '2026-11-15T00:00:00Z',
   end_utc: '2026-12-15T00:00:00Z',
   observer_height_m: height,
-  solar_criterion: 'disc_center',
+  solar_criterion: 'disc_positive_area',
   earth_criterion: { kind: 'center_above_horizon', min_elevation_deg: 0 },
   terrain_mode: 'idealized_local_plane',
   panel: null,

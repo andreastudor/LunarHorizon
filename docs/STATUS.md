@@ -1,4 +1,24 @@
 # Stare
+## E10 — vizibilitate, evenimente și indicatori (M1), 2026-11-15
+
+**Încheiată tehnic pentru un sit polar real (Leibnitz Beta), cap-coadă: teren → orizont → geometrie → vizibilitate →
+evenimente → indicatori → afișare sincronizată; acceptare științifică restantă.** Deciziile D-02 (`CN+S`), T-01
+(0,001°; diagnostic 0,00001°) și D-04 (disc cu arie pozitivă vizibilă) sunt confirmate de astronomi, comunicate de
+utilizator în conversație (numele și data evaluării nefurnizate), integrate și documentate; dovezile pachetului sunt
+arhivate și reexecutate (10/10, maxim 3,6·10⁻⁷°). Soarele: stări ascuns / parțial / complet / nedeterminat, fracția
+de arie cu incertitudine, pe profilul DEM fin de 0,025°; Pământul: centru peste max(H, e_min). Evenimente rafinate la
+1 ms, cu ferestre de incertitudine și contacte tangente; intervale vizibil / ascuns / necunoscut care partiționează
+intervalul; indicatori cu duratele necunoscute separat. Schema **0.8.0**; cache-ul include corecția, criteriile,
+toleranțele și versiunea algoritmului. Interfața: carduri, combinațiile (sau stare nedeterminată distinctă),
+următorul eveniment, totaluri, grafic elevație/orizont, benzi temporale, indicatoare în scena 3D. Verificări: backend
+396, frontend 227, Playwright 6/6. Detalii: [E10_VISIBILITY.md](E10_VISIBILITY.md). E03 rămâne deschisă (înălțimea
+de referință Apollo 11, D-14); D-08/D-09 deschise. **E10A nu a fost începută.**
+
+Notă de lucru: în timpul sesiunii, utilizatorul a creat remote-ul `origin` (GitHub) și a făcut două commit-uri „.”
+(`790ee58` pe `e04-completare-dovezi`, `b22f0a4` pe `main`, cu markere de conflict în trei fișiere). La alegerea
+utilizatorului, lucrul continuă pe `e04-completare-dovezi`; fișierele mai noi din `b22f0a4` au fost aduse fără
+markere; `main` și remote-ul nu au fost modificate.
+
 ## E09 — orizontul din DEM, 2026-11-15
 
 **Implementare tehnică finalizată; D-08/D-09 [GEO] deschise, deci parametrii sunt propuneri tehnice.** Profilul H(a)

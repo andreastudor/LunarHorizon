@@ -1,0 +1,164 @@
+{
+  "description": "E10 visibility convergence (Leibnitz Beta, 30 days, DEM mode). Numerical precision of the algorithm, not physical (DEM, ephemeris) uncertainty.",
+  "base": {
+    "visibility_azimuth_step_deg": 0.025,
+    "horizon_parameters": {
+      "algorithm_version": "e09.1",
+      "azimuth_step_deg": 0.5,
+      "d_min_m": 5.0,
+      "d_max_m": 300000.0,
+      "near_step_m": 5.0,
+      "far_step_m": 120.0
+    },
+    "scan_step_s": {
+      "sun": 60.0,
+      "earth": 300.0
+    },
+    "refinement_tolerance_s": 0.001
+  },
+  "base_timing_s": {
+    "fine_profile": 0.05,
+    "simulation": 8.67
+  },
+  "base_summary": {
+    "sun_events": [
+      [
+        "appearance",
+        1795595217.879
+      ],
+      [
+        "disappearance",
+        1797056590.361
+      ]
+    ],
+    "earth_events": [
+      [
+        "appearance",
+        1795058442.302
+      ],
+      [
+        "disappearance",
+        1795856399.017
+      ]
+    ],
+    "sun_visible_duration_s": 1461363.059,
+    "sun_unknown_duration_s": 18.846,
+    "earth_visible_duration_s": 797956.601,
+    "both_visible_duration_s": 261180.955,
+    "criterion_evaluations": 52042
+  },
+  "profile_step": [
+    {
+      "azimuth_step_deg": 0.05,
+      "vs_deg": 0.025,
+      "sun_events": [
+        2,
+        2
+      ],
+      "sun_same_event_sequence": true,
+      "sun_max_event_shift_s": 0.036,
+      "earth_events": [
+        2,
+        2
+      ],
+      "earth_same_event_sequence": true,
+      "earth_max_event_shift_s": 0.039,
+      "sun_visible_duration_diff_s": 7.211,
+      "earth_visible_duration_diff_s": 0.207,
+      "sun_unknown_duration_s": [
+        33.305,
+        18.846
+      ],
+      "sun_fraction_max_diff": 8e-05,
+      "fine_profile_s": 11.92,
+      "simulation_s": 7.95
+    },
+    {
+      "azimuth_step_deg": 0.0125,
+      "vs_deg": 0.025,
+      "sun_events": [
+        2,
+        2
+      ],
+      "sun_same_event_sequence": true,
+      "sun_max_event_shift_s": 0.017,
+      "earth_events": [
+        2,
+        2
+      ],
+      "earth_same_event_sequence": true,
+      "earth_max_event_shift_s": 0.003,
+      "sun_visible_duration_diff_s": 4.56,
+      "earth_visible_duration_diff_s": 0.0,
+      "sun_unknown_duration_s": [
+        9.708,
+        18.846
+      ],
+      "sun_fraction_max_diff": 3e-05,
+      "fine_profile_s": 45.24,
+      "simulation_s": 9.4
+    }
+  ],
+  "sun_scan_step": [
+    {
+      "sun_scan_step_s": 120.0,
+      "vs_s": 60.0,
+      "sun_events": [
+        2,
+        2
+      ],
+      "sun_same_event_sequence": true,
+      "sun_max_event_shift_s": 0.0,
+      "earth_events": [
+        2,
+        2
+      ],
+      "earth_same_event_sequence": true,
+      "earth_max_event_shift_s": 0.0,
+      "sun_visible_duration_diff_s": 0.0,
+      "earth_visible_duration_diff_s": 0.0,
+      "sun_unknown_duration_s": [
+        18.846,
+        18.846
+      ],
+      "sun_fraction_max_diff": 0.0,
+      "simulation_s": 4.43
+    },
+    {
+      "sun_scan_step_s": 30.0,
+      "vs_s": 60.0,
+      "sun_events": [
+        2,
+        2
+      ],
+      "sun_same_event_sequence": true,
+      "sun_max_event_shift_s": 0.001,
+      "earth_events": [
+        2,
+        2
+      ],
+      "earth_same_event_sequence": true,
+      "earth_max_event_shift_s": 0.0,
+      "sun_visible_duration_diff_s": 0.0,
+      "earth_visible_duration_diff_s": 0.0,
+      "sun_unknown_duration_s": [
+        18.847,
+        18.846
+      ],
+      "sun_fraction_max_diff": 0.0,
+      "simulation_s": 14.98
+    }
+  ],
+  "disc_columns": [
+    {
+      "columns": 64,
+      "vs_columns": 128,
+      "fraction_max_diff": 0.000246
+    },
+    {
+      "columns": 256,
+      "vs_columns": 128,
+      "fraction_max_diff": 0.000103
+    }
+  ]
+}

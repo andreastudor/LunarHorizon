@@ -100,7 +100,7 @@ export const en = {
     frame: 'Reference frame',
     terrainMode: 'Horizon',
     idealized: 'Idealized — local terrain not included',
-    dem: 'DEM horizon — visibility with terrain not computed yet',
+    dem: 'DEM terrain horizon',
     run: 'Run simulation',
     running: 'Simulating…',
     needSelection: 'Select a site or a point first.',
@@ -152,7 +152,9 @@ export const en = {
   results: {
     heading: 'Sun and Earth',
     mode: 'Idealized — local terrain not included',
-    modeDem: 'DEM horizon — visibility with terrain not computed yet',
+    modeDem: 'DEM terrain horizon',
+    reliefOnly:
+      'Visibility with respect to terrain only; eclipses are not included.',
     idle: 'Run a simulation to see the Sun and Earth from this site.',
     queued: 'Simulation queued…',
     running: (percent: number) => `Simulating… ${percent}%`,
@@ -162,31 +164,93 @@ export const en = {
     elevation: 'Elevation',
     azimuth: 'Azimuth (0° = north, clockwise)',
     distance: 'Distance',
-    sunVisible: 'Above the horizon',
-    sunHidden: 'Below the horizon',
-    earthVisible: 'In view',
-    earthHidden: 'Not in view',
-    visibilityUnknown: 'Visibility unknown',
+    sunStates: {
+      hidden: 'Hidden',
+      partially_visible: 'Partially visible',
+      fully_visible: 'Fully visible',
+      visible: 'Visible',
+      undetermined: 'Undetermined',
+    } as Record<string, string>,
+    earthStates: {
+      visible: 'In view',
+      hidden: 'Not in view',
+      undetermined: 'Undetermined',
+    } as Record<string, string>,
+    reasons: {
+      near_threshold:
+        'within the numerical resolution of the horizon (grazing)',
+      no_data: 'horizon data missing',
+      partial_data: 'horizon data incomplete; the true horizon may be higher',
+      undefined_azimuth: 'azimuth undefined',
+    } as Record<string, string>,
+    fraction: (percent: string, uncertainty: string) =>
+      `${percent} of the disc visible (± ${uncertainty})`,
+    fractionNote:
+      'Fraction of the apparent disc area above the horizon — not solar power.',
+    earthNote:
+      "Geometric line of sight to the Earth's centre — not a communication link.",
+    combination: {
+      heading: 'At this time',
+      vv: 'Sun visible · Earth visible',
+      vh: 'Sun visible · Earth hidden',
+      hv: 'Sun hidden · Earth visible',
+      hh: 'Sun hidden · Earth hidden',
+      unknown: (sun: string, earth: string) =>
+        `Combination undetermined — Sun: ${sun}; Earth: ${earth}`,
+    },
+    eventTypes: {
+      appearance: 'appears',
+      disappearance: 'disappears',
+      tangent_contact: 'grazing contact (tangent)',
+    } as Record<string, string>,
+    nextContact: (body: string, inText: string, at: string) =>
+      `${body}: grazing contact in ${inText} · ${at}`,
+    currentlyHidden: (body: string) => `${body} currently hidden.`,
+    noEventInInterval: 'No event within the simulated interval.',
+    eventUnavailable: (reason: string) => `Event unavailable: ${reason}`,
+    windowNote: (span: string) => `time uncertain within ${span}`,
     nextAppearance: (body: string, inText: string, at: string) =>
       `${body} appears in ${inText} · ${at}`,
     nextDisappearance: (body: string, inText: string, at: string) =>
       `${body} disappears in ${inText} · ${at}`,
-    noMoreEvents: (body: string) =>
-      `No further ${body} event in the simulated interval.`,
     summary: 'Interval totals',
     terrainHorizon: 'Terrain horizon here',
     notComputedHeading: 'Not computed in this mode',
-    sunTotal: 'Sun above the horizon',
-    earthTotal: 'Earth in view',
-    bothTotal: 'Sun and Earth together',
+    sunTotal: 'Sun visible (any part of the disc)',
+    earthTotal: 'Earth in view (geometric)',
+    bothTotal: 'Both criteria met',
+    sunUnknown: 'Sun undetermined',
+    earthUnknown: 'Earth undetermined',
+    bothUnknown: 'Combination undetermined',
     events: 'Events',
-    noEvents: 'No event in the interval',
-    appearance: 'appears',
-    disappearance: 'disappears',
+    noEvents: 'No event within the simulated interval.',
     undefinedAzimuth:
       'Azimuth is undefined at the zenith or nadir; no direction is drawn.',
     directions:
       'Arrows on the globe show the Sun (yellow) and Earth (blue) directions at the selected time.',
+  },
+  chart: {
+    heading: 'Elevation and horizon over time',
+    label:
+      'Elevation of the Sun and Earth and the horizon at their azimuths over the interval',
+    sun: 'Sun',
+    earth: 'Earth',
+    sunHorizon: 'horizon at Sun azimuth',
+    earthHorizon: 'horizon at Earth azimuth',
+    note: 'Display series only; events and durations come from the refined calculation.',
+  },
+  bands: {
+    heading: 'Visibility over the simulated interval',
+    sun: 'Sun',
+    earth: 'Earth',
+    both: 'Both',
+    states: {
+      visible: 'visible',
+      hidden: 'hidden',
+      unknown: 'undetermined',
+    } as Record<string, string>,
+    description: (row: string, visible: number, unknown: number) =>
+      `${row}: ${visible} visible intervals, ${unknown} undetermined intervals`,
   },
   sky: {
     heading: 'Local sky',
@@ -221,6 +285,12 @@ export const en = {
         'The horizon profile is partial: some azimuths lack DEM samples, so the true horizon there may be higher.',
       'quality.terrain_visibility_not_computed':
         'Visibility with terrain is not computed yet; only the terrain horizon is given.',
+      'quality.visibility_undetermined':
+        'Visibility is undetermined at some samples (missing or partial horizon data, or a grazing contact).',
+      'quality.visible_fraction_undetermined':
+        'The visible fraction of the solar disc is unknown at some samples.',
+      'quality.unknown_intervals':
+        'Some periods are undetermined; they are reported separately from visible and hidden time.',
     } as Record<string, string>,
   },
   time: {
@@ -311,13 +381,17 @@ export const en = {
     provisional:
       'Parameters (search distance, steps, far product) are technical proposals from a convergence study; decisions D-08/D-09 are open. This is not a validated horizon.',
     visibilityPending:
-      'Visibility against this horizon (events and durations) is not computed yet.',
+      'Visibility, events and durations against this horizon are computed by a simulation in “DEM terrain horizon” mode.',
   },
   terrain: {
     label:
       'Local 3D terrain from the DEM. Drag to rotate, scroll to zoom, right-drag to pan, click the terrain to choose a point.',
     banner:
-      'Local terrain is displayed; visibility calculations do not yet include terrain.',
+      'Local terrain is displayed; the visibility shown does not include terrain unless a DEM-horizon result is loaded.',
+    bannerDem:
+      'Local terrain is displayed; Sun and Earth visibility come from the DEM-horizon result (shadows are illustrative).',
+    indicators:
+      'Computed visibility at the slider time (from the backend result)',
     noSelection: 'Select a point inside a DEM raster to see its local terrain.',
     loading: 'Loading the local terrain…',
     unavailable: {

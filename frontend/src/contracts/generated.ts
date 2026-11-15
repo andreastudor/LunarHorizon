@@ -1,7 +1,7 @@
 /**
  * GENERAT AUTOMAT din data/schemas/lunarhorizon.schema.json — nu se editează manual.
  * Regenerare: scripts/generate_contracts.py (rădăcină), apoi `npm run contracts:generate`.
- * Versiunea schemei: 0.7.0
+ * Versiunea schemei: 0.8.0
  */
 
 /**
@@ -37,7 +37,7 @@ export type ErrorCode =
   | 'INTERNAL_ERROR'
 
 export interface Catalog {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   catalog_version: string
   sites: Site[]
   demo_site_selection: DemoSiteSelection
@@ -142,7 +142,7 @@ export interface ExcludedCandidate {
   reason: string
 }
 export interface KernelManifest {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   default_profile: 'de440_me421' | 'de421'
   /**
    * @minItems 1
@@ -184,7 +184,7 @@ export interface ChecksumReference {
   source_url: string | null
 }
 export interface DemProductManifest {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   products: DemProduct[]
 }
 export interface DemProduct {
@@ -226,7 +226,7 @@ export interface ProductFile {
   size_bytes: number | null
 }
 export interface TerrainManifest {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   terrain_id: string
   source: TerrainSource
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -294,7 +294,7 @@ export interface TerrainLod {
  * margine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.
  */
 export interface TerrainSample {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   terrain_id: string
   product_id: string
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -317,7 +317,7 @@ export interface SimulationRequest {
   start_utc: string
   end_utc: string
   observer_height_m: number
-  solar_criterion: 'disc_center'
+  solar_criterion: 'disc_positive_area'
   earth_criterion: EarthCriterion
   terrain_mode: 'dem' | 'idealized_local_plane'
   series_step_s?: number | null
@@ -372,7 +372,7 @@ export interface FieldError {
   message: string
 }
 export interface SimulationResult {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   request: SimulationRequest
   /**
    * @minItems 1
@@ -418,6 +418,18 @@ export interface BodySeries {
   angular_radius_deg: number[]
   horizon_elevation_deg: (number | null)[]
   visible: (boolean | null)[]
+  state: (
+    | 'hidden'
+    | 'partially_visible'
+    | 'fully_visible'
+    | 'visible'
+    | 'undetermined'
+  )[]
+  state_reason: (
+    ('near_threshold' | 'no_data' | 'partial_data' | 'undefined_azimuth') | null
+  )[]
+  visible_fraction: (number | null)[]
+  visible_uncertainty_fraction: (number | null)[]
 }
 export interface SiteEvents {
   site_ref: string
@@ -431,9 +443,14 @@ export interface BodyEvents {
 }
 export interface Event {
   body: 'sun' | 'earth'
-  type: 'appearance' | 'disappearance'
-  cause: 'terrain' | 'idealized_horizon'
+  type: 'appearance' | 'disappearance' | 'tangent_contact'
+  cause: 'terrain' | 'idealized_horizon' | 'elevation_threshold'
+  criterion:
+    'sun_disc_positive_area' | 'earth_center_above_horizon_and_threshold'
   time_utc: string
+  window_start_utc: string
+  window_end_utc: string
+  quality: 'refined' | 'window'
   azimuth_deg: number | null
   elevation_deg: number
   obstacle_distance_m: number | null
@@ -445,12 +462,31 @@ export interface SiteSummary {
   sun_visible_fraction: number | null
   earth_visible_duration_s: number | null
   both_visible_duration_s: number | null
+  sun_unknown_duration_s: number
+  earth_unknown_duration_s: number
+  both_unknown_duration_s: number
   sun_intervals: TimeInterval[]
   earth_windows: TimeInterval[]
+  /**
+   * @minItems 1
+   */
+  sun_timeline: StateInterval[]
+  /**
+   * @minItems 1
+   */
+  earth_timeline: StateInterval[]
 }
 export interface TimeInterval {
   start_utc: string
   end_utc: string
+  truncated_start: boolean
+  truncated_end: boolean
+}
+export interface StateInterval {
+  start_utc: string
+  end_utc: string
+  state: 'visible' | 'hidden' | 'unknown'
+  reason: string | null
   truncated_start: boolean
   truncated_end: boolean
 }
@@ -527,7 +563,7 @@ export interface NotComputed {
   reason: string
 }
 export interface ScenarioIndex {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   scenarios: Scenario[]
 }
 export interface Scenario {
@@ -554,7 +590,7 @@ export interface Health {
   issues: string[]
 }
 export interface Coverage {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   temporal: TemporalCoverage
   terrain: TerrainCoverage[]
 }
@@ -575,7 +611,7 @@ export interface TerrainCoverage {
  * Disponibilitatea reliefului vizual; nu este acoperirea necesară calculului orizontului.
  */
 export interface TerrainStatusReport {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   south_polar_rule: string
   selection_rule: string
   products: TerrainProductStatus[]
@@ -603,7 +639,7 @@ export interface SiteTerrainStatus {
   reason: string
 }
 export interface HorizonProfile {
-  schema_version: '0.7.0'
+  schema_version: '0.8.0'
   status: 'complete' | 'partial' | 'unavailable'
   reason_code:
     | (

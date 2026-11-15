@@ -3,8 +3,13 @@
 Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Convențiile de unități, timp
 și cadre sunt în [SPEC_FIZICA.md](SPEC_FIZICA.md).
 
-> **Versiunea de schemă curentă: 0.7.0 (E09, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
+> **Versiunea de schemă curentă: 0.8.0 (E10, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
 > Istoric:
+> - **0.8.0 (E10)** — `SimulationRequest.solar_criterion = "disc_positive_area"` (D-04; `disc_center` nu mai este
+>   acceptat); `BodySeries`: `state`, `state_reason`, `visible_fraction`, `visible_uncertainty_fraction`; `Event`:
+>   tipul `tangent_contact`, cauza `elevation_threshold`, `criterion`, `window_start_utc`, `window_end_utc`,
+>   `quality`; `SiteSummary`: duratele necunoscute și `sun_timeline` / `earth_timeline` (`StateInterval`), care
+>   partiționează intervalul cerut. Modul `dem` calculează vizibilitatea, evenimentele și indicatorii.
 > - **0.7.0 (E09)** — document nou `HorizonProfile` (`GET /api/horizon`): `status` (`complete`, `partial`,
 >   `unavailable`), `reason_code`, `reason`, `elevation_deg`, `obstacle_distance_m`, `quality` pe azimut,
 >   `max_search_distance_m`, `coverage_fraction`, `dem_products` (cu rol, cadru, rezoluție, SHA-256), `parameters`,

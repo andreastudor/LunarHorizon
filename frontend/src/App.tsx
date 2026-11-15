@@ -15,12 +15,13 @@ import { LocalTerrainView } from './components/LocalTerrainView.tsx'
 import { ParamsForm } from './components/ParamsForm.tsx'
 import { ResultsPanel } from './components/ResultsPanel.tsx'
 import { SiteSummary } from './components/SiteSummary.tsx'
+import { TimeBands } from './components/TimeBands.tsx'
 import { TimeBar } from './components/TimeBar.tsx'
 import type { Catalog, Coverage } from './contracts/generated.ts'
 import { bodyDirectionScene } from './geo/globe.ts'
 import type { GlobeFactory, GlobeState, TerrainFactory } from './globe/types.ts'
 import { en } from './i18n/en.ts'
-import { fmtUtc } from './ui/format.ts'
+import { fmtPercent, fmtUtc } from './ui/format.ts'
 import { parseUtc } from './geo/utc.ts'
 import {
   buildRequest,
@@ -170,6 +171,24 @@ function App({
         elevationDeg: series.earth.elevation_deg[safeIndex],
       },
       timeLabel: fmtUtc(parseUtc(series.time_utc[safeIndex])),
+    }
+  }, [series, safeIndex])
+  // Computed states at the slider time (backend result), shown in the local 3D scene.
+  const indicators = useMemo(() => {
+    if (!series) return null
+    const sunState = series.sun.state[safeIndex]
+    const earthState = series.earth.state[safeIndex]
+    const fraction = series.sun.visible_fraction[safeIndex]
+    const sunText =
+      (en.results.sunStates[sunState] ?? sunState) +
+      (sunState === 'partially_visible' && fraction !== null
+        ? ` (${fmtPercent(fraction)})`
+        : '')
+    return {
+      sun: `${en.results.sun}: ${sunText}`,
+      earth: `${en.results.earth}: ${en.results.earthStates[earthState] ?? earthState}`,
+      sunState,
+      earthState,
     }
   }, [series, safeIndex])
   const parsedHeight = Number(params.observerHeightM)
@@ -484,6 +503,8 @@ function App({
               }
               onRetry={() => setTerrainReload((n) => n + 1)}
               demFrame={demFrame}
+              resultMode={result ? result.request.terrain_mode : null}
+              indicators={indicators}
               onAdoptFrame={
                 // Only a user point may be re-interpreted (never converted); catalog positions
                 // keep the frame of their source and stay refused.
@@ -535,6 +556,7 @@ function App({
           onIndex={setIndex}
           onPlaying={setPlaying}
         />
+        {result && <TimeBands result={result} index={safeIndex} />}
       </section>
 
       <footer className="credits small">
