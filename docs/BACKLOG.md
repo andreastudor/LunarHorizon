@@ -22,13 +22,14 @@ Deciziile D-xx sunt în [STATUS.md](STATUS.md); testele și toleranțele T-xx î
 | E08 | Teren 3D local pentru primul sit | E05, E07 | |
 | E09 | Orizont din DEM | E05, E06 | |
 | E10 | Vizibilitate, evenimente și indicatori | E08, E09 | **M1** |
+| E10A | Tab 3D Earth–Moon–Sun (P0 obligatoriu) | E03, E06, E07; după E10 | Distanțe între centre |
 | E11 | Harta 2D sincronizată și fallback WebGL | E07 | |
 | E12 | Al doilea sit polar, puncte custom și comparație | E10 | **M2** |
 | E13 | Mod simplu/expert, trasabilitate, limbi | E12 | |
 | E14 | Export | E12 | |
 | E15 | Scenarii precalculate și mod offline | E12 | |
 | E16 | Deployment și documentația de pornire | E15 | |
-| E17 | Închiderea cerințelor P0 | E11, E13–E16 | **MVP** |
+| E17 | Închiderea cerințelor P0 | E10A, E11, E13–E16 | **MVP** |
 | E18 | Bonusuri P1 | E17 | |
 
 E03, E04 și E05 pot avansa în paralel, pe roluri (fizică, cartografie, programare).
@@ -148,6 +149,16 @@ E03, E04 și E05 pot avansa în paralel, pe roluri (fizică, cartografie, progra
 - **Teste.** Funcții-criteriu sintetice cu tranziții scurte și contacte aproape tangente (T-08); intervale trunchiate; consistența duratelor; stările interfeței.
 - **Criteriu de finalizare (M1).** Pentru un sit polar cu date reale: teren 3D, observator, moment UTC, direcții Soare/Pământ, orizont, evenimente și indicatori funcționează împreună, iar verificările geometrice sunt consemnate.
 
+## E10A — Tab 3D Earth–Moon–Sun (P0 obligatoriu)
+
+- **Obiectiv.** Trei corpuri în 3D, trasee din efemeride și distanțe între centre, sincronizate cu timpul aplicației.
+- **Ordine.** După E10, înainte de E11. Nu este parte din E08 și nu este bonus E18.
+- **Dependențe tehnice.** E03, E06, E07.
+- **Livrabile și teste.** [E10A_EARTH_MOON_SUN.md](E10A_EARTH_MOON_SUN.md) definește interfața, calculele,
+  contractele și criteriile. Reutilizează SPICE; nu reutiliza distanțele de la observator ca distanțe între centre.
+- **Criteriu de finalizare.** Criteriile documentului sunt verificate; stare tehnică și acceptare ASTRO distincte.
+  E14/E15 includ exportul aplicabil și scenariul offline; E17 verifică această cerință P0.
+
 ## E11 — Harta 2D sincronizată și fallback WebGL
 
 - **Obiectiv.** Vederea alternativă 2D, cu aceeași selecție și același timp.
@@ -199,7 +210,7 @@ E03, E04 și E05 pot avansa în paralel, pe roluri (fizică, cartografie, progra
 ## E17 — Închiderea cerințelor P0 — MVP
 
 - **Obiectiv.** Fiecare cerință P0 verificată și consemnată.
-- **Dependențe.** E11, E13, E14, E15, E16.
+- **Dependențe.** E10A, E11, E13, E14, E15, E16.
 - **Livrabil.** Tabelul P0 din [ACCEPTANCE.md](ACCEPTANCE.md) completat cu starea și dovada fiecărei cerințe; [VALIDARE.md](VALIDARE.md) cu rezultatele rulate; [LIMITATIONS.md](LIMITATIONS.md) actualizat; corecții de performanță și accesibilitate.
 - **Teste.** Toată suita; parcurgerea manuală a demonstrației principale; verificare pe un dispozitiv mobil.
 - **Criteriu de finalizare.** Toate cerințele P0 sunt „implementat și verificat” sau au o stare incompletă declarată explicit. MVP-ul nu se declară complet cât timp harta 3D sau altă cerință P0 este incompletă.

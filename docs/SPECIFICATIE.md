@@ -63,6 +63,7 @@ Publicul include persoane fără pregătire tehnică, elevi, astronomi și cerce
 | Comparație | 2–4 situri alăturate |
 | Control temporal | Dată, oră UTC, interval, slider, redare și pauză |
 | Geometrie astronomică | Azimutul și elevația Soarelui și Pământului |
+| Tab Earth–Moon–Sun — P0 | Cele trei corpuri în 3D, trasee din efemeride și distanțe între centre sincronizate UTC; vedere schematică etichetată Not to scale. Cerință nouă a utilizatorului (2026-11-14), etapa E10A; detalii în [E10A_EARTH_MOON_SUN.md](E10A_EARTH_MOON_SUN.md) |
 | Orizont LOLA | Profil local de relief în zonele cu date disponibile |
 | Evenimente | Următoarea apariție/dispariție și timp rămas |
 | Indicatori | Durata luminii și ferestrele de vizibilitate a Pământului |

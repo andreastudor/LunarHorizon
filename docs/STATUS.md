@@ -1,4 +1,16 @@
 # Stare
+
+## Cerință nouă obligatorie: E10A — Earth–Moon–Sun
+
+Decizie utilizator, 2026-11-14: tabul cu Soare, Pământ și Lună în 3D, trasee și distanțe între centre
+este **P0**, nu bonus. Planificat, neimplementat. Se execută după E10 și înainte de E11; E08 rămâne
+dedicată terenului local. E17 include această cerință. Specificație și verificări:
+[E10A_EARTH_MOON_SUN.md](E10A_EARTH_MOON_SUN.md).
+Reutilizează SPICE pentru vectori geometrici între centre la același moment; nu folosi distanțele
+observatorului lunar ca distanțe între centre. Interfață în engleză, sincronizare temporală și
+etichetă Not to scale. Inspirație: Nasa-moon, cu verificarea provenienței și licenței la implementare.
+Această actualizare este numai de planificare, nu o implementare sau o validare științifică.
+
 ## E07 — criteriul WebGL închis, 2026-11-14
 
 Formularea BACKLOG („Verificarea timpurie a randării WebGL **în mediul de test**”) și ARCHITECTURE §12 („randarea WebGL

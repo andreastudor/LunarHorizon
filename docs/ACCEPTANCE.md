@@ -99,6 +99,14 @@ Un screenshot sau o scenă decorativă nu este dovadă.
 **Stare la 2026-11-14:** P0-07 este „implementat, neverificat” (E03, deschisă); P0-01 rămâne „incomplet” (E04, deschisă); celelalte cerințe P0 sunt „incomplet”.
 Etapele E01–E03 au pus fundația tehnică, contractele și motorul astronomic (§7).
 
+## P0 suplimentar — Earth–Moon–Sun (E10A)
+
+**Obligatoriu**, solicitat de utilizator la 2026-11-14; nu bonus, nu parte din E08.
+Stare: **neimplementat; verificări neexecutate**. Criteriile sunt în
+[E10A_EARTH_MOON_SUN.md](E10A_EARTH_MOON_SUN.md): trei corpuri în 3D, distanțe între centre,
+trasee calculate, sincronizare UTC, etichete de scară, proveniență, teste numerice și de browser,
+includere în demonstrația offline. E17 trebuie să verifice și această cerință pentru închiderea MVP.
+
 ## 1. Cerințele P0
 
 | ID | Cerință | Criteriu de acceptanță | Etapă | Stare | Dovadă |
