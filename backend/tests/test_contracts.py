@@ -192,8 +192,20 @@ def test_unknown_value_requires_a_reason() -> None:
 
 
 def test_unknown_series_sample_requires_a_reason() -> None:
-    document = _mutate("SimulationResult", _set("series.0.earth.visible.1", None))
+    def unknown(document: Document) -> None:
+        _set("series.0.earth.visible.1", None)(document)
+        _set("series.0.earth.state.1", "undetermined")(document)
+        _set("series.0.earth.state_reason.1", "no_data")(document)
+
+    document = _mutate("SimulationResult", unknown)
     with pytest.raises(ValidationError, match=re.escape("series.earth.visible")):
+        _result(document)
+
+
+def test_undetermined_state_must_match_visible() -> None:
+    # „Necunoscut” fără starea `undetermined` (sau invers) este respins: nu se ascunde un null.
+    document = _mutate("SimulationResult", _set("series.0.earth.visible.1", None))
+    with pytest.raises(ValidationError, match="nu corespund"):
         _result(document)
 
 

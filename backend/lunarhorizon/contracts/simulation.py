@@ -122,6 +122,14 @@ class BodySeries(Contract):
     angular_radius_deg: list[AngularRadius]
     horizon_elevation_deg: list[Elevation | None]
     visible: list[bool | None]
+<<<<<<< Updated upstream
+=======
+    state: list[VisibilityState]
+    state_reason: list[UndeterminedReason | None]
+    # Soare: fracția de arie aparentă neascunsă (nu flux, nu putere); Pământ: mereu `null`.
+    visible_fraction: list[Fraction | None]
+    visible_uncertainty_fraction: list[Fraction | None]
+>>>>>>> Stashed changes
 
     def lengths(self) -> set[int]:
         return {
@@ -131,6 +139,13 @@ class BodySeries(Contract):
             len(self.angular_radius_deg),
             len(self.horizon_elevation_deg),
             len(self.visible),
+<<<<<<< Updated upstream
+=======
+            len(self.state),
+            len(self.state_reason),
+            len(self.visible_fraction),
+            len(self.visible_uncertainty_fraction),
+>>>>>>> Stashed changes
         }
 
 

@@ -148,6 +148,75 @@
           },
           "title": "Visible",
           "type": "array"
+<<<<<<< Updated upstream
+=======
+        },
+        "state": {
+          "items": {
+            "enum": [
+              "hidden",
+              "partially_visible",
+              "fully_visible",
+              "visible",
+              "undetermined"
+            ],
+            "type": "string"
+          },
+          "title": "State",
+          "type": "array"
+        },
+        "state_reason": {
+          "items": {
+            "anyOf": [
+              {
+                "enum": [
+                  "near_threshold",
+                  "no_data",
+                  "partial_data",
+                  "undefined_azimuth"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "State Reason",
+          "type": "array"
+        },
+        "visible_fraction": {
+          "items": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Visible Fraction",
+          "type": "array"
+        },
+        "visible_uncertainty_fraction": {
+          "items": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Visible Uncertainty Fraction",
+          "type": "array"
+>>>>>>> Stashed changes
         }
       },
       "required": [
@@ -156,7 +225,15 @@
         "distance_km",
         "angular_radius_deg",
         "horizon_elevation_deg",
+<<<<<<< Updated upstream
         "visible"
+=======
+        "visible",
+        "state",
+        "state_reason",
+        "visible_fraction",
+        "visible_uncertainty_fraction"
+>>>>>>> Stashed changes
       ],
       "title": "BodySeries",
       "type": "object"
