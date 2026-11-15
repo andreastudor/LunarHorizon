@@ -8,6 +8,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 const python =
   process.platform === 'win32' ? '.venv\\Scripts\\python' : '.venv/bin/python'
+const externalUrl = process.env.LUNAR_E2E_URL
 
 export default defineConfig({
   testDir: 'e2e',
@@ -17,7 +18,7 @@ export default defineConfig({
   retries: 0,
   reporter: [['list']],
   use: {
-    baseURL: 'http://127.0.0.1:5174',
+    baseURL: externalUrl ?? 'http://127.0.0.1:5174',
     trace: 'retain-on-failure',
   },
   projects: [
@@ -32,21 +33,23 @@ export default defineConfig({
       },
     },
   ],
-  webServer: [
-    {
-      command: `${python} -m uvicorn lunarhorizon.api.app:app --host 127.0.0.1 --port 8001`,
-      cwd: '../backend',
-      url: 'http://127.0.0.1:8001/api/health',
-      env: { PYTHONUTF8: '1' },
-      reuseExistingServer: false,
-      timeout: 60_000,
-    },
-    {
-      command: 'npm run dev -- --host 127.0.0.1 --port 5174 --strictPort',
-      url: 'http://127.0.0.1:5174',
-      env: { LUNAR_API_URL: 'http://127.0.0.1:8001' },
-      reuseExistingServer: false,
-      timeout: 60_000,
-    },
-  ],
+  webServer: externalUrl
+    ? undefined
+    : [
+        {
+          command: `${python} -m uvicorn lunarhorizon.api.app:app --host 127.0.0.1 --port 8001`,
+          cwd: '../backend',
+          url: 'http://127.0.0.1:8001/api/health',
+          env: { PYTHONUTF8: '1' },
+          reuseExistingServer: false,
+          timeout: 60_000,
+        },
+        {
+          command: 'npm run dev -- --host 127.0.0.1 --port 5174 --strictPort',
+          url: 'http://127.0.0.1:5174',
+          env: { LUNAR_API_URL: 'http://127.0.0.1:8001' },
+          reuseExistingServer: false,
+          timeout: 60_000,
+        },
+      ],
 })

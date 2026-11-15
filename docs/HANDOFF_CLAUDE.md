@@ -1,4 +1,19 @@
 # LunarHorizon — handoff pentru Claude Code
+## Prioritate curentă: publicarea autorizată, 2026-11-15
+
+Utilizatorul cere un web-app public. Vezi `deploy/PUBLISH.md`: backend Python/SPICE separat de
+GitHub Pages sau, mai simplu, UI+API pe același serviciu de containere. Contul/serviciul nu este
+ales încă; nu există URL public confirmat. Nu transforma repository-ul privat în public fără
+autorizare pentru cod. Niciun serviciu plătit creat. `main` rămâne nemodificat.
+`LUNAR_API_BASE_URL` activează workflow-ul Pages; `LUNAR_ALLOWED_ORIGINS` configurează backendul.
+Git CLI nu are autentificare disponibilă în acest mediu; conectorul GitHub Andreas poate accesa repo-ul.
+
+E10A Horizons geometric a trecut 10/10 (maxim 2,24 m), arhivat și reproductibil prin
+`scripts/validate_system_horizons.py`. Acceptarea ASTRO și offline E15 rămân restante.
+Backend 408, frontend 236, Playwright producție 2/2. Port local de producție 8010.
+Pentru teste pe acest build: `LUNAR_E2E_URL=http://127.0.0.1:8010` și `npm run test:e2e -- system.spec.ts webgl.spec.ts`.
+Containerul nu a fost construit: Docker local lipsește. Nu declara E16 sau MVP închis.
+
 
 ## Actualizare 2026-11-15: E10A, E11, E12
 

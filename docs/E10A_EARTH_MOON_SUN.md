@@ -3,7 +3,10 @@
 ## Decizie și încadrare
 
 Solicitat de utilizator la 2026-11-14 ca funcție importantă a aplicației, **nu bonus**.
-Stare: planificat, neimplementat și neverificat. Nu modifică E08 (teren local 3D).
+Stare actualizată 2026-11-15: implementare live verificată, inclusiv Horizons geometric;
+acceptare ASTRO și integrare offline E15 restante. Nu modifică E08 (teren local 3D).
+Detalii și rezultate: `E10A_E11_E12_IMPLEMENTARE.md`, `VALIDARE.md` și
+`data/reference/system_horizons/comparison.json`.
 Ordine de execuție: E08 → E09 → E10 → **E10A** → E11 și restul planului.
 Dependențe tehnice: motorul E03, API/contracte E06 și interfața E07. E10 precedă această etapă
 pentru a finaliza mai întâi fluxul principal cu relief. E17 include obligatoriu acceptarea E10A.
@@ -50,7 +53,8 @@ Folosește componentele și materialele existente când sunt potrivite; nu impor
 
 ## Criterii de acceptare
 
-Toate sunt **neexecutate** la introducerea cerinței:
+Lista originală de acceptare este păstrată mai jos. Criteriile live 1–8 sunt implementate și
+verificate tehnic; la criteriul 9, proveniența este afișată, însă scenariul offline rămâne E15.
 
 1. Tabul afișează cele trei corpuri, navigarea și cele trei distanțe între centre pentru momentul selectat.
 2. Distanțele API corespund normelor vectorilor; se verifică unitățile, simetria d_AB=d_BA și

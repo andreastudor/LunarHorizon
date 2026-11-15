@@ -9,6 +9,10 @@ altimetrice reale (LOLA) pentru siturile polare. O hartă 2D sincronizată este 
 
 ## Stare
 
+**Publicare:** configurația completă și pașii pentru GitHub Pages/backend sunt în
+[deploy/PUBLISH.md](deploy/PUBLISH.md). Nu există încă un URL public verificat.
+Containerul servește interfața construită și API-ul împreună; GitHub Pages necesită backend HTTPS separat.
+
 Implementate: glob 3D, teren real pentru 13 regiuni PGDA 104, orizont DEM, vizibilitate și evenimente;
 vederea Earth–Moon–Sun, hartă 2D și comparație 2–4 situri. Acceptarea științifică și unele verificări
 rămân deschise: [docs/STATUS.md](docs/STATUS.md). Punctele DEM sunt reprezentative, nu locuri de aterizare.

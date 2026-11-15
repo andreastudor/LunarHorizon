@@ -1,4 +1,32 @@
 # Validare — toleranțe, rezultate și probleme
+## E10A și pregătirea publicării — 2026-11-15
+
+- Horizons geometric: 4 răspunsuri originale (centre Earth/Moon față de Sun, 15 noiembrie și
+  15 decembrie 2026, UTC transformat prin SPICE în TDB). Antete verificate: DE441, BODY CENTER,
+  ICRF, KM-S, GEOMETRIC; API `VEC_CORR=NONE`. Motor: de440_me421 / DE440s, J2000/SUN/NONE.
+  4 comparații vectoriale și 6 distanțe: 10/10 sub pragul tehnic 0,1 km, maxim 0,002240566 km.
+  Pragul reutilizează verificarea tehnică T-02, fără a declara acceptare ASTRO pentru E10A.
+  Efemeridele sunt din aceeași familie JPL; acordul nu validează independent modelul fizic.
+  `scripts/validate_system_horizons.py --fetch` a arhivat datele; reluarea fără rețea a trecut.
+- Backend: **408/408**, Ruff lint/format, mypy (87 fișiere), contracte la zi.
+- Frontend: **236/236**, Prettier, oxlint, contracte, typecheck/build.
+- Build-ul real servit de `api.production:create_production_app` la `127.0.0.1:8010`:
+  health `ok`, kerneluri încărcate, 13 produse DEM. Teste: UI/API rutate separat,
+  origine CORS permisă/refuzată, expunerea X-Width/X-Height pentru rasterele citite de Pages,
+  refuzul unui build lipsă și imposibilitatea servirii manifestelor private ca fișiere statice.
+- Playwright **2/2** pe build-ul de producție: glob texturat WebGL și sistemul E10A,
+  pixeli redați pentru toate cele trei corpuri, slider, focus, revenire în tab, număr stabil de
+  geometrii și o singură cerere de efemeride. Captura a fost inspectată; etichetele corpurilor
+  au fost mărite pentru lizibilitate la zoom-out, apoi testele rerulate.
+- Probleme de mediu rezolvate pentru această rulare: director Playwright vechi bloca pornirea;
+  s-a folosit un director nou `--output=test-results/publish-final`. Browserul exista în
+  `C:/Users/Andreas/AppData/Local/ms-playwright`; sandbox-ul căuta în alt director, deci s-a
+  setat `PLAYWRIGHT_BROWSERS_PATH` explicit. Contractele cer `PYTHONUTF8=1` în PowerShell.
+
+Neexecutate: build Linux Docker (motor Docker absent), publicare la furnizor și verificarea unui
+URL public, capacitate multiutilizator, offline E15. Workflow-ul Pages este condiționat de un
+backend HTTPS sănătos; configurația nu înseamnă deployment reușit.
+
 ## E10 — vizibilitate, evenimente și indicatori (2026-11-15)
 
 Rulate: backend `pytest` 396/396, Ruff, mypy, contracte 0.8.0, `verify_terrain_products.py` 13/13; frontend

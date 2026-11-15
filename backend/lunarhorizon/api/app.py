@@ -125,6 +125,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_origins=list(config.allowed_origins),
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
+        expose_headers=["X-Width", "X-Height"],
     )
 
     @app.exception_handler(RequestValidationError)

@@ -30,7 +30,8 @@ Punctele fără DEM primesc eroarea backendului; nu se trece tacit la orizont id
 
 ## Limite și acceptare
 
-- E10A: validarea independentă cu Horizons geometric și acceptarea ASTRO rămân deschise.
+- E10A: comparația Horizons geometric a fost executată ulterior (10/10, maxim 2,24 m;
+  `data/reference/system_horizons/`). Acceptarea ASTRO rămâne deschisă.
   Verificarea normelor față de vectorul SPICE direct are toleranță numerică 10⁻⁶ km, justificată
   de scăderea vectorilor heliocentrici în virgulă mobilă; nu este toleranță științifică validată.
 - E15 încă trebuie să includă datele sistemului și comparația în scenarii offline; nu sunt
@@ -60,4 +61,4 @@ serverelor de dezvoltare, pentru a nu testa o versiune API veche. Rezultatele fi
 
 Verificare finală: 4/4 teste browser trecute, inclusiv două situri DEM pe o zi și terenul activ.
 E12 este funcțională pentru acest scenariu; 3–4 situri și schimbarea datei rămân de verificat
-cap-coadă, la fel ca validarea științifică. E10A are Horizons geometric restant. Vezi VALIDARE.
+cap-coadă, la fel ca validarea științifică. E10A are acum comparația Horizons geometric executată. Vezi VALIDARE.

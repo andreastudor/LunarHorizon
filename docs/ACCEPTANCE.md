@@ -3,13 +3,17 @@
 
 | Criteriu | Implementare / limită |
 |---|---|
-| Centre, distanțe, trasee, UTC E10A | Implementate; norme și vector SPICE direct verificate; Horizons geometric restant |
+| Centre, distanțe, trasee, UTC E10A | Implementate; norme, vector SPICE direct și Horizons geometric verificate (10/10; maxim 2,24 m); acceptare ASTRO separată |
 | Navigare, etichete de scară, cache și GPU | Implementate; test Chromium E10A trecut |
 | Harta globală/polară, proiecții lunare, selecție comună E11 | Implementate; test Chromium trecut după corectarea suprapunerii controalelor |
 | Fallback WebGL | Test Chromium trecut |
 | Comparație 2–4 puncte E12 | Implementată; cerere comună, refuz cadre incompatibile, scări comune |
 | Două situri DEM cap-coadă | Datele reale există; rezultatul verificării în VALIDARE |
 | Acceptare științifică și offline | Restante; nicio decizie GEO/ASTRO închisă implicit |
+
+Publicare solicitată la 2026-11-15: containerul și workflow-ul Pages sunt pregătite; UI/API de
+producție verificate local, 408 teste backend, 236 frontend și 2 Playwright. E16 **nu este închisă**:
+serviciul public nu este configurat, Docker Linux nu a fost construit și E15 rămâne neimplementată.
 
 ## E10 — stare 2026-11-15: încheiată tehnic (M1) pentru Leibnitz Beta; acceptare științifică restantă
 

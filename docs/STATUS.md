@@ -1,4 +1,19 @@
 # Stare
+## Publicare solicitată și verificare E10A — 2026-11-15
+
+Publicarea este autorizată. Configurația aplicației complete este în `deploy/Dockerfile` și
+`deploy/PUBLISH.md`; servirea UI/API la aceeași origine este verificată local pe portul 8010.
+Workflow-ul Pages este pregătit, dar se activează numai când există `LUNAR_API_BASE_URL`.
+**Site-ul nu este publicat:** lipsește serviciul de backend ales/conectat de utilizator.
+Repository-ul rămâne privat; nu s-a modificat vizibilitatea codului. Docker nu este instalat local,
+deci imaginea Linux și descărcarea curată în container nu sunt declarate verificate.
+
+E10A: comparația geometrică Horizons restantă este acum executată (10/10, maxim 0,002240566 km).
+Răspunsurile originale și SHA-256: `data/reference/system_horizons/`; script reproductibil
+`scripts/validate_system_horizons.py`. Implementarea live este verificată; acceptarea ASTRO și
+integrarea offline E15 rămân separate. E11/E12 existau deja în `b35a75e` la reluarea acestui pas.
+Verificări: 408 backend, 236 frontend, 2/2 Playwright pe build-ul de producție; detalii în VALIDARE.
+
 ## E10A → E11 → E12 — lucru curent, 2026-11-15
 
 `e26ad5a` (WIP) publicat la cererea utilizatorului pe `origin/e04-completare-dovezi`, înaintea încheierii

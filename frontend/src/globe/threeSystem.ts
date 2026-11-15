@@ -181,6 +181,17 @@ export function createThreeSystem(
   const animate = () => {
     if (disposed) return
     controls.update()
+    // Keep labels legible when the camera spans heliocentric distances or focuses on a body.
+    for (const label of Object.values(labels)) {
+      const distance = camera.position.distanceTo(label.position)
+      const height =
+        (2 *
+          Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) *
+          distance *
+          32) /
+        Math.max(1, container.clientHeight)
+      label.scale.set(height * 4, height, 1)
+    }
     renderer.render(scene, camera)
     count++
     container.dataset.renderedFrames = String(count)

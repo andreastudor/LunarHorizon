@@ -511,7 +511,7 @@ export const en = {
   errors: {
     title: 'Something went wrong',
     network:
-      'The LunarHorizon server could not be reached. Check that the backend is running on port 8000.',
+      'The LunarHorizon server could not be reached. Please check your connection and try again.',
     codes: {
       VALIDATION_ERROR: 'The request is not valid.',
       TOO_MANY_SITES: 'At most four sites can be simulated together.',

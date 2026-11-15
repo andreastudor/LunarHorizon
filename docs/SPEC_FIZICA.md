@@ -1,5 +1,17 @@
 # Specificație fizică — convenții și formule
 
+## E10A: geometria simultană a sistemului (implementată 2026-11-15)
+
+Centrele Earth/Moon sunt obținute cu `spkpos(body, ET, J2000, NONE, SUN)`; Sun este originea.
+UTC → ET numai prin SPICE. Axele J2000 au orientare inerțială, iar originea solară se translatează.
+Pentru fiecare pereche, `d_AB_km = ||r_B_km - r_A_km||`. Sunt distanțe între centre la aceeași
+epocă, distincte de observația topocentrică aparentă CN+S. Nicio modificare a rezultatelor locale.
+Randare: 1 unitate = 2.000.000 km, deplasarea Moon față de Earth mărită 80×; raze ilustrative.
+Corpurile sunt colorate schematic, fără orientări de suprafață sau rotații astronomice pretinse.
+Traseele sunt deschise și folosesc epocile seriei. Aceste scalări nu modifică numerele afișate.
+Horizons DE441 geometric vs DE440s: 10 comparații, maxim 0,002240566 km; vezi VALIDARE.
+Această verificare numerică nu reprezintă acceptare ASTRO a întregului produs.
+
 Acest document fixează convențiile folosite de toate modulele. Cerințele vin din
 [SPECIFICATIE.md](SPECIFICATIE.md) §7–§12. Ce este marcat **[ASTRO]** sau **[GEO]** trebuie confirmat de
 colegii de astronomie, respectiv geografie, înainte ca modulul respectiv să fie declarat validat;

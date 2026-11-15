@@ -16,6 +16,16 @@ test('real system renders, follows time and caches tab switches', async ({
   await expect(scene).toHaveAttribute('data-rendered-frames', /[1-9]/, {
     timeout: 60000,
   })
+  // All three projected centres must contain rendered pixels, not just a running render loop.
+  await expect(scene).toHaveAttribute(
+    'data-samples',
+    /^\d+,\d+,\d+;\d+,\d+,\d+;\d+,\d+,\d+$/,
+  )
+  const pixels = (await scene.getAttribute('data-samples'))!.split(';')
+  for (const pixel of pixels) {
+    expect(Math.max(...pixel.split(',').map(Number))).toBeGreaterThan(35)
+  }
+  const geometries = await scene.getAttribute('data-geometries')
   await expect(page.getByTestId('distance-earth_moon')).toContainText('km')
   const before = await page.getByTestId('distance-earth_moon').textContent()
   await page.locator('#time-slider').fill('24')
@@ -31,6 +41,8 @@ test('real system renders, follows time and caches tab switches', async ({
   await page.getByRole('tab', { name: en.views.globe, exact: true }).click()
   await page.getByRole('tab', { name: en.system.title }).click()
   await expect(scene).toHaveAttribute('data-time-utc', epoch!)
+  await expect(scene).toHaveAttribute('data-geometries', geometries!)
   expect(requests).toBe(1)
   expect(errors).toEqual([])
+  await page.screenshot({ path: test.info().outputPath('system.png') })
 })

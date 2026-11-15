@@ -1,5 +1,17 @@
 # Surse și credite
 
+## Actualizare E10A și publicare — 2026-11-15
+
+JPL Horizons API (`https://ssd.jpl.nasa.gov/api/horizons.api`): patru răspunsuri geometrice
+Earth/Moon față de Sun, DE441/ICRF/NONE, cu cereri și SHA-256 în `data/reference/system_horizons/`.
+Epoci: 2026-11-15 și 2026-12-15, UTC convertit în TDB prin SPICE. Scena folosește kernelurile
+NAIF existente (DE440s), nu răspunsurile Horizons în exploatare. Nu sunt imagini noi ale corpurilor.
+Documentație: [SPKPOS](https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/cspice/spkpos_c.html),
+[Horizons API](https://ssd-api.jpl.nasa.gov/doc/horizons.html).
+Deployment: [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages),
+[Vite Pages](https://vite.dev/guide/static-deploy.html#github-pages),
+[Render FastAPI](https://render.com/docs/deploy-fastapi), consultate la aceeași dată.
+
 Registrul surselor folosite sau avute în vedere. Pentru fiecare sursă utilizată efectiv se păstrează: URL,
 data accesării, instituția, identificatorul produsului și condițiile de creditare.
 

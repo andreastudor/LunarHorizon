@@ -1,0 +1,129 @@
+{
+  "profile": "de440_me421",
+  "kernel_sha256": [
+    "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+    "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+    "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+    "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f",
+    "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768"
+  ],
+  "frame": "J2000 / Horizons ICRF",
+  "origin": "SUN",
+  "correction": "NONE",
+  "threshold_km": 0.1,
+  "threshold_status": "engineering check, not ASTRO approval",
+  "max_error_km": 0.002240565604617488,
+  "passed": true,
+  "comparisons": [
+    {
+      "utc": "2026-11-15T00:00:00Z",
+      "body": "earth",
+      "vector_error_km": 2.4623244577711532e-05,
+      "header": {
+        "Ephemeris /": "Ephemeris / API_USER Sun Nov 15 02:53:01 2026 Pasadena, USA      / Horizons",
+        "Target body name": "Target body name: Earth (399)                     {source: DE441}",
+        "Center body name": "Center body name: Sun (10)                        {source: DE441}",
+        "Center-site name": "Center-site name: BODY CENTER",
+        "Center geodetic": "Center geodetic : 0.0, 0.0, 0.0                   {E-lon(deg),Lat(deg),Alt(km)}",
+        "Center cylindric": "Center cylindric: 0.0, 0.0, 0.0                   {E-lon(deg),Dxy(km),Dz(km)}",
+        "Center radii": "Center radii    : 695700.0, 695700.0, 695700.0 km {Equator_a, b, pole_c}",
+        "Output units": "Output units    : KM-S",
+        "Calendar mode": "Calendar mode   : Mixed Julian/Gregorian",
+        "Reference frame": "Reference frame : ICRF"
+      }
+    },
+    {
+      "utc": "2026-11-15T00:00:00Z",
+      "body": "moon",
+      "vector_error_km": 0.0022008161893704308,
+      "header": {
+        "Ephemeris /": "Ephemeris / API_USER Sun Nov 15 02:53:02 2026 Pasadena, USA      / Horizons",
+        "Target body name": "Target body name: Moon (301)                      {source: DE441}",
+        "Center body name": "Center body name: Sun (10)                        {source: DE441}",
+        "Center-site name": "Center-site name: BODY CENTER",
+        "Center geodetic": "Center geodetic : 0.0, 0.0, 0.0                   {E-lon(deg),Lat(deg),Alt(km)}",
+        "Center cylindric": "Center cylindric: 0.0, 0.0, 0.0                   {E-lon(deg),Dxy(km),Dz(km)}",
+        "Center radii": "Center radii    : 695700.0, 695700.0, 695700.0 km {Equator_a, b, pole_c}",
+        "Output units": "Output units    : KM-S",
+        "Calendar mode": "Calendar mode   : Mixed Julian/Gregorian",
+        "Reference frame": "Reference frame : ICRF"
+      }
+    },
+    {
+      "utc": "2026-11-15T00:00:00Z",
+      "pair": "earth_moon",
+      "reference_km": 404749.17426856386,
+      "computed_km": 404749.1743132755,
+      "distance_error_km": 4.4711632654070854e-05
+    },
+    {
+      "utc": "2026-11-15T00:00:00Z",
+      "pair": "sun_earth",
+      "reference_km": 147999031.1442544,
+      "computed_km": 147999031.14427847,
+      "distance_error_km": 2.4080276489257812e-05
+    },
+    {
+      "utc": "2026-11-15T00:00:00Z",
+      "pair": "sun_moon",
+      "reference_km": 147814222.55147308,
+      "computed_km": 147814222.54950604,
+      "distance_error_km": 0.0019670426845550537
+    },
+    {
+      "utc": "2026-12-15T00:00:00Z",
+      "body": "earth",
+      "vector_error_km": 2.7536021441108304e-05,
+      "header": {
+        "Ephemeris /": "Ephemeris / API_USER Sun Nov 15 02:53:03 2026 Pasadena, USA      / Horizons",
+        "Target body name": "Target body name: Earth (399)                     {source: DE441}",
+        "Center body name": "Center body name: Sun (10)                        {source: DE441}",
+        "Center-site name": "Center-site name: BODY CENTER",
+        "Center geodetic": "Center geodetic : 0.0, 0.0, 0.0                   {E-lon(deg),Lat(deg),Alt(km)}",
+        "Center cylindric": "Center cylindric: 0.0, 0.0, 0.0                   {E-lon(deg),Dxy(km),Dz(km)}",
+        "Center radii": "Center radii    : 695700.0, 695700.0, 695700.0 km {Equator_a, b, pole_c}",
+        "Output units": "Output units    : KM-S",
+        "Calendar mode": "Calendar mode   : Mixed Julian/Gregorian",
+        "Reference frame": "Reference frame : ICRF"
+      }
+    },
+    {
+      "utc": "2026-12-15T00:00:00Z",
+      "body": "moon",
+      "vector_error_km": 0.002240565604617488,
+      "header": {
+        "Ephemeris /": "Ephemeris / API_USER Sun Nov 15 02:53:03 2026 Pasadena, USA      / Horizons",
+        "Target body name": "Target body name: Moon (301)                      {source: DE441}",
+        "Center body name": "Center body name: Sun (10)                        {source: DE441}",
+        "Center-site name": "Center-site name: BODY CENTER",
+        "Center geodetic": "Center geodetic : 0.0, 0.0, 0.0                   {E-lon(deg),Lat(deg),Alt(km)}",
+        "Center cylindric": "Center cylindric: 0.0, 0.0, 0.0                   {E-lon(deg),Dxy(km),Dz(km)}",
+        "Center radii": "Center radii    : 695700.0, 695700.0, 695700.0 km {Equator_a, b, pole_c}",
+        "Output units": "Output units    : KM-S",
+        "Calendar mode": "Calendar mode   : Mixed Julian/Gregorian",
+        "Reference frame": "Reference frame : ICRF"
+      }
+    },
+    {
+      "utc": "2026-12-15T00:00:00Z",
+      "pair": "earth_moon",
+      "reference_km": 400253.87934561784,
+      "computed_km": 400253.87944690615,
+      "distance_error_km": 0.0001012883149087429
+    },
+    {
+      "utc": "2026-12-15T00:00:00Z",
+      "pair": "sun_earth",
+      "reference_km": 147256096.07012334,
+      "computed_km": 147256096.0701484,
+      "distance_error_km": 2.5063753128051758e-05
+    },
+    {
+      "utc": "2026-12-15T00:00:00Z",
+      "pair": "sun_moon",
+      "reference_km": 147085337.603833,
+      "computed_km": 147085337.6017794,
+      "distance_error_km": 0.002053588628768921
+    }
+  ]
+}

@@ -42,6 +42,7 @@ export function MapView({
     if (!container.current) return
     const image = new ImageStatic({
       url: textureUrl,
+      crossOrigin: 'anonymous',
       projection: lunarGeographic,
       imageExtent: [-180, -90, 180, 90],
     })

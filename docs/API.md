@@ -1,5 +1,20 @@
 # Contracte de date și API
 
+## Extensie aditivă E10A — 2026-11-15
+
+`POST /api/system/series`: corp `SystemRequest`, lista `time_utc` strict crescătoare,
+1–20001 epoci, maximum 366 de zile. Răspuns `SystemSeries` cu `system_schema_version=1.0.0`,
+axe `J2000`, origine `SUN`, corecție `NONE`, `position_km` pentru sun/earth/moon și
+`distance_km` pentru earth_moon/sun_earth/sun_moon. Toate coloanele urmează aceleași epoci.
+Include profilul, SHA-256 kernelurilor, acoperirea UTC și versiunea algoritmului.
+Schema simulărilor existente rămâne 0.8.0. Nu folosește observator lunar sau DEM.
+Cache limitat la patru serii, cheie din cerere, profil, hash-uri și algoritm. Lipsa kernelurilor
+și epocile neacoperite păstrează erorile API existente; fără date sintetice de rezervă.
+
+Publicare: `api.production:create_production_app --factory` servește build-ul static și API-ul
+la aceeași origine. Pentru Pages, `LUNAR_ALLOWED_ORIGINS` configurează originile CORS exacte;
+`X-Width` și `X-Height` sunt expuse pentru rasterele binare. Vezi `deploy/PUBLISH.md`.
+
 Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Convențiile de unități, timp
 și cadre sunt în [SPEC_FIZICA.md](SPEC_FIZICA.md).
 

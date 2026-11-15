@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.LUNAR_BASE_PATH ?? '/',
   plugins: [react()],
   // Three.js (≈ 570 kB) is a separate chunk loaded only when a 3D view opens.
   build: { chunkSizeWarningLimit: 700 },

@@ -167,7 +167,9 @@ async function requestHeights(
   return { width, height, heights }
 }
 
-export function createApiDataSource(baseUrl = '/api'): DataSource {
+export function createApiDataSource(
+  baseUrl = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, ''),
+): DataSource {
   return {
     globeTextureUrl: `${baseUrl}/assets/globe.jpg`,
     systemSeries: (request, signal) =>
