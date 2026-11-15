@@ -10,6 +10,7 @@ Diferențele de durată (≤ 7,2 s) cad în ferestrele nedecidabile, raportate c
 (Leibnitz Beta): Soare apare 2026-11-25T08:26:57.879Z (fereastră 0,26 s), dispare 2026-12-12T06:23:10.361Z
 (18,6 s); Pământ 2026-11-19T03:20:42.302Z – 2026-11-28T08:59:59.017Z. Detalii: [E10_VISIBILITY.md](E10_VISIBILITY.md).
 Un singur sit; nu validează celelalte regiuni. Toleranța de 1 ms este numerică, nu fizică.
+Notă Playwright: rularea finală pe commit-ul E10 a trecut 6/6. Două rulări anterioare au avut câte un test diferit (frames, apoi horizon) expirat la așteptarea inițială de 30 s a insignelor „Terrain available” (`/api/terrain/status`), sub încărcarea mașinii după o rulare oprită; pe sistem liber endpointul răspunde în 0,5–2,9 s. Cauza este de mediu (timp), nu a fost corectată; endpointul face 23 de selecții cu citiri de raster și poate fi optimizat ulterior.
 
 ## D-02, T-01, D-04 — integrarea deciziilor și reexecutarea dovezilor (2026-11-15)
 

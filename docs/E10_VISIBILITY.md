@@ -119,6 +119,8 @@ textele evenimentelor, benzile, indicatoarele scenei), formatare, oxlint, `tsc`,
 aceeași stare, la fel pentru Pământ; fără cereri noi la mutarea sliderului; fără erori în consolă). Captură de ecran
 verificată vizual.
 
+Notă Playwright: rularea finală pe commit-ul E10 a trecut 6/6. Două rulări anterioare au avut câte un test diferit (frames, apoi horizon) expirat la așteptarea inițială de 30 s a insignelor „Terrain available” (`/api/terrain/status`), sub încărcarea mașinii după o rulare oprită; pe sistem liber endpointul răspunde în 0,5–2,9 s. Cauza este de mediu (timp), nu a fost corectată; endpointul face 23 de selecții cu citiri de raster și poate fi optimizat ulterior.
+
 ## Rămâne deschis
 
 - Acceptarea științifică: verificarea evenimentelor pe teren real față de o referință independentă; D-08/D-09 [GEO];
