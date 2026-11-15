@@ -8,7 +8,7 @@ import { en } from '../i18n/en.ts'
 import { fmtUtc } from '../ui/format.ts'
 
 interface Props {
-  series: SiteSeries | null
+  series: Pick<SiteSeries, 'time_utc' | 'step_s'> | null
   index: number
   playing: boolean
   onIndex: (index: number) => void

@@ -102,6 +102,52 @@ code {
   height: 100vh;
 }
 
+.map-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+.map-canvas {
+  flex: 1;
+  min-height: 360px;
+  background: #141c28;
+}
+.comparison-panel {
+  grid-column: 1 / -1;
+  padding: 1rem;
+  background: var(--panel);
+}
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1rem;
+}
+.comparison-column {
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--panel-border);
+  border-top: 4px solid;
+}
+.comparison-column > button {
+  width: 100%;
+  text-align: left;
+}
+.comparison-column .facts {
+  font-size: 0.85rem;
+}
+
+.layout:has(.comparison-panel) {
+  height: auto;
+  min-height: 100vh;
+  grid-template-rows: auto minmax(560px, 70vh) auto auto auto;
+}
+@media (max-width: 1000px) {
+  .layout:has(.comparison-panel) {
+    grid-template-rows: auto;
+  }
+}
+
 .topbar {
   grid-area: top;
   display: flex;
@@ -1078,4 +1124,83 @@ button.primary:hover:not(:disabled) {
   border-radius: 4px;
   background: rgb(7 10 16 / 80%);
   font-size: 0.8rem;
+}
+
+/* E10A: schematic system view, numerical distances remain unscaled. */
+.system-view {
+  padding: 1rem;
+  min-width: 0;
+  width: 100%;
+  overflow: auto;
+}
+.system-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.system-heading h2 {
+  margin: 0.2rem 0 0.6rem;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+}
+.eyebrow {
+  color: #5eead4;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  margin: 0;
+}
+.system-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0;
+}
+.system-canvas {
+  width: 100%;
+  height: clamp(280px, 45vh, 520px);
+  background: #05070b;
+  border: 1px solid #243247;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.system-canvas canvas {
+  display: block;
+}
+.system-distances {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+}
+.system-distances h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+.system-distances output {
+  color: #f8fafc;
+  font-size: clamp(0.85rem, 1.3vw, 1.2rem);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.system-provenance {
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+  margin: 0.7rem 0;
+}
+.system-epoch {
+  font-variant-numeric: tabular-nums;
+  color: #99f6e4;
+}
+.view-tabs {
+  flex-wrap: wrap;
+}
+@media (max-width: 900px) {
+  .system-distances {
+    grid-template-columns: 1fr;
+  }
+  .system-heading {
+    flex-wrap: wrap;
+  }
 }

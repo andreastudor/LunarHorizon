@@ -4,6 +4,59 @@
 // translated.
 
 export const en = {
+  compare: {
+    title: 'Site comparison',
+    add: 'Add selected point to comparison',
+    run: 'Compare sites',
+    remove: 'Remove',
+    hint: 'Choose 2–4 points in the same declared frame. Select a point, then add it here.',
+    note: 'Shared UTC interval, parameters and chart scales. Click a column to activate its site in the common 3D scene. Unknown durations remain separate. DEM representative points are not landing sites.',
+    incompatible:
+      'Use 2–4 distinct points in the selected frame; frames are never converted implicitly.',
+  },
+  map: {
+    title: '2D map',
+    polar: 'South polar',
+    global: 'Global',
+    convention:
+      'Lunar coordinates · east-positive longitude · sphere R = 1,737,400 m. Polar stereographic: south pole, central meridian 0°. Visual backdrop only.',
+    legend:
+      'Blue: catalog · purple: DEM point · orange: selected · green: DEM extent',
+    fallback: 'WebGL is unavailable. The synchronized 2D map is active.',
+  },
+  system: {
+    title: 'Earth–Moon–Sun',
+    subtitle: 'A wider perspective',
+    heading: 'Three worlds. One moment.',
+    sun: 'Sun',
+    earth: 'Earth',
+    moon: 'Moon',
+    notToScale: 'Not to scale',
+    scale:
+      'Centre spacing: 1 scene unit = 2,000,000 km. Moon–Earth separation enlarged 80×; body sizes illustrative.',
+    geometry:
+      'Geometric centres · J2000 axes · Sun-centred origin · NONE correction',
+    difference:
+      'These distances are between body centres, not from the selected lunar observer. Local observations still use CN+S.',
+    distance: 'Center-to-center distance',
+    earthMoon: 'Earth–Moon',
+    sunEarth: 'Sun–Earth',
+    sunMoon: 'Sun–Moon',
+    reset: 'Overview',
+    focus: 'Focus on',
+    trails:
+      'Sampled paths over the displayed UTC interval; not closed orbits. Moon offset exaggerated.',
+    source:
+      'Source: NASA/JPL NAIF SPICE · schematic colours, no surface orientation model',
+    profile: 'Kernel profile',
+    loading: 'Calculating geometric centres…',
+    invalidTime:
+      'Choose a valid UTC start date and interval in the parameters panel.',
+    webgl:
+      'WebGL is unavailable. Calculated distances and provenance remain available below.',
+    export: 'Download geometric series (JSON)',
+    ready: 'Geometric series ready',
+  },
   app: {
     title: 'LunarHorizon',
     tagline: 'Sun and Earth from any point on the Moon',

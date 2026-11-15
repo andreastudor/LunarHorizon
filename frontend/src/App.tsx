@@ -7,6 +7,16 @@ import { createApiDataSource, type DataSource } from './api/dataSource.ts'
 import { describeError } from './api/errors.ts'
 import { useLocalTerrain } from './api/useLocalTerrain.ts'
 import { useHorizonProfile } from './api/useHorizonProfile.ts'
+import { useSystemSeries } from './api/useSystemSeries.ts'
+import { SystemView } from './components/SystemView.tsx'
+import { MapView } from './components/MapView.tsx'
+import { ComparisonPanel } from './components/ComparisonPanel.tsx'
+import {
+  comparisonKey,
+  comparisonRequest,
+  resultForSite,
+  type ComparisonEntry,
+} from './state/comparison.ts'
 import { useSimulation } from './api/useSimulation.ts'
 import { CatalogPanel } from './components/CatalogPanel.tsx'
 import { GlobeView } from './components/GlobeView.tsx'
@@ -63,9 +73,15 @@ function App({
   })
   const [reloadToken, setReloadToken] = useState(0)
   const [selection, setSelection] = useState<Selection>(null)
-  const [centerView, setCenterView] = useState<'globe' | 'terrain' | 'horizon'>(
-    'globe',
-  )
+  const [centerView, setCenterView] = useState<
+    'globe' | 'terrain' | 'horizon' | 'system' | 'map'
+  >('globe')
+  const [systemReload, setSystemReload] = useState(0)
+  const [webglFailed, setWebglFailed] = useState(false)
+  const fallback2D = useCallback(() => {
+    setWebglFailed(true)
+    setCenterView('map')
+  }, [])
   const [horizonReload, setHorizonReload] = useState(0)
   const [terrainReload, setTerrainReload] = useState(0)
   const [frameNote, setFrameNote] = useState<string | null>(null)
@@ -81,6 +97,13 @@ function App({
     nonce: number
   } | null>(null)
   const simulation = useSimulation(source, pollMs)
+  const comparison = useSimulation(source, pollMs)
+  const cancelComparison = comparison.cancel
+  const [entries, setEntries] = useState<ComparisonEntry[]>([])
+  const [comparing, setComparing] = useState(false)
+  const [activeComparison, setActiveComparison] = useState(0)
+  const compareKey = comparisonKey(entries)
+  const compareRequest = comparisonRequest(entries, params)
   const { cancel, start } = simulation
 
   useEffect(() => {
@@ -123,15 +146,50 @@ function App({
       ? (sites.find((site) => site.id === selection.siteId) ?? null)
       : null
   const key = selectionKey(selection)
-  const view = simulation.view
-  const result = view.phase === 'done' && view.key === key ? view.result : null
+  const view = comparing ? comparison.view : simulation.view
+  const comparisonResult =
+    comparing && view.phase === 'done' && view.key === compareKey
+      ? view.result
+      : null
+  const result = comparisonResult
+    ? resultForSite(comparisonResult, activeComparison)
+    : !comparing && view.phase === 'done' && view.key === key
+      ? view.result
+      : null
   const built = buildRequest(selection, params)
-  const stale = result ? requestDiffers(built.request, result.request) : false
+  const stale = result
+    ? requestDiffers(comparing ? compareRequest : built.request, result.request)
+    : false
   const series = result
     ? (result.series.find((s) => s.site_ref === result.sites[0].site_ref) ??
       null)
     : null
-  const safeIndex = series ? Math.min(index, series.time_utc.length - 1) : 0
+  const systemTimes = useMemo(() => {
+    if (series) return series.time_utc
+    try {
+      const start = parseUtc(`${params.startDate}T${params.startTime}:00Z`)
+      return Array.from({ length: params.durationDays * 24 + 1 }, (_, i) =>
+        new Date(start + i * 3600000).toISOString(),
+      )
+    } catch {
+      return []
+    }
+  }, [series, params.startDate, params.startTime, params.durationDays])
+  const system = useSystemSeries(
+    source,
+    systemTimes,
+    centerView === 'system',
+    systemReload,
+  )
+  const safeIndex = Math.max(
+    0,
+    Math.min(index, (series?.time_utc.length ?? systemTimes.length) - 1),
+  )
+  const timeSeries =
+    series ??
+    (system.status === 'ready'
+      ? { time_utc: system.data.time_utc, step_s: 3600 }
+      : null)
 
   const terrainPoint = useMemo(() => {
     if (selection?.kind === 'custom')
@@ -223,11 +281,13 @@ function App({
     (next: Selection) => {
       // A different selection makes any running or finished simulation obsolete.
       cancel()
+      cancelComparison()
+      setComparing(false)
       setIndex(0)
       setPlaying(false)
       setSelection(next)
     },
-    [cancel],
+    [cancel, cancelComparison],
   )
 
   const selectSite = (siteId: string) => {
@@ -319,6 +379,7 @@ function App({
     if (!built.request) return
     setIndex(0)
     setPlaying(false)
+    setComparing(false)
     void start(built.request, key)
   }
 
@@ -433,10 +494,81 @@ function App({
           onChange={setParams}
           onRun={run}
         />
+        <section className="panel" aria-label={en.compare.title}>
+          <h2>{en.compare.title}</h2>
+          <p className="small">{en.compare.hint}</p>
+          <button
+            disabled={
+              !selection ||
+              entries.length >= 4 ||
+              entries.some((e) => selectionKey(e.selection) === key)
+            }
+            onClick={() => {
+              if (!selection) return
+              comparison.cancel()
+              setComparing(false)
+              setEntries((previous) => [
+                ...previous,
+                {
+                  selection,
+                  frameId: selectedSite?.frame_id ?? params.frameId,
+                  label:
+                    selectedSite?.name ??
+                    (selection.kind === 'custom' ? selection.label : key),
+                },
+              ])
+            }}
+          >
+            {en.compare.add}
+          </button>
+          <ol>
+            {entries.map((entry, i) => (
+              <li key={selectionKey(entry.selection)}>
+                {entry.label}{' '}
+                <button
+                  aria-label={`${en.compare.remove} ${entry.label}`}
+                  onClick={() => {
+                    comparison.cancel()
+                    setComparing(false)
+                    setEntries((previous) => previous.filter((_, n) => n !== i))
+                  }}
+                >
+                  {en.compare.remove}
+                </button>
+              </li>
+            ))}
+          </ol>
+          {entries.length >= 2 && !compareRequest && (
+            <p role="status">{en.compare.incompatible}</p>
+          )}
+          <button
+            disabled={!compareRequest || running}
+            onClick={() => {
+              if (!compareRequest) return
+              cancel()
+              setComparing(true)
+              setActiveComparison(0)
+              setSelection(entries[0].selection)
+              setIndex(0)
+              setPlaying(false)
+              void comparison.start(compareRequest, compareKey)
+            }}
+          >
+            {en.compare.run}
+          </button>
+        </section>
       </aside>
 
       <main className="zone zone--center" aria-label={en.zones.globe}>
         <div className="view-tabs" role="tablist" aria-label={en.views.label}>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={centerView === 'map'}
+            onClick={() => setCenterView('map')}
+          >
+            {en.map.title}
+          </button>
           <button
             type="button"
             role="tab"
@@ -463,10 +595,33 @@ function App({
           >
             {en.views.horizon}
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={centerView === 'system'}
+            onClick={() => setCenterView('system')}
+          >
+            {en.system.title}
+          </button>
         </div>
         {/* One WebGL renderer at a time: the inactive view is unmounted and its GPU resources freed. */}
         <div className="view-panel" role="tabpanel">
-          {centerView === 'horizon' ? (
+          {webglFailed && <p role="status">{en.map.fallback}</p>}
+          {centerView === 'map' ? (
+            <MapView
+              state={globeState}
+              textureUrl={source.globeTextureUrl}
+              onPick={pickPoint}
+              onSite={selectSite}
+              focusTarget={focusTarget}
+            />
+          ) : centerView === 'system' ? (
+            <SystemView
+              state={system}
+              index={safeIndex}
+              onRetry={() => setSystemReload((n) => n + 1)}
+            />
+          ) : centerView === 'horizon' ? (
             <HorizonChart
               state={horizon}
               hasPoint={terrainPoint !== null}
@@ -483,6 +638,7 @@ function App({
               focusTarget={focusTarget}
               focusRequest={focusRequest}
               factory={globeFactory}
+              onUnavailable={fallback2D}
             />
           ) : (
             <LocalTerrainView
@@ -550,7 +706,7 @@ function App({
 
       <section className="zone zone--bottom" aria-label={en.zones.time}>
         <TimeBar
-          series={series}
+          series={timeSeries}
           index={safeIndex}
           playing={playing}
           onIndex={setIndex}
@@ -565,6 +721,20 @@ function App({
         <span>{en.credits.design}</span>
         <span>{en.app.independent}</span>
       </footer>
+      {comparisonResult && (
+        <ComparisonPanel
+          result={comparisonResult}
+          index={safeIndex}
+          active={activeComparison}
+          stale={stale}
+          onActive={(i) => {
+            setActiveComparison(i)
+            setSelection(entries[i].selection)
+            const site = comparisonResult.sites[i]
+            focusOn(site.latitude_deg, site.longitude_deg)
+          }}
+        />
+      )}
     </div>
   )
 }

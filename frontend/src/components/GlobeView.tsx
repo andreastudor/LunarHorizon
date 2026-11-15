@@ -27,6 +27,7 @@ interface Props {
     nonce: number
   } | null
   factory?: GlobeFactory
+  onUnavailable?: () => void
 }
 
 export function GlobeView({
@@ -36,6 +37,7 @@ export function GlobeView({
   focusTarget,
   focusRequest,
   factory,
+  onUnavailable,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const handleRef = useRef<GlobeHandle | null>(null)
@@ -82,6 +84,7 @@ export function GlobeView({
         if (disposed) return
         if (!(error instanceof WebGLUnavailableError)) console.error(error)
         setPhase('unavailable')
+        onUnavailable?.()
       }
     }
     void create()
@@ -90,7 +93,7 @@ export function GlobeView({
       handleRef.current?.dispose()
       handleRef.current = null
     }
-  }, [factory, textureUrl])
+  }, [factory, textureUrl, onUnavailable])
 
   return (
     <div className="globe">

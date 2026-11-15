@@ -1092,5 +1092,60 @@
         "message": "alias generic"
       }
     ]
+  },
+  "SystemRequest": {
+    "time_utc": [
+      "2026-11-15T00:00:00Z"
+    ]
+  },
+  "SystemSeries": {
+    "system_schema_version": "1.0.0",
+    "time_utc": [
+      "2026-11-15T00:00:00Z"
+    ],
+    "frame_id": "J2000",
+    "origin": "SUN",
+    "aberration_correction": "NONE",
+    "position_km": {
+      "sun": [
+        [
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "earth": [
+        [
+          3.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "moon": [
+        [
+          3.0,
+          4.0,
+          0.0
+        ]
+      ]
+    },
+    "distance_km": {
+      "earth_moon": [
+        4.0
+      ],
+      "sun_earth": [
+        3.0
+      ],
+      "sun_moon": [
+        5.0
+      ]
+    },
+    "kernel_profile": "synthetic_system",
+    "kernel_sha256": [
+      "0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "coverage_start_utc": "2026-01-01T00:00:00Z",
+    "coverage_end_utc": "2027-01-01T00:00:00Z",
+    "algorithm_version": "system-centres-1"
   }
 }

@@ -3,6 +3,8 @@
 // stable `code` of the Problem document; the interface turns codes into English messages.
 
 import type {
+  SystemRequest,
+  SystemSeries,
   Catalog,
   Coverage,
   HorizonProfile,
@@ -36,6 +38,10 @@ export class NetworkError extends Error {
 }
 
 export interface DataSource {
+  systemSeries(
+    request: SystemRequest,
+    signal?: AbortSignal,
+  ): Promise<SystemSeries>
   sites(signal?: AbortSignal): Promise<Catalog>
   coverage(signal?: AbortSignal): Promise<Coverage>
   startSimulation(
@@ -164,6 +170,13 @@ async function requestHeights(
 export function createApiDataSource(baseUrl = '/api'): DataSource {
   return {
     globeTextureUrl: `${baseUrl}/assets/globe.jpg`,
+    systemSeries: (request, signal) =>
+      requestJson<SystemSeries>(`${baseUrl}/system/series`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+        signal,
+      }),
     sites: (signal) => requestJson<Catalog>(`${baseUrl}/sites`, { signal }),
     coverage: (signal) =>
       requestJson<Coverage>(`${baseUrl}/coverage`, { signal }),

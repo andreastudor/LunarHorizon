@@ -28,11 +28,14 @@ from lunarhorizon.contracts.simulation import (
     SimulationResult,
     SimulationStatus,
 )
+from lunarhorizon.contracts.system import SystemRequest, SystemSeries
 from lunarhorizon.core.conventions import SCHEMA_VERSION
 
 JSON_SCHEMA_DIALECT: Final = "https://json-schema.org/draft/2020-12/schema"
 
 DOCUMENT_MODELS: Final[dict[str, type[BaseModel]]] = {
+    "SystemRequest": SystemRequest,
+    "SystemSeries": SystemSeries,
     "Catalog": Catalog,
     "KernelManifest": KernelManifest,
     "DemProductManifest": DemProductManifest,

@@ -121,7 +121,24 @@ def test_openapi_lists_all_endpoints(client: TestClient) -> None:
         "/api/terrain/status",
         "/api/terrain/{terrain_id}/lods/{level}",
         "/api/horizon",
+        "/api/system/series",
     }
+
+
+def test_system_missing_kernels_is_explicit(no_kernels: TestClient) -> None:
+    response = no_kernels.post("/api/system/series", json={"time_utc": ["2026-11-15T00:00:00Z"]})
+    assert_problem(response, 503, ErrorCode.KERNEL_MISSING)
+
+
+@pytest.mark.kernels
+def test_system_contract_cache_and_coverage(client: TestClient) -> None:
+    request = {"time_utc": ["2026-11-15T00:00:00Z", "2026-11-16T00:00:00Z"]}
+    response = client.post("/api/system/series", json=request)
+    assert response.status_code == 200
+    check_schema(response.json(), "SystemSeries")
+    assert response.json() == client.post("/api/system/series", json=request).json()
+    outside = client.post("/api/system/series", json={"time_utc": ["2200-01-01T00:00:00Z"]})
+    assert outside.status_code == 422
 
 
 @pytest.mark.skipif(not KERNELS_PRESENT, reason="kernelurile lipsesc")

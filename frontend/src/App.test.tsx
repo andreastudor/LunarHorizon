@@ -36,6 +36,11 @@ import { en } from './i18n/en.ts'
 
 afterEach(cleanup)
 
+// OpenLayers requires a real canvas: its rendering is covered in Playwright.
+vi.mock('./components/MapView.tsx', () => ({
+  MapView: () => <div>synthetic_map</div>,
+}))
+
 const NOW = new Date('2026-11-14T10:00:00Z')
 
 function syntheticSite(
@@ -564,6 +569,9 @@ function fakeSource(overrides: Partial<DataSource> = {}) {
   const calls = { start: [] as SimulationRequest[], status: 0, terrain: 0 }
   const source: DataSource = {
     globeTextureUrl: '/synthetic/globe.jpg',
+    systemSeries: async () => {
+      throw new Error('Not used in these tests')
+    },
     ...terrainMethods(calls),
     sites: async () => CATALOG,
     coverage: async () => COVERAGE,
@@ -812,7 +820,7 @@ describe('E07 main screen', () => {
       throw new WebGLUnavailableError()
     }
     render(<App dataSource={source} globeFactory={globe.factory} now={NOW} />)
-    expect(await screen.findByText(en.globe.webglUnavailable)).toBeDefined()
+    expect(await screen.findByText(en.map.fallback)).toBeDefined()
     expect(await screen.findByText('synthetic_site_alpha')).toBeDefined()
   })
 

@@ -12,6 +12,8 @@ import json
 import logging
 import math
 import re
+import threading
+from collections import OrderedDict
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
@@ -44,6 +46,7 @@ from lunarhorizon.api.problems import (
     make_problem,
 )
 from lunarhorizon.api.settings import Settings
+from lunarhorizon.astro.system import system_series
 from lunarhorizon.contracts.catalog import Catalog
 from lunarhorizon.contracts.common import FrameId
 from lunarhorizon.contracts.horizon import HorizonProfile
@@ -62,6 +65,7 @@ from lunarhorizon.contracts.simulation import (
     SimulationRequest,
     SimulationStatus,
 )
+from lunarhorizon.contracts.system import SystemRequest, SystemSeries
 from lunarhorizon.core.conventions import SCHEMA_VERSION
 from lunarhorizon.core.coords import normalize_longitude_deg
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
@@ -152,6 +156,29 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 issues=issues,
             )
         )
+
+    system_cache: OrderedDict[str, SystemSeries] = OrderedDict()
+    system_lock = threading.RLock()
+
+    @app.post("/api/system/series", response_model=SystemSeries, responses=PROBLEM_RESPONSES)
+    def centres(request: SystemRequest) -> Response:
+        profile = registry.profile_for_frame(registry.default_frame_id())
+        key = hashlib.sha256(
+            (
+                request.model_dump_json()
+                + profile.profile_id
+                + "|".join(profile.sha256)
+                + "system-centres-1"
+            ).encode()
+        ).hexdigest()
+        with system_lock:
+            if key not in system_cache:
+                system_cache[key] = system_series(profile, request)
+            system_cache.move_to_end(key)
+            result = system_cache[key]
+            while len(system_cache) > 4:
+                system_cache.popitem(last=False)
+        return _json(result)
 
     verified_assets: dict[str, str] = {}
 

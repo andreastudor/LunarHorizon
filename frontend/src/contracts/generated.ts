@@ -8,6 +8,8 @@
  * Contractele de date LunarHorizon. Generat din backend/lunarhorizon/contracts; nu se editează manual (scripts/generate_contracts.py).
  */
 export type LunarHorizonContracts =
+  | SystemRequest
+  | SystemSeries
   | Catalog
   | KernelManifest
   | DemProductManifest
@@ -36,6 +38,44 @@ export type ErrorCode =
   | 'PRECOMPUTED_NOT_AVAILABLE'
   | 'INTERNAL_ERROR'
 
+export interface SystemRequest {
+  /**
+   * @minItems 1
+   * @maxItems 20001
+   */
+  time_utc: string[]
+}
+export interface SystemSeries {
+  system_schema_version?: '1.0.0'
+  /**
+   * @minItems 1
+   * @maxItems 20001
+   */
+  time_utc: string[]
+  frame_id?: 'J2000'
+  origin?: 'SUN'
+  aberration_correction?: 'NONE'
+  position_km: SystemPositions
+  distance_km: SystemDistances
+  kernel_profile: string
+  /**
+   * @minItems 1
+   */
+  kernel_sha256: string[]
+  coverage_start_utc: string
+  coverage_end_utc: string
+  algorithm_version?: 'system-centres-1'
+}
+export interface SystemPositions {
+  sun: number[][]
+  earth: number[][]
+  moon: number[][]
+}
+export interface SystemDistances {
+  earth_moon: number[]
+  sun_earth: number[]
+  sun_moon: number[]
+}
 export interface Catalog {
   schema_version: '0.8.0'
   catalog_version: string

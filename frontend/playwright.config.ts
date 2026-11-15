@@ -17,7 +17,7 @@ export default defineConfig({
   retries: 0,
   reporter: [['list']],
   use: {
-    baseURL: 'http://127.0.0.1:5173',
+    baseURL: 'http://127.0.0.1:5174',
     trace: 'retain-on-failure',
   },
   projects: [
@@ -34,17 +34,18 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `${python} -m uvicorn lunarhorizon.api.app:app --host 127.0.0.1 --port 8000`,
+      command: `${python} -m uvicorn lunarhorizon.api.app:app --host 127.0.0.1 --port 8001`,
       cwd: '../backend',
-      url: 'http://127.0.0.1:8000/api/health',
+      url: 'http://127.0.0.1:8001/api/health',
       env: { PYTHONUTF8: '1' },
-      reuseExistingServer: true,
+      reuseExistingServer: false,
       timeout: 60_000,
     },
     {
-      command: 'npm run dev -- --host 127.0.0.1 --port 5173 --strictPort',
-      url: 'http://127.0.0.1:5173',
-      reuseExistingServer: true,
+      command: 'npm run dev -- --host 127.0.0.1 --port 5174 --strictPort',
+      url: 'http://127.0.0.1:5174',
+      env: { LUNAR_API_URL: 'http://127.0.0.1:8001' },
+      reuseExistingServer: false,
       timeout: 60_000,
     },
   ],

@@ -9,7 +9,7 @@ export default defineConfig({
   build: { chunkSizeWarningLimit: 700 },
   // The FastAPI backend (backend/: uvicorn on 127.0.0.1:8000) is reached through /api.
   server: {
-    proxy: { '/api': 'http://127.0.0.1:8000' },
+    proxy: { '/api': process.env.LUNAR_API_URL ?? 'http://127.0.0.1:8000' },
   },
   preview: {
     proxy: { '/api': 'http://127.0.0.1:8000' },

@@ -254,10 +254,17 @@ def _properties() -> Iterator[tuple[str, str, dict[str, Any]]]:
 
 
 def test_numeric_fields_carry_a_unit_suffix() -> None:
+    # E10A groups vector components under position_km and pair distances under distance_km.
+    # The unit belongs to the container; leaf names are body identifiers, not unitless values.
+    unit_containers = {"SystemPositions": "position_km", "SystemDistances": "distance_km"}
+    system = SCHEMA["$defs"]["SystemSeries"]["properties"]
+    for model, container in unit_containers.items():
+        assert system[container]["$ref"] == f"#/$defs/{model}"
     offenders = [
         f"{model}.{field}"
         for model, field, prop in _properties()
         if _numeric(prop)
+        and model not in unit_containers
         and not field.endswith(UNIT_SUFFIXES)
         and field not in UNITLESS_NUMERIC_FIELDS
     ]

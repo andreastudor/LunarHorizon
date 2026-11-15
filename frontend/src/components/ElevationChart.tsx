@@ -8,6 +8,7 @@ import { en } from '../i18n/en.ts'
 interface Props {
   series: SiteSeries
   index: number
+  domain?: [number, number]
 }
 
 const WIDTH = 360
@@ -35,7 +36,7 @@ function path(
   return d.trim()
 }
 
-export function ElevationChart({ series, index }: Props) {
+export function ElevationChart({ series, index, domain }: Props) {
   const lines = [
     series.sun.elevation_deg,
     series.earth.elevation_deg,
@@ -43,8 +44,8 @@ export function ElevationChart({ series, index }: Props) {
     series.earth.horizon_elevation_deg,
   ]
   const known = lines.flat().filter((v): v is number => v !== null)
-  const low = Math.floor(Math.min(-1, ...known))
-  const high = Math.ceil(Math.max(1, ...known))
+  const low = domain?.[0] ?? Math.floor(Math.min(-1, ...known))
+  const high = domain?.[1] ?? Math.ceil(Math.max(1, ...known))
   const count = series.time_utc.length
   const plotW = WIDTH - LEFT - RIGHT
   const plotH = HEIGHT - TOP - BOTTOM
