@@ -3,8 +3,13 @@
 Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Convențiile de unități, timp
 și cadre sunt în [SPEC_FIZICA.md](SPEC_FIZICA.md).
 
-> **Versiunea de schemă curentă: 0.6.0 (E08b, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
+> **Versiunea de schemă curentă: 0.7.0 (E09, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
 > Istoric:
+> - **0.7.0 (E09)** — document nou `HorizonProfile` (`GET /api/horizon`): `status` (`complete`, `partial`,
+>   `unavailable`), `reason_code`, `reason`, `elevation_deg`, `obstacle_distance_m`, `quality` pe azimut,
+>   `max_search_distance_m`, `coverage_fraction`, `dem_products` (cu rol, cadru, rezoluție, SHA-256), `parameters`,
+>   `parameters_status = provisional`, `cache_key`. Celelalte documente au aceeași structură ca în 0.6.0; în modul
+>   `dem`, `SimulationResult` folosește câmpurile existente (`horizon`, `horizon_elevation_deg`, `not_computed`).
 > - **0.6.0 (E08b)** — document nou `TerrainStatusReport` (`GET /api/terrain/status`: produse și stări pe situri);
 >   `Site.status` acceptă `dem_region` și `Site.mission_status` acceptă `not_applicable` (punct reprezentativ al unei
 >   regiuni DEM, fără misiune; validator dedicat). Celelalte documente au aceeași structură ca în 0.5.0.
@@ -442,3 +447,19 @@ inițială:
   plus `frame_id` opțional (implicit cadrul sitului). Selecția urmează regula din [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md).
   Răspunsuri: 200 manifest; 503 `TERRAIN_DATA_MISSING` (terrain not downloaded); 422 `UNSUPPORTED_FRAME` (frame
   mismatch); 404 `OUT_OF_DEM_COVERAGE`, cu `detail` care începe cu `coverage_unverified` sau `no_dem_coverage`.
+
+## 12. Completări E09 — orizontul din DEM (2026-11-15)
+
+- `GET /api/horizon?observer_height_m=…&site_id=…` sau `…&latitude_deg=…&longitude_deg=…&frame_id=…` → `HorizonProfile`.
+  `observer_height_m` este obligatoriu (fără valoare implicită). Un sit din catalog folosește cadrul în care este
+  declarat; alt `frame_id` → 422 `UNSUPPORTED_FRAME`. Un punct cere `frame_id` (422 altfel).
+- Datele lipsă dau `200` cu `status = unavailable` și `reason_code` (`frame_mismatch`, `terrain_not_downloaded`,
+  `coverage_unverified`, `no_dem_coverage`, `observer_elevation_unknown`), cu tablouri goale. `partial` are
+  `reason_code = missing_samples`. Niciun azimut fără date nu devine zero sau orizont liber.
+- `POST /api/simulations` cu `terrain_mode = dem`: profilul fiecărui sit se calculează la trimitere; dacă este
+  indisponibil, cererea este refuzată (`UNSUPPORTED_FRAME` 422, `TERRAIN_DATA_MISSING` 503, `OUT_OF_DEM_COVERAGE`
+  422), fără trecere la modul idealizat. Rezultatul are `horizon[].mode = dem`, `series.*.horizon_elevation_deg =
+  H(a(t))` (interpolare liniară; `null` lângă `no_data`), `visible = null` cu `quality.issues`
+  (`visibility_pending_e10`), iar `events` și `summary` în `quality.not_computed` până la E10.
+- Parametrii și cheia cache-ului fiecărui profil apar în `provenance.horizon_parameters`.
+

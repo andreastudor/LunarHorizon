@@ -1,4 +1,19 @@
 # Stare
+## E09 — orizontul din DEM, 2026-11-15
+
+**Implementare tehnică finalizată; D-08/D-09 [GEO] deschise, deci parametrii sunt propuneri tehnice.** Profilul H(a)
+se calculează din rasterele de calcul pe două niveluri: apropiat (PGDA 104, 5 m) și îndepărtat (`LDEM_75S_120M`, LOLA
+GDR PDS3, 120 m; același cadru declarat ME DE421 și aceeași sferă; diferență măsurată −0,29 ± 1,56 m pe Leibnitz).
+Curbura, altitudinea observatorului din DEM și înălțimea echipamentului sunt incluse; NoData nu devine zero; stările
+`complete` / `partial` / `unavailable` sunt distincte. Primul sit (Leibnitz Beta): profil complet, 720 de azimuturi,
+0,72–0,87 s. Studiul de convergență (T-07, VALIDARE): propunere `Δa` 0,5°, `d_max` 300 km, pași 5 m / 120 m, prag
+0,05°; nicio schimbare după 200 km pe trei puncte, dar la 350–400 km datele lipsesc pe unele azimuturi, deci fără
+convergență fizică completă; rezoluția apropiată nu converge demonstrabil (10 → 5 m: 0,070°). Schema **0.7.0**
+(`HorizonProfile`, `GET /api/horizon`); `terrain_mode = dem` funcționează în simulări fără trecere tăcută la modul
+idealizat; vizibilitatea față de relief, evenimentele și indicatorii rămân E10. Fila „Horizon profile” în interfață.
+Verificări: backend 372, frontend 221, Playwright 5/5. Detalii: [E09_HORIZON.md](E09_HORIZON.md). E10 nu a fost
+începută.
+
 ## E08b — teren local pentru siturile polare sudice, 2026-11-15
 
 **Implementare tehnică finalizată; acceptare științifică restantă.** Lista vizată (15 intrări, regula ≤ −60° S):
@@ -399,8 +414,8 @@ Propunerile sunt puncte de pornire, nu rezultate validate.
 | D-05 | GEO | Raza de referință și referința înălțimilor din DEM-uri | 1 737 400 m, de confirmat din metadate | E05, E09 |
 | D-06 | GEO | Parametrii proiecției stereografice ai produselor PGDA | De citit din fișiere | E05 |
 | D-07 | GEO | Care sunt cele două situri polare demonstrative? | **DESCHISĂ.** IM-1/IM-2 retrase la cererea utilizatorului; lista activă de candidați este goală. Sunt necesare poziții citabile și verificarea DEM pentru alte situri. | E04 (închidere), E05 |
-| D-08 | GEO | Ce produs îndepărtat și ce rază de căutare folosim la orizont? | Produs LOLA GDR polar; ales prin convergență | E09 |
-| D-09 | GEO, ASTRO | Pasul azimutal și pasul radial ale orizontului | Alese prin convergență | E09 |
+| D-08 | GEO | Ce produs îndepărtat și ce rază de căutare folosim la orizont? | **Propunere tehnică E09 (neconfirmată):** `LDEM_75S_120M`, `d_max` 300 km, din studiul de convergență ([E09_HORIZON.md](E09_HORIZON.md)) | E09 |
+| D-09 | GEO, ASTRO | Pasul azimutal și pasul radial ale orizontului | **Propunere tehnică E09 (neconfirmată):** `Δa` 0,5°, pas 5 m apropiat / 120 m îndepărtat, prag 0,05° | E09 |
 | D-10 | GEO | Conținutul catalogului și sursele pozițiilor; tratarea cadrelor istorice | **Implementat ca propunere, neconfirmat de geografi**: 10 intrări active verificate la documentele originale (produs PDS LROC actual ca sursă primară). Cadrul: nicio sursă nu numește realizarea (DE); adoptarea ca `MOON_ME_DE440_ME421` este o ipoteză consemnată în fiecare intrare. Fără regiuni candidate; ținte planificate numerice numai pentru Chandrayaan-3 | E04 (închidere) |
 | D-11 | GEO | Textura globului și fundalurile 2D; texte de creditare | Mozaicul LROC WAC; umbrirea PGDA | E05 |
 | D-12 | ASTRO, GEO | Toleranțele T-01 – T-09 | T-04, T-05 stabilite (E02). **T-02 (0,1 km) și T-03 (0,001°) confirmate (comunicat)**. **T-01 deschis**: 0,001° (propus) sau ≤ 1·10⁻⁵° (recomandat). T-06–T-09 neconfirmate | E03 (T-01); E09–E10 |

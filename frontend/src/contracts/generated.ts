@@ -1,7 +1,7 @@
 /**
  * GENERAT AUTOMAT din data/schemas/lunarhorizon.schema.json — nu se editează manual.
  * Regenerare: scripts/generate_contracts.py (rădăcină), apoi `npm run contracts:generate`.
- * Versiunea schemei: 0.6.0
+ * Versiunea schemei: 0.7.0
  */
 
 /**
@@ -21,6 +21,7 @@ export type LunarHorizonContracts =
   | Health
   | Coverage
   | TerrainStatusReport
+  | HorizonProfile
   | Problem
 export type ErrorCode =
   | 'VALIDATION_ERROR'
@@ -36,7 +37,7 @@ export type ErrorCode =
   | 'INTERNAL_ERROR'
 
 export interface Catalog {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   catalog_version: string
   sites: Site[]
   demo_site_selection: DemoSiteSelection
@@ -141,7 +142,7 @@ export interface ExcludedCandidate {
   reason: string
 }
 export interface KernelManifest {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   default_profile: 'de440_me421' | 'de421'
   /**
    * @minItems 1
@@ -183,7 +184,7 @@ export interface ChecksumReference {
   source_url: string | null
 }
 export interface DemProductManifest {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   products: DemProduct[]
 }
 export interface DemProduct {
@@ -225,7 +226,7 @@ export interface ProductFile {
   size_bytes: number | null
 }
 export interface TerrainManifest {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   terrain_id: string
   source: TerrainSource
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -293,7 +294,7 @@ export interface TerrainLod {
  * margine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.
  */
 export interface TerrainSample {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   terrain_id: string
   product_id: string
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -371,7 +372,7 @@ export interface FieldError {
   message: string
 }
 export interface SimulationResult {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   request: SimulationRequest
   /**
    * @minItems 1
@@ -526,7 +527,7 @@ export interface NotComputed {
   reason: string
 }
 export interface ScenarioIndex {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   scenarios: Scenario[]
 }
 export interface Scenario {
@@ -553,7 +554,7 @@ export interface Health {
   issues: string[]
 }
 export interface Coverage {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   temporal: TemporalCoverage
   terrain: TerrainCoverage[]
 }
@@ -574,7 +575,7 @@ export interface TerrainCoverage {
  * Disponibilitatea reliefului vizual; nu este acoperirea necesară calculului orizontului.
  */
 export interface TerrainStatusReport {
-  schema_version: '0.6.0'
+  schema_version: '0.7.0'
   south_polar_rule: string
   selection_rule: string
   products: TerrainProductStatus[]
@@ -600,4 +601,48 @@ export interface SiteTerrainStatus {
     | 'frame_mismatch'
   terrain_id: string | null
   reason: string
+}
+export interface HorizonProfile {
+  schema_version: '0.7.0'
+  status: 'complete' | 'partial' | 'unavailable'
+  reason_code:
+    | (
+        | 'frame_mismatch'
+        | 'terrain_not_downloaded'
+        | 'coverage_unverified'
+        | 'no_dem_coverage'
+        | 'observer_elevation_unknown'
+      )
+    | 'missing_samples'
+    | null
+  reason: string | null
+  latitude_deg: number
+  longitude_deg: number
+  frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
+  azimuth_convention: 'standard' | 'pole_meridian'
+  observer_terrain_elevation_m: number | null
+  observer_height_m: number
+  azimuth_step_deg: number
+  elevation_deg: (number | null)[]
+  obstacle_distance_m: (number | null)[]
+  quality: ('complete' | 'partial' | 'no_data')[]
+  max_search_distance_m: number
+  coverage_fraction: number
+  dem_products: HorizonProductUse[]
+  parameters: {
+    [k: string]: number | string
+  }
+  parameters_status: 'provisional'
+  cache_key: string
+  compute_time_s: number | null
+  note: string
+}
+export interface HorizonProductUse {
+  product_id: string
+  role: 'near' | 'far'
+  frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
+  resolution_m: number
+  reference_radius_m: number
+  sha256: string | null
+  valid_sample_fraction: number
 }

@@ -119,6 +119,7 @@ def test_openapi_lists_all_endpoints(client: TestClient) -> None:
         "/api/terrain/elevation",
         "/api/terrain/status",
         "/api/terrain/{terrain_id}/lods/{level}",
+        "/api/horizon",
     }
 
 
@@ -204,11 +205,12 @@ def test_catalog_site_in_another_frame_is_refused_without_conversion(
 
 
 def test_dem_mode_is_refused_not_replaced_by_idealized(no_kernels: TestClient) -> None:
+    # 89.5 S needs the PGDA 81 mosaic, which is not acquired: refused (503), never replaced.
     body = valid_body(terrain_mode="dem")
     problem = assert_problem(
-        no_kernels.post("/api/simulations", json=body), 422, ErrorCode.OUT_OF_DEM_COVERAGE
+        no_kernels.post("/api/simulations", json=body), 503, ErrorCode.TERRAIN_DATA_MISSING
     )
-    assert "idealized_local_plane" in problem["detail"]
+    assert "does not switch to the idealized mode" in problem["detail"]
 
 
 def test_unknown_simulation_id_is_404(client: TestClient) -> None:

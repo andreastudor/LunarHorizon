@@ -6,9 +6,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createApiDataSource, type DataSource } from './api/dataSource.ts'
 import { describeError } from './api/errors.ts'
 import { useLocalTerrain } from './api/useLocalTerrain.ts'
+import { useHorizonProfile } from './api/useHorizonProfile.ts'
 import { useSimulation } from './api/useSimulation.ts'
 import { CatalogPanel } from './components/CatalogPanel.tsx'
 import { GlobeView } from './components/GlobeView.tsx'
+import { HorizonChart } from './components/HorizonChart.tsx'
 import { LocalTerrainView } from './components/LocalTerrainView.tsx'
 import { ParamsForm } from './components/ParamsForm.tsx'
 import { ResultsPanel } from './components/ResultsPanel.tsx'
@@ -60,7 +62,10 @@ function App({
   })
   const [reloadToken, setReloadToken] = useState(0)
   const [selection, setSelection] = useState<Selection>(null)
-  const [centerView, setCenterView] = useState<'globe' | 'terrain'>('globe')
+  const [centerView, setCenterView] = useState<'globe' | 'terrain' | 'horizon'>(
+    'globe',
+  )
+  const [horizonReload, setHorizonReload] = useState(0)
   const [terrainReload, setTerrainReload] = useState(0)
   const [frameNote, setFrameNote] = useState<string | null>(null)
   const [params, setParams] = useState<SimulationParams>(() =>
@@ -175,6 +180,17 @@ function App({
         parsedHeight >= 0
       ? parsedHeight
       : null
+
+  // Loaded only while the Horizon view is open (no preloading).
+  const horizon = useHorizonProfile(
+    source,
+    terrainPoint?.latitudeDeg ?? null,
+    terrainPoint?.longitudeDeg ?? null,
+    terrainFrameId,
+    equipmentHeightM,
+    centerView === 'horizon',
+    horizonReload,
+  )
 
   const focusOn = useCallback((latitudeDeg: number, longitudeDeg: number) => {
     setFocusRequest((previous) => ({
@@ -355,7 +371,9 @@ function App({
           <h1>{en.app.title}</h1>
           <p className="tagline">{en.app.tagline}</p>
         </div>
-        <p className="mode-badge">{en.results.mode}</p>
+        <p className="mode-badge">
+          {params.terrainMode === 'dem' ? en.results.modeDem : en.results.mode}
+        </p>
       </header>
 
       <aside className="zone zone--left" aria-label={en.zones.catalog}>
@@ -418,10 +436,27 @@ function App({
               ? en.views.terrainUnavailable
               : en.views.terrain}
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={centerView === 'horizon'}
+            onClick={() => setCenterView('horizon')}
+          >
+            {en.views.horizon}
+          </button>
         </div>
         {/* One WebGL renderer at a time: the inactive view is unmounted and its GPU resources freed. */}
         <div className="view-panel" role="tabpanel">
-          {centerView === 'globe' ? (
+          {centerView === 'horizon' ? (
+            <HorizonChart
+              state={horizon}
+              hasPoint={terrainPoint !== null}
+              hasHeight={equipmentHeightM !== null}
+              bodies={bodies}
+              simulationFrame={result ? result.request.frame_id : null}
+              onRetry={() => setHorizonReload((n) => n + 1)}
+            />
+          ) : centerView === 'globe' ? (
             <GlobeView
               state={globeState}
               textureUrl={source.globeTextureUrl}
@@ -486,6 +521,9 @@ function App({
           result={result}
           index={safeIndex}
           stale={stale}
+          terrainMode={
+            result ? result.request.terrain_mode : params.terrainMode
+          }
         />
       </aside>
 

@@ -157,7 +157,7 @@ def build_region(region: dict[str, Any], ids: dict[str, str], pinned_sha: str) -
         x, y = ds.xy(row, col)
         lon, lat = transform(ds.crs, LONGLAT, [x], [y])
         manifest = {
-            "schema_version": "0.6.0",
+            "schema_version": "0.7.0",
             "terrain_id": ids["terrain_id"],
             "source": {
                 "product_id": ids["product_id"],
@@ -402,7 +402,12 @@ def main() -> None:
     )
 
     products = json.loads(PRODUCTS.read_text(encoding="utf-8"))
-    keep = [p for p in products["products"] if p["product_id"] == LEIBNITZ["product_id"]]
+    # Leibnitz (E05) and the far-tier products (E09, scripts/acquire_lola_gdr.py) are kept.
+    keep = [
+        p
+        for p in products["products"]
+        if p["product_id"] == LEIBNITZ["product_id"] or p["role"] == "far"
+    ]
     for slug, (region, _built, sha) in sorted(built_regions.items()):
         if slug != "leibnitz_beta_plateau":
             keep.append(product_entry(region, identifiers(slug), sha))

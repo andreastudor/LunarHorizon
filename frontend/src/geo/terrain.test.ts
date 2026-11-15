@@ -14,7 +14,7 @@ import {
 
 // Synthetic manifest and grids (tests only); georeference shaped like the PGDA 104 product.
 const MANIFEST = {
-  schema_version: '0.6.0',
+  schema_version: '0.7.0',
   terrain_id: 'synthetic_terrain',
   frame_id: 'MOON_ME_DE421',
   reference_radius_m: 1_737_400,

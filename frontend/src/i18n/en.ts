@@ -100,7 +100,7 @@ export const en = {
     frame: 'Reference frame',
     terrainMode: 'Horizon',
     idealized: 'Idealized — local terrain not included',
-    dem: 'DEM terrain (not available yet)',
+    dem: 'DEM horizon — visibility with terrain not computed yet',
     run: 'Run simulation',
     running: 'Simulating…',
     needSelection: 'Select a site or a point first.',
@@ -152,6 +152,7 @@ export const en = {
   results: {
     heading: 'Sun and Earth',
     mode: 'Idealized — local terrain not included',
+    modeDem: 'DEM horizon — visibility with terrain not computed yet',
     idle: 'Run a simulation to see the Sun and Earth from this site.',
     queued: 'Simulation queued…',
     running: (percent: number) => `Simulating… ${percent}%`,
@@ -173,6 +174,8 @@ export const en = {
     noMoreEvents: (body: string) =>
       `No further ${body} event in the simulated interval.`,
     summary: 'Interval totals',
+    terrainHorizon: 'Terrain horizon here',
+    notComputedHeading: 'Not computed in this mode',
     sunTotal: 'Sun above the horizon',
     earthTotal: 'Earth in view',
     bothTotal: 'Sun and Earth together',
@@ -210,6 +213,14 @@ export const en = {
         'Terrain elevation is not used: the observer stands on the reference sphere.',
       'quality.azimuth_undefined_zenith_nadir':
         'Azimuth is undefined at the zenith or nadir for some samples.',
+      'quality.horizon_no_data_or_undefined_azimuth':
+        'The terrain horizon is unknown for some samples (no DEM data on that azimuth, or undefined azimuth).',
+      'quality.horizon_no_data':
+        'Some azimuths of the horizon profile have no DEM data.',
+      'quality.horizon_partial':
+        'The horizon profile is partial: some azimuths lack DEM samples, so the true horizon there may be higher.',
+      'quality.terrain_visibility_not_computed':
+        'Visibility with terrain is not computed yet; only the terrain horizon is given.',
     } as Record<string, string>,
   },
   time: {
@@ -244,6 +255,63 @@ export const en = {
     globe: 'Globe',
     terrain: 'Local terrain',
     terrainUnavailable: 'Local terrain (no DEM here)',
+    horizon: 'Horizon profile',
+  },
+  horizon: {
+    heading: 'Horizon profile from the DEM',
+    intro:
+      'Elevation of the terrain horizon around the observer, computed by the backend from the DEM calculation rasters (not from the 3D mesh). Azimuth from north, increasing eastward.',
+    needPoint: 'Select a site or a point to compute its horizon profile.',
+    needHeight: 'Enter a valid equipment height to compute the horizon.',
+    loading: 'Computing the horizon profile…',
+    error: 'The horizon profile could not be loaded.',
+    status: {
+      complete: 'Complete',
+      partial: 'Partial',
+      unavailable: 'Unavailable',
+    },
+    completeNote: (km: string) =>
+      `every azimuth has DEM samples up to ${km} km.`,
+    partialNote:
+      'some azimuths lack DEM samples (marked below the curve; gaps have no data). The true horizon there may be higher than shown.',
+    unavailable: {
+      frame_mismatch:
+        'no DEM product is declared in the requested frame; no coordinate conversion is applied.',
+      terrain_not_downloaded:
+        'the DEM product for this point is not on this machine.',
+      coverage_unverified:
+        'no inventoried DEM product covers this south polar point.',
+      no_dem_coverage: 'the point is outside the DEM coverage.',
+      observer_elevation_unknown:
+        'the DEM has no valid height at the observer (edge or NoData).',
+    } as Record<string, string>,
+    unknownNotFlat:
+      'No horizon is assumed here: the profile is unknown, not flat and not free.',
+    chartLabel: (status: string, known: number, total: number) =>
+      `Horizon profile, ${status}: ${known} of ${total} azimuths with a value`,
+    axisAzimuth: 'Azimuth (degrees from north, eastward)',
+    bodiesFrame:
+      'Sun and Earth are not drawn: the simulation used a different frame than the DEM.',
+    bodiesHint:
+      'Sun and Earth: positions at the time slider, from the simulation result.',
+    facts: {
+      observer: 'Observer terrain elevation',
+      equipment: 'Equipment height',
+      frame: 'Frame',
+      dMax: 'Search distance d_max',
+      step: 'Azimuth step',
+      coverage: 'Samples with data',
+      products: 'DEM products',
+      time: 'Compute time',
+    },
+    role: { near: 'near terrain', far: 'far terrain' } as Record<
+      string,
+      string
+    >,
+    provisional:
+      'Parameters (search distance, steps, far product) are technical proposals from a convergence study; decisions D-08/D-09 are open. This is not a validated horizon.',
+    visibilityPending:
+      'Visibility against this horizon (events and durations) is not computed yet.',
   },
   terrain: {
     label:
@@ -327,7 +395,7 @@ export const en = {
       OUT_OF_EPHEMERIS_COVERAGE:
         'The interval is outside the time span covered by the ephemerides.',
       OUT_OF_DEM_COVERAGE:
-        'DEM terrain is not available for this request. Horizons from the DEM are not computed yet, and the idealized mode is never used as a silent substitute — choose “Idealized — local terrain not included” explicitly.',
+        'No DEM horizon for this request (outside the DEM coverage, or no valid height at the observer). The idealized mode is never used as a silent substitute — choose “Idealized — local terrain not included” explicitly.',
       SIMULATION_NOT_FOUND:
         'The simulation is no longer available on the server. Run it again.',
       KERNEL_MISSING:

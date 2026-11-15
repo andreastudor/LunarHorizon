@@ -26,7 +26,7 @@ Stare la 2026-11-14: aplicația nu este implementată. Limitele de mai jos sunt 
 - Direcția aparentă include timpul de lumină și aberația stelară (`LT+S`, provizoriu; `CN+S` disponibilă), dar nu devierea gravitațională a luminii, pe care Horizons o aplică. Diferența față de Horizons este de ordinul 10⁻⁷°.
 - Efemeridele locale (DE440s) diferă de cele folosite de Horizons (DE441). Acordul cu Horizons compară două implementări JPL; nu este o validare independentă și nu măsoară incertitudinea fizică.
 - La zenit și la nadir azimutul nu este definit; motorul îl raportează ca nedefinit. Din schema 0.4.0 (E07) azimutul nedefinit este transmis ca `null` cu motiv în `quality.issues` și afișat „Undefined”; nu este înlocuit cu zero.
-- Modul idealizat (singurul calculat la E06) are orizontul plan la 0° și nu include efectele terenului local; `terrain_mode=dem` este refuzat, nu înlocuit. Acoperirea orizontului din DEM nu este validată.
+- Modul idealizat are orizontul plan la 0° și nu include efectele terenului local. Din E09, `terrain_mode=dem` calculează orizontul din DEM, dar vizibilitatea față de el, evenimentele și indicatorii sunt E10 (`null` / necalculate); o cerere fără orizont disponibil este refuzată, nu înlocuită.
 - Terenul local E08 este numai afișare: vizibilitatea și evenimentele rămân idealizate (orizont 0°) până la E09. Umbrele, lumina și exagerarea verticală sunt vizuale. Mesh-ul folosește nivelul de 40 m/pixel; detaliile sub 40 m nu apar în 3D.
 - Rasterul Leibnitz Beta nu are NoData, deci afișarea golurilor (pătrate roșii, fără triunghiuri) este verificată numai pe date sintetice. Terenul acoperă 16 × 16 km; în afara lui nu se generează relief.
 - Cadrul terenului (`MOON_ME_DE421`) este o ipoteză; direcțiile se desenează numai când simularea folosește același cadru. Observatorul din simulare rămâne pe sfera de referință: altitudinea terenului (≈ 6,4 km) nu intră încă în calculul direcțiilor (paralaxa estimată ≈ 0,001° pentru Pământ, estimare neverificată).
@@ -35,6 +35,7 @@ Stare la 2026-11-14: aplicația nu este implementată. Limitele de mai jos sunt 
 
 ## 3. Relief și orizont
 
+- E09: parametrii orizontului (`d_max` 300 km, `Δa` 0,5°, pași 5 m / 120 m, produsul `LDEM_75S_120M`) sunt propuneri tehnice (D-08/D-09 deschise). Convergența față de rezoluția apropiată nu este demonstrabilă (5 m este cel mai fin produs; 10 → 5 m schimbă până la 0,070°), iar terenul dincolo de grila îndepărtată nu este verificat. Integritatea fișierelor LOLA la sursă nu este verificabilă (PDS nu publică sume de control).
 - Orizontul din relief există numai unde sunt încărcate produse DEM. În prima versiune, relieful de 5 m/pixel acoperă regiunea polară sudică (87–90°S) și siturile cu DEM propriu.
 - Produsele PGDA umplu pixelii goi prin interpolare. O parte din relief este deci estimată, nu măsurată. Harta numărului de măsurători arată unde.
 - Orizontul depinde de raza de căutare. Obstacolele aflate dincolo de datele încărcate nu sunt văzute de algoritm; azimuturile afectate sunt marcate `partial`.

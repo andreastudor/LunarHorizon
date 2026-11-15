@@ -13,4 +13,5 @@ Datele proiectului. Planul complet este în [docs/DATA_PLAN.md](../docs/DATA_PLA
 Fișierele brute mari (DEM, kerneluri) și cache-ul nu intră în Git. Se obțin cu scripturile din `scripts/`
 și vor fi excluse prin `.gitignore` la etapa E01.
 
-Toate subdirectoarele sunt goale deocamdată. Nicio dată nu a fost descărcată.
+Datele brute descărcate sunt fixate prin manifestele din `manifests/` (kerneluri, PGDA 104: `pgda104_acquisition.json`,
+LOLA GDR pentru orizont, E09: `lola_gdr_acquisition.json`); scripturile de achiziție le verifică cu `--verify`.

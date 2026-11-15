@@ -34,6 +34,7 @@ from lunarhorizon.api.data import (
     point_in_terrain,
     terrain_coverage,
 )
+from lunarhorizon.api.horizon import HorizonService
 from lunarhorizon.api.jobs import SimulationService
 from lunarhorizon.api.problems import (
     PROBLEM_MEDIA_TYPE,
@@ -45,6 +46,7 @@ from lunarhorizon.api.problems import (
 from lunarhorizon.api.settings import Settings
 from lunarhorizon.contracts.catalog import Catalog
 from lunarhorizon.contracts.common import FrameId
+from lunarhorizon.contracts.horizon import HorizonProfile
 from lunarhorizon.contracts.manifests import ProjectedBounds, TerrainManifest, TerrainSample
 from lunarhorizon.contracts.service import (
     Coverage,
@@ -92,7 +94,8 @@ def _problem_response(problem: Problem) -> JSONResponse:
 def create_app(settings: Settings | None = None) -> FastAPI:
     config = settings or Settings()
     registry = DataRegistry(config)
-    service = SimulationService(config, registry)
+    horizons = HorizonService(registry, config.far_terrain_dir, config.horizon_cache_dir)
+    service = SimulationService(config, registry, horizons)
     startup_issues: list[str] = []
 
     @asynccontextmanager
@@ -441,6 +444,50 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if selection.status == "terrain_available" and selection.entry is not None:
             return _json(selection.entry.manifest)
         return selection_problem(selection)
+
+    @app.get("/api/horizon", response_model=HorizonProfile, responses=PROBLEM_RESPONSES)
+    def horizon(
+        observer_height_m: Annotated[float, Query(ge=0.0, le=1000.0)],
+        site_id: Annotated[str | None, Query(pattern=r"^[a-z0-9][a-z0-9_.-]{0,63}$")] = None,
+        latitude_deg: Annotated[float | None, Query(ge=-90.0, le=90.0)] = None,
+        longitude_deg: Annotated[float | None, Query(ge=-180.0, lt=360.0)] = None,
+        frame_id: Annotated[FrameId | None, Query()] = None,
+    ) -> Response:
+        """Horizon profile H(a) from the DEM calculation rasters (E09).
+
+        A catalog site uses the frame it is declared in (a different `frame_id` is refused, never
+        converted); a point needs `frame_id`. Unavailable data give `status = unavailable` with a
+        reason, never a free horizon. Parameters are provisional (D-08/D-09)."""
+        by_point = latitude_deg is not None or longitude_deg is not None
+        if (site_id is not None) == by_point or (
+            by_point and None in (latitude_deg, longitude_deg)
+        ):
+            raise LunarHorizonError(
+                ErrorCode.VALIDATION_ERROR,
+                "indicați exact unul: site_id sau latitude_deg + longitude_deg",
+            )
+        if site_id is not None:
+            matches = [site for site in registry.catalog().sites if site.id == site_id]
+            if not matches:
+                raise LunarHorizonError(
+                    ErrorCode.VALIDATION_ERROR, f"site_id {site_id!r} nu există în catalog"
+                )
+            site = matches[0]
+            if frame_id is not None and frame_id != site.frame_id:
+                raise LunarHorizonError(
+                    ErrorCode.UNSUPPORTED_FRAME,
+                    f"{site_id} este declarat în {site.frame_id}; cererea folosește {frame_id}; "
+                    "nu se aplică nicio transformare de cadru",
+                )
+            latitude, longitude, frame = site.latitude_deg, site.longitude_deg, site.frame_id
+        else:
+            if frame_id is None:
+                raise LunarHorizonError(
+                    ErrorCode.VALIDATION_ERROR, "frame_id este obligatoriu pentru un punct"
+                )
+            assert latitude_deg is not None and longitude_deg is not None
+            latitude, longitude, frame = latitude_deg, longitude_deg, frame_id
+        return _json(horizons.profile(latitude, longitude, frame, observer_height_m))
 
     @app.post(
         "/api/simulations",

@@ -822,3 +822,71 @@ button.primary:hover:not(:disabled) {
     text-align: left;
   }
 }
+
+/* E09 — horizon profile chart */
+.horizon-view {
+  padding: 0.75rem 1rem;
+  overflow: auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.horizon-chart {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  background: rgb(7 10 16 / 60%);
+  border-radius: 4px;
+}
+
+.horizon-grid {
+  stroke: rgb(255 255 255 / 12%);
+  stroke-width: 1;
+}
+
+.horizon-zero {
+  stroke: rgb(255 255 255 / 45%);
+  stroke-dasharray: 4 4;
+}
+
+.horizon-tick,
+.horizon-axis {
+  fill: #cbd5e1;
+  font-size: 11px;
+}
+
+.horizon-line {
+  fill: none;
+  stroke: #2dd4bf;
+  stroke-width: 1.6;
+}
+
+.horizon-partial {
+  fill: #f59e0b;
+}
+
+.horizon-nodata {
+  fill: rgb(148 163 184 / 30%);
+}
+
+.horizon-body circle {
+  stroke: #0b0f17;
+  stroke-width: 1.5;
+}
+
+.horizon-body--sun circle {
+  fill: #facc15;
+}
+
+.horizon-body--earth circle {
+  fill: #60a5fa;
+}
+
+.horizon-body text {
+  fill: #e5e7eb;
+  font-size: 11px;
+}
+
+.horizon-product {
+  display: block;
+}

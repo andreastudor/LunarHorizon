@@ -1,0 +1,669 @@
+{
+  "description": "E09 horizon convergence study (T-07). Technical proposal; D-08/D-09 [GEO] open.",
+  "generated_at_utc": "2026-11-15T07:01:08Z",
+  "algorithm_version": "e09.1",
+  "threshold_deg": 0.05,
+  "threshold_status": "provisional technical proposal (1/5 of the solar angular radius), not validated",
+  "machine": "Windows AMD64, Python 3.13.16",
+  "far_products": {
+    "LDEM_75S_120M": true,
+    "LDEM_75S_60M": true
+  },
+  "points": {
+    "leibnitz_beta": {
+      "latitude_deg": -85.4266039743,
+      "longitude_deg": 31.7441821732,
+      "observer_terrain_elevation_m": 6398.92,
+      "observer_height_m": 2.0,
+      "near_raster_min_edge_distance_m": 7995.0,
+      "base_parameters": {
+        "algorithm_version": "e09.1",
+        "azimuth_step_deg": 1.0,
+        "d_min_m": 5.0,
+        "d_max_m": 300000.0,
+        "near_step_m": 5.0,
+        "far_step_m": 120.0
+      },
+      "base": {
+        "compute_time_s": 0.456,
+        "samples_per_azimuth": 4668,
+        "coverage_fraction": 1.0,
+        "azimuths_complete": 360,
+        "azimuths_partial": 0,
+        "azimuths_no_data": 0,
+        "product_fractions": {
+          "pgda104_leibnitz_beta": 0.3838,
+          "lola_gdr_ldem_75s_120m": 0.6162
+        },
+        "obstacle_distance_max_m": 176550.0,
+        "azimuths_with_obstacle_beyond_near_raster": 22
+      },
+      "d_max": [
+        {
+          "d_max_km": 25,
+          "vs_d_max_km": 50,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.176,
+          "samples_per_azimuth": 2585,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.6931,
+            "lola_gdr_ldem_75s_120m": 0.3069
+          },
+          "obstacle_distance_max_m": 2185.0,
+          "azimuths_with_obstacle_beyond_near_raster": 0
+        },
+        {
+          "d_max_km": 50,
+          "vs_d_max_km": 100,
+          "max_abs_delta_deg": 0.7709,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.08091,
+          "azimuths_over_threshold": 7,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.24,
+          "samples_per_azimuth": 3002,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.5968,
+            "lola_gdr_ldem_75s_120m": 0.4032
+          },
+          "obstacle_distance_max_m": 68670.0,
+          "azimuths_with_obstacle_beyond_near_raster": 7
+        },
+        {
+          "d_max_km": 100,
+          "vs_d_max_km": 150,
+          "max_abs_delta_deg": 0.51564,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0504,
+          "azimuths_over_threshold": 9,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.27,
+          "samples_per_azimuth": 3418,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.5242,
+            "lola_gdr_ldem_75s_120m": 0.4758
+          },
+          "obstacle_distance_max_m": 148950.0,
+          "azimuths_with_obstacle_beyond_near_raster": 17
+        },
+        {
+          "d_max_km": 150,
+          "vs_d_max_km": 200,
+          "max_abs_delta_deg": 0.1963,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.01668,
+          "azimuths_over_threshold": 4,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.299,
+          "samples_per_azimuth": 3835,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.4672,
+            "lola_gdr_ldem_75s_120m": 0.5328
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        {
+          "d_max_km": 200,
+          "vs_d_max_km": 250,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.34,
+          "samples_per_azimuth": 4252,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.4214,
+            "lola_gdr_ldem_75s_120m": 0.5786
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        {
+          "d_max_km": 250,
+          "vs_d_max_km": 300,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.401,
+          "samples_per_azimuth": 4668,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.3838,
+            "lola_gdr_ldem_75s_120m": 0.6162
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        {
+          "d_max_km": 300,
+          "vs_d_max_km": 350,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.437,
+          "samples_per_azimuth": 5085,
+          "coverage_fraction": 0.998688,
+          "azimuths_complete": 328,
+          "azimuths_partial": 32,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.3528,
+            "lola_gdr_ldem_75s_120m": 0.6472
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        {
+          "d_max_km": 350,
+          "vs_d_max_km": 400,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.48,
+          "samples_per_azimuth": 5502,
+          "coverage_fraction": 0.986126,
+          "azimuths_complete": 259,
+          "azimuths_partial": 101,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.3302,
+            "lola_gdr_ldem_75s_120m": 0.6698
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        }
+      ],
+      "beyond_d_max_bound": {
+        "lowest_horizon_deg": -4.7649,
+        "d_max_m": 300000.0,
+        "required_obstacle_height_m": 7358.6,
+        "far_product_max_height_m": 7025.0,
+        "note": "max of LDEM_75S_120M over its whole grid; terrain beyond the grid is not covered"
+      },
+      "far_resolution": {
+        "LDEM_75S_120M_step_120_vs_LDEM_75S_60M_step_60": {
+          "max_abs_delta_deg": 0.00468,
+          "p95_abs_delta_deg": 9e-05,
+          "rms_delta_deg": 0.00029,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.683,
+          "samples_per_azimuth": 7074,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.2533,
+            "lola_gdr_ldem_75s_60m": 0.7467
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        "LDEM_75S_120M_step_60_vs_LDEM_75S_60M_step_60": {
+          "max_abs_delta_deg": 0.00447,
+          "p95_abs_delta_deg": 9e-05,
+          "rms_delta_deg": 0.00027,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360
+        }
+      },
+      "near_step": [
+        {
+          "near_step_m": 10.0,
+          "vs_near_step_m": 5.0,
+          "max_abs_delta_deg": 0.02831,
+          "p95_abs_delta_deg": 0.01173,
+          "rms_delta_deg": 0.0051,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.382,
+          "samples_per_azimuth": 4668,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.3838,
+            "lola_gdr_ldem_75s_120m": 0.6162
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        {
+          "near_step_m": 5.0,
+          "vs_near_step_m": 2.5,
+          "max_abs_delta_deg": 0.01812,
+          "p95_abs_delta_deg": 0.00651,
+          "rms_delta_deg": 0.00276,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.55,
+          "samples_per_azimuth": 6931,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.517,
+            "lola_gdr_ldem_75s_120m": 0.483
+          },
+          "obstacle_distance_max_m": 176552.5,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        }
+      ],
+      "far_step": [
+        {
+          "far_step_m": 240.0,
+          "vs_far_step_m": 120.0,
+          "max_abs_delta_deg": 0.00339,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.00027,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.376,
+          "samples_per_azimuth": 4668,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.3838,
+            "lola_gdr_ldem_75s_120m": 0.6162
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        },
+        {
+          "far_step_m": 120.0,
+          "vs_far_step_m": 60.0,
+          "max_abs_delta_deg": 0.00068,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 5e-05,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.595,
+          "samples_per_azimuth": 7074,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_leibnitz_beta": 0.2533,
+            "lola_gdr_ldem_75s_120m": 0.7467
+          },
+          "obstacle_distance_max_m": 176550.0,
+          "azimuths_with_obstacle_beyond_near_raster": 22
+        }
+      ],
+      "near_resolution": {
+        "near_10m_block_mean_vs_5m": {
+          "max_abs_delta_deg": 0.07022,
+          "p95_abs_delta_deg": 0.03318,
+          "rms_delta_deg": 0.01613,
+          "azimuths_over_threshold": 5,
+          "azimuths_compared": 360
+        },
+        "note": "same observer height; d_min 10 m in both"
+      },
+      "azimuth_step": [
+        {
+          "azimuth_step_deg": 2.0,
+          "vs_reference_step_deg": 0.1,
+          "max_abs_delta_deg": 0.16301,
+          "p95_abs_delta_deg": 0.02217,
+          "rms_delta_deg": 0.01592,
+          "azimuths_over_threshold": 56,
+          "azimuths_compared": 3600,
+          "compute_time_s": 0.19
+        },
+        {
+          "azimuth_step_deg": 1.0,
+          "vs_reference_step_deg": 0.1,
+          "max_abs_delta_deg": 0.06153,
+          "p95_abs_delta_deg": 0.00999,
+          "rms_delta_deg": 0.00555,
+          "azimuths_over_threshold": 2,
+          "azimuths_compared": 3600,
+          "compute_time_s": 0.395
+        },
+        {
+          "azimuth_step_deg": 0.5,
+          "vs_reference_step_deg": 0.1,
+          "max_abs_delta_deg": 0.03151,
+          "p95_abs_delta_deg": 0.00382,
+          "rms_delta_deg": 0.00225,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 3600,
+          "compute_time_s": 0.736
+        },
+        {
+          "azimuth_step_deg": 0.25,
+          "vs_reference_step_deg": 0.1,
+          "max_abs_delta_deg": 0.01872,
+          "p95_abs_delta_deg": 0.00156,
+          "rms_delta_deg": 0.00097,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 3600,
+          "compute_time_s": 1.423
+        }
+      ],
+      "azimuth_step_reference_time_s": 3.479,
+      "proposed_parameters": {
+        "parameters": {
+          "algorithm_version": "e09.1",
+          "azimuth_step_deg": 0.5,
+          "d_min_m": 5.0,
+          "d_max_m": 300000.0,
+          "near_step_m": 5.0,
+          "far_step_m": 120.0
+        },
+        "compute_time_s": 0.713,
+        "samples_per_azimuth": 4668,
+        "coverage_fraction": 1.0,
+        "azimuths_complete": 720,
+        "azimuths_partial": 0,
+        "azimuths_no_data": 0,
+        "product_fractions": {
+          "pgda104_leibnitz_beta": 0.3838,
+          "lola_gdr_ldem_75s_120m": 0.6162
+        },
+        "obstacle_distance_max_m": 176550.0,
+        "azimuths_with_obstacle_beyond_near_raster": 44
+      }
+    },
+    "haworth": {
+      "latitude_deg": -86.76404982027084,
+      "longitude_deg": -22.776243241756063,
+      "observer_terrain_elevation_m": 1626.79,
+      "observer_height_m": 2.0,
+      "near_raster_min_edge_distance_m": 14895.0,
+      "base_parameters": {
+        "algorithm_version": "e09.1",
+        "azimuth_step_deg": 1.0,
+        "d_min_m": 5.0,
+        "d_max_m": 300000.0,
+        "near_step_m": 5.0,
+        "far_step_m": 120.0
+      },
+      "base": {
+        "compute_time_s": 0.553,
+        "samples_per_azimuth": 6539,
+        "coverage_fraction": 1.0,
+        "azimuths_complete": 360,
+        "azimuths_partial": 0,
+        "azimuths_no_data": 0,
+        "product_fractions": {
+          "pgda104_haworth": 0.5108,
+          "lola_gdr_ldem_75s_120m": 0.4892
+        },
+        "obstacle_distance_max_m": 46750.0,
+        "azimuths_with_obstacle_beyond_near_raster": 16
+      },
+      "d_max": [
+        {
+          "d_max_km": 100,
+          "vs_d_max_km": 200,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.428,
+          "samples_per_azimuth": 5706,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_haworth": 0.5854,
+            "lola_gdr_ldem_75s_120m": 0.4146
+          },
+          "obstacle_distance_max_m": 46750.0,
+          "azimuths_with_obstacle_beyond_near_raster": 16
+        },
+        {
+          "d_max_km": 200,
+          "vs_d_max_km": 300,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.555,
+          "samples_per_azimuth": 6539,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_haworth": 0.5108,
+            "lola_gdr_ldem_75s_120m": 0.4892
+          },
+          "obstacle_distance_max_m": 46750.0,
+          "azimuths_with_obstacle_beyond_near_raster": 16
+        },
+        {
+          "d_max_km": 300,
+          "vs_d_max_km": 400,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.635,
+          "samples_per_azimuth": 7372,
+          "coverage_fraction": 0.996272,
+          "azimuths_complete": 311,
+          "azimuths_partial": 49,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_haworth": 0.4548,
+            "lola_gdr_ldem_75s_120m": 0.5452
+          },
+          "obstacle_distance_max_m": 46750.0,
+          "azimuths_with_obstacle_beyond_near_raster": 16
+        }
+      ],
+      "beyond_d_max_bound": {
+        "lowest_horizon_deg": 0.0853,
+        "d_max_m": 300000.0,
+        "required_obstacle_height_m": 28338.3,
+        "far_product_max_height_m": 7025.0,
+        "note": "max of LDEM_75S_120M over its whole grid; terrain beyond the grid is not covered"
+      },
+      "far_resolution": {
+        "LDEM_75S_120M_step_120_vs_LDEM_75S_60M_step_60": {
+          "max_abs_delta_deg": 0.00571,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.00045,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.793,
+          "samples_per_azimuth": 8863,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_haworth": 0.3769,
+            "lola_gdr_ldem_75s_60m": 0.6231
+          },
+          "obstacle_distance_max_m": 46690.0,
+          "azimuths_with_obstacle_beyond_near_raster": 16
+        },
+        "LDEM_75S_120M_step_60_vs_LDEM_75S_60M_step_60": {
+          "max_abs_delta_deg": 0.00571,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.00043,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360
+        }
+      }
+    },
+    "peak_near_shackleton": {
+      "latitude_deg": -88.8109,
+      "longitude_deg": 123.6912,
+      "observer_terrain_elevation_m": 1645.646,
+      "observer_height_m": 2.0,
+      "near_raster_min_edge_distance_m": 7995.1,
+      "base_parameters": {
+        "algorithm_version": "e09.1",
+        "azimuth_step_deg": 1.0,
+        "d_min_m": 5.0,
+        "d_max_m": 300000.0,
+        "near_step_m": 5.0,
+        "far_step_m": 120.0
+      },
+      "base": {
+        "compute_time_s": 0.381,
+        "samples_per_azimuth": 4668,
+        "coverage_fraction": 1.0,
+        "azimuths_complete": 360,
+        "azimuths_partial": 0,
+        "azimuths_no_data": 0,
+        "product_fractions": {
+          "pgda104_peak_near_shackleton": 0.3844,
+          "lola_gdr_ldem_75s_120m": 0.6156
+        },
+        "obstacle_distance_max_m": 166950.0,
+        "azimuths_with_obstacle_beyond_near_raster": 143
+      },
+      "d_max": [
+        {
+          "d_max_km": 100,
+          "vs_d_max_km": 200,
+          "max_abs_delta_deg": 1.85149,
+          "p95_abs_delta_deg": 0.91547,
+          "rms_delta_deg": 0.37856,
+          "azimuths_over_threshold": 68,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.268,
+          "samples_per_azimuth": 3835,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_peak_near_shackleton": 0.4679,
+            "lola_gdr_ldem_75s_120m": 0.5321
+          },
+          "obstacle_distance_max_m": 166950.0,
+          "azimuths_with_obstacle_beyond_near_raster": 143
+        },
+        {
+          "d_max_km": 200,
+          "vs_d_max_km": 300,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.382,
+          "samples_per_azimuth": 4668,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_peak_near_shackleton": 0.3844,
+            "lola_gdr_ldem_75s_120m": 0.6156
+          },
+          "obstacle_distance_max_m": 166950.0,
+          "azimuths_with_obstacle_beyond_near_raster": 143
+        },
+        {
+          "d_max_km": 300,
+          "vs_d_max_km": 400,
+          "max_abs_delta_deg": 0.0,
+          "p95_abs_delta_deg": 0.0,
+          "rms_delta_deg": 0.0,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.468,
+          "samples_per_azimuth": 5502,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_peak_near_shackleton": 0.3261,
+            "lola_gdr_ldem_75s_120m": 0.6739
+          },
+          "obstacle_distance_max_m": 166950.0,
+          "azimuths_with_obstacle_beyond_near_raster": 143
+        }
+      ],
+      "beyond_d_max_bound": {
+        "lowest_horizon_deg": -3.1473,
+        "d_max_m": 300000.0,
+        "required_obstacle_height_m": 11130.5,
+        "far_product_max_height_m": 7025.0,
+        "note": "max of LDEM_75S_120M over its whole grid; terrain beyond the grid is not covered"
+      },
+      "far_resolution": {
+        "LDEM_75S_120M_step_120_vs_LDEM_75S_60M_step_60": {
+          "max_abs_delta_deg": 0.01844,
+          "p95_abs_delta_deg": 0.00601,
+          "rms_delta_deg": 0.00246,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360,
+          "compute_time_s": 0.653,
+          "samples_per_azimuth": 7074,
+          "coverage_fraction": 1.0,
+          "azimuths_complete": 360,
+          "azimuths_partial": 0,
+          "azimuths_no_data": 0,
+          "product_fractions": {
+            "pgda104_peak_near_shackleton": 0.2536,
+            "lola_gdr_ldem_75s_60m": 0.7464
+          },
+          "obstacle_distance_max_m": 167010.0,
+          "azimuths_with_obstacle_beyond_near_raster": 143
+        },
+        "LDEM_75S_120M_step_60_vs_LDEM_75S_60M_step_60": {
+          "max_abs_delta_deg": 0.01625,
+          "p95_abs_delta_deg": 0.00431,
+          "rms_delta_deg": 0.00188,
+          "azimuths_over_threshold": 0,
+          "azimuths_compared": 360
+        }
+      }
+    }
+  }
+}

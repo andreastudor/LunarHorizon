@@ -65,6 +65,13 @@ Set, LRO-L-LOLA-4-GDR-V1.0”, NASA Planetary Data System, 2010.
   originale. Pagina QuickMap cere JavaScript; browserul interactiv nu este disponibil. ScienceBase rămâne blocat
   de verificarea de acces observată anterior; nu s-a încercat ocolirea acesteia.
 
+### Folosite efectiv la E09 (2026-11-15)
+
+| URL | Instituție | Produs | Folosire | Stare |
+|---|---|---|---|---|
+| <https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/> | PDS Geosciences Node | `LDEM_75S_120M.IMG/.LBL`, `LDEM_75S_60M.IMG/.LBL` (`LRO-L-LOLA-4-GDR-V1.0`) | Nivelul îndepărtat al orizontului; 60 m numai pentru convergență | Descărcate; etichete citite; SHA-256 locale fixate (PDS nu publică sume) |
+| <https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/dsmap_polar.cat> | PDS Geosciences Node | `DSMAP_POLAR.CAT` | Formula linie/eșantion → X/Y și orientarea la sud | Citită |
+
 ## 2. Astronomie
 
 | Sursă | Instituție | Ce s-a constatat | Stare |

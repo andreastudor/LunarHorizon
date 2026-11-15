@@ -33,13 +33,8 @@ def prepare_request(
             ErrorCode.INTERVAL_TOO_LONG,
             f"durata depășește limita de {max_interval_days} de zile (D-20, provizoriu)",
         )
-    if request.terrain_mode == "dem":
-        raise LunarHorizonError(
-            ErrorCode.OUT_OF_DEM_COVERAGE,
-            "terrain_mode=dem nu este disponibil în această versiune: calculul orizontului din "
-            "DEM și acoperirea lui nu sunt implementate sau validate; serviciul nu trece "
-            "singur în modul idealizat (alegeți explicit terrain_mode=idealized_local_plane)",
-        )
+    # terrain_mode=dem (E09): profilul de orizont al fiecărui sit se calculează la trimitere
+    # (api/jobs.py); un profil indisponibil oprește cererea, fără trecere la modul idealizat.
     step = request.series_step_s or default_series_step_s(duration_s)
     if duration_s / step + 1 > max_series_points:
         raise LunarHorizonError(

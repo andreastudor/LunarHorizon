@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.6.0",
+  "schema_version": "0.7.0",
   "products": [
     {
       "product_id": "pgda104_leibnitz_beta",
@@ -27,6 +27,42 @@
           "url": "https://zenodo.org/records/17954508/files/A3CLR22_10_Leibnitz_Beta_Plateau.zip?download=1",
           "sha256": "55352520c0277a902a89fbd003f83956b238e4d0b4529494eaec1b5a51b1a4b1",
           "size_bytes": 16598431
+        }
+      ]
+    },
+    {
+      "product_id": "lola_gdr_ldem_75s_120m",
+      "title": "LOLA GDR polar LDEM_75S_120M (PDS3, 120 m/pixel)",
+      "institution": "NASA GSFC / PDS Geosciences Node",
+      "landing_page_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/",
+      "citation": "Smith, D.E., et al., LRO LOLA Gridded Data Records, LRO-L-LOLA-4-GDR-V1.0, NASA Planetary Data System (PDS Geosciences Node)",
+      "accessed_at": "2026-11-15",
+      "role": "far",
+      "resolution_m": 120.0,
+      "frame_id": "MOON_ME_DE421",
+      "metadata_origin": "read_from_file",
+      "crs_wkt": null,
+      "reference_radius_m": 1737400.0,
+      "vertical_units": "m",
+      "vertical_reference": "PDS label: HEIGHT = DN * 0.5 relative to OFFSET 1737400 m sphere (MEAN EARTH/POLAR AXIS OF DE421)",
+      "nodata_value": null,
+      "gap_handling": "Grid without declared NoData (interpolated where LOLA tracks are missing); declared frame MEAN EARTH/POLAR AXIS OF DE421",
+      "min_latitude_deg": -90.0,
+      "max_latitude_deg": -75.0,
+      "files": [
+        {
+          "kind": "height",
+          "filename": "LDEM_75S_120M.IMG",
+          "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_75s_120m.img",
+          "sha256": "ae3afc3c75c33d43666ca06c83ca08f0b12ef03b7d36d2d791d972730794391b",
+          "size_bytes": 116250752
+        },
+        {
+          "kind": "label",
+          "filename": "LDEM_75S_120M.LBL",
+          "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_75s_120m.lbl",
+          "sha256": "5c59b16ec8a610792b1776fa082e409c8cc9f6743757710d14876ef366acd99a",
+          "size_bytes": 4991
         }
       ]
     },

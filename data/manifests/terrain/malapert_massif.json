@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.6.0",
+  "schema_version": "0.7.0",
   "terrain_id": "malapert_massif_provisional",
   "source": {
     "product_id": "pgda104_malapert_massif",

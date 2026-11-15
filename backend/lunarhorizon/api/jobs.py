@@ -16,6 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 
 from lunarhorizon.api.data import DataRegistry
+from lunarhorizon.api.horizon import HorizonService, require_available
 from lunarhorizon.api.problems import from_error, internal_problem
 from lunarhorizon.api.settings import Settings
 from lunarhorizon.astro.kernels import LoadedProfile
@@ -30,7 +31,7 @@ from lunarhorizon.contracts.simulation import (
     SimulationStatus,
 )
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
-from lunarhorizon.simulation.idealized import SiteInput, simulate_idealized
+from lunarhorizon.simulation.idealized import DemSiteInput, SiteInput, simulate_idealized
 from lunarhorizon.simulation.service import prepare_request
 
 LOGGER = logging.getLogger(__name__)
@@ -52,9 +53,12 @@ class _Job:
 
 
 class SimulationService:
-    def __init__(self, settings: Settings, registry: DataRegistry) -> None:
+    def __init__(
+        self, settings: Settings, registry: DataRegistry, horizons: HorizonService
+    ) -> None:
         self._settings = settings
         self._registry = registry
+        self._horizons = horizons
         self._lock = threading.Lock()
         self._jobs: OrderedDict[str, _Job] = OrderedDict()
         self._executor = ThreadPoolExecutor(
@@ -74,6 +78,7 @@ class SimulationService:
             self._settings.max_interval_days,
             self._settings.max_series_points,
         )
+        dem = self._dem_inputs(prepared, sites) if prepared.terrain_mode == "dem" else None
         profile = self._registry.profile_for_frame(prepared.frame_id)
         for moment in (prepared.start_utc, prepared.end_utc):
             require_in_coverage(utc_to_et(moment, profile), profile)
@@ -86,8 +91,26 @@ class SimulationService:
             self._jobs[job_id] = _Job(id=job_id, status="queued")
             self._jobs.move_to_end(job_id)
             self._evict()
-        self._executor.submit(self._run, job_id, prepared, sites, profile)
+        self._executor.submit(self._run, job_id, prepared, sites, profile, dem)
         return SimulationAccepted(id=job_id, status="queued", cache_hit=False)
+
+    def _dem_inputs(
+        self, request: SimulationRequest, sites: list[SiteInput]
+    ) -> dict[str, DemSiteInput]:
+        """Profilul de orizont și produsul de teren pentru fiecare sit; indisponibil → eroare."""
+        inputs: dict[str, DemSiteInput] = {}
+        for site in sites:
+            horizon = self._horizons.profile(
+                site.latitude_deg, site.longitude_deg, request.frame_id, request.observer_height_m
+            )
+            require_available(horizon)
+            selection = self._registry.select_terrain(
+                site.latitude_deg, site.longitude_deg, request.frame_id
+            )
+            if selection.entry is None:  # pragma: no cover - profilul disponibil o implică
+                raise LunarHorizonError(ErrorCode.TERRAIN_DATA_MISSING, selection.reason)
+            inputs[site.site_ref] = DemSiteInput(horizon=horizon, terrain=selection.entry.manifest)
+        return inputs
 
     def _evict(self) -> None:
         finished = [key for key, job in self._jobs.items() if job.status in ("done", "failed")]
@@ -109,6 +132,7 @@ class SimulationService:
         request: SimulationRequest,
         sites: list[SiteInput],
         profile: LoadedProfile,
+        dem: dict[str, DemSiteInput] | None,
     ) -> None:
         self._update(job_id, status="running", stage="pornire")
 
@@ -116,7 +140,7 @@ class SimulationService:
             self._update(job_id, stage=stage, completed_fraction=min(max(fraction, 0.0), 1.0))
 
         try:
-            result = simulate_idealized(request, sites, profile, progress)
+            result = simulate_idealized(request, sites, profile, progress, dem)
         except LunarHorizonError as error:
             self._update(job_id, status="failed", stage="eșuat", error=from_error(error))
         except Exception:

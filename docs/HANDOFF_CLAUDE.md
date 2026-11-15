@@ -13,8 +13,8 @@ Această actualizare este numai de planificare, nu o implementare sau o validare
 
 
 Actualizat 2026-11-14. Termen: **15 noiembrie 2026, ora 13:00 Europe/Bucharest**. Prioritate P0 până la E17;
-E18 numai după P0. O etapă pe rând; următoarea etapă este **E09** (neîncepută; cere întâi formulele și deciziile
-astronomilor).
+E18 numai după P0. O etapă pe rând; următoarea etapă este **E10** (neîncepută). E09 este implementată tehnic, cu D-08/D-09
+deschise.
 
 ## Stare și istoric
 
@@ -37,6 +37,9 @@ astronomilor).
 - **E08b (extindere obligatorie): încheiată tehnic pentru lista vizată.** 13 regiuni PGDA 104 cu teren real, 2 poziții
   Chandrayaan-3 „Coverage unverified”. Schema 0.6.0. Date: `acquire_pgda104.py --all` (≈ 399 MB), apoi
   `build_pgda104_regions.py` și `verify_terrain_products.py`. Vezi [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md).
+- **E09 (orizontul din DEM): implementată tehnic; D-08/D-09 deschise.** Schema 0.7.0 (`HorizonProfile`,
+  `GET /api/horizon`), `terrain_mode = dem` în simulări (vizibilitatea rămâne E10). Date: `acquire_lola_gdr.py
+  LDEM_75S_120M` (116 MB), apoi `horizon_convergence.py` pentru studiu. Vezi [E09_HORIZON.md](E09_HORIZON.md).
   Revizia cadrelor: nicio conversie; catalogul nu se reinterpretează; punctele DEM se numesc „DEM representative point”.
 
 ## Instalare, pornire, verificare

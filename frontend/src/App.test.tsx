@@ -21,6 +21,7 @@ import type {
   SimulationStatus,
   Site,
   TerrainManifest,
+  HorizonProfile,
   TerrainSample,
 } from './contracts/generated.ts'
 import {
@@ -95,7 +96,7 @@ function syntheticSite(
 }
 
 const CATALOG: Catalog = {
-  schema_version: '0.6.0',
+  schema_version: '0.7.0',
   catalog_version: 'synthetic',
   sites: [
     syntheticSite('synthetic_a', 'synthetic_site_alpha', 0.5, 23.5),
@@ -112,7 +113,7 @@ const CATALOG: Catalog = {
 } as unknown as Catalog
 
 const COVERAGE: Coverage = {
-  schema_version: '0.6.0',
+  schema_version: '0.7.0',
   temporal: {
     start_utc: '1849-12-25T23:59:18.816Z',
     end_utc: '2150-01-21T23:58:50.816Z',
@@ -159,7 +160,7 @@ function syntheticResult(
     visible: elevation.map((e) => e >= 0),
   })
   return {
-    schema_version: '0.6.0',
+    schema_version: '0.7.0',
     request: Object.assign(
       {
         frame_id: 'MOON_ME_DE440_ME421',
@@ -271,7 +272,7 @@ function deferred<T>(): Deferred<T> {
 
 // Synthetic terrain: a 4 × 4 grid over the representative point's raster (tests only).
 const TERRAIN_MANIFEST = {
-  schema_version: '0.6.0',
+  schema_version: '0.7.0',
   terrain_id: 'synthetic_terrain',
   source: {
     product_id: 'synthetic_dem',
@@ -322,8 +323,84 @@ const outsideDem = () =>
     'outside',
   )
 
+function syntheticProfile(
+  status: 'complete' | 'partial' | 'unavailable',
+  frameId: string,
+): HorizonProfile {
+  const base = {
+    schema_version: '0.7.0' as const,
+    latitude_deg: -85.4,
+    longitude_deg: 31.7,
+    frame_id: frameId as HorizonProfile['frame_id'],
+    azimuth_convention: 'standard' as const,
+    observer_height_m: 2,
+    azimuth_step_deg: 90,
+    max_search_distance_m: 300000,
+    parameters: { algorithm_version: 'synthetic' },
+    parameters_status: 'provisional' as const,
+    cache_key: '0'.repeat(64),
+    note: 'synthetic',
+  }
+  if (status === 'unavailable')
+    return {
+      ...base,
+      status,
+      reason_code: 'coverage_unverified',
+      reason: 'synthetic',
+      observer_terrain_elevation_m: null,
+      elevation_deg: [],
+      obstacle_distance_m: [],
+      quality: [],
+      coverage_fraction: 0,
+      dem_products: [],
+      compute_time_s: null,
+    }
+  const partial = status === 'partial'
+  return {
+    ...base,
+    status,
+    reason_code: partial ? 'missing_samples' : null,
+    reason: partial ? 'synthetic' : null,
+    observer_terrain_elevation_m: 6398.9,
+    elevation_deg: partial ? [1.5, -0.5, null, 0.25] : [1.5, -0.5, 3.0, 0.25],
+    obstacle_distance_m: partial
+      ? [1200, 50000, null, 300]
+      : [1200, 50000, 9000, 300],
+    quality: partial
+      ? ['complete', 'partial', 'no_data', 'complete']
+      : ['complete', 'complete', 'complete', 'complete'],
+    coverage_fraction: partial ? 0.6 : 1,
+    dem_products: [
+      {
+        product_id: 'synthetic_near',
+        role: 'near',
+        frame_id: 'MOON_ME_DE421',
+        resolution_m: 5,
+        reference_radius_m: 1737400,
+        sha256: null,
+        valid_sample_fraction: 0.4,
+      },
+      {
+        product_id: 'synthetic_far',
+        role: 'far',
+        frame_id: 'MOON_ME_DE421',
+        resolution_m: 120,
+        reference_radius_m: 1737400,
+        sha256: null,
+        valid_sample_fraction: 0.6,
+      },
+    ],
+    compute_time_s: 0.5,
+  }
+}
+
 function terrainMethods(calls: { terrain: number }) {
   return {
+    horizonProfile: async (
+      _latitudeDeg: number,
+      _longitudeDeg: number,
+      frameId: string,
+    ): Promise<HorizonProfile> => syntheticProfile('complete', frameId),
     terrainManifest: async (
       latitudeDeg: number,
       _longitudeDeg?: number,
@@ -334,7 +411,7 @@ function terrainMethods(calls: { terrain: number }) {
       return TERRAIN_MANIFEST
     },
     terrainStatus: async () => ({
-      schema_version: '0.6.0' as const,
+      schema_version: '0.7.0' as const,
       south_polar_rule: 'synthetic',
       selection_rule: 'synthetic',
       products: [
@@ -376,7 +453,7 @@ function terrainMethods(calls: { terrain: number }) {
     ): Promise<TerrainSample> => {
       calls.terrain += 1
       return {
-        schema_version: '0.6.0',
+        schema_version: '0.7.0',
         terrain_id: 'synthetic_terrain',
         product_id: 'synthetic_dem',
         frame_id: 'MOON_ME_DE421',
@@ -1150,5 +1227,107 @@ describe('E08b frame adoption and DEM representative points', () => {
     expect(document.body.textContent).not.toMatch(
       /Landing sites|Approved landing candidates/,
     )
+  })
+})
+
+describe('E09 horizon profile', () => {
+  async function enterPoint(lat: string, lon: string) {
+    fireEvent.change(screen.getByLabelText(en.point.latitude), {
+      target: { value: lat },
+    })
+    fireEvent.change(screen.getByLabelText(en.point.longitude), {
+      target: { value: lon },
+    })
+    fireEvent.click(screen.getByText(en.point.use))
+  }
+
+  function renderWith(source: DataSource) {
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={fakeTerrain().factory}
+        now={NOW}
+      />,
+    )
+  }
+
+  it('loads the profile only when the Horizon view opens and shows a complete profile', async () => {
+    const requests: string[] = []
+    const { source } = fakeSource({
+      horizonProfile: async (lat, lon, frameId, height) => {
+        requests.push(`${lat}|${lon}|${frameId}|${height}`)
+        return syntheticProfile('complete', frameId)
+      },
+    })
+    renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-85.4', '31.7')
+    expect(requests).toEqual([]) // no preloading
+    fireEvent.click(screen.getByRole('tab', { name: en.views.horizon }))
+    const chart = await screen.findByRole('img', { name: /Horizon profile/ })
+    expect(chart.getAttribute('data-azimuths')).toBe('4')
+    expect(chart.getAttribute('data-known')).toBe('4')
+    expect(requests).toHaveLength(1)
+    expect(requests[0]).toMatch(/^-85\.4\|31\.7\|MOON_ME_/)
+    expect(screen.getByText(en.horizon.status.complete)).toBeDefined()
+    expect(screen.getByText(en.horizon.provisional)).toBeDefined()
+    expect(screen.getByText('synthetic_far')).toBeDefined()
+  })
+
+  it('keeps unknown azimuths as gaps and marks partial ones', async () => {
+    const { source } = fakeSource({
+      horizonProfile: async (_lat, _lon, frameId) =>
+        syntheticProfile('partial', frameId),
+    })
+    renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-85.4', '31.7')
+    fireEvent.click(screen.getByRole('tab', { name: en.views.horizon }))
+    const chart = await screen.findByRole('img', { name: /Horizon profile/ })
+    expect(chart.getAttribute('data-known')).toBe('3')
+    expect(chart.querySelectorAll('.horizon-nodata')).toHaveLength(1)
+    expect(chart.querySelectorAll('.horizon-partial')).toHaveLength(1)
+    expect(screen.getByText(en.horizon.status.partial)).toBeDefined()
+    expect(
+      screen.getByText(new RegExp(en.horizon.partialNote.slice(0, 30))),
+    ).toBeDefined()
+  })
+
+  it('shows an unavailable profile as unknown, never as a flat horizon', async () => {
+    const { source } = fakeSource({
+      horizonProfile: async (_lat, _lon, frameId) =>
+        syntheticProfile('unavailable', frameId),
+    })
+    renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-69.4', '32.3')
+    fireEvent.click(screen.getByRole('tab', { name: en.views.horizon }))
+    expect(await screen.findByText(en.horizon.unknownNotFlat)).toBeDefined()
+    expect(
+      screen.getByText(en.horizon.unavailable.coverage_unverified, {
+        exact: false,
+      }),
+    ).toBeDefined()
+    expect(screen.queryByRole('img', { name: /Horizon profile/ })).toBeNull()
+  })
+
+  it('reports a failed request and retries on demand', async () => {
+    let attempts = 0
+    const { source } = fakeSource({
+      horizonProfile: async (_lat, _lon, frameId) => {
+        attempts += 1
+        if (attempts === 1) throw new ApiError(500, null, 'synthetic failure')
+        return syntheticProfile('complete', frameId)
+      },
+    })
+    renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-85.4', '31.7')
+    fireEvent.click(screen.getByRole('tab', { name: en.views.horizon }))
+    expect(await screen.findByText(en.horizon.error)).toBeDefined()
+    fireEvent.click(screen.getByText(en.common.retry))
+    await screen.findByRole('img', { name: /Horizon profile/ })
+    expect(attempts).toBe(2)
   })
 })

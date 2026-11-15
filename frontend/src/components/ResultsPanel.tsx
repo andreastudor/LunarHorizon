@@ -20,9 +20,17 @@ interface Props {
   result: SimulationResult | null
   index: number
   stale: boolean
+  /** The mode of the shown result, or the selected mode when there is no result yet. */
+  terrainMode: 'dem' | 'idealized_local_plane'
 }
 
-export function ResultsPanel({ view, result, index, stale }: Props) {
+export function ResultsPanel({
+  view,
+  result,
+  index,
+  stale,
+  terrainMode,
+}: Props) {
   return (
     <section
       className="panel"
@@ -30,7 +38,9 @@ export function ResultsPanel({ view, result, index, stale }: Props) {
       aria-busy={view.phase === 'submitting' || view.phase === 'running'}
     >
       <h2 id="results-heading">{en.results.heading}</h2>
-      <p className="mode-badge">{en.results.mode}</p>
+      <p className="mode-badge">
+        {terrainMode === 'dem' ? en.results.modeDem : en.results.mode}
+      </p>
       <StatusLine view={view} hasResult={Boolean(result)} />
       {stale && result && (
         <p className="notice notice--warning" role="status">
@@ -90,6 +100,9 @@ function ResultBody({
   const series = result.series.find((s) => s.site_ref === site.site_ref)
   const events = result.events.find((e) => e.site_ref === site.site_ref)
   const summary = result.summary.find((s) => s.site_ref === site.site_ref)
+  const notComputed = result.quality.not_computed.filter(
+    (entry) => entry.site_ref === site.site_ref,
+  )
   if (!series) {
     return <p className="muted">{en.common.notComputed}</p>
   }
@@ -110,6 +123,7 @@ function ResultBody({
           events={events?.sun ?? null}
           index={i}
           nowMs={nowMs}
+          showTerrainHorizon={result.request.terrain_mode === 'dem'}
         />
         <BodyCard
           body="earth"
@@ -117,6 +131,7 @@ function ResultBody({
           events={events?.earth ?? null}
           index={i}
           nowMs={nowMs}
+          showTerrainHorizon={result.request.terrain_mode === 'dem'}
         />
       </div>
       {(sunAz === null || earthAz === null) && (
@@ -130,6 +145,18 @@ function ResultBody({
         }}
       />
       <p className="muted small">{en.results.directions}</p>
+      {notComputed.length > 0 && (
+        <div className="notice notice--info">
+          <p>{en.results.notComputedHeading}</p>
+          <ul className="small">
+            {notComputed.map((entry) => (
+              <li key={entry.group}>
+                <code>{entry.group}</code>: {entry.reason}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       {summary && <Totals summary={summary} result={result} />}
       {events && <EventList sun={events.sun} earth={events.earth} />}
       <Provenance result={result} />
@@ -166,13 +193,16 @@ function BodyCard({
   events,
   index,
   nowMs,
+  showTerrainHorizon,
 }: {
   body: 'sun' | 'earth'
   series: BodySeries
   events: BodyEvents | null
   index: number
   nowMs: number
+  showTerrainHorizon: boolean
 }) {
+  const terrainHorizon = series.horizon_elevation_deg[index]
   const visible = series.visible[index]
   const title = body === 'sun' ? en.results.sun : en.results.earth
   return (
@@ -197,6 +227,16 @@ function BodyCard({
         <dd>{fmtDeg(series.azimuth_deg[index], 2)}</dd>
         <dt>{en.results.distance}</dt>
         <dd>{fmtKm(series.distance_km[index])}</dd>
+        {showTerrainHorizon && (
+          <>
+            <dt>{en.results.terrainHorizon}</dt>
+            <dd>
+              {terrainHorizon === null
+                ? en.common.unknown
+                : fmtDeg(terrainHorizon, 2)}
+            </dd>
+          </>
+        )}
       </dl>
       <p className="small">{nextEventText(body, events, nowMs)}</p>
     </article>

@@ -5,6 +5,7 @@
 import type {
   Catalog,
   Coverage,
+  HorizonProfile,
   Problem,
   SimulationAccepted,
   SimulationRequest,
@@ -64,6 +65,14 @@ export interface DataSource {
     level: number,
     signal?: AbortSignal,
   ): Promise<TerrainLodData>
+  /** Horizon profile H(a) from the DEM calculation rasters (E09); never a free horizon. */
+  horizonProfile(
+    latitudeDeg: number,
+    longitudeDeg: number,
+    frameId: string,
+    observerHeightM: number,
+    signal?: AbortSignal,
+  ): Promise<HorizonProfile>
   /** URL of the globe texture served by the backend (E05 product, NASA SVS). */
   readonly globeTextureUrl: string
 }
@@ -183,6 +192,18 @@ export function createApiDataSource(baseUrl = '/api'): DataSource {
       requestHeights(
         `${baseUrl}/terrain/${encodeURIComponent(terrainId)}/lods/${level}`,
         signal,
+      ),
+    horizonProfile: (
+      latitudeDeg,
+      longitudeDeg,
+      frameId,
+      observerHeightM,
+      signal,
+    ) =>
+      requestJson<HorizonProfile>(
+        `${baseUrl}/horizon?latitude_deg=${latitudeDeg}&longitude_deg=${longitudeDeg}` +
+          `&frame_id=${encodeURIComponent(frameId)}&observer_height_m=${observerHeightM}`,
+        { signal },
       ),
     simulation: (id, signal) =>
       requestJson<SimulationStatus>(

@@ -1,4 +1,22 @@
 # Validare — toleranțe, rezultate și probleme
+## E09 — orizontul din DEM (2026-11-15)
+
+Rulate: backend `pytest` 372/372 (17 noi în `test_horizon.py`), Ruff, mypy, contracte (schema 0.7.0),
+`verify_terrain_products.py` 13/13, `acquire_lola_gdr.py --verify` (4 fișiere OK); frontend 221/221, formatare,
+oxlint, `tsc`, build; Playwright 5/5 (nou `horizon.spec.ts`). Studiul de convergență: `scripts/horizon_convergence.py`
+(25 s), rezultatul complet în `data/reference/horizon/e09_convergence.json`; tabelul și concluziile în
+[E09_HORIZON.md](E09_HORIZON.md).
+
+T-06 (teren sintetic, `test_horizon.py`): sferă plată cu observator la 100 m → depresiunea geometrică
+`−acos(R/(R+h))` la 1·10⁻⁴° pe toate azimuturile; bloc de 500 m la 10 km → elevația cu curbură la 0,02°, diferită de
+rezultatul „Pământ plat” cu peste 0,1°; NoData → azimut `partial`, rezultat diferit de terenul cu zero; azimut fără
+eșantioane → `no_data`. Toleranțele de test sunt alese pentru pașii folosiți, nu validate științific.
+
+T-07 (Leibnitz Beta, prag propus 0,05°): `d_max` 200 → 300 km: 0; `Δa` 0,5° față de 0,1°: max 0,032°; pași 5 → 2,5 m:
+0,018°, 120 → 60 m: 0,0007°; produs îndepărtat 120 → 60 m: 0,0047° (Peak Near Shackleton 0,018°); rezoluție apropiată
+10 → 5 m: **0,070°** (neconvergent demonstrabil, 5 m este cel mai fin produs). La 350–400 km lipsesc date pe 32–101
+azimuturi: convergența fizică nu este completă. Compatibilitatea PGDA 104 ↔ LDEM_75S_120M: −0,29 ± 1,56 m.
+
 ## Revizia E08b — cadre și etichete (2026-11-15)
 
 Rulate: backend `pytest` 354/354 (`test_catalog.py`: numele conțin „DEM representative point” și „raster centre”, fără
@@ -220,8 +238,8 @@ le citesc testele din ambele limbaje.
 | T-03 | Diferența dintre profilurile `de440_me421` și `de421` | Calcul propriu, aceleași cazuri | Propunere la E03: ≤ 0,001°. Măsurat: separare ≤ 1,28·10⁻⁵°, \|ΔD\| ≤ 3,3 m | Justifică alegerea profilului (D-01); ordinul de mărime corespunde rotației dintre cadrele ME raportate de NAIF (≤ 5,8·10⁻⁷ rad) | Interval comun de acoperire (1900–2050) | **CONFIRMAT** (comunicat de utilizator; fără persoane și dată): 0,001° (D-12) |
 | T-04 | Conversii de coordonate dus-întors; proiecția față de PROJ | Identitate; PROJ 9.7.1 pentru proiecție | Unghiuri ≤ 1e-9°; lungimi ≤ 1e-6 m (1 µm) | Transformările sunt exacte analitic. 1e-9° ≈ 3·10⁻⁵ m pe suprafață; eroarea de rotunjire `float64` la raza lunară este ~2·10⁻¹⁰ m. Pragurile sunt cu 3–4 ordine peste rotunjire și cu 6 ordine sub pixelul DEM de 5 m | Longitudinea se compară ca distanță orizontală (Δlon·R·cos lat), fiindcă la pol nu este definită | STABILIT (E02), toleranță numerică |
 | T-05 | Concordanța Python ↔ TypeScript | Vectorii comuni `tests/vectors/conventions.json` | Unghiuri ≤ 1e-9°; lungimi ≤ 1e-6 m; componente de versori și factori de scară ≤ 1e-12; texte și coduri de eroare identice | Aceeași formulă în două limbaje; diferențele de 1 ulp dintre bibliotecile matematice (CPython, V8) sunt cu ordine de mărime sub prag | Aceleași intrări; aceleași constante (verificate în test) | STABILIT (E02), toleranță numerică |
-| T-06 | Elevația orizontului pe teren sintetic | Soluție analitică (obstacol cunoscut) | De stabilit, în raport cu `Δa` și pasul radial | Verifică algoritmul, nu DEM-ul | Teren sintetic fără `NoData` | NEVALIDAT |
-| T-07 | Convergența orizontului (rezoluție, `d_max`, `Δa`) | Calcul propriu la parametri dublați | De stabilit; mult sub raza unghiulară a Soarelui | Alegerea parametrilor din D-08, D-09 | Per sit demonstrativ | NEVALIDAT |
+| T-06 | Elevația orizontului pe teren sintetic | Soluție analitică (obstacol cunoscut) | Test: 1·10⁻⁴° (sferă plată), 0,02° (obstacol, pas 5 m); propuse, nevalidate | Verifică algoritmul, nu DEM-ul | Teren sintetic, cu și fără `NoData` (E09) | TRECUT TEHNIC, NEVALIDAT |
+| T-07 | Convergența orizontului (rezoluție, `d_max`, `Δa`) | Calcul propriu la parametri dublați | Propus 0,05° (1/5 din raza Soarelui) | Alegerea parametrilor din D-08, D-09 | Leibnitz Beta complet; Haworth, Peak Near Shackleton redus (E09) | MĂSURAT, PRAG NEVALIDAT; rezoluția apropiată și raza > 300 km neconvergente demonstrabil |
 | T-08 | Momentul unui eveniment — precizie numerică | Rafinare cu toleranță mai strictă | De stabilit | Separă eroarea numerică de cea fizică | — | NEVALIDAT |
 | T-09 | Poziția obiectelor în scena 3D față de rezultat | Direcția calculată din `az`/`el` | La nivelul erorii `float32` | Scena nu introduce erori proprii | Exagerare verticală 1× | NEVALIDAT |
 

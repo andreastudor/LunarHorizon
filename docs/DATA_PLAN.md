@@ -55,6 +55,11 @@ polul sud, între altele: `LDEM_80S_20M` (aproximativ 268 MB), `LDEM_75S_30M` (2
 de folosire: cadrul și referința verticală ale acestor produse față de cele PGDA, factorul de scalare al
 valorilor din etichetă și suportul JPEG 2000 din unealta de citire.
 
+**E09 (2026-11-15):** se folosesc versiunile PDS3 `.IMG` + `.LBL` (directorul `polar/img/`), nu JPEG 2000.
+`LDEM_75S_120M` (116 MB) este nivelul îndepărtat înregistrat; `LDEM_75S_60M` (465 MB) a fost descărcat numai pentru
+studiul de rezoluție. Eticheta declară ME DE421, sfera de 1 737 400 m, `HEIGHT = DN · 0,5`; compatibilitatea cu PGDA
+104 a fost măsurată (−0,29 ± 1,56 m). Achiziție: `scripts/acquire_lola_gdr.py`. Alegerea rămâne propunere (D-08).
+
 ### 2.4. Globul și fundalurile de hartă
 
 | Nevoie | Candidat | Stare |

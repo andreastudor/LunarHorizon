@@ -53,6 +53,7 @@ folosește explicit `py -3.13` (lansatorul `py` are implicit 3.15), nu Python-ul
 | Verificări frontend | `frontend/` | `npm run format:check`, `npm run lint`, `npm run contracts:check`, `npm run typecheck`, `npm test`, `npm run build` |
 | Test de browser (WebGL) | `frontend/` | `npm run test:e2e` (Playwright; pornește/reutilizează API și Vite; cere `globe.jpg` din E05; o dată: `npx playwright install chromium`) |
 | Catalog de situri | rădăcină | `backend\.venv\Scripts\python scripts\verify_catalog_sources.py [--write-report]` (rețea); testele offline sunt în `pytest` |
+| Orizont DEM (E09) | rădăcină | `backend\.venv\Scripts\python scripts\acquire_lola_gdr.py LDEM_75S_120M [--verify]` (116 MB); studiul de convergență: `scripts\horizon_convergence.py` |
 | Kerneluri SPICE | rădăcină | `backend\.venv\Scripts\python scripts\download_kernels.py [--verify]`; testele `-m kernels` le cer |
 | Horizons | rădăcină | `scripts\query_horizons.py` (rețea, arhivează răspunsurile originale); `scripts\validate_e03.py` (fără rețea) |
 | Contracte și vectori comuni | rădăcină, apoi `frontend/` | `backend\.venv\Scripts\python scripts\generate_contracts.py [--check]`, apoi `npm run contracts:generate`; nu edita manual fișierele generate |

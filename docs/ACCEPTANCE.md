@@ -1,4 +1,20 @@
 # Criterii de acceptanță
+## E09 — stare 2026-11-15: implementată tehnic; D-08/D-09 deschise; acceptare științifică restantă
+
+| Criteriu BACKLOG | Stare | Dovadă |
+|---|---|---|
+| Algoritm pe două niveluri de teren | Îndeplinit | `terrain/horizon.py`; T-06 sintetic (sferă plată, obstacol cu curbură) |
+| Produs îndepărtat pregătit | Îndeplinit | `LDEM_75S_120M`, compatibilitate măsurată, SHA-256 fixat |
+| Cache pentru profil | Îndeplinit | memorie + disc; cheia include poziție, cadru, înălțime, produse, parametri, versiune |
+| Modul `dem` în simulări | Îndeplinit (orizont); vizibilitatea este E10 | `api/jobs.py`, `test_horizon.py`, Playwright `horizon.spec.ts` |
+| Studiul de convergență consemnat | Îndeplinit | VALIDARE (T-07), `data/reference/horizon/e09_convergence.json` |
+| Graficul profilului | Îndeplinit | fila „Horizon profile” |
+| Profilul primului sit, parametri prin convergență, acoperire declarată | Îndeplinit tehnic | Leibnitz Beta: complet până la 300 km |
+| D-08 și D-09 închise | **Neîndeplinit** | decizii [GEO]; parametrii rămân propuneri tehnice |
+
+Limite: convergența fizică nu este completă dincolo de datele disponibile; rezoluția apropiată nu converge
+demonstrabil; cadrul DEM este ipoteza D-10. Detalii: [E09_HORIZON.md](E09_HORIZON.md).
+
 ## E08b — stare 2026-11-15: încheiată tehnic pentru lista vizată; acceptare științifică restantă
 
 | Criteriu | Stare | Dovadă |
@@ -151,7 +167,7 @@ includere în demonstrația offline. E17 trebuie să verifice și această cerin
 | P0-05 | Comparație | 2–4 situri alăturate, aceiași indicatori în aceeași ordine, același interval și aceleași convenții; butonul Compare apare de la două situri | E12 | incomplet | — |
 | P0-06 | Control temporal | Dată, oră UTC, interval, slider, redare și pauză; toate vederile urmează momentul curent | E07 | incomplet | — |
 | P0-07 | Geometrie astronomică | Azimutul și elevația Soarelui și Pământului respectă toleranțele din [VALIDARE.md](VALIDARE.md) față de cazurile de referință | E03 | implementat, neverificat | Motorul `astro` este implementat. 22 de direcții se încadrează în pragurile **propuse** (separare max 4,75·10⁻⁷° față de pragul de 0,001°), dar T-01–T-03 nu sunt confirmate (D-12), iar D-01, D-02, D-03 și D-18 sunt deschise. Vezi §7, E03 |
-| P0-08 | Orizont LOLA | Profil de orizont din relief real în zonele acoperite, cu indicator de calitate; datele lipsă nu sunt tratate ca altitudine zero | E09 | incomplet | — |
+| P0-08 | Orizont LOLA | Profil de orizont din relief real în zonele acoperite, cu indicator de calitate; datele lipsă nu sunt tratate ca altitudine zero | E09 | implementat, neverificat științific | Profil pe două niveluri (PGDA 104 + LOLA GDR), stări complete/partial/unavailable; parametri provizorii (D-08/D-09). Vezi [E09_HORIZON.md](E09_HORIZON.md) |
 | P0-09 | Evenimente | Următoarea apariție și dispariție și timpul rămas, pentru ambele corpuri; cele patru situații de afișare din specificație | E10 | incomplet | — |
 | P0-10 | Indicatori | Durata și procentul luminii, ferestrele de vizibilitate a Pământului, durata cu ambele criterii îndeplinite | E10 | incomplet | — |
 | P0-11 | Moduri de utilizare | Modul simplu și modul expert afișează aceleași rezultate, la niveluri diferite de detaliu | E13 | incomplet | — |

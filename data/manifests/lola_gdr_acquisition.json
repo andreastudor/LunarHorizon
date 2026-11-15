@@ -1,0 +1,25 @@
+{
+  "files": {
+    "LDEM_75S_120M.LBL": {
+      "sha256": "5c59b16ec8a610792b1776fa082e409c8cc9f6743757710d14876ef366acd99a",
+      "size_bytes": 4991,
+      "source_checksum": "none published by PDS; size checked against label and HTTP"
+    },
+    "LDEM_75S_120M.IMG": {
+      "sha256": "ae3afc3c75c33d43666ca06c83ca08f0b12ef03b7d36d2d791d972730794391b",
+      "size_bytes": 116250752,
+      "source_checksum": "none published by PDS; size checked against label and HTTP"
+    },
+    "LDEM_75S_60M.LBL": {
+      "sha256": "012070ba153284dbbe106df602c6f7c3e005438f044644d36662b62630658dac",
+      "size_bytes": 4991,
+      "source_checksum": "none published by PDS; size checked against label and HTTP"
+    },
+    "LDEM_75S_60M.IMG": {
+      "sha256": "d6d65d69c81af3936cc667ced1c0bb1dcd2486f8bbb6215ede0645177dac6ce2",
+      "size_bytes": 465003008,
+      "source_checksum": "none published by PDS; size checked against label and HTTP"
+    }
+  },
+  "source": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/"
+}

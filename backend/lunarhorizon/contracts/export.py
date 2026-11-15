@@ -13,6 +13,7 @@ from pydantic import BaseModel
 from pydantic.json_schema import models_json_schema
 
 from lunarhorizon.contracts.catalog import Catalog
+from lunarhorizon.contracts.horizon import HorizonProfile
 from lunarhorizon.contracts.manifests import (
     DemProductManifest,
     KernelManifest,
@@ -45,6 +46,7 @@ DOCUMENT_MODELS: Final[dict[str, type[BaseModel]]] = {
     "Health": Health,
     "Coverage": Coverage,
     "TerrainStatusReport": TerrainStatusReport,
+    "HorizonProfile": HorizonProfile,
     "Problem": Problem,
 }
 

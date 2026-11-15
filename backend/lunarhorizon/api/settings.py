@@ -24,6 +24,10 @@ class Settings:
     # indexul nu se folosește; câmpul lipsă ia valoarea Leibnitz Beta.
     terrain_manifest_path: Path | None = None
     terrain_calculation_raster: Path | None = None
+    # Nivelul îndepărtat al orizontului (E09): produse LOLA GDR din scripts/acquire_lola_gdr.py.
+    far_terrain_dir: Path = DATA_DIR / "_raw" / "lola_gdr"
+    # Cache-ul profilurilor de orizont pe disc (None = numai în memorie).
+    horizon_cache_dir: Path | None = DATA_DIR / "_cache" / "horizon"
     # Fundalurile E05 (NASA SVS) și manifestul lor; se servesc numai fișierele listate în manifest.
     auxiliary_dir: Path = DATA_DIR / "_cache" / "e05_auxiliary"
     auxiliary_manifest_path: Path = DATA_DIR / "manifests" / "e05_auxiliary.json"
