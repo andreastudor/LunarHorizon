@@ -1,0 +1,110 @@
+{
+  "schema": "pgda104-acquisition-v1",
+  "note": "SHA-256 computed by LunarHorizon at first acquisition (not published by the provider); ZIP member CRC verified by zipfile; whole-archive MD5 not verified.",
+  "members": {
+    "amundsen_rim": {
+      "member": "A3CLR22_0_Amundsen_Rim/A300_GLDELEV_005.tif",
+      "sha256": "93f9e81754d6d5419c8bc16b7735900190a0946843847c3b5179fde7c80d3e7b",
+      "size_bytes": 34827742,
+      "retrieved_at_utc": "2026-11-15T05:53:12Z",
+      "archive": "A3CLR22_0_Amundsen_Rim.zip",
+      "archive_md5_published_not_verified": "md5:d1e12877277cf9715381b8795c0873cb"
+    },
+    "connecting_ridge": {
+      "member": "A3CLR22_6_Connecting_Ridge/A306_GLDELEV_005.tif",
+      "sha256": "c914e52bf1e46c08b9c409d6ebd6a3605ad33756373571138b8d473dadaeddd0",
+      "size_bytes": 20953350,
+      "retrieved_at_utc": "2026-11-15T05:53:24Z",
+      "archive": "A3CLR22_6_Connecting_Ridge.zip",
+      "archive_md5_published_not_verified": "md5:0ad982cf42319a300f2a2cff69d39322"
+    },
+    "connecting_ridge_extension": {
+      "member": "A3CLR22_5_Connecting_Ridge_Extension/A305_GLDELEV_005.tif",
+      "sha256": "b40378d7e11c6998b77ac4840f16623b092b30531e59555a8b117c05742c7c63",
+      "size_bytes": 35148852,
+      "retrieved_at_utc": "2026-11-15T05:53:44Z",
+      "archive": "A3CLR22_5_Connecting_Ridge_Extension.zip",
+      "archive_md5_published_not_verified": "md5:9141ec5d298a3aebab4d3671f7f38a79"
+    },
+    "degerlache_kocher_massif": {
+      "member": "A3CLR22_12_deGerlache_Kocher_Massif/A312_GLDELEV_005.tif",
+      "sha256": "f6a47cdaf083fae80400ee3ae13ed135ba5c1e6186a981205c075731bd6bc73b",
+      "size_bytes": 32324244,
+      "retrieved_at_utc": "2026-11-15T05:53:58Z",
+      "archive": "A3CLR22_12_deGerlache_Kocher_Massif.zip",
+      "archive_md5_published_not_verified": "md5:78b8a042d0c6be2923abdd288e436c23"
+    },
+    "degerlache_rim": {
+      "member": "A3CLR22_9_deGerlache_Rim/A309_GLDELEV_005.tif",
+      "sha256": "641532d0b3ab2661d6cb40612c3be1537baa8a27d71fa0996843ce92e9225dfe",
+      "size_bytes": 22145062,
+      "retrieved_at_utc": "2026-11-15T05:54:12Z",
+      "archive": "A3CLR22_9_deGerlache_Rim.zip",
+      "archive_md5_published_not_verified": "md5:a34e603e9d2c2c9a2796fc237d24b1b4"
+    },
+    "degerlache_rim_2": {
+      "member": "A3CLR22_4_deGerlache_Rim_2/A304_GLDELEV_005.tif",
+      "sha256": "d30f9ca8a1e9755a5a199b9d94872e336a06b54213f58c13f7400bad65868171",
+      "size_bytes": 34042970,
+      "retrieved_at_utc": "2026-11-15T05:54:34Z",
+      "archive": "A3CLR22_4_deGerlache_Rim_2.zip",
+      "archive_md5_published_not_verified": "md5:52921a134793a6b35b0eea6f98ad79d8"
+    },
+    "faustini_rim_a": {
+      "member": "A3CLR22_3_Faustini_Rim_A/A303_GLDELEV_005.tif",
+      "sha256": "f719b69d3e48ed41145c51e5110a56c1ee1e06ac75e21807120c46ef7ec5d33b",
+      "size_bytes": 34219238,
+      "retrieved_at_utc": "2026-11-15T05:54:49Z",
+      "archive": "A3CLR22_3_Faustini_Rim_A.zip",
+      "archive_md5_published_not_verified": "md5:161db71236036f7c9b98b501d353482a"
+    },
+    "haworth": {
+      "member": "A3CLR22_2_Haworth/A302_GLDELEV_005.tif",
+      "sha256": "7126ae857336f2781b7e72caa07a7162e63b8e3ab50ebcd9ee30390b3d6f4d94",
+      "size_bytes": 73017526,
+      "retrieved_at_utc": "2026-11-15T05:55:23Z",
+      "archive": "A3CLR22_2_Haworth.zip",
+      "archive_md5_published_not_verified": "md5:e83a923c41c00be51396d06ab7cf6e9e"
+    },
+    "leibnitz_beta_plateau": {
+      "member": "A3CLR22_10_Leibnitz_Beta_Plateau/A310_GLDELEV_005.tif",
+      "sha256": "55352520c0277a902a89fbd003f83956b238e4d0b4529494eaec1b5a51b1a4b1",
+      "size_bytes": 16598431,
+      "retrieved_at_utc": "2026-11-15T05:55:23Z",
+      "archive": "A3CLR22_10_Leibnitz_Beta_Plateau.zip",
+      "archive_md5_published_not_verified": "md5:b0a606e6a4ce73faf2ea68c91ce0b93e"
+    },
+    "malapert_massif": {
+      "member": "A3CLR22_11_Malapert_Massif/A311_GLDELEV_005.tif",
+      "sha256": "e71f946674a6dc4dcd910f37cee9c0ff42c0f5493900be81259e0acb8dea68d4",
+      "size_bytes": 31171558,
+      "retrieved_at_utc": "2026-11-15T05:55:31Z",
+      "archive": "A3CLR22_11_Malapert_Massif.zip",
+      "archive_md5_published_not_verified": "md5:772a578b8f2ebdb078c5a04a3c07182a"
+    },
+    "nobile_rim_1": {
+      "member": "A3CLR22_7_Nobile_Rim_1/A307_GLDELEV_005.tif",
+      "sha256": "6f422c88b7c4fc3ef147bde592596af1b7baef885dffbbab6de880fcf85c0dff",
+      "size_bytes": 27429327,
+      "retrieved_at_utc": "2026-11-15T05:55:49Z",
+      "archive": "A3CLR22_7_Nobile_Rim_1.zip",
+      "archive_md5_published_not_verified": "md5:a8bcb60f432253f5fa97ff07899bd02a"
+    },
+    "nobile_rim_2": {
+      "member": "A3CLR22_1_Nobile_Rim_2/A301_GLDELEV_005.tif",
+      "sha256": "4e75ed06a48af4d2dfaaed3476cefce636d4bf0dfd004d66193fc714df0011a8",
+      "size_bytes": 32817469,
+      "retrieved_at_utc": "2026-11-15T05:56:00Z",
+      "archive": "A3CLR22_1_Nobile_Rim_2.zip",
+      "archive_md5_published_not_verified": "md5:964310cb7f2a5033e2e12cd34e7aa7b1"
+    },
+    "peak_near_shackleton": {
+      "member": "A3CLR22_8_Peak_Near_Shackleton/A308_GLDELEV_005.tif",
+      "sha256": "6eb1cdd1e2b95cd97e5fb0441f4c8c1c317d6f53c2bbfbf7990e50df8aa94d3b",
+      "size_bytes": 21731460,
+      "retrieved_at_utc": "2026-11-15T05:56:13Z",
+      "archive": "A3CLR22_8_Peak_Near_Shackleton.zip",
+      "archive_md5_published_not_verified": "md5:9ac25cc18b1290e679dfad9b1eaabad7"
+    }
+  }
+}

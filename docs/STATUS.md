@@ -1,4 +1,15 @@
 # Stare
+## E08b — teren local pentru siturile polare sudice, 2026-11-15
+
+**Implementare tehnică finalizată; acceptare științifică restantă.** Lista vizată (15 intrări, regula ≤ −60° S):
+**13 regiuni PGDA 104 cu teren real funcțional** (date descărcate, construite și validate automat, 13/13) și **2 poziții
+Chandrayaan-3 „Coverage unverified”** (niciun produs inventariat la 69° S). Blocaje: 21 de DEM-uri PGDA 78 (HTTP 403, E04);
+PGDA 81 neachiziționat (3,3 GB). Schema 0.6.0: `TerrainStatusReport`, `status = dem_region`, `mission_status =
+not_applicable`; catalogul are 23 de intrări (`e08b-2026-11-15-pgda104-regions`). Interfața: insigne de stare în catalog,
+filtru „South polar sites only”, teren încărcat pentru produsul selecției (numai terenul curent păstrat), mesaje distincte
+pentru fiecare stare. Detalii: [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md). E08 inițială rămâne încheiată; E12 nu este
+încheiată; E09 nu a fost începută.
+
 ## E08 — teren local 3D din DEM real, 2026-11-15
 
 **Implementare tehnică finalizată; acceptare științifică restantă.** Backend: `GET /api/terrain/elevation` (altitudine

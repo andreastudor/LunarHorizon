@@ -95,7 +95,7 @@ function syntheticSite(
 }
 
 const CATALOG: Catalog = {
-  schema_version: '0.5.0',
+  schema_version: '0.6.0',
   catalog_version: 'synthetic',
   sites: [
     syntheticSite('synthetic_a', 'synthetic_site_alpha', 0.5, 23.5),
@@ -112,7 +112,7 @@ const CATALOG: Catalog = {
 } as unknown as Catalog
 
 const COVERAGE: Coverage = {
-  schema_version: '0.5.0',
+  schema_version: '0.6.0',
   temporal: {
     start_utc: '1849-12-25T23:59:18.816Z',
     end_utc: '2150-01-21T23:58:50.816Z',
@@ -159,7 +159,7 @@ function syntheticResult(
     visible: elevation.map((e) => e >= 0),
   })
   return {
-    schema_version: '0.5.0',
+    schema_version: '0.6.0',
     request: Object.assign(
       {
         frame_id: 'MOON_ME_DE440_ME421',
@@ -271,7 +271,7 @@ function deferred<T>(): Deferred<T> {
 
 // Synthetic terrain: a 4 × 4 grid over the representative point's raster (tests only).
 const TERRAIN_MANIFEST = {
-  schema_version: '0.5.0',
+  schema_version: '0.6.0',
   terrain_id: 'synthetic_terrain',
   source: {
     product_id: 'synthetic_dem',
@@ -324,11 +324,35 @@ const outsideDem = () =>
 
 function terrainMethods(calls: { terrain: number }) {
   return {
-    terrainManifest: async (latitudeDeg: number): Promise<TerrainManifest> => {
+    terrainManifest: async (
+      latitudeDeg: number,
+      _longitudeDeg?: number,
+      _frameId?: string | null,
+    ): Promise<TerrainManifest> => {
       calls.terrain += 1
       if (latitudeDeg > -80) throw outsideDem()
       return TERRAIN_MANIFEST
     },
+    terrainStatus: async () => ({
+      schema_version: '0.6.0' as const,
+      south_polar_rule: 'synthetic',
+      selection_rule: 'synthetic',
+      products: [],
+      sites: [
+        {
+          site_id: 'synthetic_a',
+          status: 'no_dem_coverage' as const,
+          terrain_id: null,
+          reason: 'synthetic',
+        },
+        {
+          site_id: 'synthetic_b',
+          status: 'coverage_unverified' as const,
+          terrain_id: null,
+          reason: 'synthetic',
+        },
+      ],
+    }),
     terrainElevation: async (
       _id: string,
       latitudeDeg: number,
@@ -336,7 +360,7 @@ function terrainMethods(calls: { terrain: number }) {
     ): Promise<TerrainSample> => {
       calls.terrain += 1
       return {
-        schema_version: '0.5.0',
+        schema_version: '0.6.0',
         terrain_id: 'synthetic_terrain',
         product_id: 'synthetic_dem',
         frame_id: 'MOON_ME_DE421',
@@ -740,7 +764,9 @@ describe('E08 local terrain', () => {
     )
     fireEvent.click(await screen.findByText('synthetic_site_alpha'))
     fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
-    expect(await screen.findByText(en.terrain.unavailable)).toBeDefined()
+    expect(
+      await screen.findByText(en.terrain.unavailable.no_dem_coverage),
+    ).toBeDefined()
     expect(terrain.states.every((state) => state.mesh === null)).toBe(true)
   })
 
@@ -752,7 +778,7 @@ describe('E08 local terrain', () => {
     const calls = { terrain: 0 }
     const methods = terrainMethods(calls)
     const { source } = fakeSource({
-      terrainManifest: (latitudeDeg) =>
+      terrainManifest: (latitudeDeg: number) =>
         latitudeDeg < -80 ? pending : methods.terrainManifest(latitudeDeg),
     })
     const terrain = fakeTerrain()
@@ -775,12 +801,14 @@ describe('E08 local terrain', () => {
     fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
     await screen.findByText(en.terrain.loading)
     fireEvent.click(screen.getByText('synthetic_site_alpha'))
-    await screen.findByText(en.terrain.unavailable)
+    await screen.findByText(en.terrain.unavailable.no_dem_coverage)
     await act(async () => {
       release(TERRAIN_MANIFEST)
       await pending
     })
-    expect(screen.getByText(en.terrain.unavailable)).toBeDefined()
+    expect(
+      screen.getByText(en.terrain.unavailable.no_dem_coverage),
+    ).toBeDefined()
     expect(terrain.states.every((state) => state.mesh === null)).toBe(true)
   })
 
@@ -812,5 +840,194 @@ describe('E08 local terrain', () => {
     fireEvent.click(screen.getByText(en.common.retry))
     await screen.findByText(en.terrain.representativeNote)
     expect(terrain.states.at(-1)?.mesh?.vertexCount).toBe(16)
+  })
+})
+
+describe('E08b terrain for several regions', () => {
+  const problemError = (status: number, code: string, detail: string) =>
+    new ApiError(
+      status,
+      {
+        type: 'urn:lunarhorizon:problem:x',
+        title: 'x',
+        status,
+        detail,
+        code: code as never,
+      },
+      'refused',
+    )
+
+  async function enterPoint(lat: string, lon: string) {
+    fireEvent.change(screen.getByLabelText(en.point.latitude), {
+      target: { value: lat },
+    })
+    fireEvent.change(screen.getByLabelText(en.point.longitude), {
+      target: { value: lon },
+    })
+    fireEvent.click(screen.getByText(en.point.use))
+  }
+
+  function renderWith(source: DataSource, terrain = fakeTerrain()) {
+    render(
+      <App
+        dataSource={source}
+        globeFactory={fakeGlobe().factory}
+        terrainFactory={terrain.factory}
+        now={NOW}
+      />,
+    )
+    return terrain
+  }
+
+  it('shows the terrain status of each site and filters south polar sites', async () => {
+    const { source } = fakeSource()
+    renderWith(source)
+    expect(
+      await screen.findByText(en.catalog.terrainBadge.no_dem_coverage),
+    ).toBeDefined()
+    expect(
+      screen.getByText(en.catalog.terrainBadge.coverage_unverified),
+    ).toBeDefined()
+    fireEvent.click(screen.getByLabelText(en.catalog.southPolarOnly))
+    expect(screen.queryByText('synthetic_site_alpha')).toBeNull() // 0.5° N
+    expect(screen.getByText('synthetic_site_beta')).toBeDefined() // 69.4° S
+  })
+
+  it('distinguishes not downloaded, unverified and no coverage', async () => {
+    const cases: [ApiError, string][] = [
+      [
+        problemError(503, 'TERRAIN_DATA_MISSING', 'terrain not downloaded'),
+        en.terrain.unavailable.terrain_not_downloaded,
+      ],
+      [
+        problemError(404, 'OUT_OF_DEM_COVERAGE', 'coverage_unverified: x'),
+        en.terrain.unavailable.coverage_unverified,
+      ],
+      [
+        problemError(404, 'OUT_OF_DEM_COVERAGE', 'no_dem_coverage: x'),
+        en.terrain.unavailable.no_dem_coverage,
+      ],
+    ]
+    for (const [error, message] of cases) {
+      const { source } = fakeSource({
+        terrainManifest: async () => {
+          throw error
+        },
+      })
+      const terrain = renderWith(source)
+      await screen.findByText('synthetic_site_alpha')
+      await enterPoint('-85.4', '31.7')
+      fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+      expect(await screen.findByText(message)).toBeDefined()
+      expect(terrain.states.every((state) => state.mesh === null)).toBe(true)
+      cleanup()
+    }
+  })
+
+  it('refuses a frame mismatch and lets the user adopt the DEM frame', async () => {
+    const frames: (string | null)[] = []
+    const calls = { terrain: 0 }
+    const methods = terrainMethods(calls)
+    const { source } = fakeSource({
+      terrainManifest: async (latitudeDeg, longitudeDeg, frameId) => {
+        frames.push(frameId)
+        if (frameId !== 'MOON_ME_DE421')
+          throw problemError(422, 'UNSUPPORTED_FRAME', 'frame')
+        return methods.terrainManifest(latitudeDeg, longitudeDeg, frameId)
+      },
+    })
+    const terrain = renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-85.4', '31.7')
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    expect(
+      await screen.findByText(en.terrain.unavailable.frame_mismatch),
+    ).toBeDefined()
+    fireEvent.click(screen.getByText(en.terrain.adoptFrame('MOON_ME_DE421')))
+    await screen.findByText(en.terrain.banner)
+    await waitFor(() =>
+      expect(terrain.states.at(-1)?.mesh?.vertexCount).toBe(16),
+    )
+    expect(frames).toEqual(['MOON_ME_DE440_ME421', 'MOON_ME_DE421'])
+  })
+
+  function twoRegions(slowSecond: boolean) {
+    const lodCalls: string[] = []
+    let releaseSlow!: () => void
+    const slow = new Promise<void>((resolve) => {
+      releaseSlow = resolve
+    })
+    const calls = { terrain: 0 }
+    const methods = terrainMethods(calls)
+    const { source } = fakeSource({
+      terrainManifest: async (latitudeDeg) =>
+        ({
+          ...TERRAIN_MANIFEST,
+          terrain_id:
+            latitudeDeg < -86 ? 'synthetic_second' : 'synthetic_terrain',
+        }) as TerrainManifest,
+      terrainLod: async (terrainId) => {
+        lodCalls.push(terrainId)
+        if (slowSecond && terrainId === 'synthetic_second') await slow
+        const data = await methods.terrainLod()
+        return {
+          ...data,
+          heights: data.heights.map((h) =>
+            terrainId === 'synthetic_second' ? h + 1000 : h,
+          ),
+        }
+      },
+    })
+    return { source, lodCalls, slow, release: () => releaseSlow() }
+  }
+
+  it('loads the product of each region and keeps only the current one', async () => {
+    const { source, lodCalls } = twoRegions(false)
+    const terrain = renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-85.4', '31.7')
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    await waitFor(() =>
+      expect(terrain.states.at(-1)?.mesh?.maxHeightM).toBe(6405),
+    )
+    await enterPoint('-87.5', '10')
+    await waitFor(() =>
+      expect(terrain.states.at(-1)?.mesh?.maxHeightM).toBe(7405),
+    )
+    await enterPoint('-85.4', '31.7')
+    await waitFor(() =>
+      expect(terrain.states.at(-1)?.mesh?.maxHeightM).toBe(6405),
+    )
+    // Region A was reloaded: only the current terrain is kept, nothing is preloaded.
+    expect(lodCalls).toEqual([
+      'synthetic_terrain',
+      'synthetic_second',
+      'synthetic_terrain',
+    ])
+  })
+
+  it('ignores a region that finishes loading after the selection changed', async () => {
+    const { source, lodCalls, slow, release } = twoRegions(true)
+    const terrain = renderWith(source)
+    await screen.findByText('synthetic_site_alpha')
+    await enterPoint('-85.4', '31.7')
+    fireEvent.click(screen.getByRole('tab', { name: /Local terrain/ }))
+    await waitFor(() =>
+      expect(terrain.states.at(-1)?.mesh?.maxHeightM).toBe(6405),
+    )
+    await enterPoint('-87.5', '10')
+    await screen.findByText(en.terrain.loading)
+    await enterPoint('-85.4', '31.7')
+    await act(async () => {
+      release()
+      await slow
+    })
+    await waitFor(() =>
+      expect(terrain.states.at(-1)?.mesh?.maxHeightM).toBe(6405),
+    )
+    expect(lodCalls).toEqual(['synthetic_terrain', 'synthetic_second'])
+    expect(
+      terrain.states.some((state) => (state.mesh?.minHeightM ?? 0) > 7000),
+    ).toBe(false)
   })
 })

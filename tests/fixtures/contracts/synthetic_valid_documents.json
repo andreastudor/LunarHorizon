@@ -1,7 +1,7 @@
 {
   "_comment": "Documente SINTETICE pentru testele de contract (E02). Valorile nu sunt rezultate calculate, coordonate reale sau surse verificate. Fiecare cheie este numele unui tip de document din data/schemas/lunarhorizon.schema.json.",
   "Catalog": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "catalog_version": "synthetic-0",
     "sites": [
       {
@@ -210,7 +210,7 @@
     }
   },
   "KernelManifest": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "default_profile": "de440_me421",
     "profiles": [
       {
@@ -242,7 +242,7 @@
     ]
   },
   "DemProductManifest": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "products": [
       {
         "product_id": "synthetic_dem",
@@ -276,7 +276,7 @@
     ]
   },
   "TerrainManifest": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "terrain_id": "synthetic_terrain_a",
     "source": {
       "product_id": "synthetic_dem",
@@ -329,7 +329,7 @@
     ]
   },
   "TerrainSample": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "terrain_id": "synthetic_terrain",
     "product_id": "synthetic_dem",
     "frame_id": "MOON_ME_DE421",
@@ -389,7 +389,7 @@
     "result": null
   },
   "SimulationResult": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "request": {
       "sites": [
         {
@@ -652,7 +652,7 @@
     }
   },
   "ScenarioIndex": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "scenarios": [
       {
         "scenario_id": "synthetic_scenario",
@@ -692,7 +692,7 @@
     "issues": ["Sintetic: kernelurile nu sunt încărcate."]
   },
   "Coverage": {
-    "schema_version": "0.5.0",
+    "schema_version": "0.6.0",
     "temporal": {
       "start_utc": "1849-12-26T00:00:00Z",
       "end_utc": "2150-01-22T00:00:00Z",
@@ -706,6 +706,31 @@
         "footprint": null,
         "min_latitude_deg": -90.0,
         "max_latitude_deg": -87.0
+      }
+    ]
+  },
+  "TerrainStatusReport": {
+    "schema_version": "0.6.0",
+    "south_polar_rule": "synthetic rule",
+    "selection_rule": "synthetic selection rule",
+    "products": [
+      {
+        "terrain_id": "synthetic_terrain",
+        "product_id": "synthetic_dem",
+        "region_name": "synthetic region",
+        "frame_id": "MOON_ME_DE421",
+        "calc_resolution_m": 5.0,
+        "bounds": { "x_min_m": 0.0, "x_max_m": 100.0, "y_min_m": 0.0, "y_max_m": 100.0 },
+        "status": "not_downloaded",
+        "reason": "synthetic"
+      }
+    ],
+    "sites": [
+      {
+        "site_id": "synthetic_site",
+        "status": "coverage_unverified",
+        "terrain_id": null,
+        "reason": "synthetic"
       }
     ]
   },

@@ -36,6 +36,8 @@ interface Props {
   simulationFrame: string | null
   onPick: (latitudeDeg: number, longitudeDeg: number) => void
   onRetry: () => void
+  /** Offered for a frame mismatch on a user point: adopt the DEM frame (no conversion). */
+  onAdoptFrame?: () => void
   factory?: TerrainFactory
 }
 
@@ -52,6 +54,7 @@ export function LocalTerrainView({
   simulationFrame,
   onPick,
   onRetry,
+  onAdoptFrame,
   factory,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -209,9 +212,14 @@ export function LocalTerrainView({
         </p>
       )}
       {terrain.status === 'unavailable' && (
-        <p className="globe-overlay globe-overlay--warning" role="status">
-          {en.terrain.unavailable}
-        </p>
+        <div className="globe-overlay globe-overlay--warning" role="status">
+          <p>{en.terrain.unavailable[terrain.gap]}</p>
+          {terrain.gap === 'frame_mismatch' && onAdoptFrame && (
+            <button type="button" onClick={onAdoptFrame}>
+              {en.terrain.adoptFrame('MOON_ME_DE421')}
+            </button>
+          )}
+        </div>
       )}
       {terrain.status === 'error' && (
         <div className="globe-overlay globe-overlay--alert" role="alert">

@@ -34,6 +34,9 @@ astronomilor).
 - **E08: încheiată tehnic; acceptare științifică restantă.** Tab „Local terrain”: mesh din DEM real (40 m), observator
   din rasterul de calcul + echipament, trei camere și „Go to site”, exagerare numai vizuală, direcții și lumină din API.
   Schema 0.5.0 (`TerrainSample`). Terenul este numai afișare; vizibilitatea rămâne idealizată până la E09.
+- **E08b (extindere obligatorie): încheiată tehnic pentru lista vizată.** 13 regiuni PGDA 104 cu teren real, 2 poziții
+  Chandrayaan-3 „Coverage unverified”. Schema 0.6.0. Date: `acquire_pgda104.py --all` (≈ 399 MB), apoi
+  `build_pgda104_regions.py` și `verify_terrain_products.py`. Vezi [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md).
 
 ## Instalare, pornire, verificare
 
@@ -68,7 +71,7 @@ Verificări:
 
 ```powershell
 cd backend
-.venv\Scripts\python -m pytest                      # 341 de teste la această dată; -m kernels cere kernelurile
+.venv\Scripts\python -m pytest                      # 354 de teste la această dată; -m kernels cere kernelurile
 .venv\Scripts\python -m ruff check . ..\scripts
 .venv\Scripts\python -m ruff format --check . ..\scripts
 .venv\Scripts\python -m mypy

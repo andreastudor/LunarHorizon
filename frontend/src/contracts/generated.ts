@@ -1,7 +1,7 @@
 /**
  * GENERAT AUTOMAT din data/schemas/lunarhorizon.schema.json — nu se editează manual.
  * Regenerare: scripts/generate_contracts.py (rădăcină), apoi `npm run contracts:generate`.
- * Versiunea schemei: 0.5.0
+ * Versiunea schemei: 0.6.0
  */
 
 /**
@@ -20,6 +20,7 @@ export type LunarHorizonContracts =
   | ScenarioIndex
   | Health
   | Coverage
+  | TerrainStatusReport
   | Problem
 export type ErrorCode =
   | 'VALIDATION_ERROR'
@@ -35,7 +36,7 @@ export type ErrorCode =
   | 'INTERNAL_ERROR'
 
 export interface Catalog {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   catalog_version: string
   sites: Site[]
   demo_site_selection: DemoSiteSelection
@@ -47,8 +48,15 @@ export interface Site {
   agency: string | null
   operator: string | null
   country: string | null
-  status: 'landed' | 'planned' | 'candidate' | 'impact' | 'custom'
-  mission_status: 'landed' | 'impacted' | 'not_landed' | 'planned' | 'unknown'
+  status:
+    'landed' | 'planned' | 'candidate' | 'impact' | 'custom' | 'dem_region'
+  mission_status:
+    | 'landed'
+    | 'impacted'
+    | 'not_landed'
+    | 'planned'
+    | 'unknown'
+    | 'not_applicable'
   geometry_type: 'point' | 'region'
   position_kind: 'actual' | 'planned_target' | 'representative_point'
   latitude_deg: number
@@ -133,7 +141,7 @@ export interface ExcludedCandidate {
   reason: string
 }
 export interface KernelManifest {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   default_profile: 'de440_me421' | 'de421'
   /**
    * @minItems 1
@@ -175,7 +183,7 @@ export interface ChecksumReference {
   source_url: string | null
 }
 export interface DemProductManifest {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   products: DemProduct[]
 }
 export interface DemProduct {
@@ -217,7 +225,7 @@ export interface ProductFile {
   size_bytes: number | null
 }
 export interface TerrainManifest {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   terrain_id: string
   source: TerrainSource
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -285,7 +293,7 @@ export interface TerrainLod {
  * margine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.
  */
 export interface TerrainSample {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   terrain_id: string
   product_id: string
   frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
@@ -363,7 +371,7 @@ export interface FieldError {
   message: string
 }
 export interface SimulationResult {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   request: SimulationRequest
   /**
    * @minItems 1
@@ -518,7 +526,7 @@ export interface NotComputed {
   reason: string
 }
 export interface ScenarioIndex {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   scenarios: Scenario[]
 }
 export interface Scenario {
@@ -545,7 +553,7 @@ export interface Health {
   issues: string[]
 }
 export interface Coverage {
-  schema_version: '0.5.0'
+  schema_version: '0.6.0'
   temporal: TemporalCoverage
   terrain: TerrainCoverage[]
 }
@@ -561,4 +569,35 @@ export interface TerrainCoverage {
   footprint: GeoJsonPolygon | null
   min_latitude_deg: number
   max_latitude_deg: number
+}
+/**
+ * Disponibilitatea reliefului vizual; nu este acoperirea necesară calculului orizontului.
+ */
+export interface TerrainStatusReport {
+  schema_version: '0.6.0'
+  south_polar_rule: string
+  selection_rule: string
+  products: TerrainProductStatus[]
+  sites: SiteTerrainStatus[]
+}
+export interface TerrainProductStatus {
+  terrain_id: string
+  product_id: string
+  region_name: string
+  frame_id: 'MOON_ME_DE440_ME421' | 'MOON_ME_DE421'
+  calc_resolution_m: number
+  bounds: ProjectedBounds
+  status: 'available' | 'not_downloaded'
+  reason: string
+}
+export interface SiteTerrainStatus {
+  site_id: string
+  status:
+    | 'terrain_available'
+    | 'terrain_not_downloaded'
+    | 'coverage_unverified'
+    | 'no_dem_coverage'
+    | 'frame_mismatch'
+  terrain_id: string | null
+  reason: string
 }

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LunarHorizonContracts",
   "description": "Contractele de date LunarHorizon. Generat din backend/lunarhorizon/contracts; nu se editează manual (scripts/generate_contracts.py).",
-  "x-schema-version": "0.5.0",
+  "x-schema-version": "0.6.0",
   "anyOf": [
     {
       "$ref": "#/$defs/Catalog"
@@ -39,6 +39,9 @@
     },
     {
       "$ref": "#/$defs/Coverage"
+    },
+    {
+      "$ref": "#/$defs/TerrainStatusReport"
     },
     {
       "$ref": "#/$defs/Problem"
@@ -175,7 +178,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -275,7 +278,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -553,7 +556,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1130,7 +1133,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1994,7 +1997,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -2138,7 +2141,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -2333,7 +2336,8 @@
             "planned",
             "candidate",
             "impact",
-            "custom"
+            "custom",
+            "dem_region"
           ],
           "title": "Status",
           "type": "string"
@@ -2344,7 +2348,8 @@
             "impacted",
             "not_landed",
             "planned",
-            "unknown"
+            "unknown",
+            "not_applicable"
           ],
           "title": "Mission Status",
           "type": "string"
@@ -2914,6 +2919,52 @@
       "title": "SiteTerrain",
       "type": "object"
     },
+    "SiteTerrainStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "site_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Site Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "terrain_available",
+            "terrain_not_downloaded",
+            "coverage_unverified",
+            "no_dem_coverage",
+            "frame_mismatch"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "terrain_id": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Terrain Id"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "site_id",
+        "status",
+        "terrain_id",
+        "reason"
+      ],
+      "title": "SiteTerrainStatus",
+      "type": "object"
+    },
     "SourceRecord": {
       "additionalProperties": false,
       "description": "Un document sau produs consultat pentru o poziție; citarea completă este în SOURCES.",
@@ -3225,7 +3276,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3300,12 +3351,73 @@
       "title": "TerrainManifest",
       "type": "object"
     },
+    "TerrainProductStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "terrain_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Terrain Id",
+          "type": "string"
+        },
+        "product_id": {
+          "pattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
+          "title": "Product Id",
+          "type": "string"
+        },
+        "region_name": {
+          "minLength": 1,
+          "title": "Region Name",
+          "type": "string"
+        },
+        "frame_id": {
+          "enum": [
+            "MOON_ME_DE440_ME421",
+            "MOON_ME_DE421"
+          ],
+          "title": "Frame Id",
+          "type": "string"
+        },
+        "calc_resolution_m": {
+          "exclusiveMinimum": 0.0,
+          "title": "Calc Resolution M",
+          "type": "number"
+        },
+        "bounds": {
+          "$ref": "#/$defs/ProjectedBounds"
+        },
+        "status": {
+          "enum": [
+            "available",
+            "not_downloaded"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "terrain_id",
+        "product_id",
+        "region_name",
+        "frame_id",
+        "calc_resolution_m",
+        "bounds",
+        "status",
+        "reason"
+      ],
+      "title": "TerrainProductStatus",
+      "type": "object"
+    },
     "TerrainSample": {
       "additionalProperties": false,
       "description": "Altitudinea terenului într-un punct, din rasterul de calcul (/api/terrain/elevation, E08).\n\nÎnălțimea este față de sfera de referință a produsului (`reference_radius_m` din manifest). La\nmargine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.",
       "properties": {
         "schema_version": {
-          "const": "0.5.0",
+          "const": "0.6.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3436,6 +3548,50 @@
         "citation"
       ],
       "title": "TerrainSource",
+      "type": "object"
+    },
+    "TerrainStatusReport": {
+      "additionalProperties": false,
+      "description": "Disponibilitatea reliefului vizual; nu este acoperirea necesară calculului orizontului.",
+      "properties": {
+        "schema_version": {
+          "const": "0.6.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "south_polar_rule": {
+          "minLength": 1,
+          "title": "South Polar Rule",
+          "type": "string"
+        },
+        "selection_rule": {
+          "minLength": 1,
+          "title": "Selection Rule",
+          "type": "string"
+        },
+        "products": {
+          "items": {
+            "$ref": "#/$defs/TerrainProductStatus"
+          },
+          "title": "Products",
+          "type": "array"
+        },
+        "sites": {
+          "items": {
+            "$ref": "#/$defs/SiteTerrainStatus"
+          },
+          "title": "Sites",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schema_version",
+        "south_polar_rule",
+        "selection_rule",
+        "products",
+        "sites"
+      ],
+      "title": "TerrainStatusReport",
       "type": "object"
     },
     "TimeInterval": {

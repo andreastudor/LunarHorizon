@@ -72,7 +72,7 @@ def main() -> None:
         if invalid[row, col]:
             raise ValueError("Pixelul reprezentativ este NoData")
         manifest = {
-            "schema_version": "0.5.0",
+            "schema_version": "0.6.0",
             "terrain_id": "leibnitz_beta_provisional",
             "source": {
                 "product_id": "pgda104_leibnitz_beta",

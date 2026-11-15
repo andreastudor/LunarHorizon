@@ -1,0 +1,266 @@
+{
+  "schema": "terrain-index-v1",
+  "selection_rule": "Among the indexed products whose raster rectangle contains the point and whose frame equals the requested frame: prefer a valid (not NoData, not edge) calculation sample, then the finer calculation resolution, then the larger distance to the raster edge, then the smaller terrain_id. Rasters are never combined.",
+  "entries": [
+    {
+      "slug": "amundsen_rim",
+      "region_name": "Amundsen Rim",
+      "terrain_id": "amundsen_rim_provisional",
+      "product_id": "pgda104_amundsen_rim",
+      "manifest": "data/manifests/terrain/amundsen_rim.json",
+      "cache_dir": "data/_cache/terrain/amundsen_rim",
+      "archive": "A3CLR22_0_Amundsen_Rim.zip",
+      "member": "A3CLR22_0_Amundsen_Rim/A300_GLDELEV_005.tif",
+      "member_size_bytes": 34827742,
+      "bounds_m": [
+        154000.0,
+        51500.0,
+        174000.0,
+        71500.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "connecting_ridge",
+      "region_name": "Connecting Ridge",
+      "terrain_id": "connecting_ridge_provisional",
+      "product_id": "pgda104_connecting_ridge",
+      "manifest": "data/manifests/terrain/connecting_ridge.json",
+      "cache_dir": "data/_cache/terrain/connecting_ridge",
+      "archive": "A3CLR22_6_Connecting_Ridge.zip",
+      "member": "A3CLR22_6_Connecting_Ridge/A306_GLDELEV_005.tif",
+      "member_size_bytes": 20953350,
+      "bounds_m": [
+        -19000.0,
+        -20000.0,
+        -3000.0,
+        -4000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "connecting_ridge_extension",
+      "region_name": "Connecting Ridge Extension",
+      "terrain_id": "connecting_ridge_extension_provisional",
+      "product_id": "pgda104_connecting_ridge_extension",
+      "manifest": "data/manifests/terrain/connecting_ridge_extension.json",
+      "cache_dir": "data/_cache/terrain/connecting_ridge_extension",
+      "archive": "A3CLR22_5_Connecting_Ridge_Extension.zip",
+      "member": "A3CLR22_5_Connecting_Ridge_Extension/A305_GLDELEV_005.tif",
+      "member_size_bytes": 35148852,
+      "bounds_m": [
+        -38700.0,
+        -16100.0,
+        -18700.0,
+        3900.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "degerlache_kocher_massif",
+      "region_name": "deGerlache Kocher Massif",
+      "terrain_id": "degerlache_kocher_massif_provisional",
+      "product_id": "pgda104_degerlache_kocher_massif",
+      "manifest": "data/manifests/terrain/degerlache_kocher_massif.json",
+      "cache_dir": "data/_cache/terrain/degerlache_kocher_massif",
+      "archive": "A3CLR22_12_deGerlache_Kocher_Massif.zip",
+      "member": "A3CLR22_12_deGerlache_Kocher_Massif/A312_GLDELEV_005.tif",
+      "member_size_bytes": 32324244,
+      "bounds_m": [
+        -123400.0,
+        -66100.0,
+        -103400.0,
+        -46100.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "degerlache_rim",
+      "region_name": "deGerlache Rim",
+      "terrain_id": "degerlache_rim_provisional",
+      "product_id": "pgda104_degerlache_rim",
+      "manifest": "data/manifests/terrain/degerlache_rim.json",
+      "cache_dir": "data/_cache/terrain/degerlache_rim",
+      "archive": "A3CLR22_9_deGerlache_Rim.zip",
+      "member": "A3CLR22_9_deGerlache_Rim/A309_GLDELEV_005.tif",
+      "member_size_bytes": 22145062,
+      "bounds_m": [
+        -45000.0,
+        7000.0,
+        -29000.0,
+        23000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "degerlache_rim_2",
+      "region_name": "deGerlache Rim 2",
+      "terrain_id": "degerlache_rim_2_provisional",
+      "product_id": "pgda104_degerlache_rim_2",
+      "manifest": "data/manifests/terrain/degerlache_rim_2.json",
+      "cache_dir": "data/_cache/terrain/degerlache_rim_2",
+      "archive": "A3CLR22_4_deGerlache_Rim_2.zip",
+      "member": "A3CLR22_4_deGerlache_Rim_2/A304_GLDELEV_005.tif",
+      "member_size_bytes": 34042970,
+      "bounds_m": [
+        -58500.0,
+        13000.0,
+        -38500.0,
+        33000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "faustini_rim_a",
+      "region_name": "Faustini Rim A",
+      "terrain_id": "faustini_rim_a_provisional",
+      "product_id": "pgda104_faustini_rim_a",
+      "manifest": "data/manifests/terrain/faustini_rim_a.json",
+      "cache_dir": "data/_cache/terrain/faustini_rim_a",
+      "archive": "A3CLR22_3_Faustini_Rim_A.zip",
+      "member": "A3CLR22_3_Faustini_Rim_A/A303_GLDELEV_005.tif",
+      "member_size_bytes": 34219238,
+      "bounds_m": [
+        54000.0,
+        -10000.0,
+        74000.0,
+        10000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "haworth",
+      "region_name": "Haworth",
+      "terrain_id": "haworth_provisional",
+      "product_id": "pgda104_haworth",
+      "manifest": "data/manifests/terrain/haworth.json",
+      "cache_dir": "data/_cache/terrain/haworth",
+      "archive": "A3CLR22_2_Haworth.zip",
+      "member": "A3CLR22_2_Haworth/A302_GLDELEV_005.tif",
+      "member_size_bytes": 73017526,
+      "bounds_m": [
+        -52900.0,
+        75600.0,
+        -23100.0,
+        105400.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "leibnitz_beta_plateau",
+      "region_name": "Leibnitz Beta Plateau",
+      "terrain_id": "leibnitz_beta_provisional",
+      "product_id": "pgda104_leibnitz_beta",
+      "manifest": "data/manifests/leibnitz_terrain.json",
+      "cache_dir": "data/_cache/terrain/leibnitz_beta",
+      "archive": "A3CLR22_10_Leibnitz_Beta_Plateau.zip",
+      "member": "A3CLR22_10_Leibnitz_Beta_Plateau/A310_GLDELEV_005.tif",
+      "member_size_bytes": 16598431,
+      "bounds_m": [
+        65000.0,
+        110000.0,
+        81000.0,
+        126000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "malapert_massif",
+      "region_name": "Malapert Massif",
+      "terrain_id": "malapert_massif_provisional",
+      "product_id": "pgda104_malapert_massif",
+      "manifest": "data/manifests/terrain/malapert_massif.json",
+      "cache_dir": "data/_cache/terrain/malapert_massif",
+      "archive": "A3CLR22_11_Malapert_Massif.zip",
+      "member": "A3CLR22_11_Malapert_Massif/A311_GLDELEV_005.tif",
+      "member_size_bytes": 31171558,
+      "bounds_m": [
+        -11000.0,
+        111000.0,
+        10000.0,
+        132000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "nobile_rim_1",
+      "region_name": "Nobile Rim 1",
+      "terrain_id": "nobile_rim_1_provisional",
+      "product_id": "pgda104_nobile_rim_1",
+      "manifest": "data/manifests/terrain/nobile_rim_1.json",
+      "cache_dir": "data/_cache/terrain/nobile_rim_1",
+      "archive": "A3CLR22_7_Nobile_Rim_1.zip",
+      "member": "A3CLR22_7_Nobile_Rim_1/A307_GLDELEV_005.tif",
+      "member_size_bytes": 27429327,
+      "bounds_m": [
+        74000.0,
+        100000.0,
+        94000.0,
+        120000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "nobile_rim_2",
+      "region_name": "Nobile Rim 2",
+      "terrain_id": "nobile_rim_2_provisional",
+      "product_id": "pgda104_nobile_rim_2",
+      "manifest": "data/manifests/terrain/nobile_rim_2.json",
+      "cache_dir": "data/_cache/terrain/nobile_rim_2",
+      "archive": "A3CLR22_1_Nobile_Rim_2.zip",
+      "member": "A3CLR22_1_Nobile_Rim_2/A301_GLDELEV_005.tif",
+      "member_size_bytes": 32817469,
+      "bounds_m": [
+        147000.0,
+        85000.0,
+        167000.0,
+        105000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    },
+    {
+      "slug": "peak_near_shackleton",
+      "region_name": "Peak Near Shackleton",
+      "terrain_id": "peak_near_shackleton_provisional",
+      "product_id": "pgda104_peak_near_shackleton",
+      "manifest": "data/manifests/terrain/peak_near_shackleton.json",
+      "cache_dir": "data/_cache/terrain/peak_near_shackleton",
+      "archive": "A3CLR22_8_Peak_Near_Shackleton.zip",
+      "member": "A3CLR22_8_Peak_Near_Shackleton/A308_GLDELEV_005.tif",
+      "member_size_bytes": 21731460,
+      "bounds_m": [
+        22000.0,
+        -28000.0,
+        38000.0,
+        -12000.0
+      ],
+      "calc_resolution_m": 5.0,
+      "frame_id": "MOON_ME_DE421",
+      "acquired": true
+    }
+  ]
+}

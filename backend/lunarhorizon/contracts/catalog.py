@@ -27,8 +27,10 @@ from lunarhorizon.contracts.common import (
 )
 from lunarhorizon.core.coords import normalize_longitude_deg
 
-SiteStatus = Literal["landed", "planned", "candidate", "impact", "custom"]
-MissionStatus = Literal["landed", "impacted", "not_landed", "planned", "unknown"]
+# `dem_region` (schema 0.6.0): punct reprezentativ al unei regiuni documentate de un produs DEM;
+# nu este loc de aterizare, țintă sau candidat. Fără misiune: `mission_status = not_applicable`.
+SiteStatus = Literal["landed", "planned", "candidate", "impact", "custom", "dem_region"]
+MissionStatus = Literal["landed", "impacted", "not_landed", "planned", "unknown", "not_applicable"]
 GeometryType = Literal["point", "region"]
 PositionKind = Literal["actual", "planned_target", "representative_point"]
 SourceUse = Literal["position", "planned_target", "corroboration", "mission_context"]
@@ -142,6 +144,17 @@ class Site(Contract):
             raise ValueError("o poziție efectivă nu poate avea status planned sau candidate")
         if self.status == "landed" and self.mission_status != "landed":
             raise ValueError("status=landed cere mission_status=landed")
+        if self.status == "dem_region" and (
+            self.position_kind != "representative_point"
+            or self.geometry_type != "region"
+            or self.mission is not None
+            or self.mission_status != "not_applicable"
+        ):
+            raise ValueError(
+                "dem_region cere punct reprezentativ de regiune, fără misiune (not_applicable)"
+            )
+        if self.mission_status == "not_applicable" and self.status != "dem_region":
+            raise ValueError("mission_status=not_applicable este permis numai pentru dem_region")
 
         if not any(s.used_for in ("position", "planned_target") for s in self.position_sources):
             raise ValueError("fiecare poziție cere cel puțin o sursă de poziție")

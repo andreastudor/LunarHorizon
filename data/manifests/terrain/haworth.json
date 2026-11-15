@@ -1,0 +1,62 @@
+{
+  "schema_version": "0.6.0",
+  "terrain_id": "haworth_provisional",
+  "source": {
+    "product_id": "pgda104_haworth",
+    "url": "https://zenodo.org/records/17954508/files/A3CLR22_2_Haworth.zip?download=1",
+    "sha256": "7126ae857336f2781b7e72caa07a7162e63b8e3ab50ebcd9ee30390b3d6f4d94",
+    "citation": "Bertone et al., Enhanced Topography Models, doi:10.3847/PSJ/ae5b70"
+  },
+  "frame_id": "MOON_ME_DE421",
+  "crs": {
+    "proj4": null,
+    "wkt": "PROJCS[\"Moon (2015) - Sphere / Ocentric / South Polar\",GEOGCS[\"Moon (2015) - Sphere / Ocentric\",DATUM[\"Moon (2015) - Sphere\",SPHEROID[\"Moon (2015) - Sphere\",1737400,0,AUTHORITY[\"IAU\",\"30100\"]],AUTHORITY[\"IAU\",\"30100\"]],PRIMEM[\"Reference Meridian\",0,AUTHORITY[\"IAU\",\"30100\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"IAU\",\"30100\"]],PROJECTION[\"Polar_Stereographic\"],PARAMETER[\"latitude_of_origin\",-90],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",NORTH],AXIS[\"Northing\",NORTH],AUTHORITY[\"IAU\",\"30135\"]]"
+  },
+  "reference_radius_m": 1737400.0,
+  "vertical": {
+    "units": "m",
+    "reference": "Sphere of 1737400 m (product README)",
+    "exaggeration_default_factor": 1
+  },
+  "calc_resolution_m": 5.0,
+  "local_origin": {
+    "latitude_deg": -86.76404982027084,
+    "longitude_deg": -22.776243241756063,
+    "elevation_m": 1626.78955078125
+  },
+  "bounds": {
+    "x_min_m": -52900.0,
+    "x_max_m": -23100.0,
+    "y_min_m": 75600.0,
+    "y_max_m": 105400.0
+  },
+  "nodata": {
+    "present": false,
+    "encoding": "-3.4028234663852886e+38",
+    "area_fraction": 0.0
+  },
+  "interpolated_pixels": {
+    "flagged": false,
+    "note": "SfS model; LROC contribution not inspected. MOON_ME_DE421 is an unconfirmed hypothesis."
+  },
+  "lods": [
+    {
+      "level": 0,
+      "visual_resolution_m": 40.0,
+      "width_px": 745,
+      "height_px": 745,
+      "heights_path": "visual_8.tif",
+      "encoding": "GeoTIFF float32; NaN = NoData; any NoData in a block → NoData",
+      "sha256": "95a33f7a0f3e6c0bb074ed21b3f51cd8cdad3411b1ad3787e00257b06657dea7"
+    },
+    {
+      "level": 1,
+      "visual_resolution_m": 100.0,
+      "width_px": 298,
+      "height_px": 298,
+      "heights_path": "visual_20.tif",
+      "encoding": "GeoTIFF float32; NaN = NoData; any NoData in a block → NoData",
+      "sha256": "42dd3e109ac03aea57a3a8050797ce8aae21f758c5792fda236ee65c1a65c605"
+    }
+  ]
+}

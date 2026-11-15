@@ -41,7 +41,10 @@ test('real local terrain loads, renders and follows the slider', async ({
   })
 
   await page.goto('/')
-  await page.getByText(en.coverage.useRepresentative).click()
+  await page
+    .locator('li', { hasText: 'pgda104_leibnitz_beta' })
+    .getByText(en.coverage.useRepresentative)
+    .click()
   const canvas = page.locator('.terrain-canvas')
   await expect(canvas).toHaveAttribute('data-terrain-ready', 'true', {
     timeout: 60_000,
@@ -104,12 +107,17 @@ test('real local terrain loads, renders and follows the slider', async ({
   // A site without DEM: no relief, terrain geometries released; back again: the same count as
   // the first load without a result (no leak).
   await page.getByText('Apollo 11 — Lunar Module “Eagle”').click()
-  await expect(page.getByText(en.terrain.unavailable)).toBeVisible()
+  await expect(
+    page.getByText(en.terrain.unavailable.no_dem_coverage),
+  ).toBeVisible()
   await expect.poll(() => data(canvas, 'terrain-vertices')).toBe('0')
   await expect
     .poll(async () => Number(await data(canvas, 'geometries')))
     .toBeLessThan(geometriesWithTerrain)
-  await page.getByText(en.coverage.useRepresentative).click()
+  await page
+    .locator('li', { hasText: 'pgda104_leibnitz_beta' })
+    .getByText(en.coverage.useRepresentative)
+    .click()
   await expect(canvas).toHaveAttribute('data-terrain-ready', 'true', {
     timeout: 60_000,
   })

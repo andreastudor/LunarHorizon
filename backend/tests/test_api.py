@@ -100,8 +100,10 @@ def test_sites_returns_the_catalog_document(client: TestClient) -> None:
     expected = load_catalog()
     assert document["catalog_version"] == expected.catalog_version
     assert [s["id"] for s in document["sites"]] == [s.id for s in expected.sites]
-    # Punctul provizoriu E05 nu este expus ca sit.
-    assert not any("leibnitz" in s["id"] for s in document["sites"])
+    # E08b: Leibnitz Beta is exposed as a DEM-region representative point, not as a landing site.
+    leibnitz = next(s for s in document["sites"] if "leibnitz" in s["id"])
+    assert leibnitz["status"] == "dem_region"
+    assert leibnitz["position_kind"] == "representative_point"
 
 
 def test_openapi_lists_all_endpoints(client: TestClient) -> None:
@@ -115,6 +117,7 @@ def test_openapi_lists_all_endpoints(client: TestClient) -> None:
         "/api/simulations/{simulation_id}",
         "/api/assets/{name}",
         "/api/terrain/elevation",
+        "/api/terrain/status",
         "/api/terrain/{terrain_id}/lods/{level}",
     }
 

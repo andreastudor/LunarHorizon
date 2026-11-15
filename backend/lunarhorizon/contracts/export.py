@@ -20,7 +20,7 @@ from lunarhorizon.contracts.manifests import (
     TerrainSample,
 )
 from lunarhorizon.contracts.scenarios import ScenarioIndex
-from lunarhorizon.contracts.service import Coverage, Health, Problem
+from lunarhorizon.contracts.service import Coverage, Health, Problem, TerrainStatusReport
 from lunarhorizon.contracts.simulation import (
     SimulationAccepted,
     SimulationRequest,
@@ -44,6 +44,7 @@ DOCUMENT_MODELS: Final[dict[str, type[BaseModel]]] = {
     "ScenarioIndex": ScenarioIndex,
     "Health": Health,
     "Coverage": Coverage,
+    "TerrainStatusReport": TerrainStatusReport,
     "Problem": Problem,
 }
 

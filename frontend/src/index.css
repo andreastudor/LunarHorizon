@@ -315,6 +315,30 @@ button.primary:hover:not(:disabled) {
   padding: 0 0.45rem;
 }
 
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+}
+
+.badge--terrain_available {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.badge--terrain_not_downloaded,
+.badge--coverage_unverified,
+.badge--frame_mismatch {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.badge--no_dem_coverage {
+  color: var(--muted);
+}
+
 .badge--planned_target,
 .badge--representative_point {
   border-color: var(--warn);

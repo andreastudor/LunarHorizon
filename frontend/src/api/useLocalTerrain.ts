@@ -9,13 +9,20 @@ import { buildTerrainMesh, type TerrainMesh } from '../geo/terrain.ts'
 import { ApiError, type DataSource } from './dataSource.ts'
 import { describeError, type ErrorDescription } from './errors.ts'
 
-/** Visual level used for the mesh: level 0 (40 m/pixel for the first site). */
-export const TERRAIN_LOD_LEVEL = 0
+/** The finest visual level with at most this many vertices is used for the mesh. */
+export const VERTEX_BUDGET = 300_000
+
+/** Why no terrain is shown (each state is displayed distinctly; no relief is generated). */
+export type TerrainGap =
+  | 'no_dem_coverage'
+  | 'coverage_unverified'
+  | 'terrain_not_downloaded'
+  | 'frame_mismatch'
 
 export type LocalTerrain =
   | { status: 'none' }
   | { status: 'loading' }
-  | { status: 'unavailable' }
+  | { status: 'unavailable'; gap: TerrainGap }
   | { status: 'error'; error: ErrorDescription }
   | {
       status: 'ready'
@@ -33,15 +40,32 @@ export interface TerrainPoint {
 const isAbort = (error: unknown) =>
   error instanceof DOMException && error.name === 'AbortError'
 
+function gapOf(error: unknown): TerrainGap | null {
+  if (!(error instanceof ApiError) || !error.problem) return null
+  const { code, detail } = error.problem
+  if (code === 'TERRAIN_DATA_MISSING') return 'terrain_not_downloaded'
+  if (code === 'UNSUPPORTED_FRAME') return 'frame_mismatch'
+  if (code === 'OUT_OF_DEM_COVERAGE')
+    // The server prefixes the detail with the selection status (an identifier).
+    return detail.startsWith('coverage_unverified')
+      ? 'coverage_unverified'
+      : 'no_dem_coverage'
+  return null
+}
+
 export function useLocalTerrain(
   source: DataSource,
   point: TerrainPoint | null,
+  frameId: string | null,
   reloadToken: number,
 ): LocalTerrain {
   const [state, setState] = useState<LocalTerrain>({ status: 'none' })
-  const meshes = useRef(
-    new Map<string, { mesh: TerrainMesh; resolutionM: number }>(),
-  )
+  // Only the current terrain is kept (no preloading, released when another region is selected).
+  const current = useRef<{
+    terrainId: string
+    mesh: TerrainMesh
+    resolutionM: number
+  } | null>(null)
   const latitude = point?.latitudeDeg ?? null
   const longitude = point?.longitudeDeg ?? null
 
@@ -55,20 +79,26 @@ export function useLocalTerrain(
         const manifest = await source.terrainManifest(
           latitude,
           longitude,
+          frameId,
           signal,
         )
-        let cached = meshes.current.get(manifest.terrain_id)
+        let cached =
+          current.current?.terrainId === manifest.terrain_id
+            ? current.current
+            : null
         if (!cached) {
-          const lod = manifest.lods.find(
-            (item) => item.level === TERRAIN_LOD_LEVEL,
-          )
-          if (!lod) throw new Error('missing level of detail')
+          const lod = [...manifest.lods]
+            .sort((a, b) => a.visual_resolution_m - b.visual_resolution_m)
+            .find((item) => item.width_px * item.height_px <= VERTEX_BUDGET)
+          if (!lod)
+            throw new Error('no level of detail within the vertex budget')
           const data = await source.terrainLod(
             manifest.terrain_id,
             lod.level,
             signal,
           )
           cached = {
+            terrainId: manifest.terrain_id,
             mesh: buildTerrainMesh(
               {
                 width: data.width,
@@ -82,7 +112,7 @@ export function useLocalTerrain(
             ),
             resolutionM: lod.visual_resolution_m,
           }
-          meshes.current.set(manifest.terrain_id, cached)
+          current.current = cached
         }
         const sample = await source.terrainElevation(
           manifest.terrain_id,
@@ -100,11 +130,9 @@ export function useLocalTerrain(
         })
       } catch (error) {
         if (signal.aborted || isAbort(error)) return
-        if (
-          error instanceof ApiError &&
-          error.problem?.code === 'OUT_OF_DEM_COVERAGE'
-        ) {
-          setState({ status: 'unavailable' })
+        const gap = gapOf(error)
+        if (gap) {
+          setState({ status: 'unavailable', gap })
           return
         }
         setState({ status: 'error', error: describeError(error) })
@@ -112,7 +140,7 @@ export function useLocalTerrain(
     }
     void load()
     return () => controller.abort()
-  }, [source, latitude, longitude, reloadToken])
+  }, [source, latitude, longitude, frameId, reloadToken])
 
   return latitude === null || longitude === null ? { status: 'none' } : state
 }

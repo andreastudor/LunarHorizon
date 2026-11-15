@@ -26,7 +26,14 @@ from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 from lunarhorizon import __version__
-from lunarhorizon.api.data import DataRegistry, point_in_terrain, terrain_coverage
+from lunarhorizon.api.data import (
+    SELECTION_RULE,
+    SOUTH_POLAR_RULE,
+    DataRegistry,
+    TerrainSelection,
+    point_in_terrain,
+    terrain_coverage,
+)
 from lunarhorizon.api.jobs import SimulationService
 from lunarhorizon.api.problems import (
     PROBLEM_MEDIA_TYPE,
@@ -37,8 +44,17 @@ from lunarhorizon.api.problems import (
 )
 from lunarhorizon.api.settings import Settings
 from lunarhorizon.contracts.catalog import Catalog
-from lunarhorizon.contracts.manifests import TerrainManifest, TerrainSample
-from lunarhorizon.contracts.service import Coverage, Health, Problem, TemporalCoverage
+from lunarhorizon.contracts.common import FrameId
+from lunarhorizon.contracts.manifests import ProjectedBounds, TerrainManifest, TerrainSample
+from lunarhorizon.contracts.service import (
+    Coverage,
+    Health,
+    Problem,
+    SiteTerrainStatus,
+    TemporalCoverage,
+    TerrainProductStatus,
+    TerrainStatusReport,
+)
 from lunarhorizon.contracts.simulation import (
     SimulationAccepted,
     SimulationRequest,
@@ -128,7 +144,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 app_version=__version__,
                 kernel_profile=profiles[0].profile_id if profiles else None,
                 kernels_loaded=bool(profiles),
-                dem_products=[entry.product.product_id for entry in entries],
+                dem_products=[entry.manifest.source.product_id for entry in entries],
                 time_utc=format_utc(datetime.now(tz=UTC)),
                 issues=issues,
             )
@@ -297,20 +313,118 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             },
         )
 
+    def selection_problem(selection: TerrainSelection) -> JSONResponse:
+        """Problem for a point without loadable terrain (the status keeps its own code)."""
+        if selection.status == "terrain_not_downloaded":
+            return _problem_response(
+                make_problem(
+                    ErrorCode.TERRAIN_DATA_MISSING,
+                    f"terrain not downloaded: {selection.reason}; run scripts/acquire_pgda104.py "
+                    "and scripts/build_pgda104_regions.py",
+                )
+            )
+        if selection.status == "frame_mismatch":
+            return _problem_response(make_problem(ErrorCode.UNSUPPORTED_FRAME, selection.reason))
+        return _problem_response(
+            make_problem(
+                ErrorCode.OUT_OF_DEM_COVERAGE,
+                f"{selection.status}: {selection.reason}",
+                status=404,
+            )
+        )
+
+    @app.get("/api/terrain/status", response_model=TerrainStatusReport, responses=PROBLEM_RESPONSES)
+    def terrain_status() -> Response:
+        """Visual terrain availability per product and per catalog site (not horizon coverage)."""
+        products = [
+            TerrainProductStatus(
+                terrain_id=entry.manifest.terrain_id,
+                product_id=entry.manifest.source.product_id,
+                region_name=entry.region_name,
+                frame_id=entry.manifest.frame_id,
+                calc_resolution_m=entry.manifest.calc_resolution_m,
+                bounds=entry.manifest.bounds,
+                status="available" if entry.available else "not_downloaded",
+                reason=(
+                    "calculation raster and visual levels on disk"
+                    if entry.available
+                    else "manifest versioned; raster not on this machine"
+                ),
+            )
+            for entry in registry.terrain_entries()
+        ] + [
+            TerrainProductStatus(
+                terrain_id=pending.terrain_id,
+                product_id=pending.product_id,
+                region_name=pending.region_name,
+                frame_id=pending.frame_id,  # type: ignore[arg-type]
+                calc_resolution_m=pending.calc_resolution_m,
+                bounds=ProjectedBounds(
+                    x_min_m=pending.bounds_m[0],
+                    y_min_m=pending.bounds_m[1],
+                    x_max_m=pending.bounds_m[2],
+                    y_max_m=pending.bounds_m[3],
+                ),
+                status="not_downloaded",
+                reason="listed in the index; not acquired",
+            )
+            for pending in registry.pending_products()
+        ]
+        sites = []
+        for site in registry.catalog().sites:
+            selection = registry.select_terrain(
+                site.latitude_deg, site.longitude_deg, site.frame_id
+            )
+            sites.append(
+                SiteTerrainStatus(
+                    site_id=site.id,
+                    status=selection.status,  # type: ignore[arg-type]
+                    terrain_id=(
+                        selection.entry.manifest.terrain_id
+                        if selection.entry
+                        else selection.pending.terrain_id
+                        if selection.pending
+                        else None
+                    ),
+                    reason=selection.reason,
+                )
+            )
+        return _json(
+            TerrainStatusReport(
+                schema_version=SCHEMA_VERSION,
+                south_polar_rule=SOUTH_POLAR_RULE,
+                selection_rule=SELECTION_RULE,
+                products=products,
+                sites=sites,
+            )
+        )
+
     @app.get("/api/terrain/manifest", response_model=TerrainManifest, responses=PROBLEM_RESPONSES)
     def terrain_manifest(
         site_id: Annotated[str | None, Query(pattern=r"^[a-z0-9][a-z0-9_.-]{0,63}$")] = None,
+        terrain_id: Annotated[str | None, Query(pattern=r"^[a-z0-9][a-z0-9_.-]{0,63}$")] = None,
         latitude_deg: Annotated[float | None, Query(ge=-90.0, le=90.0)] = None,
         longitude_deg: Annotated[float | None, Query(ge=-180.0, lt=360.0)] = None,
+        frame_id: Annotated[FrameId | None, Query()] = None,
     ) -> Response:
+        """Manifest of the product selected for a site or a point (deterministic rule), or by id.
+
+        A point is selected only among products declared in `frame_id` (the site's frame for
+        `site_id`); coordinates are never converted between frames."""
         by_point = latitude_deg is not None or longitude_deg is not None
-        if (site_id is not None) == by_point or (
-            by_point and None in (latitude_deg, longitude_deg)
-        ):
+        chosen = [site_id is not None, terrain_id is not None, by_point]
+        if sum(chosen) != 1 or (by_point and None in (latitude_deg, longitude_deg)):
             raise LunarHorizonError(
                 ErrorCode.VALIDATION_ERROR,
-                "indicați fie site_id, fie perechea latitude_deg și longitude_deg",
+                "indicați exact unul: site_id, terrain_id sau latitude_deg + longitude_deg",
             )
+        if terrain_id is not None:
+            entry = registry.terrain_by_id(terrain_id)
+            if not entry.available:
+                raise LunarHorizonError(
+                    ErrorCode.TERRAIN_DATA_MISSING, f"{terrain_id}: raster not on this machine"
+                )
+            return _json(entry.manifest)
         if site_id is not None:
             matches = [site for site in registry.catalog().sites if site.id == site_id]
             if not matches:
@@ -318,26 +432,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     ErrorCode.VALIDATION_ERROR, f"site_id {site_id!r} nu există în catalog"
                 )
             latitude, longitude = matches[0].latitude_deg, matches[0].longitude_deg
+            frame: str | None = frame_id or matches[0].frame_id
         else:
             assert latitude_deg is not None and longitude_deg is not None
             latitude, longitude = latitude_deg, normalize_longitude_deg(longitude_deg)
-        entries = registry.terrain_entries()
-        for entry in entries:
-            if point_in_terrain(entry, latitude, longitude):
-                if not entry.available:
-                    raise LunarHorizonError(
-                        ErrorCode.TERRAIN_DATA_MISSING,
-                        "rasterul de calcul lipsește de pe disc; rulați "
-                        "scripts/download_terrain.py "
-                        "și scripts/build_terrain.py",
-                    )
-                return _json(entry.manifest)
-        problem = make_problem(
-            ErrorCode.OUT_OF_DEM_COVERAGE,
-            "punctul nu se află în dreptunghiul niciunui raster DEM disponibil",
-            status=404,
-        )
-        return _problem_response(problem)
+            frame = frame_id
+        selection = registry.select_terrain(latitude, longitude, frame)
+        if selection.status == "terrain_available" and selection.entry is not None:
+            return _json(selection.entry.manifest)
+        return selection_problem(selection)
 
     @app.post(
         "/api/simulations",

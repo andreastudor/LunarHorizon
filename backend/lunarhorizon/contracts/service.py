@@ -6,6 +6,7 @@ from pydantic import Field, model_validator
 
 from lunarhorizon.contracts.common import (
     Contract,
+    FrameId,
     GeoJsonPolygon,
     Identifier,
     Latitude,
@@ -14,7 +15,7 @@ from lunarhorizon.contracts.common import (
     SchemaVersion,
     UtcTimestamp,
 )
-from lunarhorizon.contracts.manifests import TerrainRole
+from lunarhorizon.contracts.manifests import ProjectedBounds, TerrainRole
 from lunarhorizon.core.errors import ErrorCode
 
 
@@ -72,3 +73,43 @@ class Problem(Contract):
     field_errors: list[FieldError] | None = None
     coverage_start_utc: UtcTimestamp | None = None
     coverage_end_utc: UtcTimestamp | None = None
+
+
+# --- Starea terenului pe produse și pe situri (GET /api/terrain/status, schema 0.6.0) ------------
+
+TerrainProductState = Literal["available", "not_downloaded"]
+SiteTerrainState = Literal[
+    "terrain_available",
+    "terrain_not_downloaded",
+    "coverage_unverified",
+    "no_dem_coverage",
+    "frame_mismatch",
+]
+
+
+class TerrainProductStatus(Contract):
+    terrain_id: Identifier
+    product_id: Identifier
+    region_name: NonEmptyText
+    frame_id: FrameId
+    calc_resolution_m: Positive
+    bounds: ProjectedBounds
+    status: TerrainProductState
+    reason: NonEmptyText
+
+
+class SiteTerrainStatus(Contract):
+    site_id: Identifier
+    status: SiteTerrainState
+    terrain_id: Identifier | None
+    reason: NonEmptyText
+
+
+class TerrainStatusReport(Contract):
+    """Disponibilitatea reliefului vizual; nu este acoperirea necesară calculului orizontului."""
+
+    schema_version: SchemaVersion
+    south_polar_rule: NonEmptyText
+    selection_rule: NonEmptyText
+    products: list[TerrainProductStatus]
+    sites: list[SiteTerrainStatus]

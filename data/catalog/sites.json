@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.5.0",
-  "catalog_version": "e07-2026-11-14-english-names",
+  "schema_version": "0.6.0",
+  "catalog_version": "e08b-2026-11-15-pgda104-regions",
   "sites": [
     {
       "id": "apollo11_lm",
@@ -865,6 +865,4257 @@
       "description_ro": "Prima aterizare pe partea îndepărtată (3 ianuarie 2019, 02:26 UTC, după LROC), în craterul Von Kármán.",
       "description_en": null,
       "terrain_available": false
+    },
+    {
+      "id": "pgda104_amundsen_rim_point",
+      "name": "Amundsen Rim — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -84.22869118656553,
+      "longitude_deg": 69.44500765096485,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -84.22869118656553,
+        "longitude_deg": 69.44500765096485,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A300_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 400.6910400390625,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              71.50926173072403,
+              -84.64884385203423
+            ],
+            [
+              71.64812861452556,
+              -84.60981960469819
+            ],
+            [
+              71.7849955075022,
+              -84.57076544821203
+            ],
+            [
+              71.91990377839795,
+              -84.53168206318874
+            ],
+            [
+              72.05289370726982,
+              -84.49257011170596
+            ],
+            [
+              72.18400451944673,
+              -84.45343023792461
+            ],
+            [
+              72.31327441829701,
+              -84.41426306868316
+            ],
+            [
+              72.44074061684857,
+              -84.37506921406955
+            ],
+            [
+              72.56643936830568,
+              -84.33584926797121
+            ],
+            [
+              72.69040599550286,
+              -84.29660380860408
+            ],
+            [
+              72.81267491933664,
+              -84.25733339902152
+            ],
+            [
+              72.93327968621293,
+              -84.21803858760423
+            ],
+            [
+              73.05225299454706,
+              -84.17871990853199
+            ],
+            [
+              73.1696267203522,
+              -84.13937788223745
+            ],
+            [
+              73.28543194194997,
+              -84.10001301584322
+            ],
+            [
+              73.39969896383602,
+              -84.06062580358295
+            ],
+            [
+              73.51245733973248,
+              -84.02121672720673
+            ],
+            [
+              73.13474712357207,
+              -84.00941948705957
+            ],
+            [
+              72.75854060106002,
+              -83.99736354066154
+            ],
+            [
+              72.38386105368846,
+              -83.98505045601657
+            ],
+            [
+              72.01073105201702,
+              -83.97248182164867
+            ],
+            [
+              71.63917245463361,
+              -83.95965924571856
+            ],
+            [
+              71.26920640779687,
+              -83.94658435514324
+            ],
+            [
+              70.90085334574414,
+              -83.93325879471891
+            ],
+            [
+              70.53413299164758,
+              -83.91968422624832
+            ],
+            [
+              70.16906435920062,
+              -83.90586232767349
+            ],
+            [
+              69.80566575481602,
+              -83.8917947922149
+            ],
+            [
+              69.44395478041653,
+              -83.8774833275169
+            ],
+            [
+              69.08394833679813,
+              -83.86292965480173
+            ],
+            [
+              68.72566262754593,
+              -83.84813550803118
+            ],
+            [
+              68.36911316348207,
+              -83.83310263307779
+            ],
+            [
+              68.01431476762468,
+              -83.8178327869055
+            ],
+            [
+              67.66128158063668,
+              -83.80232773676111
+            ],
+            [
+              67.51568334143599,
+              -83.84032589072842
+            ],
+            [
+              67.36827502739018,
+              -83.87828520579914
+            ],
+            [
+              67.21902466145713,
+              -83.91620491557045
+            ],
+            [
+              67.06789956241022,
+              -83.9540842354631
+            ],
+            [
+              66.91486632719173,
+              -83.99192236220031
+            ],
+            [
+              66.75989081281239,
+              -84.02971847326953
+            ],
+            [
+              66.60293811778764,
+              -84.06747172636682
+            ],
+            [
+              66.4439725631015,
+              -84.10518125882328
+            ],
+            [
+              66.28295767268845,
+              -84.14284618701241
+            ],
+            [
+              66.11985615342476,
+              -84.1804656057384
+            ],
+            [
+              65.95462987462015,
+              -84.21803858760423
+            ],
+            [
+              65.78723984700116,
+              -84.25556418235912
+            ],
+            [
+              65.6176462011781,
+              -84.29304141622434
+            ],
+            [
+              65.44580816558754,
+              -84.33046929119713
+            ],
+            [
+              65.27168404390268,
+              -84.36784678433125
+            ],
+            [
+              65.09523119190482,
+              -84.40517284699416
+            ],
+            [
+              65.4790065696832,
+              -84.42236590519678
+            ],
+            [
+              65.86514157096919,
+              -84.43930782394757
+            ],
+            [
+              66.25362262695569,
+              -84.4559962833073
+            ],
+            [
+              66.64443514071401,
+              -84.47242897028966
+            ],
+            [
+              67.0375634718934,
+              -84.48860358003505
+            ],
+            [
+              67.43299092212538,
+              -84.50451781700987
+            ],
+            [
+              67.83069972118253,
+              -84.5201693962301
+            ],
+            [
+              68.23067101394253,
+              -84.53555604450811
+            ],
+            [
+              68.63288484820849,
+              -84.55067550172303
+            ],
+            [
+              69.03732016343578,
+              -84.56552552211184
+            ],
+            [
+              69.44395478041653,
+              -84.58010387558176
+            ],
+            [
+              69.85276539197167,
+              -84.59440834904149
+            ],
+            [
+              70.26372755470071,
+              -84.60843674775052
+            ],
+            [
+              70.67681568183822,
+              -84.62218689668605
+            ],
+            [
+              71.09200303726544,
+              -84.63565664192389
+            ],
+            [
+              71.50926173072403,
+              -84.64884385203423
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_0_Amundsen_Rim.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_0_Amundsen_Rim.zip — A300_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_0_Amundsen_Rim.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A300_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -84.22869118656553,
+            "longitude_deg": 69.44500765096485,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A300_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "93f9e81754d6d5419c8bc16b7735900190a0946843847c3b5179fde7c80d3e7b"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Amundsen Rim region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_connecting_ridge_point",
+      "name": "Connecting Ridge — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -89.4631577569723,
+      "longitude_deg": -137.50198490762307,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -89.4631577569723,
+        "longitude_deg": -137.50198490762307,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 1600, column 1600 of A306_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 1944.64794921875,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -136.46880071438582,
+              -89.0902836089219
+            ],
+            [
+              -138.01278750418336,
+              -89.11267356906501
+            ],
+            [
+              -139.63546342690265,
+              -89.13438621186634
+            ],
+            [
+              -141.34019174590992,
+              -89.15536928606276
+            ],
+            [
+              -143.13010235415598,
+              -89.17556706945531
+            ],
+            [
+              -145.00797980144134,
+              -89.19492044202858
+            ],
+            [
+              -146.97613244420336,
+              -89.21336706342171
+            ],
+            [
+              -149.03624346792648,
+              -89.23084167874272
+            ],
+            [
+              -151.18920625702694,
+              -89.2472765770732
+            ],
+            [
+              -153.434948822922,
+              -89.26260222520514
+            ],
+            [
+              -155.77225468204585,
+              -89.27674809448027
+            ],
+            [
+              -158.19859051364818,
+              -89.28964369024524
+            ],
+            [
+              -160.70995378081125,
+              -89.30121978102352
+            ],
+            [
+              -163.3007557660064,
+              -89.31140980800006
+            ],
+            [
+              -165.96375653207352,
+              -89.3201514356623
+            ],
+            [
+              -168.69006752597977,
+              -89.32738818319949
+            ],
+            [
+              -171.46923439005187,
+              -89.333071056255
+            ],
+            [
+              -171.0273733851036,
+              -89.36566417250376
+            ],
+            [
+              -170.53767779197437,
+              -89.39821558041717
+            ],
+            [
+              -169.9920201985587,
+              -89.43071810191682
+            ],
+            [
+              -169.38034472384487,
+              -89.46316283403667
+            ],
+            [
+              -168.6900675259798,
+              -89.49553860281296
+            ],
+            [
+              -167.90524292298792,
+              -89.52783119829833
+            ],
+            [
+              -167.0053832080835,
+              -89.56002228261232
+            ],
+            [
+              -165.96375653207352,
+              -89.5920877984175
+            ],
+            [
+              -164.74488129694222,
+              -89.62399559508091
+            ],
+            [
+              -163.3007557660064,
+              -89.65570179592689
+            ],
+            [
+              -161.565051177078,
+              -89.68714507873793
+            ],
+            [
+              -159.44395478041653,
+              -89.71823738448926
+            ],
+            [
+              -156.80140948635182,
+              -89.74884830320657
+            ],
+            [
+              -153.434948822922,
+              -89.7787778888216
+            ],
+            [
+              -149.03624346792648,
+              -89.80770771236789
+            ],
+            [
+              -143.13010235415598,
+              -89.83511068271815
+            ],
+            [
+              -135.0,
+              -89.81344906901766
+            ],
+            [
+              -128.6598082540901,
+              -89.78883873647611
+            ],
+            [
+              -123.6900675259798,
+              -89.76219342196391
+            ],
+            [
+              -119.74488129694222,
+              -89.73412425842787
+            ],
+            [
+              -116.56505117707799,
+              -89.70503747010115
+            ],
+            [
+              -113.96248897457819,
+              -89.6752063578026
+            ],
+            [
+              -111.80140948635182,
+              -89.64481843289737
+            ],
+            [
+              -109.98310652189998,
+              -89.61400519803134
+            ],
+            [
+              -108.43494882292202,
+              -89.58286091109481
+            ],
+            [
+              -107.10272896905238,
+              -89.55145454402611
+            ],
+            [
+              -105.94539590092286,
+              -89.51983753907628
+            ],
+            [
+              -104.93141717813755,
+              -89.48804893939511
+            ],
+            [
+              -104.03624346792648,
+              -89.45611885130883
+            ],
+            [
+              -103.2405199151872,
+              -89.42407082650094
+            ],
+            [
+              -102.52880770915152,
+              -89.39192353142566
+            ],
+            [
+              -101.88865803962798,
+              -89.35969193748329
+            ],
+            [
+              -104.74356283647074,
+              -89.352094241879
+            ],
+            [
+              -107.52556837372288,
+              -89.34292747355455
+            ],
+            [
+              -110.22485943116808,
+              -89.33225625588346
+            ],
+            [
+              -112.83365417791754,
+              -89.3201514356623
+            ],
+            [
+              -115.3461759419467,
+              -89.30668810620479
+            ],
+            [
+              -117.75854060106003,
+              -89.29194376600815
+            ],
+            [
+              -120.06858282186246,
+              -89.27599668371327
+            ],
+            [
+              -122.27564431457762,
+              -89.25892451029279
+            ],
+            [
+              -124.38034472384487,
+              -89.24080315314386
+            ],
+            [
+              -126.3843518158359,
+              -89.22170590617938
+            ],
+            [
+              -128.29016319224309,
+              -89.20170281561879
+            ],
+            [
+              -130.10090754621226,
+              -89.18086025262559
+            ],
+            [
+              -131.82016988013575,
+              -89.15924066014527
+            ],
+            [
+              -133.45184230102205,
+              -89.13690244103618
+            ],
+            [
+              -135.0,
+              -89.1138999567079
+            ],
+            [
+              -136.46880071438582,
+              -89.0902836089219
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_6_Connecting_Ridge.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_6_Connecting_Ridge.zip — A306_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_6_Connecting_Ridge.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A306_GLDELEV_005.tif: raster centre pixel (row 1600, column 1600); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -89.4631577569723,
+            "longitude_deg": -137.50198490762307,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 1600, column 1600 of A306_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "c914e52bf1e46c08b9c409d6ebd6a3605ad33756373571138b8d473dadaeddd0"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Connecting Ridge region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_connecting_ridge_extension_point",
+      "name": "Connecting Ridge Extension — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -89.03247911621169,
+      "longitude_deg": -102.00507745202812,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -89.03247911621169,
+        "longitude_deg": -102.00507745202812,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A305_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 1178.54931640625,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.58832020200043,
+              -88.6177860444703
+            ],
+            [
+              -113.263185502643,
+              -88.65574755023118
+            ],
+            [
+              -113.97717266967268,
+              -88.69351204830957
+            ],
+            [
+              -114.73354276907067,
+              -88.731061908495
+            ],
+            [
+              -115.53589637277202,
+              -88.76837745827751
+            ],
+            [
+              -116.38821291293857,
+              -88.80543669899546
+            ],
+            [
+              -117.2948942411021,
+              -88.84221497780693
+            ],
+            [
+              -118.26081249425881,
+              -88.87868460844004
+            ],
+            [
+              -119.29136217098426,
+              -88.9148144327628
+            ],
+            [
+              -120.3925160039998,
+              -88.9505693142935
+            ],
+            [
+              -121.57088373002908,
+              -88.98590955401569
+            ],
+            [
+              -122.83377213322218,
+              -89.02079021837703
+            ],
+            [
+              -124.18924368152983,
+              -89.05516036945976
+            ],
+            [
+              -125.64616956544745,
+              -89.08896218841998
+            ],
+            [
+              -127.21427083632295,
+              -89.12212998602986
+            ],
+            [
+              -128.9041384554042,
+              -89.15458909945671
+            ],
+            [
+              -130.72721923239075,
+              -89.18625468356514
+            ],
+            [
+              -128.45370921670596,
+              -89.212529405369
+            ],
+            [
+              -126.02737338510362,
+              -89.23748008513023
+            ],
+            [
+              -123.44188191451478,
+              -89.26097257862358
+            ],
+            [
+              -120.69264287958971,
+              -89.28286354098684
+            ],
+            [
+              -117.77747926702291,
+              -89.30300203194604
+            ],
+            [
+              -114.69737233764383,
+              -89.32123202867083
+            ],
+            [
+              -111.4572153210652,
+              -89.33739596959913
+            ],
+            [
+              -108.06649229758432,
+              -89.35133936721881
+            ],
+            [
+              -104.53977156744266,
+              -89.36291639160983
+            ],
+            [
+              -100.8968907553255,
+              -89.37199614715337
+            ],
+            [
+              -97.16272333885988,
+              -89.37846916911104
+            ],
+            [
+              -93.3664606634298,
+              -89.38225350173636
+            ],
+            [
+              -89.54041804247004,
+              -89.38329964232156
+            ],
+            [
+              -85.7184637649294,
+              -89.3815936932624
+            ],
+            [
+              -81.93425079682098,
+              -89.37715826962823
+            ],
+            [
+              -78.21947622308458,
+              -89.3700510273837
+            ],
+            [
+              -78.9388175384082,
+              -89.32964541143552
+            ],
+            [
+              -79.57628278993401,
+              -89.2891463215259
+            ],
+            [
+              -80.1449639524581,
+              -89.24856890963446
+            ],
+            [
+              -80.65532809790032,
+              -89.20792525157657
+            ],
+            [
+              -81.11583823427976,
+              -89.16722508573557
+            ],
+            [
+              -81.53340734755183,
+              -89.12647634987508
+            ],
+            [
+              -81.91373526507346,
+              -89.08568557726768
+            ],
+            [
+              -82.26156191285611,
+              -89.0448581931425
+            ],
+            [
+              -82.58086005651377,
+              -89.00399873941049
+            ],
+            [
+              -82.8749836510982,
+              -88.96311104704262
+            ],
+            [
+              -83.146783222849,
+              -88.9221983697453
+            ],
+            [
+              -83.39869648323867,
+              -88.88126348866703
+            ],
+            [
+              -83.63282013573132,
+              -88.84030879518276
+            ],
+            [
+              -83.85096725807466,
+              -88.79933635691586
+            ],
+            [
+              -84.05471351802306,
+              -88.7583479708159
+            ],
+            [
+              -84.24543466889781,
+              -88.71734520615225
+            ],
+            [
+              -86.08276045084283,
+              -88.72082035594103
+            ],
+            [
+              -87.92818792795276,
+              -88.72297384571286
+            ],
+            [
+              -89.77792444730655,
+              -88.72379898262248
+            ],
+            [
+              -91.62812384316624,
+              -88.72329319026618
+            ],
+            [
+              -93.47493417925396,
+              -88.7214580487155
+            ],
+            [
+              -95.31454566994475,
+              -88.7182992699461
+            ],
+            [
+              -97.1432372989993,
+              -88.71382660953928
+            ],
+            [
+              -98.95742072897073,
+              -88.70805371782299
+            ],
+            [
+              -100.75368024693954,
+              -88.7009979356753
+            ],
+            [
+              -102.52880770915151,
+              -88.69268004196654
+            ],
+            [
+              -104.27983170977281,
+              -88.68312396094062
+            ],
+            [
+              -106.00404048588162,
+              -88.672356438689
+            ],
+            [
+              -107.69899836024365,
+              -88.66040669823919
+            ],
+            [
+              -109.36255579560144,
+              -88.64730608268019
+            ],
+            [
+              -110.9928533731142,
+              -88.6330876952506
+            ],
+            [
+              -112.58832020200043,
+              -88.6177860444703
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_5_Connecting_Ridge_Extension.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_5_Connecting_Ridge_Extension.zip — A305_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_5_Connecting_Ridge_Extension.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A305_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -89.03247911621169,
+            "longitude_deg": -102.00507745202812,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A305_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "b40378d7e11c6998b77ac4840f16623b092b30531e59555a8b117c05742c7c63"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Connecting Ridge Extension region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_degerlache_kocher_massif_point",
+      "name": "deGerlache Kocher Massif — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -85.82958781895721,
+      "longitude_deg": -116.32353326904581,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -85.82958781895721,
+        "longitude_deg": -116.32353326904581,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A312_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 2709.778076171875,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -118.17601310771146,
+              -85.3859715152378
+            ],
+            [
+              -118.41950187786613,
+              -85.42220936084396
+            ],
+            [
+              -118.66687599593548,
+              -85.45836421599508
+            ],
+            [
+              -118.91821976053279,
+              -85.49443404507252
+            ],
+            [
+              -119.17361958622574,
+              -85.53041675191095
+            ],
+            [
+              -119.43316405422937,
+              -85.56631017774276
+            ],
+            [
+              -119.69694396355045,
+              -85.60211209907035
+            ],
+            [
+              -119.96505238249365,
+              -85.6378202254642
+            ],
+            [
+              -120.23758470042688,
+              -85.6734321972839
+            ],
+            [
+              -120.51463867969065,
+              -85.70894558332145
+            ],
+            [
+              -120.79631450752133,
+              -85.74435787836327
+            ],
+            [
+              -121.08271484784257,
+              -85.77966650066934
+            ],
+            [
+              -121.37394489276157,
+              -85.81486878936757
+            ],
+            [
+              -121.6701124135887,
+              -85.84996200176128
+            ],
+            [
+              -121.9713278111776,
+              -85.88494331054729
+            ],
+            [
+              -122.27770416536185,
+              -85.91980980094365
+            ],
+            [
+              -122.58935728323861,
+              -85.95455846772487
+            ],
+            [
+              -122.094950552835,
+              -85.97658424173689
+            ],
+            [
+              -121.59513402636264,
+              -85.99830768657924
+            ],
+            [
+              -121.0898957477064,
+              -86.01972382948374
+            ],
+            [
+              -120.57922687248902,
+              -86.04082766131825
+            ],
+            [
+              -120.06312181618759,
+              -86.0616141395396
+            ],
+            [
+              -119.54157840320495,
+              -86.08207819134506
+            ],
+            [
+              -119.014598016462,
+              -86.10221471703001
+            ],
+            [
+              -118.48218574704043,
+              -86.12201859355095
+            ],
+            [
+              -117.94435054337008,
+              -86.14148467830015
+            ],
+            [
+              -117.4011053594186,
+              -86.16060781309076
+            ],
+            [
+              -116.85246730130612,
+              -86.17938282835604
+            ],
+            [
+              -116.29845777173284,
+              -86.19780454756065
+            ],
+            [
+              -115.7391026115735,
+              -86.21586779182577
+            ],
+            [
+              -115.17443223796165,
+              -86.23356738476535
+            ],
+            [
+              -114.60448177815533,
+              -86.25089815753128
+            ],
+            [
+              -114.02929119844941,
+              -86.26785495406419
+            ],
+            [
+              -113.77425934391638,
+              -86.23020804143017
+            ],
+            [
+              -113.52427924945519,
+              -86.19248878638552
+            ],
+            [
+              -113.2792115269018,
+              -86.1546993561688
+            ],
+            [
+              -113.0389214934894,
+              -86.11684183798737
+            ],
+            [
+              -112.80327899434847,
+              -86.07891824250623
+            ],
+            [
+              -112.5721582317438,
+              -86.04093050716611
+            ],
+            [
+              -112.3454376008495,
+              -86.00288049934147
+            ],
+            [
+              -112.12299953186094,
+              -85.9647700193456
+            ],
+            [
+              -111.90473033823963,
+              -85.92660080329162
+            ],
+            [
+              -111.69052007088703,
+              -85.88837452581522
+            ],
+            [
+              -111.48026237804407,
+              -85.85009280266878
+            ],
+            [
+              -111.27385437071425,
+              -85.81175719319062
+            ],
+            [
+              -111.07119649341206,
+              -85.77336920265832
+            ],
+            [
+              -110.87219240004023,
+              -85.73493028453035
+            ],
+            [
+              -110.6767488347041,
+              -85.69644184258246
+            ],
+            [
+              -110.48477551727561,
+              -85.65790523294476
+            ],
+            [
+              -110.99238276929643,
+              -85.64332908095228
+            ],
+            [
+              -111.49656223396501,
+              -85.628413746672
+            ],
+            [
+              -111.99727123187368,
+              -85.61316270511745
+            ],
+            [
+              -112.49446978906306,
+              -85.59757946087758
+            ],
+            [
+              -112.98812060450399,
+              -85.58166754495765
+            ],
+            [
+              -113.47818901407166,
+              -85.56543051168349
+            ],
+            [
+              -113.9646429512506,
+              -85.54887193567484
+            ],
+            [
+              -114.44745290481008,
+              -85.53199540889004
+            ],
+            [
+              -114.92659187368771,
+              -85.51480453774464
+            ],
+            [
+              -115.40203531931726,
+              -85.4973029403089
+            ],
+            [
+              -115.8737611156334,
+              -85.47949424358443
+            ],
+            [
+              -116.34174949698229,
+              -85.46138208086349
+            ],
+            [
+              -116.80598300416175,
+              -85.44297008917175
+            ],
+            [
+              -117.26644642880925,
+              -85.42426190679717
+            ],
+            [
+              -117.72312675635018,
+              -85.40526117090455
+            ],
+            [
+              -118.17601310771146,
+              -85.3859715152378
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_12_deGerlache_Kocher_Massif.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_12_deGerlache_Kocher_Massif.zip — A312_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_12_deGerlache_Kocher_Massif.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A312_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -85.82958781895721,
+            "longitude_deg": -116.32353326904581,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A312_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "f6a47cdaf083fae80400ee3ae13ed135ba5c1e6186a981205c075731bd6bc73b"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the deGerlache Kocher Massif region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_degerlache_rim_point",
+      "name": "deGerlache Rim — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -88.68352551547558,
+      "longitude_deg": -67.93407755484023,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -88.68352551547558,
+        "longitude_deg": -67.93407755484023,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 1600, column 1600 of A309_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 1793.985107421875,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -81.15818543980832,
+              -88.49823379570336
+            ],
+            [
+              -80.96051719664487,
+              -88.53080556997223
+            ],
+            [
+              -80.75388725443676,
+              -88.5633593039421
+            ],
+            [
+              -80.53767779197437,
+              -88.59589372052734
+            ],
+            [
+              -80.3112134396332,
+              -88.62840742277757
+            ],
+            [
+              -80.07375449334829,
+              -88.66089887952577
+            ],
+            [
+              -79.8244891569568,
+              -88.69336640894234
+            ],
+            [
+              -79.56252464888182,
+              -88.72580815963104
+            ],
+            [
+              -79.28687697720896,
+              -88.75822208883375
+            ],
+            [
+              -78.99645914825051,
+              -88.79060593721844
+            ],
+            [
+              -78.69006752597979,
+              -88.822957199617
+            ],
+            [
+              -78.36636600105956,
+              -88.85527309093932
+            ],
+            [
+              -78.02386755579664,
+              -88.88755050632685
+            ],
+            [
+              -77.66091272167381,
+              -88.9197859743869
+            ],
+            [
+              -77.27564431457763,
+              -88.95197560208662
+            ],
+            [
+              -76.86597769360368,
+              -88.98411500954799
+            ],
+            [
+              -76.42956561483851,
+              -89.01619925254847
+            ],
+            [
+              -74.57783868126133,
+              -89.00794384799278
+            ],
+            [
+              -72.75854060106003,
+              -88.99867001416516
+            ],
+            [
+              -70.97439396243132,
+              -88.98840576621474
+            ],
+            [
+              -69.22774531795417,
+              -88.97718092756672
+            ],
+            [
+              -67.5205656028969,
+              -88.96502675941773
+            ],
+            [
+              -65.85445803957835,
+              -88.95197560208662
+            ],
+            [
+              -64.23067237566129,
+              -88.93806053533035
+            ],
+            [
+              -62.65012421993012,
+              -88.9233150631335
+            ],
+            [
+              -61.1134182330893,
+              -88.90777282688757
+            ],
+            [
+              -59.62087398863166,
+              -88.89146734936575
+            ],
+            [
+              -58.172553423326896,
+              -88.87443181058946
+            ],
+            [
+              -56.768288932020646,
+              -88.85669885553152
+            ],
+            [
+              -55.40771131249006,
+              -88.83830043270252
+            ],
+            [
+              -54.090276920822326,
+              -88.81926766197111
+            ],
+            [
+              -52.815293546766874,
+              -88.79963072947035
+            ],
+            [
+              -51.58194465517801,
+              -88.77941880713372
+            ],
+            [
+              -52.52382043863864,
+              -88.75341528519674
+            ],
+            [
+              -53.42696902148067,
+              -88.72708886389768
+            ],
+            [
+              -54.29330859939712,
+              -88.70045918412006
+            ],
+            [
+              -55.12467165539782,
+              -88.67354452732945
+            ],
+            [
+              -55.92280471986926,
+              -88.64636190947604
+            ],
+            [
+              -56.6893691754392,
+              -88.61892717016848
+            ],
+            [
+              -57.425942865427494,
+              -88.59125505685797
+            ],
+            [
+              -58.134022306396325,
+              -88.5633593039421
+            ],
+            [
+              -58.81502534126161,
+              -88.53525270679535
+            ],
+            [
+              -59.47029410006589,
+              -88.50694719083494
+            ],
+            [
+              -60.10109816138544,
+              -88.47845387577816
+            ],
+            [
+              -60.70863782901574,
+              -88.44978313530171
+            ],
+            [
+              -61.29404745659892,
+              -88.42094465232907
+            ],
+            [
+              -61.85839876773828,
+              -88.3919474701973
+            ],
+            [
+              -62.40270413135627,
+              -88.36280003995299
+            ],
+            [
+              -62.927919762007235,
+              -88.3335102640334
+            ],
+            [
+              -63.94650468950905,
+              -88.34825474917271
+            ],
+            [
+              -64.98310652189998,
+              -88.36246802958452
+            ],
+            [
+              -66.03751102542182,
+              -88.37613614716128
+            ],
+            [
+              -67.10944834375168,
+              -88.38924521468066
+            ],
+            [
+              -68.1985905136482,
+              -88.40178146680759
+            ],
+            [
+              -69.30454926593673,
+              -88.41373131423597
+            ],
+            [
+              -70.42687416958981,
+              -88.42508140069893
+            ],
+            [
+              -71.56505117707799,
+              -88.43581866250308
+            ],
+            [
+              -72.71850162818336,
+              -88.44593039016539
+            ],
+            [
+              -73.88658176691071,
+              -88.45540429165939
+            ],
+            [
+              -75.06858282186245,
+              -88.4642285566991
+            ],
+            [
+              -76.26373169437744,
+              -88.4723919214272
+            ],
+            [
+              -77.47119229084849,
+              -88.47988373280936
+            ],
+            [
+              -78.69006752597979,
+              -88.48669401198738
+            ],
+            [
+              -79.91940201245768,
+              -88.49281351580632
+            ],
+            [
+              -81.15818543980832,
+              -88.49823379570336
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_9_deGerlache_Rim.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_9_deGerlache_Rim.zip — A309_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_9_deGerlache_Rim.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A309_GLDELEV_005.tif: raster centre pixel (row 1600, column 1600); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -88.68352551547558,
+            "longitude_deg": -67.93407755484023,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 1600, column 1600 of A309_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "641532d0b3ab2661d6cb40612c3be1537baa8a27d71fa0996843ce92e9225dfe"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the deGerlache Rim region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_degerlache_rim_2_point",
+      "name": "deGerlache Rim 2 — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -88.23008746289118,
+      "longitude_deg": -64.62970604128552,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -88.23008746289118,
+        "longitude_deg": -64.62970604128552,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A304_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": -87.78150177001953,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -77.47119229084849,
+              -88.02392882676466
+            ],
+            [
+              -77.20654854000443,
+              -88.06413718949204
+            ],
+            [
+              -76.93068210371783,
+              -88.10430298459107
+            ],
+            [
+              -76.64287728570112,
+              -88.1444234049019
+            ],
+            [
+              -76.34235749418785,
+              -88.1844953993578
+            ],
+            [
+              -76.02827877902513,
+              -88.22451564623566
+            ],
+            [
+              -75.69972255081441,
+              -88.26448052287066
+            ],
+            [
+              -75.35568736284432,
+              -88.30438607129008
+            ],
+            [
+              -74.99507961713978,
+              -88.34422795912171
+            ],
+            [
+              -74.6167030331187,
+              -88.38400143502038
+            ],
+            [
+              -74.21924669048461,
+              -88.42370127771633
+            ],
+            [
+              -73.80127142637251,
+              -88.46332173762167
+            ],
+            [
+              -73.3611943295737,
+              -88.50285646973067
+            ],
+            [
+              -72.89727103094764,
+              -88.54229845631068
+            ],
+            [
+              -72.40757543781841,
+              -88.58163991757544
+            ],
+            [
+              -71.88997650009946,
+              -88.62087220818964
+            ],
+            [
+              -71.34211152588047,
+              -88.65998569700075
+            ],
+            [
+              -69.68898156683848,
+              -88.6462364041533
+            ],
+            [
+              -68.07041224982466,
+              -88.63138347403458
+            ],
+            [
+              -66.48783133771445,
+              -88.61546243983594
+            ],
+            [
+              -64.94238458169698,
+              -88.59850971849698
+            ],
+            [
+              -63.43494882292201,
+              -88.58056229189665
+            ],
+            [
+              -61.96614810853618,
+              -88.56165741312573
+            ],
+            [
+              -60.536372023640304,
+              -88.54183234046361
+            ],
+            [
+              -59.145795494103,
+              -88.52112410052197
+            ],
+            [
+              -57.79439939076519,
+              -88.49956928101297
+            ],
+            [
+              -56.4819913547481,
+              -88.47720385273635
+            ],
+            [
+              -55.20822635881384,
+              -88.45406301972056
+            ],
+            [
+              -53.97262661489639,
+              -88.43018109591975
+            ],
+            [
+              -52.774600528386685,
+              -88.40559140652616
+            ],
+            [
+              -51.61346048231476,
+              -88.38032621170984
+            ],
+            [
+              -50.488439307285084,
+              -88.3544166504979
+            ],
+            [
+              -49.398705354995535,
+              -88.32789270247383
+            ],
+            [
+              -50.30092651652569,
+              -88.29638996664639
+            ],
+            [
+              -51.17017509502961,
+              -88.26448052287066
+            ],
+            [
+              -52.00784722897687,
+              -88.23218642664551
+            ],
+            [
+              -52.815293546766874,
+              -88.19952840828003
+            ],
+            [
+              -53.593817063287624,
+              -88.16652594720479
+            ],
+            [
+              -54.34467190209969,
+              -88.13319734436477
+            ],
+            [
+              -55.06906269888942,
+              -88.09955979220022
+            ],
+            [
+              -55.76814456110783,
+              -88.06562944186952
+            ],
+            [
+              -56.44302347625422,
+              -88.03142146748583
+            ],
+            [
+              -57.094757077012105,
+              -87.9969501272245
+            ],
+            [
+              -57.724355685422374,
+              -87.96222882124519
+            ],
+            [
+              -58.33278357056383,
+              -87.92727014641751
+            ],
+            [
+              -58.92096036492075,
+              -87.89208594789432
+            ],
+            [
+              -59.48976259388446,
+              -87.85668736760371
+            ],
+            [
+              -60.04002528080373,
+              -87.82108488976206
+            ],
+            [
+              -60.57254359681026,
+              -87.78528838351853
+            ],
+            [
+              -61.50976511459886,
+              -87.8052407570564
+            ],
+            [
+              -62.463926891842846,
+              -87.82459546932633
+            ],
+            [
+              -63.43494882292201,
+              -87.84333640906401
+            ],
+            [
+              -64.42270922256182,
+              -87.86144742040828
+            ],
+            [
+              -65.42704239588846,
+              -87.87891234829833
+            ],
+            [
+              -66.44773632710535,
+              -87.89571508748861
+            ],
+            [
+              -67.4845305261934,
+              -87.91183963508202
+            ],
+            [
+              -68.5371140752802,
+              -87.92727014641751
+            ],
+            [
+              -69.60512391795162,
+              -87.94199099408723
+            ],
+            [
+              -70.68814343564735,
+              -87.95598682978749
+            ],
+            [
+              -71.78570135525341,
+              -87.96924264864121
+            ],
+            [
+              -72.89727103094764,
+              -87.98174385555176
+            ],
+            [
+              -74.02227014115914,
+              -87.99347633308147
+            ],
+            [
+              -75.16006083808709,
+              -88.00442651028116
+            ],
+            [
+              -76.3099503825345,
+              -88.01458143182573
+            ],
+            [
+              -77.47119229084849,
+              -88.02392882676466
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_4_deGerlache_Rim_2.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_4_deGerlache_Rim_2.zip — A304_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_4_deGerlache_Rim_2.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A304_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -88.23008746289118,
+            "longitude_deg": -64.62970604128552,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A304_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "d30f9ca8a1e9755a5a199b9d94872e336a06b54213f58c13f7400bad65868171"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the deGerlache Rim 2 region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_faustini_rim_a_point",
+      "name": "Faustini Rim A — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -87.88957147641354,
+      "longitude_deg": 90.00223802896309,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -87.88957147641354,
+        "longitude_deg": 90.00223802896309,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A303_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 46.83823013305664,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              100.4914770123316,
+              -88.18906723177373
+            ],
+            [
+              100.25921065244039,
+              -88.14852916921924
+            ],
+            [
+              100.0369024539635,
+              -88.10796245384853
+            ],
+            [
+              99.82393172341587,
+              -88.06736893061118
+            ],
+            [
+              99.61972779969886,
+              -88.02675029467383
+            ],
+            [
+              99.42376516168368,
+              -87.98610810629565
+            ],
+            [
+              99.23555909316592,
+              -87.94544380397983
+            ],
+            [
+              99.05466183324897,
+              -87.90475871612378
+            ],
+            [
+              98.88065915052024,
+              -87.86405407136695
+            ],
+            [
+              98.71316728807813,
+              -87.82333100779968
+            ],
+            [
+              98.55183023382006,
+              -87.78259058117611
+            ],
+            [
+              98.39631727663803,
+              -87.74183377225428
+            ],
+            [
+              98.24632081446853,
+              -87.7010614933695
+            ],
+            [
+              98.10155438466336,
+              -87.66027459433106
+            ],
+            [
+              97.9617508910081,
+              -87.61947386772304
+            ],
+            [
+              97.82666100502254,
+              -87.5786600536771
+            ],
+            [
+              97.69605172201658,
+              -87.53783384417777
+            ],
+            [
+              96.74352699174933,
+              -87.54301229331507
+            ],
+            [
+              95.7872429640315,
+              -87.54750913807432
+            ],
+            [
+              94.8277129858119,
+              -87.55132061861771
+            ],
+            [
+              93.86546116985176,
+              -87.55444352650268
+            ],
+            [
+              92.9010207414195,
+              -87.5568752180008
+            ],
+            [
+              91.93493230955276,
+              -87.55861362517724
+            ],
+            [
+              90.96774207651104,
+              -87.55965726462307
+            ],
+            [
+              90.0,
+              -87.56000524375565
+            ],
+            [
+              89.03225792348896,
+              -87.55965726462307
+            ],
+            [
+              88.06506769044724,
+              -87.55861362517724
+            ],
+            [
+              87.0989792585805,
+              -87.5568752180008
+            ],
+            [
+              86.13453883014826,
+              -87.55444352650268
+            ],
+            [
+              85.17228701418811,
+              -87.55132061861771
+            ],
+            [
+              84.2127570359685,
+              -87.54750913807432
+            ],
+            [
+              83.25647300825067,
+              -87.54301229331507
+            ],
+            [
+              82.30394827798344,
+              -87.53783384417777
+            ],
+            [
+              82.17333899497746,
+              -87.5786600536771
+            ],
+            [
+              82.0382491089919,
+              -87.61947386772304
+            ],
+            [
+              81.89844561533664,
+              -87.66027459433106
+            ],
+            [
+              81.75367918553147,
+              -87.7010614933695
+            ],
+            [
+              81.60368272336198,
+              -87.74183377225428
+            ],
+            [
+              81.44816976617994,
+              -87.78259058117611
+            ],
+            [
+              81.28683271192189,
+              -87.82333100779968
+            ],
+            [
+              81.11934084947976,
+              -87.86405407136695
+            ],
+            [
+              80.94533816675103,
+              -87.90475871612378
+            ],
+            [
+              80.76444090683408,
+              -87.94544380397983
+            ],
+            [
+              80.57623483831634,
+              -87.98610810629565
+            ],
+            [
+              80.38027220030115,
+              -88.02675029467383
+            ],
+            [
+              80.17606827658413,
+              -88.06736893061118
+            ],
+            [
+              79.96309754603651,
+              -88.10796245384853
+            ],
+            [
+              79.74078934755961,
+              -88.14852916921924
+            ],
+            [
+              79.50852298766841,
+              -88.18906723177373
+            ],
+            [
+              80.79595904553169,
+              -88.19611621684214
+            ],
+            [
+              82.09283729704154,
+              -88.20224770886
+            ],
+            [
+              83.39791977035202,
+              -88.20745228644603
+            ],
+            [
+              84.70991879462873,
+              -88.21172185114082
+            ],
+            [
+              86.02750405924934,
+              -88.21504968890397
+            ],
+            [
+              87.34931031657818,
+              -88.21743052201113
+            ],
+            [
+              88.6739456232951,
+              -88.21886055043208
+            ],
+            [
+              90.0,
+              -88.21933748194566
+            ],
+            [
+              91.3260543767049,
+              -88.21886055043208
+            ],
+            [
+              92.65068968342183,
+              -88.21743052201113
+            ],
+            [
+              93.97249594075066,
+              -88.21504968890397
+            ],
+            [
+              95.29008120537127,
+              -88.21172185114082
+            ],
+            [
+              96.602080229648,
+              -88.20745228644603
+            ],
+            [
+              97.90716270295846,
+              -88.20224770886
+            ],
+            [
+              99.20404095446833,
+              -88.19611621684214
+            ],
+            [
+              100.4914770123316,
+              -88.18906723177373
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_3_Faustini_Rim_A.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_3_Faustini_Rim_A.zip — A303_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_3_Faustini_Rim_A.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A303_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -87.88957147641354,
+            "longitude_deg": 90.00223802896309,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A303_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "f719b69d3e48ed41145c51e5110a56c1ee1e06ac75e21807120c46ef7ec5d33b"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Faustini Rim A region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_haworth_point",
+      "name": "Haworth — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -86.76404982027084,
+      "longitude_deg": -22.776243241756063,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -86.76404982027084,
+        "longitude_deg": -22.776243241756063,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2980, column 2980 of A302_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 1626.78955078125,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -34.98184603911431,
+              -86.95784227607822
+            ],
+            [
+              -34.023254734264896,
+              -86.99261092462179
+            ],
+            [
+              -33.042510939019934,
+              -87.0265191479509
+            ],
+            [
+              -32.03943260579744,
+              -87.05953710051128
+            ],
+            [
+              -31.013884060415062,
+              -87.09163438399113
+            ],
+            [
+              -29.965781065093726,
+              -87.12278011130013
+            ],
+            [
+              -28.89509599981764,
+              -87.15294298060026
+            ],
+            [
+              -27.801863105616793,
+              -87.18209135984819
+            ],
+            [
+              -26.6861837228464,
+              -87.21019338219796
+            ],
+            [
+              -25.54823144691861,
+              -87.23721705248104
+            ],
+            [
+              -24.388257113547063,
+              -87.26313036481984
+            ],
+            [
+              -23.206593515822853,
+              -87.2879014312421
+            ],
+            [
+              -22.00365974684193,
+              -87.31149862094517
+            ],
+            [
+              -20.77996505469651,
+              -87.33389070962112
+            ],
+            [
+              -19.536112092007592,
+              -87.35504703798816
+            ],
+            [
+              -18.2727994404016,
+              -87.37493767839614
+            ],
+            [
+              -16.990823291986167,
+              -87.39353360808667
+            ],
+            [
+              -16.60504413037672,
+              -87.3347639213252
+            ],
+            [
+              -16.235932714085404,
+              -87.27588007156098
+            ],
+            [
+              -15.882460426677802,
+              -87.21688943588362
+            ],
+            [
+              -15.543679226701448,
+              -87.15779879457111
+            ],
+            [
+              -15.218714148733518,
+              -87.09861438933697
+            ],
+            [
+              -14.906756597742636,
+              -87.03934197502628
+            ],
+            [
+              -14.607058344600961,
+              -86.97998686558533
+            ],
+            [
+              -14.3189261419688,
+              -86.92055397501494
+            ],
+            [
+              -14.041716889720403,
+              -86.86104785392442
+            ],
+            [
+              -13.774833287761474,
+              -86.801472722215
+            ],
+            [
+              -13.517719921663335,
+              -86.74183249835544
+            ],
+            [
+              -13.269859733146586,
+              -86.68213082564982
+            ],
+            [
+              -13.03077083321266,
+              -86.62237109584622
+            ],
+            [
+              -12.800003620754138,
+              -86.56255647039067
+            ],
+            [
+              -12.577138173869987,
+              -86.50268989959011
+            ],
+            [
+              -12.361781884953253,
+              -86.4427741399197
+            ],
+            [
+              -13.32419262334454,
+              -86.42913412838554
+            ],
+            [
+              -14.279007206856479,
+              -86.41449519871809
+            ],
+            [
+              -15.225791399947756,
+              -86.39886956637872
+            ],
+            [
+              -16.164135766370315,
+              -86.38227005222257
+            ],
+            [
+              -17.093656230098066,
+              -86.36471003492527
+            ],
+            [
+              -18.013994467802437,
+              -86.34620340290732
+            ],
+            [
+              -18.924818138594723,
+              -86.32676450610542
+            ],
+            [
+              -19.8258209582888,
+              -86.30640810792077
+            ],
+            [
+              -20.71672262674654,
+              -86.28514933765305
+            ],
+            [
+              -21.59726861794451,
+              -86.26300364370289
+            ],
+            [
+              -22.46722984324506,
+              -86.23998674779982
+            ],
+            [
+              -23.32640219897264,
+              -86.2161146004845
+            ],
+            [
+              -24.17460600979713,
+              -86.19140333804722
+            ],
+            [
+              -25.01168537962469,
+              -86.16586924109404
+            ],
+            [
+              -25.83750746170974,
+              -86.13952869488688
+            ],
+            [
+              -26.651961659548963,
+              -86.11239815157248
+            ],
+            [
+              -27.06367000047969,
+              -86.1671321648489
+            ],
+            [
+              -27.487293826241274,
+              -86.22166443540323
+            ],
+            [
+              -27.923309621260856,
+              -86.27598597284477
+            ],
+            [
+              -28.372216409755406,
+              -86.3300872921147
+            ],
+            [
+              -28.834536825209863,
+              -86.38395838198947
+            ],
+            [
+              -29.310818209382695,
+              -86.43758867146565
+            ],
+            [
+              -29.801633736567286,
+              -86.4909669938943
+            ],
+            [
+              -30.307583557529338,
+              -86.54408154873586
+            ],
+            [
+              -30.829295955984104,
+              -86.59691986079928
+            ],
+            [
+              -31.367428508631185,
+              -86.64946873683445
+            ],
+            [
+              -31.922669237586334,
+              -86.7017142193446
+            ],
+            [
+              -32.495737741488675,
+              -86.75364153749312
+            ],
+            [
+              -33.0873862885635,
+              -86.80523505498732
+            ],
+            [
+              -33.69840085142653,
+              -86.8564782148342
+            ],
+            [
+              -34.32960205936076,
+              -86.90735348088081
+            ],
+            [
+              -34.98184603911431,
+              -86.95784227607822
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_2_Haworth.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_2_Haworth.zip — A302_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_2_Haworth.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A302_GLDELEV_005.tif: raster centre pixel (row 2980, column 2980); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -86.76404982027084,
+            "longitude_deg": -22.776243241756063,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2980, column 2980 of A302_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "7126ae857336f2781b7e72caa07a7162e63b8e3ab50ebcd9ee30390b3d6f4d94"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Haworth region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_leibnitz_beta_plateau_point",
+      "name": "Leibnitz Beta Plateau — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -85.42660397429984,
+      "longitude_deg": 31.74418217323797,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -85.42660397429984,
+        "longitude_deg": 31.74418217323797,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 1600, column 1600 of A310_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 6398.92041015625,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              30.57922687248902,
+              -85.78833523796652
+            ],
+            [
+              30.96375653207352,
+              -85.77148602042382
+            ],
+            [
+              31.34521414171568,
+              -85.754448218116
+            ],
+            [
+              31.723602957684026,
+              -85.73722410349367
+            ],
+            [
+              32.0989272547852,
+              -85.7198159371251
+            ],
+            [
+              32.47119229084849,
+              -85.70222596695994
+            ],
+            [
+              32.84040427147348,
+              -85.6844564276311
+            ],
+            [
+              33.20657031508953,
+              -85.66650953979298
+            ],
+            [
+              33.56969841837246,
+              -85.64838750949626
+            ],
+            [
+              33.929797422060645,
+              -85.63009252759812
+            ],
+            [
+              34.28687697720897,
+              -85.61162676920672
+            ],
+            [
+              34.64094751191629,
+              -85.59299239315985
+            ],
+            [
+              34.99202019855867,
+              -85.5741915415366
+            ],
+            [
+              35.34010692155767,
+              -85.5552263392012
+            ],
+            [
+              35.68522024571024,
+              -85.53609889337794
+            ],
+            [
+              36.02737338510361,
+              -85.51681129325681
+            ],
+            [
+              36.36658017263625,
+              -85.49736560962837
+            ],
+            [
+              36.11934084947976,
+              -85.4708095993923
+            ],
+            [
+              35.87499135206402,
+              -85.44417081380914
+            ],
+            [
+              35.63349004298788,
+              -85.41745071386278
+            ],
+            [
+              35.39479584498706,
+              -85.39065073116994
+            ],
+            [
+              35.158868240365614,
+              -85.36377226857732
+            ],
+            [
+              34.92566726989723,
+              -85.33681670075029
+            ],
+            [
+              34.69515353123397,
+              -85.3097853747521
+            ],
+            [
+              34.467288176857984,
+              -85.28267961061452
+            ],
+            [
+              34.242032911609996,
+              -85.2555007018983
+            ],
+            [
+              34.01934998982646,
+              -85.22824991624545
+            ],
+            [
+              33.799202212115574,
+              -85.20092849592119
+            ],
+            [
+              33.5815529218009,
+              -85.17353765834739
+            ],
+            [
+              33.36636600105956,
+              -85.14607859662519
+            ],
+            [
+              33.15360586678056,
+              -85.11855248005013
+            ],
+            [
+              32.943237466167375,
+              -85.0909604546158
+            ],
+            [
+              32.7352262721076,
+              -85.06330364350976
+            ],
+            [
+              32.41230661835121,
+              -85.08102569947108
+            ],
+            [
+              32.087059246148954,
+              -85.09859080430755
+            ],
+            [
+              31.7594800848128,
+              -85.11599725294481
+            ],
+            [
+              31.429565614838516,
+              -85.13324333146745
+            ],
+            [
+              31.09731288577945,
+              -85.15032731752481
+            ],
+            [
+              30.76271953423892,
+              -85.16724748075433
+            ],
+            [
+              30.425783801961266,
+              -85.18400208322569
+            ],
+            [
+              30.086504554000232,
+              -85.20058937990326
+            ],
+            [
+              29.74488129694222,
+              -85.21700761912946
+            ],
+            [
+              29.40091419716077,
+              -85.2332550431269
+            ],
+            [
+              29.054604099077146,
+              -85.24932988852228
+            ],
+            [
+              28.705952543401093,
+              -85.26523038688894
+            ],
+            [
+              28.354961785324058,
+              -85.28095476531173
+            ],
+            [
+              28.00163481263643,
+              -85.29650124697105
+            ],
+            [
+              27.64597536373868,
+              -85.3118680517485
+            ],
+            [
+              27.287987945515507,
+              -85.32705339685336
+            ],
+            [
+              27.474431626277134,
+              -85.35628832025257
+            ],
+            [
+              27.66323832781802,
+              -85.38547410682028
+            ],
+            [
+              27.85444908113826,
+              -85.41460979884303
+            ],
+            [
+              28.04810575455306,
+              -85.4436944158975
+            ],
+            [
+              28.244251070801017,
+              -85.47272695422977
+            ],
+            [
+              28.442928624363347,
+              -85.50170638611606
+            ],
+            [
+              28.644182898982756,
+              -85.53063165920547
+            ],
+            [
+              28.84805928536905,
+              -85.55950169584304
+            ],
+            [
+              29.054604099077146,
+              -85.58831539237434
+            ],
+            [
+              29.263864598541044,
+              -85.61707161842962
+            ],
+            [
+              29.475889003245747,
+              -85.64576921618745
+            ],
+            [
+              29.690726512016813,
+              -85.67440699961814
+            ],
+            [
+              29.908427321405124,
+              -85.7029837537049
+            ],
+            [
+              30.129042644141958,
+              -85.73149823364376
+            ],
+            [
+              30.352624727637004,
+              -85.75994916402085
+            ],
+            [
+              30.57922687248902,
+              -85.78833523796652
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_10_Leibnitz_Beta_Plateau.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_10_Leibnitz_Beta_Plateau.zip — A310_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_10_Leibnitz_Beta_Plateau.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A310_GLDELEV_005.tif: raster centre pixel (row 1600, column 1600); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -85.42660397429984,
+            "longitude_deg": 31.74418217323797,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 1600, column 1600 of A310_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "55352520c0277a902a89fbd003f83956b238e4d0b4529494eaec1b5a51b1a4b1"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Leibnitz Beta Plateau region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_malapert_massif_point",
+      "name": "Malapert Massif — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -85.99486736492493,
+      "longitude_deg": -0.23460969154338968,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -85.99486736492493,
+        "longitude_deg": -0.23460969154338968,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2100, column 2100 of A311_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 4782.7890625,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.6594818401624805,
+              -86.32278683630841
+            ],
+            [
+              -4.987837941505034,
+              -86.32679869267471
+            ],
+            [
+              -4.314817011551914,
+              -86.33030508802382
+            ],
+            [
+              -3.640601057163023,
+              -86.33330456826197
+            ],
+            [
+              -2.965374055189156,
+              -86.33579588509848
+            ],
+            [
+              -2.289321657409877,
+              -86.33777799861802
+            ],
+            [
+              -1.6126308885769525,
+              -86.33925007943418
+            ],
+            [
+              -0.9354898387726885,
+              -86.3402115104146
+            ],
+            [
+              -0.25808735133618715,
+              -86.34066188796805
+            ],
+            [
+              0.41938729235510597,
+              -86.3406010228885
+            ],
+            [
+              1.0967446899367561,
+              -86.3400289407513
+            ],
+            [
+              1.773795635615485,
+              -86.33894588185906
+            ],
+            [
+              2.4503514369040365,
+              -86.33735230073947
+            ],
+            [
+              3.1262242292091242,
+              -86.33524886519473
+            ],
+            [
+              3.8012272869655606,
+              -86.33263645491
+            ],
+            [
+              4.475175330036495,
+              -86.32951615962483
+            ],
+            [
+              5.147884824136303,
+              -86.32588927687961
+            ],
+            [
+              5.088043530822362,
+              -86.28282318489396
+            ],
+            [
+              5.029573959755942,
+              -86.2397541843152
+            ],
+            [
+              4.972429597785363,
+              -86.19668242214954
+            ],
+            [
+              4.916566006010019,
+              -86.15360803937399
+            ],
+            [
+              4.861940705710056,
+              -86.11053117126853
+            ],
+            [
+              4.8085130717037465,
+              -86.0674519477278
+            ],
+            [
+              4.756244232575714,
+              -86.02437049355122
+            ],
+            [
+              4.705096977266241,
+              -85.9812869287157
+            ],
+            [
+              4.6550356675545705,
+              -85.93820136863029
+            ],
+            [
+              4.606026156007805,
+              -85.89511392437531
+            ],
+            [
+              4.558035709002168,
+              -85.8520247029265
+            ],
+            [
+              4.5110329344552875,
+              -85.80893380736525
+            ],
+            [
+              4.464987713937263,
+              -85.76584133707641
+            ],
+            [
+              4.419871138854705,
+              -85.7227473879338
+            ],
+            [
+              4.375655450426053,
+              -85.67965205247458
+            ],
+            [
+              4.332313983188515,
+              -85.63655542006418
+            ],
+            [
+              3.765456534671952,
+              -85.63960717279072
+            ],
+            [
+              3.19785994446859,
+              -85.64223196575372
+            ],
+            [
+              2.6296343670899796,
+              -85.64442902406425
+            ],
+            [
+              2.0608906960394457,
+              -85.64619769767344
+            ],
+            [
+              1.491740435372717,
+              -85.64753746232715
+            ],
+            [
+              0.9222955694657302,
+              -85.64844792033763
+            ],
+            [
+              0.3526684313670279,
+              -85.64892880117073
+            ],
+            [
+              -0.21702842988005863,
+              -85.64897996184598
+            ],
+            [
+              -0.7866823825545808,
+              -85.64860138714792
+            ],
+            [
+              -1.3561808458201097,
+              -85.64779318964908
+            ],
+            [
+              -1.9254114231360921,
+              -85.64655560954276
+            ],
+            [
+              -2.4942620351235143,
+              -85.64488901428848
+            ],
+            [
+              -3.0626210514929793,
+              -85.6427938980685
+            ],
+            [
+              -3.6303774216484603,
+              -85.64027088106043
+            ],
+            [
+              -4.197420803587282,
+              -85.63732070852558
+            ],
+            [
+              -4.763641690726177,
+              -85.63394424971796
+            ],
+            [
+              -4.811259669701592,
+              -85.67701475057527
+            ],
+            [
+              -4.859836944902939,
+              -85.72008343018959
+            ],
+            [
+              -4.909402727802276,
+              -85.76315018328859
+            ],
+            [
+              -4.959987425027546,
+              -85.80621490077975
+            ],
+            [
+              -5.011622699956388,
+              -85.84927746955331
+            ],
+            [
+              -5.064341538148409,
+              -85.89233777227214
+            ],
+            [
+              -5.118178316897141,
+              -85.93539568714895
+            ],
+            [
+              -5.173168879206599,
+              -85.97845108770844
+            ],
+            [
+              -5.2293506125234135,
+              -86.0215038425349
+            ],
+            [
+              -5.286762532583939,
+              -86.06455381500307
+            ],
+            [
+              -5.345445372767093,
+              -86.10760086299074
+            ],
+            [
+              -5.405441679378039,
+              -86.15064483857297
+            ],
+            [
+              -5.466795913325599,
+              -86.19368558769517
+            ],
+            [
+              -5.529554558697957,
+              -86.23672294982387
+            ],
+            [
+              -5.593766238787029,
+              -86.27975675757375
+            ],
+            [
+              -5.6594818401624805,
+              -86.32278683630841
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_11_Malapert_Massif.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_11_Malapert_Massif.zip — A311_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_11_Malapert_Massif.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A311_GLDELEV_005.tif: raster centre pixel (row 2100, column 2100); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -85.99486736492493,
+            "longitude_deg": -0.23460969154338968,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2100, column 2100 of A311_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "e71f946674a6dc4dcd910f37cee9c0ff42c0f5493900be81259e0acb8dea68d4"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Malapert Massif region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_nobile_rim_1_point",
+      "name": "Nobile Rim 1 — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -85.43811594434003,
+      "longitude_deg": 37.36812005733697,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -85.43811594434003,
+        "longitude_deg": 37.36812005733697,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A307_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 5944.5927734375,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              36.50144112050632,
+              -85.89921756871605
+            ],
+            [
+              36.96146093907277,
+              -85.87459546272575
+            ],
+            [
+              37.41598861857788,
+              -85.84971120259227
+            ],
+            [
+              37.865065738870264,
+              -85.82456950086218
+            ],
+            [
+              38.30873556744772,
+              -85.79917500559408
+            ],
+            [
+              38.74704293015668,
+              -85.7735322994707
+            ],
+            [
+              39.180034086544445,
+              -85.74764589905077
+            ],
+            [
+              39.60775660988624,
+              -85.72152025415383
+            ],
+            [
+              40.0302592718897,
+              -85.69515974737064
+            ],
+            [
+              40.44759193206093,
+              -85.66856869369114
+            ],
+            [
+              40.85980543170021,
+              -85.6417513402452
+            ],
+            [
+              41.2669514924806,
+              -85.61471186614689
+            ],
+            [
+              41.669082619549954,
+              -85.58745438243743
+            ],
+            [
+              42.06625200908481,
+              -85.55998293212018
+            ],
+            [
+              42.45851346021522,
+              -85.53230149028127
+            ],
+            [
+              42.84592129123014,
+              -85.5044139642896
+            ],
+            [
+              43.22853025996593,
+              -85.47632419407181
+            ],
+            [
+              42.87347683886215,
+              -85.4462481956196
+            ],
+            [
+              42.523100739348365,
+              -85.41600044256367
+            ],
+            [
+              42.17733583407948,
+              -85.38558434340278
+            ],
+            [
+              41.836116381119254,
+              -85.35500323628608
+            ],
+            [
+              41.49937706571731,
+              -85.32426039011109
+            ],
+            [
+              41.16705303875278,
+              -85.29335900563825
+            ],
+            [
+              40.839079952011055,
+              -85.2623022166196
+            ],
+            [
+              40.51539399045538,
+              -85.23109309093766
+            ],
+            [
+              40.19593190165,
+              -85.19973463175312
+            ],
+            [
+              39.88063102248681,
+              -85.16822977865652
+            ],
+            [
+              39.569429303361936,
+              -85.13658140882434
+            ],
+            [
+              39.26226532994359,
+              -85.10479233817485
+            ],
+            [
+              38.959078342667425,
+              -85.07286532252314
+            ],
+            [
+              38.659808254090095,
+              -85.040803058733
+            ],
+            [
+              38.36439566422643,
+              -85.0086081858639
+            ],
+            [
+              38.072781873990834,
+              -84.97628328631195
+            ],
+            [
+              37.70103429834205,
+              -85.00154989130634
+            ],
+            [
+              37.32552048310607,
+              -85.02660469283332
+            ],
+            [
+              36.94621565533835,
+              -85.05144444771679
+            ],
+            [
+              36.56309586859409,
+              -85.07606587558514
+            ],
+            [
+              36.17613805695952,
+              -85.1004656593796
+            ],
+            [
+              35.78532009060363,
+              -85.12464044592453
+            ],
+            [
+              35.39062083282458,
+              -85.14858684656328
+            ],
+            [
+              34.99202019855866,
+              -85.17230143786074
+            ],
+            [
+              34.589499214312866,
+              -85.19578076237697
+            ],
+            [
+              34.183040079475006,
+              -85.2190213295126
+            ],
+            [
+              33.77262622894743,
+              -85.24201961642953
+            ],
+            [
+              33.35824239704295,
+              -85.26477206904971
+            ],
+            [
+              32.93987468257243,
+              -85.28727510313335
+            ],
+            [
+              32.517510615045516,
+              -85.30952510544003
+            ],
+            [
+              32.09113922189631,
+              -85.33151843497383
+            ],
+            [
+              31.660751096636595,
+              -85.35325142431674
+            ],
+            [
+              31.9294229388385,
+              -85.3882308153078
+            ],
+            [
+              32.20219999715201,
+              -85.42310821773997
+            ],
+            [
+              32.47916443209565,
+              -85.45788124580405
+            ],
+            [
+              32.760400163068155,
+              -85.4925474475951
+            ],
+            [
+              33.045992894329665,
+              -85.5271043031225
+            ],
+            [
+              33.336030139996524,
+              -85.56154922226483
+            ],
+            [
+              33.63060124788941,
+              -85.59587954267
+            ],
+            [
+              33.929797422060645,
+              -85.63009252759812
+            ],
+            [
+              34.233711743811675,
+              -85.66418536370973
+            ],
+            [
+              34.54243919099567,
+              -85.69815515879588
+            ],
+            [
+              34.856076655383255,
+              -85.73199893945325
+            ],
+            [
+              35.17472295785154,
+              -85.76571364870135
+            ],
+            [
+              35.49847886113715,
+              -85.7992961435447
+            ],
+            [
+              35.82744707987375,
+              -85.83274319247907
+            ],
+            [
+              36.1617322876132,
+              -85.86605147294316
+            ],
+            [
+              36.50144112050632,
+              -85.89921756871605
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_7_Nobile_Rim_1.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_7_Nobile_Rim_1.zip — A307_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_7_Nobile_Rim_1.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A307_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -85.43811594434003,
+            "longitude_deg": 37.36812005733697,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A307_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "6f422c88b7c4fc3ef147bde592596af1b7baef885dffbbab6de880fcf85c0dff"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Nobile Rim 1 region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_nobile_rim_2_point",
+      "name": "Nobile Rim 2 — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -83.95398925192237,
+      "longitude_deg": 58.82312656585403,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -83.95398925192237,
+        "longitude_deg": 58.82312656585403,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 2000, column 2000 of A301_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 1010.3479614257812,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              59.96215525432655,
+              -84.40461579710974
+            ],
+            [
+              60.17194579176423,
+              -84.36897768241981
+            ],
+            [
+              60.37909062537935,
+              -84.33326623751407
+            ],
+            [
+              60.58363417566581,
+              -84.29748287649618
+            ],
+            [
+              60.78562001973158,
+              -84.26162898123691
+            ],
+            [
+              60.98509090601227,
+              -84.22570590220228
+            ],
+            [
+              61.18208876892529,
+              -84.18971495925973
+            ],
+            [
+              61.376654743447325,
+              -84.15365744246373
+            ],
+            [
+              61.56882917959906,
+              -84.11753461281991
+            ],
+            [
+              61.758651656822224,
+              -84.08134770302965
+            ],
+            [
+              61.946160998236536,
+              -84.04509791821418
+            ],
+            [
+              62.13139528476433,
+              -84.0087864366197
+            ],
+            [
+              62.31439186911252,
+              -83.97241441030397
+            ],
+            [
+              62.49518738960256,
+              -83.93598296580357
+            ],
+            [
+              62.67381778384009,
+              -83.89949320478439
+            ],
+            [
+              62.850318302216834,
+              -83.86294620467355
+            ],
+            [
+              63.02472352123847,
+              -83.82634301927513
+            ],
+            [
+              62.68513609860052,
+              -83.8075901437141
+            ],
+            [
+              62.3476149954431,
+              -83.78862181591556
+            ],
+            [
+              62.01216462080717,
+              -83.76944002312158
+            ],
+            [
+              61.67878876199121,
+              -83.75004675046476
+            ],
+            [
+              61.347490597760554,
+              -83.73044398032789
+            ],
+            [
+              61.018272711676815,
+              -83.71063369172246
+            ],
+            [
+              60.69113710552579,
+              -83.69061785968722
+            ],
+            [
+              60.366085212823386,
+              -83.67039845470566
+            ],
+            [
+              60.04311791237922,
+              -83.64997744214318
+            ],
+            [
+              59.722235541899046,
+              -83.62935678170312
+            ],
+            [
+              59.403437911607156,
+              -83.6085384269019
+            ],
+            [
+              59.08672431787148,
+              -83.58752432456336
+            ],
+            [
+              58.77209355681411,
+              -83.56631641433171
+            ],
+            [
+              58.459543937891496,
+              -83.54491662820278
+            ],
+            [
+              58.149073297428586,
+              -83.52332689007423
+            ],
+            [
+              57.84067901209279,
+              -83.50154911531337
+            ],
+            [
+              57.64638903238878,
+              -83.5362981840797
+            ],
+            [
+              57.44999650780661,
+              -83.57097346958452
+            ],
+            [
+              57.251471813680126,
+              -83.60557373555172
+            ],
+            [
+              57.050784883409555,
+              -83.64009772169693
+            ],
+            [
+              56.84790520413247,
+              -83.67454414322144
+            ],
+            [
+              56.64280181253435,
+              -83.70891169029689
+            ],
+            [
+              56.43544329081325,
+              -83.74319902754026
+            ],
+            [
+              56.225797762814395,
+              -83.77740479347885
+            ],
+            [
+              56.013832890351416,
+              -83.81152760000559
+            ],
+            [
+              55.799515869731465,
+              -83.84556603182483
+            ],
+            [
+              55.58281342850321,
+              -83.87951864588781
+            ],
+            [
+              55.3636918224471,
+              -83.91338397081859
+            ],
+            [
+              55.14211683282882,
+              -83.94716050632994
+            ],
+            [
+              54.9180537639377,
+              -83.98084672262996
+            ],
+            [
+              54.691467440933486,
+              -84.01444105981847
+            ],
+            [
+              54.46232220802562,
+              -84.04794192727358
+            ],
+            [
+              54.786232871779774,
+              -84.07174304665318
+            ],
+            [
+              55.11274911006534,
+              -84.09535402145127
+            ],
+            [
+              55.44188102427467,
+              -84.11877253709125
+            ],
+            [
+              55.773638187776186,
+              -84.14199626109854
+            ],
+            [
+              56.10802962312826,
+              -84.165022843516
+            ],
+            [
+              56.44506377892101,
+              -84.18784991734665
+            ],
+            [
+              56.78474850626281,
+              -84.21047509902593
+            ],
+            [
+              57.1270910349301,
+              -84.2328959889234
+            ],
+            [
+              57.472097949201164,
+              -84.25511017187482
+            ],
+            [
+              57.81977516339567,
+              -84.27711521774516
+            ],
+            [
+              58.17012789714457,
+              -84.29890868202352
+            ],
+            [
+              58.52316065041602,
+              -84.32048810644962
+            ],
+            [
+              58.87887717832565,
+              -84.34185101967437
+            ],
+            [
+              59.23728046576109,
+              -84.3629949379527
+            ],
+            [
+              59.59837270185296,
+              -84.3839173658711
+            ],
+            [
+              59.96215525432655,
+              -84.40461579710974
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_1_Nobile_Rim_2.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_1_Nobile_Rim_2.zip — A301_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_1_Nobile_Rim_2.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A301_GLDELEV_005.tif: raster centre pixel (row 2000, column 2000); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -83.95398925192237,
+            "longitude_deg": 58.82312656585403,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 2000, column 2000 of A301_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "4e75ed06a48af4d2dfaaed3476cefce636d4bf0dfd004d66193fc714df0011a8"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Nobile Rim 2 region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
+    },
+    {
+      "id": "pgda104_peak_near_shackleton_point",
+      "name": "Peak Near Shackleton — PGDA 104 DEM region (representative point)",
+      "mission": null,
+      "agency": null,
+      "operator": null,
+      "country": null,
+      "status": "dem_region",
+      "mission_status": "not_applicable",
+      "geometry_type": "region",
+      "position_kind": "representative_point",
+      "latitude_deg": -88.81089375534428,
+      "longitude_deg": 123.69116926195721,
+      "frame_id": "MOON_ME_DE421",
+      "original_coordinates": {
+        "latitude_deg": -88.81089375534428,
+        "longitude_deg": 123.69116926195721,
+        "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+        "note": "Centre pixel row 1600, column 1600 of A308_GLDELEV_005.tif"
+      },
+      "horizontal_uncertainty_m": null,
+      "elevation_m": 1645.6700439453125,
+      "elevation_reference": "Height above the 1 737 400 m sphere, value of the GeoTIFF pixel (PGDA 104 README)",
+      "region": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              141.84277341263095,
+              -88.8257319625439
+            ],
+            [
+              140.5993393365206,
+              -88.80507833122665
+            ],
+            [
+              139.39870535499554,
+              -88.78388130609369
+            ],
+            [
+              138.23970029610214,
+              -88.76216881626442
+            ],
+            [
+              137.12109639666144,
+              -88.73996752244706
+            ],
+            [
+              136.04162667600997,
+              -88.71730281979286
+            ],
+            [
+              135.0,
+              -88.69419885276389
+            ],
+            [
+              133.99491399474581,
+              -88.67067853966549
+            ],
+            [
+              133.02506598911802,
+              -88.64676360475899
+            ],
+            [
+              132.08916217383225,
+              -88.62247461615947
+            ],
+            [
+              131.18592516570965,
+              -88.5978310279676
+            ],
+            [
+              130.3141001604973,
+              -88.57285122532862
+            ],
+            [
+              129.47245984834385,
+              -88.54755257132723
+            ],
+            [
+              128.6598082540901,
+              -88.5219514548188
+            ],
+            [
+              127.87498365109822,
+              -88.49606333846253
+            ],
+            [
+              127.11686068327027,
+              -88.46990280637544
+            ],
+            [
+              126.3843518158359,
+              -88.44348361094261
+            ],
+            [
+              125.39479584498706,
+              -88.46281326856923
+            ],
+            [
+              124.38034472384487,
+              -88.48167294856098
+            ],
+            [
+              123.34070734647702,
+              -88.50004491030249
+            ],
+            [
+              122.27564431457762,
+              -88.51791100403791
+            ],
+            [
+              121.18497465873838,
+              -88.53525270679535
+            ],
+            [
+              120.06858282186246,
+              -88.55205116528381
+            ],
+            [
+              118.92642583525362,
+              -88.56828724620414
+            ],
+            [
+              117.75854060106003,
+              -88.58394159435514
+            ],
+            [
+              116.56505117707799,
+              -88.5989946988198
+            ],
+            [
+              115.3461759419467,
+              -88.61342696741742
+            ],
+            [
+              114.10223450116115,
+              -88.62721880946052
+            ],
+            [
+              112.83365417791754,
+              -88.64035072669905
+            ],
+            [
+              111.54097591853845,
+              -88.65280341214768
+            ],
+            [
+              110.22485943116808,
+              -88.66455785627839
+            ],
+            [
+              108.8860873697093,
+              -88.67559545983897
+            ],
+            [
+              107.52556837372288,
+              -88.68589815231756
+            ],
+            [
+              107.96913974015703,
+              -88.71730281979286
+            ],
+            [
+              108.43494882292202,
+              -88.74862695123558
+            ],
+            [
+              108.92464441605124,
+              -88.77986432236094
+            ],
+            [
+              109.4400348281762,
+              -88.81100807350457
+            ],
+            [
+              109.98310652189998,
+              -88.84205062928298
+            ],
+            [
+              110.55604521958347,
+              -88.87298360627477
+            ],
+            [
+              111.16125981682828,
+              -88.90379770670054
+            ],
+            [
+              111.80140948635182,
+              -88.93448259570604
+            ],
+            [
+              112.47943439710312,
+              -88.96502675941773
+            ],
+            [
+              113.19859051364818,
+              -88.99541734041468
+            ],
+            [
+              113.96248897457819,
+              -89.0256399466474
+            ],
+            [
+              114.77514056883193,
+              -89.05567842911981
+            ],
+            [
+              115.64100582430528,
+              -89.08551462280526
+            ],
+            [
+              116.56505117707799,
+              -89.11512804433146
+            ],
+            [
+              117.5528115767178,
+              -89.1444955388731
+            ],
+            [
+              118.61045966596521,
+              -89.17359086754834
+            ],
+            [
+              120.57922687248902,
+              -89.1573027496307
+            ],
+            [
+              122.47119229084849,
+              -89.14005808266474
+            ],
+            [
+              124.28687697720898,
+              -89.12191323265955
+            ],
+            [
+              126.02737338510362,
+              -89.10292283261062
+            ],
+            [
+              127.69424046668917,
+              -89.08313943335153
+            ],
+            [
+              129.28940686250036,
+              -89.06261325458776
+            ],
+            [
+              130.8150838748816,
+              -89.0413920225478
+            ],
+            [
+              132.27368900609375,
+              -89.01952088043576
+            ],
+            [
+              133.66778014613035,
+              -88.9970423584337
+            ],
+            [
+              135.0,
+              -88.97399639107657
+            ],
+            [
+              136.27303002005672,
+              -88.95042037121225
+            ],
+            [
+              137.48955292199918,
+              -88.92634923122687
+            ],
+            [
+              138.65222278030635,
+              -88.90181554371429
+            ],
+            [
+              139.7636416907262,
+              -88.87684963513763
+            ],
+            [
+              140.82634202955578,
+              -88.85147970730252
+            ],
+            [
+              141.84277341263095,
+              -88.8257319625439
+            ]
+          ]
+        ]
+      },
+      "landing_date_utc": null,
+      "related_site_id": null,
+      "planned_target_note": null,
+      "source_url": "https://zenodo.org/records/17954508/files/A3CLR22_8_Peak_Near_Shackleton.zip?download=1",
+      "accessed_at": "2026-11-15",
+      "position_sources": [
+        {
+          "used_for": "position",
+          "institution": "NASA GSFC Planetary Geodesy Data Archive (PGDA 104), Zenodo",
+          "title": "A3CLR22_8_Peak_Near_Shackleton.zip — A308_GLDELEV_005.tif",
+          "url": "https://zenodo.org/records/17954508/files/A3CLR22_8_Peak_Near_Shackleton.zip?download=1",
+          "identifier": "doi:10.5281/zenodo.17954508",
+          "version_or_update": null,
+          "published": null,
+          "accessed_at": "2026-11-15",
+          "locator": "A308_GLDELEV_005.tif: raster centre pixel (row 1600, column 1600); method chosen by LunarHorizon",
+          "access": "opened_original",
+          "coordinates": {
+            "latitude_deg": -88.81089375534428,
+            "longitude_deg": 123.69116926195721,
+            "frame_description": "Moon (2015) - Sphere / Ocentric, south polar stereographic (IAU 30135), R = 1 737 400 m; geographic coordinates of the pixel centre computed by LunarHorizon",
+            "note": "Centre pixel row 1600, column 1600 of A308_GLDELEV_005.tif"
+          },
+          "declared_frame": "Moon (2015) - Sphere / Ocentric (IAU 30100), CRS of the GeoTIFF",
+          "frame_realization_stated": false,
+          "published_uncertainty_m": null,
+          "uncertainty_definition": null,
+          "quote": null,
+          "file_sha256": "6eb1cdd1e2b95cd97e5fb0441f4c8c1c317d6f53c2bbfbf7990e50df8aa94d3b"
+        }
+      ],
+      "position_verification": "verified_at_original",
+      "adoption_note": "Punct reprezentativ al regiunii DEM: pixelul central al rasterului GLDELEV (metodă LunarHorizon), nu loc de aterizare, nu țintă și nu selecție curentă. IPOTEZĂ: cadrul MOON_ME_DE421 declarat pentru produsele PGDA (D-10 deschisă); nicio conversie de cadru.",
+      "description_ro": null,
+      "description_en": "Representative point (raster centre pixel) of the Peak Near Shackleton region of the PGDA 104 DEM product. Not a landing site, not a target and not a current mission selection.",
+      "terrain_available": true
     }
   ],
   "demo_site_selection": {

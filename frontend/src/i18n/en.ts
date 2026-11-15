@@ -27,6 +27,14 @@ export const en = {
     utc: 'UTC',
   },
   catalog: {
+    southPolarOnly: 'South polar sites only (≤ 60° S)',
+    terrainBadge: {
+      terrain_available: 'Terrain available',
+      terrain_not_downloaded: 'Terrain not downloaded',
+      coverage_unverified: 'Coverage unverified',
+      no_dem_coverage: 'No DEM coverage',
+      frame_mismatch: 'Frame mismatch',
+    } as Record<string, string>,
     heading: 'Site catalog',
     search: 'Search sites',
     searchPlaceholder: 'Name, mission or agency',
@@ -46,6 +54,7 @@ export const en = {
       not_landed: 'Did not land',
       planned: 'Planned',
       unknown: 'Unknown status',
+      not_applicable: 'Not applicable (no mission)',
     } as Record<string, string>,
   },
   point: {
@@ -123,9 +132,15 @@ export const en = {
     localTerrainStatus: {
       none: 'Not checked.',
       loading: 'Checking DEM coverage…',
-      unavailable: 'No DEM covers this point; no local relief is shown.',
       error: 'DEM coverage could not be checked.',
-      ready: 'Real DEM terrain available — see the “Local terrain” tab.',
+      ready: 'Terrain available — see the “Local terrain” tab.',
+      no_dem_coverage: 'No DEM coverage in the project’s DEM inventory.',
+      coverage_unverified:
+        'Coverage unverified: no inventoried DEM product covers this point; other products were not checked.',
+      terrain_not_downloaded:
+        'Terrain not downloaded: a DEM product covers this point, but its data are not on this server.',
+      frame_mismatch:
+        'Frame mismatch: the DEM here is declared in another reference frame; coordinates are not converted.',
     } as Record<string, string>,
     planNote:
       'A planned target or representative point is not a landing position.',
@@ -227,8 +242,17 @@ export const en = {
       'Local terrain is displayed; visibility calculations do not yet include terrain.',
     noSelection: 'Select a point inside a DEM raster to see its local terrain.',
     loading: 'Loading the local terrain…',
-    unavailable:
-      'Local terrain is not available for this selection: no DEM covers it. No relief is generated.',
+    unavailable: {
+      no_dem_coverage:
+        'No DEM coverage: no product of the project’s DEM inventory covers this selection. No relief is generated.',
+      coverage_unverified:
+        'Coverage unverified: no inventoried DEM product covers this south polar point, and other products were not checked. No relief is generated.',
+      terrain_not_downloaded:
+        'Terrain not downloaded: a DEM product covers this point, but its data are not on this server. No relief is generated.',
+      frame_mismatch:
+        'Frame mismatch: the DEM covering this point is declared in another reference frame, and coordinates are not converted between frames.',
+    } as Record<string, string>,
+    adoptFrame: (frame: string) => `Use the DEM frame ${frame}`,
     error: 'The local terrain could not be loaded.',
     camera: {
       top: 'Top view',
@@ -262,7 +286,7 @@ export const en = {
     shadows:
       'Shadows are visual only; they are not horizon or visibility calculations.',
     representativeNote:
-      'Provisional representative point of the DEM product — not a landing site and not a scientifically approved site.',
+      'Representative point of the DEM product (raster centre pixel) — not a landing site and not a scientifically approved site.',
     representativeLabel:
       'Leibnitz Beta Plateau — provisional representative point',
     legend: {

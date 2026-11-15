@@ -8,6 +8,8 @@ from lunarhorizon.astro.kernels import DEFAULT_KERNEL_DIR, DEFAULT_MANIFEST_PATH
 from lunarhorizon.catalog import DEFAULT_CATALOG_PATH, REPO_ROOT
 
 DATA_DIR: Final = REPO_ROOT / "data"
+LEIBNITZ_MANIFEST: Final = DATA_DIR / "manifests" / "leibnitz_terrain.json"
+LEIBNITZ_RASTER: Final = DATA_DIR / "_cache" / "terrain" / "leibnitz_beta" / "calculation.tif"
 
 
 @dataclass(frozen=True)
@@ -16,11 +18,12 @@ class Settings:
     kernel_manifest_path: Path = DEFAULT_MANIFEST_PATH
     kernel_dir: Path = DEFAULT_KERNEL_DIR
     terrain_products_path: Path = DATA_DIR / "manifests" / "terrain_products.json"
-    terrain_manifest_path: Path = DATA_DIR / "manifests" / "leibnitz_terrain.json"
-    # Rasterul de calcul local; lipsa lui înseamnă că produsul DEM nu este disponibil pe acest disc.
-    terrain_calculation_raster: Path = (
-        DATA_DIR / "_cache" / "terrain" / "leibnitz_beta" / "calculation.tif"
-    )
+    # Registrul produselor de teren (E08b): toate regiunile PGDA 104, achiziționate sau nu.
+    terrain_index_path: Path = DATA_DIR / "manifests" / "terrain_index.json"
+    # Mod cu un singur produs (teste, compatibilitate E05/E08): dacă unul dintre câmpuri este dat,
+    # indexul nu se folosește; câmpul lipsă ia valoarea Leibnitz Beta.
+    terrain_manifest_path: Path | None = None
+    terrain_calculation_raster: Path | None = None
     # Fundalurile E05 (NASA SVS) și manifestul lor; se servesc numai fișierele listate în manifest.
     auxiliary_dir: Path = DATA_DIR / "_cache" / "e05_auxiliary"
     auxiliary_manifest_path: Path = DATA_DIR / "manifests" / "e05_auxiliary.json"

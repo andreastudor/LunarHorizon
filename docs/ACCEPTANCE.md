@@ -1,4 +1,19 @@
 # Criterii de acceptanță
+## E08b — stare 2026-11-15: încheiată tehnic pentru lista vizată; acceptare științifică restantă
+
+| Criteriu | Stare | Dovadă |
+|---|---|---|
+| Inventar tabelar (sit, sursă, produs, rezoluție, cadru, extindere, verificare, acces) | Îndeplinit | [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md) |
+| Registru multi-produs; regulă deterministă; vizual separat de orizont; fără combinare de cadre | Îndeplinit | `terrain_index.json`, `DataRegistry.select_terrain`, `GET /api/terrain/status` |
+| Achiziție selectivă și pipeline reproductibil pentru fiecare produs | Îndeplinit | `acquire_pgda104.py`, `build_pgda104_regions.py`; 12 membri noi ≈ 399 MB |
+| Validare automată a fiecărui produs | Îndeplinit | `verify_terrain_products.py`: 13/13 OK |
+| Interfață: căutare/selecție, stări distincte, încărcare per produs, resurse eliberate | Îndeplinit | teste UI (5 noi), Playwright `regions.spec.ts`, Chrome |
+| Teste: zone distincte, suprapuneri, margini, NoData, fără acoperire, cadre, schimbări rapide, GPU | Îndeplinit | `test_terrain_regions.py` (10), `App.test.tsx`, Playwright |
+| Toate intrările listei cu teren real | **Parțial** | 13/15 cu teren real; 2 Chandrayaan-3 „Coverage unverified” (niciun produs inventariat) |
+
+Acceptare științifică restantă: cadrul `MOON_ME_DE421` al produselor PGDA este o ipoteză; punctele sunt pixeli centrali,
+nu situri aprobate; terenul este numai afișare (orizontul din DEM este E09). E12 rămâne deschisă.
+
 ## E08 — stare 2026-11-15: încheiată tehnic; acceptare științifică restantă
 
 | Criteriu BACKLOG E08 | Stare | Dovadă |

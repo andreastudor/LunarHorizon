@@ -11,6 +11,7 @@ import type {
   SimulationStatus,
   TerrainManifest,
   TerrainSample,
+  TerrainStatusReport,
 } from '../contracts/generated.ts'
 
 export class ApiError extends Error {
@@ -45,8 +46,11 @@ export interface DataSource {
   terrainManifest(
     latitudeDeg: number,
     longitudeDeg: number,
+    frameId: string | null,
     signal?: AbortSignal,
   ): Promise<TerrainManifest>
+  /** Visual terrain availability per product and per catalog site. */
+  terrainStatus(signal?: AbortSignal): Promise<TerrainStatusReport>
   /** Terrain height at a point, sampled from the calculation raster. */
   terrainElevation(
     terrainId: string,
@@ -161,11 +165,14 @@ export function createApiDataSource(baseUrl = '/api'): DataSource {
         body: JSON.stringify(request),
         signal,
       }),
-    terrainManifest: (latitudeDeg, longitudeDeg, signal) =>
+    terrainManifest: (latitudeDeg, longitudeDeg, frameId, signal) =>
       requestJson<TerrainManifest>(
-        `${baseUrl}/terrain/manifest?latitude_deg=${latitudeDeg}&longitude_deg=${longitudeDeg}`,
+        `${baseUrl}/terrain/manifest?latitude_deg=${latitudeDeg}&longitude_deg=${longitudeDeg}` +
+          (frameId ? `&frame_id=${encodeURIComponent(frameId)}` : ''),
         { signal },
       ),
+    terrainStatus: (signal) =>
+      requestJson<TerrainStatusReport>(`${baseUrl}/terrain/status`, { signal }),
     terrainElevation: (terrainId, latitudeDeg, longitudeDeg, signal) =>
       requestJson<TerrainSample>(
         `${baseUrl}/terrain/elevation?terrain_id=${encodeURIComponent(terrainId)}` +

@@ -23,6 +23,10 @@ from lunarhorizon.core.coords import geographic_to_me, normalize_longitude_deg
 from tests.support import REPO_ROOT, read_json
 
 CATALOG = load_catalog()
+# Landing/target positions (E04) and DEM-region representative points (E08b) are checked
+# separately: a region point is never a landing position.
+POSITIONS = [s for s in CATALOG.sites if s.status != "dem_region"]
+REGIONS = [s for s in CATALOG.sites if s.status == "dem_region"]
 RAW = read_json(DEFAULT_CATALOG_PATH)
 APOLLO_IDS = [f"apollo{n}_lm" for n in (11, 12, 14, 15, 16, 17)]
 PDS_ZIP_SHA256 = "f0145e0b8871053f3358c599d356a5af05db70e4da2fe8c91264e84b98e4408b"
@@ -57,7 +61,8 @@ def test_catalog_validates_for_pydantic_and_json_schema() -> None:
 
 def test_expected_minimal_content() -> None:
     ids = [site.id for site in CATALOG.sites]
-    assert len(ids) == len(set(ids)) == 10
+    assert len(ids) == len(set(ids)) == 23
+    assert len(POSITIONS) == 10 and len(REGIONS) == 13
     assert all(re.fullmatch(r"[a-z0-9][a-z0-9_.-]{0,63}", i) for i in ids)
     assert set(APOLLO_IDS) <= set(ids)
     assert "blueghost1_lander" in ids  # CLPS
@@ -110,7 +115,7 @@ def test_named_only_targets_are_not_invented_as_coordinates() -> None:
 
 
 def test_no_region_or_representative_point_is_presented_as_a_landing() -> None:
-    for site in CATALOG.sites:
+    for site in POSITIONS:
         assert site.geometry_type == "point"
         assert site.position_kind != "representative_point"
         assert site.region is None
@@ -120,7 +125,7 @@ def test_no_region_or_representative_point_is_presented_as_a_landing() -> None:
 
 
 def test_unknown_is_null_not_zero() -> None:
-    for site in CATALOG.sites:
+    for site in POSITIONS:
         assert site.horizontal_uncertainty_m != 0.0
         for source in site.position_sources:
             assert source.published_uncertainty_m != 0.0
@@ -129,7 +134,7 @@ def test_unknown_is_null_not_zero() -> None:
     assert planned.elevation_m is None and planned.elevation_reference is None
     ce4 = get_site(CATALOG, "change4_lander")
     assert ce4.agency is None and ce4.operator is None
-    for site in CATALOG.sites:
+    for site in POSITIONS:
         assert site.landing_date_utc is None
         assert site.terrain_available is False  # relieful real nu este verificat înainte de E05
 
@@ -138,7 +143,7 @@ def test_unknown_is_null_not_zero() -> None:
 
 
 def test_every_position_has_an_opened_original_with_locator_and_quote() -> None:
-    for site in CATALOG.sites:
+    for site in POSITIONS:
         primary = site.primary_source()
         assert primary.access == "opened_original"
         assert primary.coordinates is not None
@@ -242,7 +247,7 @@ def test_differences_between_sources_are_kept_not_averaged() -> None:
 
 
 def test_elevation_is_traceable_to_the_published_radius() -> None:
-    for site in CATALOG.sites:
+    for site in POSITIONS:
         if site.elevation_m is not None:
             assert site.elevation_reference and "RADIUS" in site.elevation_reference
     assert get_site(CATALOG, "apollo11_lm").elevation_m == pytest.approx(-1926.289, abs=1e-9)
@@ -359,12 +364,44 @@ def test_source_verification_report_covers_the_catalog_and_has_no_failures() -> 
     # Archived verification predates the user-requested removal; no new network claim.
     assert report["catalog_version"] == "e04-2026-11-14"
     # E07: numai `name` a primit formulare în engleză (UI în engleză); pozițiile sunt neschimbate.
-    assert CATALOG.catalog_version == "e07-2026-11-14-english-names"
+    # E08b: the 13 PGDA 104 region points were added; positions unchanged since E04.
+    assert CATALOG.catalog_version == "e08b-2026-11-15-pgda104-regions"
     assert report["summary"]["failures"] == 0
     assert report["summary"]["inaccessible"] == 0
     assert {r["site_id"] for r in report["results"]} == (
-        {s.id for s in CATALOG.sites} | {"im1_odysseus", "im2_athena"}
+        {s.id for s in POSITIONS} | {"im1_odysseus", "im2_athena"}
     )
     pds = [x for r in report["results"] for x in r["sources"] if x["kind"] == "pds_product"]
     assert len(pds) == 11 and all(not x["checks"] for x in pds)
     assert report["pds_zip_sha256"] == PDS_ZIP_SHA256
+
+
+# --- E08b: DEM-region representative points ----------------------------------------------------
+
+
+def test_region_points_are_labelled_and_never_landings() -> None:
+    for site in REGIONS:
+        assert site.id.startswith("pgda104_") and site.id.endswith("_point")
+        assert site.geometry_type == "region" and site.position_kind == "representative_point"
+        assert site.mission is None and site.mission_status == "not_applicable"
+        assert "representative point" in site.name
+        assert site.region is not None and site.terrain_available
+        assert site.frame_id == "MOON_ME_DE421"
+        assert "IPOTEZĂ" in site.adoption_note and "D-10" in site.adoption_note
+        assert site.description_en and "Not a landing site" in site.description_en
+
+
+def test_region_points_are_the_centre_pixels_of_the_acquired_rasters() -> None:
+    lock = read_json(REPO_ROOT / "data/manifests/pgda104_acquisition.json")["members"]
+    index = read_json(REPO_ROOT / "data/manifests/terrain_index.json")["entries"]
+    for entry in index:
+        site = get_site(CATALOG, f"pgda104_{entry['slug']}_point")
+        manifest = read_json(REPO_ROOT / entry["manifest"])
+        origin = manifest["local_origin"]
+        assert site.latitude_deg == origin["latitude_deg"]
+        assert site.longitude_deg == origin["longitude_deg"]
+        assert site.elevation_m == origin["elevation_m"]
+        primary = site.primary_source()
+        assert primary.file_sha256 == lock[entry["slug"]]["sha256"]
+        assert "centre pixel" in primary.locator
+        assert primary.coordinates is not None and site.original_coordinates == primary.coordinates

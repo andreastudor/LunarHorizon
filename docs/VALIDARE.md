@@ -1,4 +1,19 @@
 # Validare — toleranțe, rezultate și probleme
+## E08b — verificări (2026-11-15)
+
+Backend `pytest` 354/354 (noi: `test_terrain_regions.py` 10 — zonele distincte selectează produsul propriu, suprapunerea
+Leibnitz ∩ Nobile Rim 1 → Nobile Rim 1 (margine 4 km > 3 km), punct pe marginea rasterului → produs păstrat, altitudine
+`null`, cadru DE440 pentru un punct din Haworth → 422 `UNSUPPORTED_FRAME`, 88° S → 503 (PGDA 81 neachiziționat),
+Chandrayaan-3 → 404 coverage_unverified, raportul de stare valid față de schemă, index fără rastere → „not_downloaded”,
+pe registru sintetic: eșantion valid preferat unui produs NoData, filtrarea după cadru, puncte în afara oricărui
+produs; plus testele de catalog actualizate pentru 23 de intrări); Ruff, mypy, contracte. `verify_terrain_products.py`
+13/13 OK; `verify_e05.py` trecut. Frontend 213 teste (noi: insigne și filtru, trei stări distincte, nepotrivire de cadru
+cu adoptarea cadrului DEM, două regiuni cu reîncărcare numai a celei curente, încărcare depășită ignorată), formatare,
+oxlint, `tsc`, contracte, build. Playwright 3/3 (`regions.spec.ts` nou: Haworth 298² vârfuri la 100 m, Malapert 525² la
+40 m, revenire la Haworth cu același număr de geometrii GPU, Chandrayaan-3 „Coverage unverified”, Apollo 11 „No DEM
+coverage”). Chrome: Peak Near Shackleton (88,8109° S, 123,6912° E, 1645,7 m) și Haworth (86,7640° S, 22,7762° W, 1626,8 m)
+cu produse diferite; Chandrayaan-3 fără relief și 0 geometrii; rețeaua conține numai cererile selecției curente.
+
 ## E08 — verificări (2026-11-15)
 
 Rulate: backend `pytest` 341/341 (noi: `test_api_terrain.py`, 10 — altitudinea la originea manifestului = 6398,92 m

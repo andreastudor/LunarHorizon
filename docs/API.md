@@ -3,8 +3,11 @@
 Contractul pentru cerințele din [SPECIFICATIE.md](SPECIFICATIE.md) §13. Convențiile de unități, timp
 și cadre sunt în [SPEC_FIZICA.md](SPEC_FIZICA.md).
 
-> **Versiunea de schemă curentă: 0.5.0 (E08, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
+> **Versiunea de schemă curentă: 0.6.0 (E08b, 2026-11-15).** Versiunea inițială, 0.1.0, a fost înghețată la E02.
 > Istoric:
+> - **0.6.0 (E08b)** — document nou `TerrainStatusReport` (`GET /api/terrain/status`: produse și stări pe situri);
+>   `Site.status` acceptă `dem_region` și `Site.mission_status` acceptă `not_applicable` (punct reprezentativ al unei
+>   regiuni DEM, fără misiune; validator dedicat). Celelalte documente au aceeași structură ca în 0.5.0.
 > - **0.5.0 (E08)** — document nou `TerrainSample` (răspunsul `GET /api/terrain/elevation`): `terrain_id`, `product_id`,
 >   `frame_id`, `latitude_deg`, `longitude_deg`, `x_m`, `y_m`, `elevation_m` (`null` dacă și numai dacă `reason =
 >   "edge_or_nodata"`), `calc_resolution_m`, `method = "bilinear"`. Celelalte documente au aceeași structură ca în 0.4.0.
@@ -428,3 +431,13 @@ inițială:
 - **Cadre.** Manifestul de teren declară `MOON_ME_DE421` (ipoteză de lucru). Pentru punctul reprezentativ și pentru
   punctele alese pe teren, interfața adoptă în cerere cadrul declarat de produs și o spune explicit; direcțiile Soare/Pământ
   se desenează pe teren numai dacă rezultatul are același `frame_id` ca terenul. Nicio conversie între cadre.
+
+## 11. Completări E08b — mai multe regiuni (2026-11-15)
+
+- **`GET /api/terrain/status`** → `TerrainStatusReport`: fiecare produs al indexului (`available` / `not_downloaded`)
+  și starea terenului pentru fiecare sit din catalog (`terrain_available`, `terrain_not_downloaded`,
+  `coverage_unverified`, `no_dem_coverage`, `frame_mismatch`), cu regula polară și regula de selecție.
+- **`GET /api/terrain/manifest`** acceptă exact unul dintre `site_id`, `terrain_id` sau `latitude_deg` + `longitude_deg`,
+  plus `frame_id` opțional (implicit cadrul sitului). Selecția urmează regula din [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md).
+  Răspunsuri: 200 manifest; 503 `TERRAIN_DATA_MISSING` (terrain not downloaded); 422 `UNSUPPORTED_FRAME` (frame
+  mismatch); 404 `OUT_OF_DEM_COVERAGE`, cu `detail` care începe cu `coverage_unverified` sau `no_dem_coverage`.

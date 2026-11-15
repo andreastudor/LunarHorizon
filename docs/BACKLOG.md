@@ -129,6 +129,19 @@ E03, E04 și E05 pot avansa în paralel, pe roluri (fizică, cartografie, progra
 - **Teste.** Pozițiile vârfurilor față de vectorii de test; altitudinea observatorului; exagerarea și camera nu modifică rezultatele (T-09); numărul de resurse GPU după schimbarea sitului; teste de interfață.
 - **Criteriu de finalizare.** Primul sit are relief real în 3D, iar corpurile și lumina urmează sliderul.
 
+## E08b — Teren local pentru siturile polare sudice (extindere obligatorie)
+
+- **Obiectiv.** Teren local real pentru lista explicită de situri/regiuni polare sudice din catalog, nu numai pentru
+  Leibnitz Beta. Lista, inventarul și regulile: [E08B_TERRAIN_REGIONS.md](E08B_TERRAIN_REGIONS.md).
+- **Dependențe.** E08. Produse DEM oficiale accesibile.
+- **Livrabil.** Registru de produse și manifeste pentru mai multe zone; regulă deterministă de selecție; achiziție și
+  pregătire reproductibile; stările Terrain available / Terrain not downloaded / Coverage unverified / No DEM coverage /
+  Frame mismatch; catalog extins cu punctele reprezentative ale regiunilor.
+- **Teste.** Selecția pentru zone distincte, suprapuneri, margini, NoData, puncte fără acoperire, refuzul cadrelor
+  incompatibile, schimbări rapide și încărcări depășite, resurse GPU neacumulate; validarea automată a fiecărui produs.
+- **Criteriu de finalizare.** Fiecare intrare a listei are teren real funcțional sau o stare explicită justificată.
+  Nu închide E12 și nu include orizonturi.
+
 ## E09 — Orizont din DEM
 
 - **Obiectiv.** Profilul de orizont calculat din relief, cu indicator de calitate.

@@ -8,6 +8,8 @@ import { en } from '../i18n/en.ts'
 import type { Loadable } from '../state/types.ts'
 
 interface Props {
+  /** Terrain status per site id (GET /api/terrain/status); empty if unavailable. */
+  terrainStatuses: Record<string, string>
   catalog: Loadable<Catalog>
   coverage: Loadable<Coverage>
   selectedSiteId: string | null
@@ -23,6 +25,7 @@ interface Props {
 }
 
 export function CatalogPanel({
+  terrainStatuses,
   catalog,
   coverage,
   selectedSiteId,
@@ -33,19 +36,23 @@ export function CatalogPanel({
   onRetry,
 }: Props) {
   const [query, setQuery] = useState('')
+  const [southPolarOnly, setSouthPolarOnly] = useState(false)
   const sites = useMemo(
     () => (catalog.status === 'ready' ? catalog.data.sites : []),
     [catalog],
   )
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase()
-    if (!needle) return sites
-    return sites.filter((site) =>
+    const scoped = southPolarOnly
+      ? sites.filter((site) => site.latitude_deg <= -60)
+      : sites
+    if (!needle) return scoped
+    return scoped.filter((site) =>
       [site.name, site.mission, site.agency, site.operator, site.country]
         .filter(Boolean)
         .some((text) => String(text).toLowerCase().includes(needle)),
     )
-  }, [sites, query])
+  }, [sites, query, southPolarOnly])
 
   return (
     <>
@@ -60,6 +67,15 @@ export function CatalogPanel({
             placeholder={en.catalog.searchPlaceholder}
             onChange={(event) => setQuery(event.target.value)}
           />
+        </label>
+        <label className="checkbox">
+          <input
+            type="checkbox"
+            name="south-polar-only"
+            checked={southPolarOnly}
+            onChange={(event) => setSouthPolarOnly(event.target.checked)}
+          />
+          <span>{en.catalog.southPolarOnly}</span>
         </label>
         {catalog.status === 'loading' && (
           <p role="status">{en.catalog.loading}</p>
@@ -96,12 +112,23 @@ export function CatalogPanel({
                           {en.catalog.positionKind[site.position_kind] ??
                             site.position_kind}
                         </span>
-                        <span>
-                          {en.catalog.mission(
-                            en.catalog.missionStatus[site.mission_status] ??
-                              site.mission_status,
-                          )}
-                        </span>
+                        {terrainStatuses[site.id] && (
+                          <span
+                            className={`badge badge--terrain badge--${terrainStatuses[site.id]}`}
+                          >
+                            {en.catalog.terrainBadge[
+                              terrainStatuses[site.id]
+                            ] ?? terrainStatuses[site.id]}
+                          </span>
+                        )}
+                        {site.mission !== null && (
+                          <span>
+                            {en.catalog.mission(
+                              en.catalog.missionStatus[site.mission_status] ??
+                                site.mission_status,
+                            )}
+                          </span>
+                        )}
                       </span>
                     </button>
                   </li>

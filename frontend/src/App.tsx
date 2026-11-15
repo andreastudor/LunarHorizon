@@ -50,6 +50,9 @@ function App({
   const [catalog, setCatalog] = useState<Loadable<Catalog>>({
     status: 'loading',
   })
+  const [terrainStatuses, setTerrainStatuses] = useState<
+    Record<string, string>
+  >({})
   const [coverage, setCoverage] = useState<Loadable<Coverage>>({
     status: 'loading',
   })
@@ -80,6 +83,16 @@ function App({
       .catch((error: unknown) => {
         if (!controller.signal.aborted)
           setCatalog({ status: 'error', error: describeError(error) })
+      })
+    source
+      .terrainStatus(controller.signal)
+      .then((report) =>
+        setTerrainStatuses(
+          Object.fromEntries(report.sites.map((s) => [s.site_id, s.status])),
+        ),
+      )
+      .catch(() => {
+        // Badges are omitted when the status report is unavailable; selection still works.
       })
     source
       .coverage(controller.signal)
@@ -123,7 +136,19 @@ function App({
       }
     return null
   }, [selection, selectedSite])
-  const localTerrain = useLocalTerrain(source, terrainPoint, terrainReload)
+  // Catalog sites use the frame they are declared in; user points use the selected frame.
+  const terrainFrameId =
+    selection?.kind === 'catalog'
+      ? (selectedSite?.frame_id ?? null)
+      : selection?.kind === 'custom'
+        ? params.frameId
+        : null
+  const localTerrain = useLocalTerrain(
+    source,
+    terrainPoint,
+    terrainFrameId,
+    terrainReload,
+  )
   const bodies = useMemo(() => {
     if (!series) return null
     return {
@@ -212,7 +237,11 @@ function App({
     longitudeDeg: number,
   ) => {
     try {
-      const manifest = await source.terrainManifest(latitudeDeg, longitudeDeg)
+      const manifest = await source.terrainManifest(
+        latitudeDeg,
+        longitudeDeg,
+        null,
+      )
       selectTerrainPoint(
         manifest.local_origin.latitude_deg,
         manifest.local_origin.longitude_deg,
@@ -314,6 +343,7 @@ function App({
 
       <aside className="zone zone--left" aria-label={en.zones.catalog}>
         <CatalogPanel
+          terrainStatuses={terrainStatuses}
           catalog={catalog}
           coverage={coverage}
           selectedSiteId={
@@ -401,6 +431,17 @@ function App({
                 )
               }
               onRetry={() => setTerrainReload((n) => n + 1)}
+              onAdoptFrame={
+                selection?.kind === 'custom'
+                  ? () => {
+                      setParams((previous) => ({
+                        ...previous,
+                        frameId: 'MOON_ME_DE421',
+                      }))
+                      setFrameNote(en.coverage.frameAdopted('MOON_ME_DE421'))
+                    }
+                  : undefined
+              }
               factory={terrainFactory}
             />
           )}
@@ -412,7 +453,11 @@ function App({
           selection={selection}
           site={selectedSite}
           frameId={params.frameId}
-          terrainStatus={localTerrain.status}
+          terrainStatus={
+            localTerrain.status === 'unavailable'
+              ? localTerrain.gap
+              : localTerrain.status
+          }
         />
         <ResultsPanel
           view={view}

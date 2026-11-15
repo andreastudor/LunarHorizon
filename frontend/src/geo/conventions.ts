@@ -1,7 +1,7 @@
 // Constante de convenție, identice cu backend/lunarhorizon/core/conventions.py.
 // Testul src/geo/vectors.test.ts verifică egalitatea cu tests/vectors/conventions.json.
 
-export const SCHEMA_VERSION = '0.5.0'
+export const SCHEMA_VERSION = '0.6.0'
 
 export const FRAME_ME_DE440 = 'MOON_ME_DE440_ME421'
 export const FRAME_ME_DE421 = 'MOON_ME_DE421'
