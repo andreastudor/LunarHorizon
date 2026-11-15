@@ -39,6 +39,16 @@ TerrainMode = Literal["dem", "idealized_local_plane"]
 ResultGroup = Literal["series", "events", "summary", "horizon", "terrain"]
 RESULT_GROUPS: tuple[ResultGroup, ...] = ("series", "events", "summary", "horizon", "terrain")
 AngularRadius = Annotated[float, Field(gt=0.0, le=90.0)]
+# E10 (schema 0.8.0). Starea la un moment: discul solar (D-04) sau Pământul (vizibil/ascuns).
+VisibilityState = Literal["hidden", "partially_visible", "fully_visible", "visible", "undetermined"]
+UndeterminedReason = Literal["near_threshold", "no_data", "partial_data", "undefined_azimuth"]
+TimelineState = Literal["visible", "hidden", "unknown"]
+SUN_STATES: frozenset[str] = frozenset(
+    {"hidden", "partially_visible", "fully_visible", "undetermined"}
+)
+EARTH_STATES: frozenset[str] = frozenset({"hidden", "visible", "undetermined"})
+SolarCriterion = Literal["disc_positive_area"]
+EventCriterion = Literal["sun_disc_positive_area", "earth_center_above_horizon_and_threshold"]
 ParameterValue = float | int | str | bool
 
 
@@ -75,7 +85,8 @@ class SimulationRequest(Contract):
     start_utc: UtcTimestamp
     end_utc: UtcTimestamp
     observer_height_m: NonNegative
-    solar_criterion: Literal["disc_center"]
+    # D-04 (confirmată): o porțiune cu arie pozitivă a discului deasupra orizontului.
+    solar_criterion: SolarCriterion
     earth_criterion: EarthCriterion
     terrain_mode: TerrainMode
     series_step_s: PositiveInt | None = None
@@ -122,7 +133,14 @@ class BodySeries(Contract):
     distance_km: list[Positive]
     angular_radius_deg: list[AngularRadius]
     horizon_elevation_deg: list[Elevation | None]
+    # `true` pentru orice vizibilitate (inclusiv parțială), `null` dacă și numai dacă starea este
+    # `undetermined` (motiv în `state_reason` și în `quality.issues`).
     visible: list[bool | None]
+    state: list[VisibilityState]
+    state_reason: list[UndeterminedReason | None]
+    # Soare: fracția de arie aparentă neascunsă (nu flux, nu putere); Pământ: mereu `null`.
+    visible_fraction: list[Fraction | None]
+    visible_fraction_uncertainty: list[Fraction | None]
 
     def lengths(self) -> set[int]:
         return {
@@ -132,7 +150,24 @@ class BodySeries(Contract):
             len(self.angular_radius_deg),
             len(self.horizon_elevation_deg),
             len(self.visible),
+            len(self.state),
+            len(self.state_reason),
+            len(self.visible_fraction),
+            len(self.visible_fraction_uncertainty),
         }
+
+    @model_validator(mode="after")
+    def _states_consistent(self) -> "BodySeries":
+        for visible, state, reason in zip(
+            self.visible, self.state, self.state_reason, strict=False
+        ):
+            if (visible is None) != (state == "undetermined") or (reason is None) != (
+                state != "undetermined"
+            ):
+                raise ValueError("visible/state_reason nu corespund stării")
+            if visible is not None and visible != (state != "hidden"):
+                raise ValueError("visible nu corespunde stării")
+        return self
 
 
 class SiteSeries(Contract):
@@ -147,6 +182,10 @@ class SiteSeries(Contract):
         n = len(self.time_utc)
         if self.sun.lengths() != {n} or self.earth.lengths() != {n}:
             raise ValueError("toate tablourile seriei trebuie să aibă lungimea lui time_utc")
+        if not set(self.sun.state) <= SUN_STATES or not set(self.earth.state) <= EARTH_STATES:
+            raise ValueError("stări nepermise pentru corp")
+        if any(f is not None for f in self.earth.visible_fraction):
+            raise ValueError("fracția vizibilă se definește numai pentru discul solar")
         times = [parse_utc(t) for t in self.time_utc]
         if any(b <= a for a, b in itertools.pairwise(times)):
             raise ValueError("time_utc trebuie să fie strict crescător")
@@ -155,14 +194,36 @@ class SiteSeries(Contract):
 
 class Event(Contract):
     body: Body
-    type: Literal["appearance", "disappearance"]
-    cause: Literal["terrain", "idealized_horizon"]
+    # `tangent_contact`: criteriul atinge banda nedecidabilă și revine (distinct de vizibilitate).
+    type: Literal["appearance", "disappearance", "tangent_contact"]
+    cause: Literal["terrain", "idealized_horizon", "elevation_threshold"]
+    criterion: EventCriterion
     time_utc: UtcTimestamp
+    # Fereastra în care starea nu poate fi decisă; `quality = window` dacă depășește toleranța.
+    window_start_utc: UtcTimestamp
+    window_end_utc: UtcTimestamp
+    quality: Literal["refined", "window"]
     # `null` numai la zenit sau nadir, cu motiv în `quality.issues` (din schema 0.4.0).
     azimuth_deg: Azimuth | None
     elevation_deg: Elevation
     obstacle_distance_m: NonNegative | None
     refinement_tolerance_s: Positive
+
+    @model_validator(mode="after")
+    def _window(self) -> "Event":
+        start, time, end = (
+            parse_utc(t) for t in (self.window_start_utc, self.time_utc, self.window_end_utc)
+        )
+        if not start <= time <= end:
+            raise ValueError("time_utc trebuie să fie în fereastra evenimentului")
+        expected = (
+            "sun_disc_positive_area"
+            if self.body == "sun"
+            else ("earth_center_above_horizon_and_threshold")
+        )
+        if self.criterion != expected:
+            raise ValueError("criteriul nu corespunde corpului")
+        return self
 
 
 class BodyEvents(Contract):
@@ -206,14 +267,53 @@ class TimeInterval(Contract):
         return self
 
 
+class StateInterval(Contract):
+    start_utc: UtcTimestamp
+    end_utc: UtcTimestamp
+    state: TimelineState
+    reason: str | None
+    truncated_start: bool
+    truncated_end: bool
+
+    @model_validator(mode="after")
+    def _ordered(self) -> "StateInterval":
+        if not _strictly_after(self.start_utc, self.end_utc):
+            raise ValueError("end_utc trebuie să fie după start_utc")
+        if (self.state == "unknown") != (self.reason is not None):
+            raise ValueError("reason este obligatoriu numai pentru intervalele unknown")
+        return self
+
+
+def _contiguous(intervals: list[StateInterval]) -> bool:
+    return all(a.end_utc == b.start_utc for a, b in itertools.pairwise(intervals))
+
+
 class SiteSummary(Contract):
     site_ref: Identifier
     sun_visible_duration_s: NonNegative | None
     sun_visible_fraction: Fraction | None
     earth_visible_duration_s: NonNegative | None
     both_visible_duration_s: NonNegative | None
+    # E10: duratele necunoscute, separat (nu se adaugă nici la vizibil, nici la ascuns).
+    sun_unknown_duration_s: NonNegative
+    earth_unknown_duration_s: NonNegative
+    both_unknown_duration_s: NonNegative
     sun_intervals: list[TimeInterval]
     earth_windows: list[TimeInterval]
+    # Partiția intervalului cerut în visible / hidden / unknown, fără suprapuneri sau goluri.
+    sun_timeline: list[StateInterval] = Field(min_length=1)
+    earth_timeline: list[StateInterval] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _timelines(self) -> "SiteSummary":
+        for timeline in (self.sun_timeline, self.earth_timeline):
+            if not _contiguous(timeline):
+                raise ValueError("intervalele de stare trebuie să fie contigue")
+            if any(
+                a.state == b.state and a.reason == b.reason for a, b in itertools.pairwise(timeline)
+            ):
+                raise ValueError("intervalele vecine cu aceeași stare trebuie unite")
+        return self
 
 
 class DemProductUse(Contract):
@@ -370,6 +470,13 @@ class SimulationResult(Contract):
                     )
         if self.request.terrain_mode != "dem" and any(h.mode == "dem" for h in self.horizon):
             raise ValueError("profilurile de orizont trebuie să folosească modul de teren cerut")
+        for summary in self.summary:
+            for timeline in (summary.sun_timeline, summary.earth_timeline):
+                if (timeline[0].start_utc, timeline[-1].end_utc) != (
+                    self.request.start_utc,
+                    self.request.end_utc,
+                ):
+                    raise ValueError("intervalele de stare trebuie să acopere intervalul cerut")
 
         self._unknown_values_have_reasons()
         return self
@@ -401,6 +508,8 @@ class SimulationResult(Contract):
                 for name in ("azimuth_deg", "horizon_elevation_deg", "visible"):
                     if any(value is None for value in getattr(body_series, name)):
                         require(series.site_ref, f"series.{body}.{name}")
+            if any(value is None for value in series.sun.visible_fraction):
+                require(series.site_ref, "series.sun.visible_fraction")
         for site_events in self.events:
             for body in ("sun", "earth"):
                 group: BodyEvents = getattr(site_events, body)

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "LunarHorizonContracts",
   "description": "Contractele de date LunarHorizon. Generat din backend/lunarhorizon/contracts; nu se editează manual (scripts/generate_contracts.py).",
-  "x-schema-version": "0.7.0",
+  "x-schema-version": "0.8.0",
   "anyOf": [
     {
       "$ref": "#/$defs/Catalog"
@@ -164,6 +164,72 @@
           },
           "title": "Visible",
           "type": "array"
+        },
+        "state": {
+          "items": {
+            "enum": [
+              "hidden",
+              "partially_visible",
+              "fully_visible",
+              "visible",
+              "undetermined"
+            ],
+            "type": "string"
+          },
+          "title": "State",
+          "type": "array"
+        },
+        "state_reason": {
+          "items": {
+            "anyOf": [
+              {
+                "enum": [
+                  "near_threshold",
+                  "no_data",
+                  "partial_data",
+                  "undefined_azimuth"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "State Reason",
+          "type": "array"
+        },
+        "visible_fraction": {
+          "items": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Visible Fraction",
+          "type": "array"
+        },
+        "visible_fraction_uncertainty": {
+          "items": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Visible Fraction Uncertainty",
+          "type": "array"
         }
       },
       "required": [
@@ -172,7 +238,11 @@
         "distance_km",
         "angular_radius_deg",
         "horizon_elevation_deg",
-        "visible"
+        "visible",
+        "state",
+        "state_reason",
+        "visible_fraction",
+        "visible_fraction_uncertainty"
       ],
       "title": "BodySeries",
       "type": "object"
@@ -181,7 +251,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -281,7 +351,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -559,7 +629,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -747,7 +817,8 @@
         "type": {
           "enum": [
             "appearance",
-            "disappearance"
+            "disappearance",
+            "tangent_contact"
           ],
           "title": "Type",
           "type": "string"
@@ -755,14 +826,41 @@
         "cause": {
           "enum": [
             "terrain",
-            "idealized_horizon"
+            "idealized_horizon",
+            "elevation_threshold"
           ],
           "title": "Cause",
+          "type": "string"
+        },
+        "criterion": {
+          "enum": [
+            "sun_disc_positive_area",
+            "earth_center_above_horizon_and_threshold"
+          ],
+          "title": "Criterion",
           "type": "string"
         },
         "time_utc": {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
           "title": "Time Utc",
+          "type": "string"
+        },
+        "window_start_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Window Start Utc",
+          "type": "string"
+        },
+        "window_end_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Window End Utc",
+          "type": "string"
+        },
+        "quality": {
+          "enum": [
+            "refined",
+            "window"
+          ],
+          "title": "Quality",
           "type": "string"
         },
         "azimuth_deg": {
@@ -806,7 +904,11 @@
         "body",
         "type",
         "cause",
+        "criterion",
         "time_utc",
+        "window_start_utc",
+        "window_end_utc",
+        "quality",
         "azimuth_deg",
         "elevation_deg",
         "obstacle_distance_m",
@@ -1034,7 +1136,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -1434,7 +1536,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -2298,7 +2400,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -2391,7 +2493,7 @@
           "type": "number"
         },
         "solar_criterion": {
-          "const": "disc_center",
+          "const": "disc_positive_area",
           "title": "Solar Criterion",
           "type": "string"
         },
@@ -2442,7 +2544,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3097,6 +3199,21 @@
           ],
           "title": "Both Visible Duration S"
         },
+        "sun_unknown_duration_s": {
+          "minimum": 0.0,
+          "title": "Sun Unknown Duration S",
+          "type": "number"
+        },
+        "earth_unknown_duration_s": {
+          "minimum": 0.0,
+          "title": "Earth Unknown Duration S",
+          "type": "number"
+        },
+        "both_unknown_duration_s": {
+          "minimum": 0.0,
+          "title": "Both Unknown Duration S",
+          "type": "number"
+        },
         "sun_intervals": {
           "items": {
             "$ref": "#/$defs/TimeInterval"
@@ -3110,6 +3227,22 @@
           },
           "title": "Earth Windows",
           "type": "array"
+        },
+        "sun_timeline": {
+          "items": {
+            "$ref": "#/$defs/StateInterval"
+          },
+          "minItems": 1,
+          "title": "Sun Timeline",
+          "type": "array"
+        },
+        "earth_timeline": {
+          "items": {
+            "$ref": "#/$defs/StateInterval"
+          },
+          "minItems": 1,
+          "title": "Earth Timeline",
+          "type": "array"
         }
       },
       "required": [
@@ -3118,8 +3251,13 @@
         "sun_visible_fraction",
         "earth_visible_duration_s",
         "both_visible_duration_s",
+        "sun_unknown_duration_s",
+        "earth_unknown_duration_s",
+        "both_unknown_duration_s",
         "sun_intervals",
-        "earth_windows"
+        "earth_windows",
+        "sun_timeline",
+        "earth_timeline"
       ],
       "title": "SiteSummary",
       "type": "object"
@@ -3440,6 +3578,59 @@
       "title": "SourceRecord",
       "type": "object"
     },
+    "StateInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "start_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "Start Utc",
+          "type": "string"
+        },
+        "end_utc": {
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,3})?(Z|[+-]\\d{2}:\\d{2})$",
+          "title": "End Utc",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "visible",
+            "hidden",
+            "unknown"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        },
+        "truncated_start": {
+          "title": "Truncated Start",
+          "type": "boolean"
+        },
+        "truncated_end": {
+          "title": "Truncated End",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "start_utc",
+        "end_utc",
+        "state",
+        "reason",
+        "truncated_start",
+        "truncated_end"
+      ],
+      "title": "StateInterval",
+      "type": "object"
+    },
     "TemporalCoverage": {
       "additionalProperties": false,
       "properties": {
@@ -3577,7 +3768,7 @@
       "additionalProperties": false,
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3718,7 +3909,7 @@
       "description": "Altitudinea terenului într-un punct, din rasterul de calcul (/api/terrain/elevation, E08).\n\nÎnălțimea este față de sfera de referință a produsului (`reference_radius_m` din manifest). La\nmargine sau în `NoData` valoarea este `null`, cu motiv; nu se întoarce zero în locul ei.",
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },
@@ -3856,7 +4047,7 @@
       "description": "Disponibilitatea reliefului vizual; nu este acoperirea necesară calculului orizontului.",
       "properties": {
         "schema_version": {
-          "const": "0.7.0",
+          "const": "0.8.0",
           "title": "Schema Version",
           "type": "string"
         },

@@ -45,7 +45,7 @@ def make_request(
             "start_utc": start,
             "end_utc": end,
             "observer_height_m": 2.0,
-            "solar_criterion": "disc_center",
+            "solar_criterion": "disc_positive_area",
             "earth_criterion": {"kind": "center_above_horizon", "min_elevation_deg": min_elev},
             "terrain_mode": "idealized_local_plane",
             "series_step_s": 1800,

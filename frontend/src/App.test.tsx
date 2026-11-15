@@ -96,7 +96,7 @@ function syntheticSite(
 }
 
 const CATALOG: Catalog = {
-  schema_version: '0.7.0',
+  schema_version: '0.8.0',
   catalog_version: 'synthetic',
   sites: [
     syntheticSite('synthetic_a', 'synthetic_site_alpha', 0.5, 23.5),
@@ -113,7 +113,7 @@ const CATALOG: Catalog = {
 } as unknown as Catalog
 
 const COVERAGE: Coverage = {
-  schema_version: '0.7.0',
+  schema_version: '0.8.0',
   temporal: {
     start_utc: '1849-12-25T23:59:18.816Z',
     end_utc: '2150-01-21T23:58:50.816Z',
@@ -160,7 +160,7 @@ function syntheticResult(
     visible: elevation.map((e) => e >= 0),
   })
   return {
-    schema_version: '0.7.0',
+    schema_version: '0.8.0',
     request: Object.assign(
       {
         frame_id: 'MOON_ME_DE440_ME421',
@@ -272,7 +272,7 @@ function deferred<T>(): Deferred<T> {
 
 // Synthetic terrain: a 4 × 4 grid over the representative point's raster (tests only).
 const TERRAIN_MANIFEST = {
-  schema_version: '0.7.0',
+  schema_version: '0.8.0',
   terrain_id: 'synthetic_terrain',
   source: {
     product_id: 'synthetic_dem',
@@ -328,7 +328,7 @@ function syntheticProfile(
   frameId: string,
 ): HorizonProfile {
   const base = {
-    schema_version: '0.7.0' as const,
+    schema_version: '0.8.0' as const,
     latitude_deg: -85.4,
     longitude_deg: 31.7,
     frame_id: frameId as HorizonProfile['frame_id'],
@@ -411,7 +411,7 @@ function terrainMethods(calls: { terrain: number }) {
       return TERRAIN_MANIFEST
     },
     terrainStatus: async () => ({
-      schema_version: '0.7.0' as const,
+      schema_version: '0.8.0' as const,
       south_polar_rule: 'synthetic',
       selection_rule: 'synthetic',
       products: [
@@ -453,7 +453,7 @@ function terrainMethods(calls: { terrain: number }) {
     ): Promise<TerrainSample> => {
       calls.terrain += 1
       return {
-        schema_version: '0.7.0',
+        schema_version: '0.8.0',
         terrain_id: 'synthetic_terrain',
         product_id: 'synthetic_dem',
         frame_id: 'MOON_ME_DE421',

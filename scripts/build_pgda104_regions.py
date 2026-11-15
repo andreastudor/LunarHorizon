@@ -157,7 +157,7 @@ def build_region(region: dict[str, Any], ids: dict[str, str], pinned_sha: str) -
         x, y = ds.xy(row, col)
         lon, lat = transform(ds.crs, LONGLAT, [x], [y])
         manifest = {
-            "schema_version": "0.7.0",
+            "schema_version": "0.8.0",
             "terrain_id": ids["terrain_id"],
             "source": {
                 "product_id": ids["product_id"],

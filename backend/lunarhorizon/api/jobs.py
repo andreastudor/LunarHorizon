@@ -12,11 +12,17 @@ import json
 import logging
 import threading
 from collections import OrderedDict
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from lunarhorizon.api.data import DataRegistry
-from lunarhorizon.api.horizon import DEFAULT_PARAMETERS, HorizonService, require_available
+from lunarhorizon.api.horizon import (
+    DEFAULT_PARAMETERS,
+    VISIBILITY_PARAMETERS,
+    HorizonService,
+    require_available,
+)
 from lunarhorizon.api.problems import from_error, internal_problem
 from lunarhorizon.api.settings import Settings
 from lunarhorizon.astro.kernels import LoadedProfile
@@ -32,8 +38,17 @@ from lunarhorizon.contracts.simulation import (
 )
 from lunarhorizon.core.conventions import APPARENT_CORRECTION, SCHEMA_VERSION
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
-from lunarhorizon.simulation.idealized import DemSiteInput, SiteInput, simulate_idealized
+from lunarhorizon.simulation.idealized import (
+    MIN_SUBDIVISION_STEP_S,
+    REFINEMENT_TOLERANCE_S,
+    SCAN_STEP_S,
+    VISIBILITY_ALGORITHM_VERSION,
+    DemSiteInput,
+    SiteInput,
+    simulate_idealized,
+)
 from lunarhorizon.simulation.service import prepare_request
+from lunarhorizon.simulation.visibility import DISC_COLUMNS, EPS_NUMERIC_DEG
 
 LOGGER = logging.getLogger(__name__)
 
@@ -47,6 +62,13 @@ def engine_identity() -> dict[str, object]:
         "aberration_correction": APPARENT_CORRECTION,
         "schema_version": SCHEMA_VERSION,
         "horizon_parameters": DEFAULT_PARAMETERS.as_dict(),
+        "visibility_horizon_parameters": VISIBILITY_PARAMETERS.as_dict(),
+        "visibility_algorithm": VISIBILITY_ALGORITHM_VERSION,
+        "scan_steps_s": SCAN_STEP_S,
+        "refinement_tolerance_s": REFINEMENT_TOLERANCE_S,
+        "min_subdivision_step_s": MIN_SUBDIVISION_STEP_S,
+        "eps_numeric_deg": EPS_NUMERIC_DEG,
+        "disc_columns": DISC_COLUMNS,
     }
 
 
@@ -111,6 +133,28 @@ class SimulationService:
         self._executor.submit(self._run, job_id, prepared, sites, profile, dem)
         return SimulationAccepted(id=job_id, status="queued", cache_hit=False)
 
+    def _visibility_profiles(
+        self,
+        request: SimulationRequest,
+        sites: list[SiteInput],
+        dem: dict[str, DemSiteInput],
+        progress: Callable[[str, float], None],
+    ) -> dict[str, DemSiteInput]:
+        """Profilul fin pentru vizibilitate, calculat în job (prima dată durează, apoi cache)."""
+        updated: dict[str, DemSiteInput] = {}
+        for index, site in enumerate(sites):
+            progress(f"horizon {index + 1}/{len(sites)}", 0.0)
+            fine = self._horizons.profile(
+                site.latitude_deg,
+                site.longitude_deg,
+                request.frame_id,
+                request.observer_height_m,
+                VISIBILITY_PARAMETERS,
+            )
+            require_available(fine)
+            updated[site.site_ref] = replace(dem[site.site_ref], visibility_horizon=fine)
+        return updated
+
     def _dem_inputs(
         self, request: SimulationRequest, sites: list[SiteInput]
     ) -> dict[str, DemSiteInput]:
@@ -157,6 +201,8 @@ class SimulationService:
             self._update(job_id, stage=stage, completed_fraction=min(max(fraction, 0.0), 1.0))
 
         try:
+            if dem is not None:
+                dem = self._visibility_profiles(request, sites, dem, progress)
             result = simulate_idealized(request, sites, profile, progress, dem)
         except LunarHorizonError as error:
             self._update(job_id, status="failed", stage="eșuat", error=from_error(error))

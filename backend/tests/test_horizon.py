@@ -366,7 +366,7 @@ def test_dem_simulation_uses_the_profile_and_leaves_visibility_to_e10(api: TestC
         "start_utc": "2026-11-15T00:00:00Z",
         "end_utc": "2026-11-16T00:00:00Z",
         "observer_height_m": 2,
-        "solar_criterion": "disc_center",
+        "solar_criterion": "disc_positive_area",
         "earth_criterion": {"kind": "center_above_horizon", "min_elevation_deg": 0},
         "terrain_mode": "dem",
         "series_step_s": 3600,

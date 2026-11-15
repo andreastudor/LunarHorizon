@@ -1,7 +1,7 @@
 {
   "_comment": "Documente SINTETICE pentru testele de contract (E02). Valorile nu sunt rezultate calculate, coordonate reale sau surse verificate. Fiecare cheie este numele unui tip de document din data/schemas/lunarhorizon.schema.json.",
   "Catalog": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "catalog_version": "synthetic-0",
     "sites": [
       {
@@ -148,11 +148,26 @@
           "type": "Polygon",
           "coordinates": [
             [
-              [-121.0, -88.2],
-              [-119.0, -88.2],
-              [-119.0, -87.8],
-              [-121.0, -87.8],
-              [-121.0, -88.2]
+              [
+                -121.0,
+                -88.2
+              ],
+              [
+                -119.0,
+                -88.2
+              ],
+              [
+                -119.0,
+                -87.8
+              ],
+              [
+                -121.0,
+                -87.8
+              ],
+              [
+                -121.0,
+                -88.2
+              ]
             ]
           ]
         },
@@ -196,8 +211,12 @@
       "candidates": [
         {
           "site_id": "synthetic_point_a",
-          "advantages": ["Sintetic."],
-          "limits": ["Sintetic."]
+          "advantages": [
+            "Sintetic."
+          ],
+          "limits": [
+            "Sintetic."
+          ]
         }
       ],
       "excluded": [
@@ -206,11 +225,13 @@
           "reason": "Sintetic."
         }
       ],
-      "criteria": ["Criteriu sintetic."]
+      "criteria": [
+        "Criteriu sintetic."
+      ]
     }
   },
   "KernelManifest": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "default_profile": "de440_me421",
     "profiles": [
       {
@@ -242,7 +263,7 @@
     ]
   },
   "DemProductManifest": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "products": [
       {
         "product_id": "synthetic_dem",
@@ -276,7 +297,7 @@
     ]
   },
   "TerrainManifest": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "terrain_id": "synthetic_terrain_a",
     "source": {
       "product_id": "synthetic_dem",
@@ -329,7 +350,7 @@
     ]
   },
   "TerrainSample": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "terrain_id": "synthetic_terrain",
     "product_id": "synthetic_dem",
     "frame_id": "MOON_ME_DE421",
@@ -359,7 +380,7 @@
     "start_utc": "2030-01-01T02:00:00+02:00",
     "end_utc": "2030-01-01T02:00:00Z",
     "observer_height_m": 2.0,
-    "solar_criterion": "disc_center",
+    "solar_criterion": "disc_positive_area",
     "earth_criterion": {
       "kind": "center_above_horizon",
       "min_elevation_deg": 0.0
@@ -389,7 +410,7 @@
     "result": null
   },
   "SimulationResult": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "request": {
       "sites": [
         {
@@ -407,7 +428,7 @@
       "start_utc": "2030-01-01T00:00:00Z",
       "end_utc": "2030-01-01T02:00:00Z",
       "observer_height_m": 2.0,
-      "solar_criterion": "disc_center",
+      "solar_criterion": "disc_positive_area",
       "earth_criterion": {
         "kind": "center_above_horizon",
         "min_elevation_deg": 0.0
@@ -456,20 +477,108 @@
           "2030-01-01T02:00:00Z"
         ],
         "sun": {
-          "azimuth_deg": [10.0, 10.5, 11.0],
-          "elevation_deg": [1.2, 1.1, 1.0],
-          "distance_km": [147000000.0, 147000000.0, 147000000.0],
-          "angular_radius_deg": [0.27, 0.27, 0.27],
-          "horizon_elevation_deg": [0.0, 0.0, 0.0],
-          "visible": [true, true, true]
+          "azimuth_deg": [
+            10.0,
+            10.5,
+            11.0
+          ],
+          "elevation_deg": [
+            1.2,
+            1.1,
+            1.0
+          ],
+          "distance_km": [
+            147000000.0,
+            147000000.0,
+            147000000.0
+          ],
+          "angular_radius_deg": [
+            0.27,
+            0.27,
+            0.27
+          ],
+          "horizon_elevation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "visible": [
+            true,
+            true,
+            true
+          ],
+          "state": [
+            "fully_visible",
+            "fully_visible",
+            "fully_visible"
+          ],
+          "visible_fraction": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "visible_fraction_uncertainty": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "state_reason": [
+            null,
+            null,
+            null
+          ]
         },
         "earth": {
-          "azimuth_deg": [350.0, 350.0, 350.0],
-          "elevation_deg": [-0.5, -0.4, -0.3],
-          "distance_km": [384400.0, 384400.0, 384400.0],
-          "angular_radius_deg": [0.95, 0.95, 0.95],
-          "horizon_elevation_deg": [0.0, 0.0, 0.0],
-          "visible": [false, false, false]
+          "azimuth_deg": [
+            350.0,
+            350.0,
+            350.0
+          ],
+          "elevation_deg": [
+            -0.5,
+            -0.4,
+            -0.3
+          ],
+          "distance_km": [
+            384400.0,
+            384400.0,
+            384400.0
+          ],
+          "angular_radius_deg": [
+            0.95,
+            0.95,
+            0.95
+          ],
+          "horizon_elevation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "visible": [
+            false,
+            false,
+            false
+          ],
+          "state": [
+            "hidden",
+            "hidden",
+            "hidden"
+          ],
+          "visible_fraction": [
+            null,
+            null,
+            null
+          ],
+          "visible_fraction_uncertainty": [
+            null,
+            null,
+            null
+          ],
+          "state_reason": [
+            null,
+            null,
+            null
+          ]
         }
       },
       {
@@ -481,20 +590,108 @@
           "2030-01-01T02:00:00Z"
         ],
         "sun": {
-          "azimuth_deg": [12.0, 12.5, 13.0],
-          "elevation_deg": [0.7, 0.6, 0.5],
-          "distance_km": [147000000.0, 147000000.0, 147000000.0],
-          "angular_radius_deg": [0.27, 0.27, 0.27],
-          "horizon_elevation_deg": [0.0, 0.0, 0.0],
-          "visible": [true, null, true]
+          "azimuth_deg": [
+            12.0,
+            12.5,
+            13.0
+          ],
+          "elevation_deg": [
+            0.7,
+            0.6,
+            0.5
+          ],
+          "distance_km": [
+            147000000.0,
+            147000000.0,
+            147000000.0
+          ],
+          "angular_radius_deg": [
+            0.27,
+            0.27,
+            0.27
+          ],
+          "horizon_elevation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "visible": [
+            true,
+            null,
+            true
+          ],
+          "state": [
+            "fully_visible",
+            "undetermined",
+            "fully_visible"
+          ],
+          "visible_fraction": [
+            1.0,
+            null,
+            1.0
+          ],
+          "visible_fraction_uncertainty": [
+            0.0,
+            null,
+            0.0
+          ],
+          "state_reason": [
+            null,
+            "no_data",
+            null
+          ]
         },
         "earth": {
-          "azimuth_deg": [352.0, 352.0, 352.0],
-          "elevation_deg": [0.4, 0.5, 0.6],
-          "distance_km": [384400.0, 384400.0, 384400.0],
-          "angular_radius_deg": [0.95, 0.95, 0.95],
-          "horizon_elevation_deg": [0.0, 0.0, 0.0],
-          "visible": [true, true, true]
+          "azimuth_deg": [
+            352.0,
+            352.0,
+            352.0
+          ],
+          "elevation_deg": [
+            0.4,
+            0.5,
+            0.6
+          ],
+          "distance_km": [
+            384400.0,
+            384400.0,
+            384400.0
+          ],
+          "angular_radius_deg": [
+            0.95,
+            0.95,
+            0.95
+          ],
+          "horizon_elevation_deg": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "visible": [
+            true,
+            true,
+            true
+          ],
+          "state": [
+            "visible",
+            "visible",
+            "visible"
+          ],
+          "visible_fraction": [
+            null,
+            null,
+            null
+          ],
+          "visible_fraction_uncertainty": [
+            null,
+            null,
+            null
+          ],
+          "state_reason": [
+            null,
+            null,
+            null
+          ]
         }
       }
     ],
@@ -528,16 +725,62 @@
             "truncated_end": true
           }
         ],
-        "earth_windows": []
+        "earth_windows": [],
+        "sun_timeline": [
+          {
+            "start_utc": "2030-01-01T00:00:00Z",
+            "end_utc": "2030-01-01T02:00:00Z",
+            "state": "visible",
+            "reason": null,
+            "truncated_start": true,
+            "truncated_end": true
+          }
+        ],
+        "earth_timeline": [
+          {
+            "start_utc": "2030-01-01T00:00:00Z",
+            "end_utc": "2030-01-01T02:00:00Z",
+            "state": "hidden",
+            "reason": null,
+            "truncated_start": true,
+            "truncated_end": true
+          }
+        ],
+        "sun_unknown_duration_s": 0.0,
+        "earth_unknown_duration_s": 0.0,
+        "both_unknown_duration_s": 0.0
       },
       {
         "site_ref": "s2",
-        "sun_visible_duration_s": 7200.0,
+        "sun_visible_duration_s": 0.0,
         "sun_visible_fraction": null,
         "earth_visible_duration_s": 7200.0,
-        "both_visible_duration_s": 7200.0,
+        "both_visible_duration_s": 0.0,
         "sun_intervals": [],
-        "earth_windows": []
+        "earth_windows": [],
+        "sun_timeline": [
+          {
+            "start_utc": "2030-01-01T00:00:00Z",
+            "end_utc": "2030-01-01T02:00:00Z",
+            "state": "unknown",
+            "reason": "no_data",
+            "truncated_start": true,
+            "truncated_end": true
+          }
+        ],
+        "earth_timeline": [
+          {
+            "start_utc": "2030-01-01T00:00:00Z",
+            "end_utc": "2030-01-01T02:00:00Z",
+            "state": "visible",
+            "reason": null,
+            "truncated_start": true,
+            "truncated_end": true
+          }
+        ],
+        "sun_unknown_duration_s": 7200.0,
+        "earth_unknown_duration_s": 0.0,
+        "both_unknown_duration_s": 7200.0
       }
     ],
     "horizon": [
@@ -545,9 +788,24 @@
         "site_ref": "s1",
         "mode": "idealized_local_plane",
         "azimuth_step_deg": 90.0,
-        "elevation_deg": [0.0, 0.0, 0.0, 0.0],
-        "obstacle_distance_m": [null, null, null, null],
-        "quality": ["complete", "complete", "complete", "complete"],
+        "elevation_deg": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "obstacle_distance_m": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "quality": [
+          "complete",
+          "complete",
+          "complete",
+          "complete"
+        ],
         "max_search_distance_m": null,
         "coverage_fraction": 1.0,
         "dem_products": []
@@ -556,9 +814,24 @@
         "site_ref": "s2",
         "mode": "idealized_local_plane",
         "azimuth_step_deg": 90.0,
-        "elevation_deg": [0.0, 0.0, 0.0, 0.0],
-        "obstacle_distance_m": [null, null, null, null],
-        "quality": ["complete", "complete", "complete", "complete"],
+        "elevation_deg": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "obstacle_distance_m": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "quality": [
+          "complete",
+          "complete",
+          "complete",
+          "complete"
+        ],
         "max_search_distance_m": null,
         "coverage_fraction": 1.0,
         "dem_products": []
@@ -603,7 +876,7 @@
       },
       "event_parameters": {},
       "criteria": {
-        "solar_criterion": "disc_center",
+        "solar_criterion": "disc_positive_area",
         "earth_min_elevation_deg": 0.0
       }
     },
@@ -636,6 +909,13 @@
           "site_ref": "s2",
           "field": "summary.sun_visible_fraction",
           "message_key": "quality.synthetic"
+        },
+        {
+          "code": "synthetic_unknown",
+          "severity": "warning",
+          "site_ref": "s2",
+          "field": "series.sun.visible_fraction",
+          "message_key": "quality.synthetic"
         }
       ],
       "not_computed": [
@@ -645,20 +925,24 @@
           "reason": "Sintetic: grup necalculat."
         }
       ],
-      "approximations": ["Fixture sintetic."],
+      "approximations": [
+        "Fixture sintetic."
+      ],
       "limits": [
         "Date sintetice pentru teste de contract; nu sunt rezultate calculate."
       ]
     }
   },
   "ScenarioIndex": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "scenarios": [
       {
         "scenario_id": "synthetic_scenario",
         "title_ro": "Scenariu sintetic (test)",
         "title_en": "Synthetic scenario (test)",
-        "site_ids": ["synthetic_point_a"],
+        "site_ids": [
+          "synthetic_point_a"
+        ],
         "request": {
           "sites": [
             {
@@ -669,7 +953,7 @@
           "start_utc": "2030-01-01T00:00:00Z",
           "end_utc": "2030-01-02T00:00:00Z",
           "observer_height_m": 2.0,
-          "solar_criterion": "disc_center",
+          "solar_criterion": "disc_positive_area",
           "earth_criterion": {
             "kind": "center_above_horizon",
             "min_elevation_deg": 0.0
@@ -689,10 +973,12 @@
     "kernels_loaded": false,
     "dem_products": [],
     "time_utc": "2026-11-14T12:00:00Z",
-    "issues": ["Sintetic: kernelurile nu sunt încărcate."]
+    "issues": [
+      "Sintetic: kernelurile nu sunt încărcate."
+    ]
   },
   "Coverage": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "temporal": {
       "start_utc": "1849-12-26T00:00:00Z",
       "end_utc": "2150-01-22T00:00:00Z",
@@ -710,7 +996,7 @@
     ]
   },
   "TerrainStatusReport": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "south_polar_rule": "synthetic rule",
     "selection_rule": "synthetic selection rule",
     "products": [
@@ -720,7 +1006,12 @@
         "region_name": "synthetic region",
         "frame_id": "MOON_ME_DE421",
         "calc_resolution_m": 5.0,
-        "bounds": { "x_min_m": 0.0, "x_max_m": 100.0, "y_min_m": 0.0, "y_max_m": 100.0 },
+        "bounds": {
+          "x_min_m": 0.0,
+          "x_max_m": 100.0,
+          "y_min_m": 0.0,
+          "y_max_m": 100.0
+        },
         "status": "not_downloaded",
         "reason": "synthetic"
       }
@@ -735,7 +1026,7 @@
     ]
   },
   "HorizonProfile": {
-    "schema_version": "0.7.0",
+    "schema_version": "0.8.0",
     "status": "partial",
     "reason_code": "missing_samples",
     "reason": "synthetic: 1 of 4 azimuths lack samples up to 50 km",
@@ -795,7 +1086,9 @@
     "code": "UNSUPPORTED_FRAME",
     "field_errors": [
       {
-        "loc": ["frame_id"],
+        "loc": [
+          "frame_id"
+        ],
         "message": "alias generic"
       }
     ]

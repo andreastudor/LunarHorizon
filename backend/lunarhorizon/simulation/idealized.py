@@ -1,37 +1,45 @@
-"""Simularea: modul idealizat (orizont fix la 0°, E06) și modul `dem` (orizont din DEM, E09).
+"""Simularea (E06, E09, E10): direcții, vizibilitate, evenimente și indicatori, în ambele moduri de
+teren.
 
-Modul `dem` (E09) folosește profilul H(a) calculat din rasterele DEM (api/horizon.py): seria
-conține `horizon_elevation_deg = H(a(t))`, interpolat liniar între azimuturile profilului, iar
-observatorul stă pe teren (altitudinea din rasterul de calcul). Vizibilitatea față de relief,
-evenimentele și indicatorii sunt etapa E10: în modul `dem` câmpul `visible` este `null` cu motiv,
-iar grupurile `events` și `summary` apar în `quality.not_computed`. Nu există trecere tăcută la
-modul idealizat.
+Un singur motor astronomic (`astro.bodies`, corecția `CN+S` din `core.conventions`, D-02) și un
+singur lanț de calcul pentru ambele moduri:
 
-Folosește motorul astronomic existent (`astro.bodies.body_direction`); nu există un al doilea motor.
-Modul idealizat NU include efectele terenului local: orizontul este planul local la 0° elevație,
-observatorul se află pe sfera de referință la înălțimea `observer_height_m`. Elevația din catalog nu
-se folosește.
+- `idealized_local_plane`: orizontul este planul local la 0°; observatorul stă pe sfera de referință
+  (+ înălțimea echipamentului); elevația din catalog nu se folosește. Etichetat ca idealizat.
+- `dem`: orizontul H(A) vine din profilul DEM fin (E09, pas azimutal `VISIBILITY_AZIMUTH_STEP_DEG`),
+  observatorul stă pe teren. Nu există trecere tăcută la modul idealizat.
 
-Criterii (provizorii, deciziile D-04 și D-16 [ASTRO] deschise):
-- Soarele este vizibil când elevația centrului discului este ≥ 0° (`solar_criterion = disc_center`);
-- Pământul este vizibil când elevația centrului este ≥ `earth_criterion.min_elevation_deg`
-  (deasupra orizontului local, care este 0° în acest mod).
+Vizibilitate (`simulation.visibility`): Soarele după criteriul discului cu arie pozitivă vizibilă
+(D-04), Pământul după e > max(H(A), e_min); stările nedeterminate au motiv și nu devin „ascuns”.
+Evenimente (`simulation.timeline`): scanare adaptivă pe pas fin, subdiviziune unde criteriul poate
+atinge pragul între eșantioane, bisecție la `REFINEMENT_TOLERANCE_S`; contactele tangente sunt
+evenimente distincte, iar granițele zonelor fără date nu creează evenimente. Seria pentru slider
+este calculată separat, la momentele ei, cu aceleași funcții; evenimentele nu se deduc din serie.
 
-Evenimentele se caută pe o grilă de scanare, apoi se rafinează prin bisecție la 1 ms. O pereche de
-treceri între două eșantioane vecine ale grilei nu poate fi detectată; pasul grilei este în
-proveniență.
-Pașii seriei și ai grilei se numără pe scala civilă UTC (fără secundă intercalară inserată).
+Timpul de scanare se numără pe scala civilă UTC; ET se obține exact prin TT (fără secundă
+intercalară în interval) sau, altfel, prin SPICE pentru fiecare eșantion. Eclipsele nu sunt incluse.
 """
 
+import itertools
 import math
 from collections.abc import Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
-from typing import Final
+from typing import Final, Literal
+
+import numpy as np
+import spiceypy
 
 from lunarhorizon import __version__
-from lunarhorizon.astro.bodies import Body, ObserverSite, body_direction, body_radius_km
+from lunarhorizon.astro.bodies import (
+    Body,
+    ObserverSite,
+    body_direction,
+    body_direction_et,
+    body_radius_km,
+)
 from lunarhorizon.astro.kernels import SPICE_LOCK, LoadedProfile, activate
+from lunarhorizon.astro.timeconv import utc_to_et
 from lunarhorizon.contracts.horizon import HorizonProfile
 from lunarhorizon.contracts.manifests import TerrainManifest
 from lunarhorizon.contracts.simulation import (
@@ -41,7 +49,6 @@ from lunarhorizon.contracts.simulation import (
     Event,
     KernelFileUse,
     KernelProfileUse,
-    NotComputed,
     Provenance,
     Quality,
     QualityIssue,
@@ -53,26 +60,52 @@ from lunarhorizon.contracts.simulation import (
     SiteSeries,
     SiteSummary,
     SiteTerrain,
+    StateInterval,
     TimeInterval,
 )
 from lunarhorizon.core.conventions import APPARENT_CORRECTION, SCHEMA_VERSION
 from lunarhorizon.core.coords import azimuth_convention
 from lunarhorizon.core.errors import ErrorCode, LunarHorizonError
 from lunarhorizon.core.utc import format_utc, parse_utc
-from lunarhorizon.terrain.horizon import interpolate_horizon
+from lunarhorizon.simulation.timeline import Sample, Segment, Transition, scan
+from lunarhorizon.simulation.visibility import (
+    DISC_COLUMNS,
+    EPS_NUMERIC_DEG,
+    EarthVisibility,
+    HorizonModel,
+    SunVisibility,
+    earth_visibility,
+    sun_visibility,
+)
 
 BODIES: tuple[Body, ...] = ("sun", "earth")
-REFINEMENT_MS = 1
-SCAN_STEP_BASE_S = 900
-MAX_SCAN_SAMPLES = 20_000
-HORIZON_AZIMUTH_STEP_DEG = 1.0
+VISIBILITY_ALGORITHM_VERSION: Final = "e10.1"
+# Pașii grilei de scanare (s), aleși prin testele de convergență (VALIDARE, E10). În modul DEM,
+# pasul Soarelui ține avansul azimutal sub jumătate din pasul profilului fin; subdiviziunea
+# acoperă restul.
+SCAN_STEP_S: Final[dict[str, dict[Body, float]]] = {
+    "idealized_local_plane": {"sun": 300.0, "earth": 600.0},
+    "dem": {"sun": 60.0, "earth": 300.0},
+}
+REFINEMENT_TOLERANCE_S: Final = 1e-3
+MIN_SUBDIVISION_STEP_S: Final = 1.0
+# Pasul azimutal al profilului fin folosit pentru vizibilitate; profilul afișat rămâne de 0,5°.
+VISIBILITY_AZIMUTH_STEP_DEG: Final = 0.025
+HORIZON_AZIMUTH_STEP_DEG: Final = 1.0  # profilul plat afișat în modul idealizat
 SERIES_STEP_CANDIDATES_S = (60, 300, 600, 900, 1800, 3600, 7200, 21600, 43200, 86400)
 TARGET_SERIES_POINTS = 1500
+SOLAR_DEFINITION: Final = (
+    "Sun visible when any part of the solar disc with positive area is above the modelled horizon "
+    "(D-04); exact tangency is not visibility"
+)
+EARTH_DEFINITION: Final = "Earth centre elevation > max(horizon at its azimuth, minimum elevation)"
 
 ProgressCallback = Callable[[str, float], None]
-Interval = tuple[int, int, bool, bool]  # start_ms, end_ms, truncated_start, truncated_end
-# azimut (None la zenit/nadir), elevație, distanță_km, rază_unghiulară
-Direction = tuple[float | None, float, float, float]
+Criterion = Literal["sun_disc_positive_area", "earth_center_above_horizon_and_threshold"]
+CRITERIA: Final[dict[Body, Criterion]] = {
+    "sun": "sun_disc_positive_area",
+    "earth": "earth_center_above_horizon_and_threshold",
+}
 
 
 @dataclass(frozen=True)
@@ -89,15 +122,11 @@ class SiteInput:
 
 @dataclass(frozen=True)
 class DemSiteInput:
-    """Pentru modul `dem`: profilul de orizont (disponibil) și produsul de teren al sitului."""
+    """Pentru modul `dem`: profilul afișat (0,5°), profilul fin pentru vizibilitate și terenul."""
 
     horizon: HorizonProfile
     terrain: TerrainManifest
-
-
-E10_PENDING: Final = (
-    "Terrain-based visibility, events and indicators are stage E10; not computed in DEM mode yet."
-)
+    visibility_horizon: HorizonProfile | None = None
 
 
 def default_series_step_s(duration_s: float) -> int:
@@ -105,12 +134,6 @@ def default_series_step_s(duration_s: float) -> int:
         if duration_s / step + 1 <= TARGET_SERIES_POINTS:
             return step
     return SERIES_STEP_CANDIDATES_S[-1]
-
-
-def scan_step_s(duration_s: float) -> int:
-    """Pasul grilei de scanare: multiplu de 60 s, ≥ 900 s, cu cel mult MAX_SCAN_SAMPLES puncte."""
-    needed = math.ceil(duration_s / MAX_SCAN_SAMPLES / 60.0) * 60
-    return max(SCAN_STEP_BASE_S, needed)
 
 
 def _ms_between(start: datetime, end: datetime) -> int:
@@ -122,413 +145,74 @@ def _utc_at(start: datetime, offset_ms: int) -> str:
     return format_utc(start + timedelta(milliseconds=offset_ms))
 
 
-class _Evaluator:
-    """Direcțiile corpurilor pentru un sit, cu memorarea eșantioanelor deja calculate."""
+class _Clock:
+    """t (s de la început, scala civilă UTC) → ET, exact prin TT dacă nu există secundă
+    intercalară."""
 
-    def __init__(
-        self,
-        profile: LoadedProfile,
-        site: SiteInput,
-        observer_height_m: float,
-        surface_height_m: float = 0.0,
-    ) -> None:
+    def __init__(self, request: SimulationRequest, profile: LoadedProfile) -> None:
+        self.start = parse_utc(request.start_utc)
+        self.total_ms = _ms_between(self.start, parse_utc(request.end_utc))
+        self.total_s = self.total_ms / 1000.0
         self.profile = profile
-        self.observer = ObserverSite(
-            site.latitude_deg, site.longitude_deg, surface_height_m, observer_height_m
-        )
-        self._memo: dict[tuple[Body, str], Direction] = {}
-
-    def direction(self, body: Body, utc: str) -> Direction:
-        key = (body, utc)
-        cached = self._memo.get(key)
-        if cached is not None:
-            return cached
-        # Lacătul acoperă activarea și calculul: alt fir nu poate comuta profilul între ele.
-        with SPICE_LOCK:
-            activate(self.profile)
-            result = body_direction(self.profile, self.observer, body, utc, APPARENT_CORRECTION)
-        value = (
-            result.azimuth_deg,
-            result.elevation_deg,
-            result.distance_km,
-            result.angular_radius_deg,
-        )
-        self._memo[key] = value
-        return value
-
-
-def _azimuth_issue(site_ref: str, field: str) -> QualityIssue:
-    return QualityIssue(
-        code="azimuth_undefined",
-        severity="info",
-        site_ref=site_ref,
-        field=field,
-        message_key="quality.azimuth_undefined_zenith_nadir",
-    )
-
-
-def _intervals(
-    states: list[bool], crossings: list[tuple[int, bool]], total_ms: int
-) -> list[Interval]:
-    """Intervalele de vizibilitate, din starea la început și din trecerile rafinate."""
-    result: list[Interval] = []
-    open_at: int | None = 0 if states[0] else None
-    truncated_start = states[0]
-    for moment, becomes_visible in crossings:
-        if becomes_visible:
-            open_at, truncated_start = moment, False
-        elif open_at is not None:
-            if moment > open_at:
-                result.append((open_at, moment, truncated_start, False))
-            open_at = None
-    if open_at is not None and total_ms > open_at:
-        result.append((open_at, total_ms, truncated_start, True))
-    return result
-
-
-def _overlap_ms(a: list[Interval], b: list[Interval]) -> int:
-    total, i, j = 0, 0, 0
-    while i < len(a) and j < len(b):
-        low, high = max(a[i][0], b[j][0]), min(a[i][1], b[j][1])
-        if high > low:
-            total += high - low
-        if a[i][1] < b[j][1]:
-            i += 1
-        else:
-            j += 1
-    return total
-
-
-def _to_interval(start: datetime, item: Interval) -> TimeInterval:
-    return TimeInterval(
-        start_utc=_utc_at(start, item[0]),
-        end_utc=_utc_at(start, item[1]),
-        truncated_start=item[2],
-        truncated_end=item[3],
-    )
-
-
-def _scan_body(
-    evaluator: _Evaluator,
-    body: Body,
-    threshold_deg: float,
-    start: datetime,
-    scan_points: list[int],
-    total_ms: int,
-) -> tuple[BodyEvents, list[Interval]]:
-    def visible(offset_ms: int) -> bool:
-        return evaluator.direction(body, _utc_at(start, offset_ms))[1] >= threshold_deg
-
-    states = [visible(ms) for ms in scan_points]
-    crossings: list[tuple[int, bool]] = []
-    found: list[Event] = []
-    for k in range(len(scan_points) - 1):
-        if states[k] == states[k + 1]:
-            continue
-        low, high, low_state = scan_points[k], scan_points[k + 1], states[k]
-        while high - low > REFINEMENT_MS:
-            middle = (low + high) // 2
-            if visible(middle) == low_state:
-                low = middle
-            else:
-                high = middle
-        moment = _utc_at(start, high)
-        azimuth, elevation, _, _ = evaluator.direction(body, moment)
-        crossings.append((high, not low_state))
-        found.append(
-            Event(
-                body=body,
-                type="disappearance" if low_state else "appearance",
-                cause="idealized_horizon",
-                time_utc=moment,
-                azimuth_deg=azimuth,
-                elevation_deg=elevation,
-                obstacle_distance_m=None,
-                refinement_tolerance_s=REFINEMENT_MS / 1000.0,
-            )
-        )
-    events = BodyEvents(status="found" if found else "none_in_interval", reason=None, events=found)
-    return events, _intervals(states, crossings, total_ms)
-
-
-def _series_body(
-    evaluator: _Evaluator, body: Body, threshold_deg: float, start: datetime, series_ms: list[int]
-) -> BodySeries:
-    rows = [evaluator.direction(body, _utc_at(start, ms)) for ms in series_ms]
-    return BodySeries(
-        azimuth_deg=[r[0] for r in rows],
-        elevation_deg=[r[1] for r in rows],
-        distance_km=[r[2] for r in rows],
-        angular_radius_deg=[r[3] for r in rows],
-        horizon_elevation_deg=[0.0] * len(rows),
-        visible=[r[1] >= threshold_deg for r in rows],
-    )
-
-
-def _series_dem(
-    evaluator: _Evaluator, horizon: HorizonProfile, start: datetime, series_ms: list[int]
-) -> tuple[BodySeries, BodySeries]:
-    """Seria în modul `dem`: H(a(t)) din profil; `visible` rămâne necalculat (E10)."""
-    result: list[BodySeries] = []
-    for body in BODIES:
-        rows = [evaluator.direction(body, _utc_at(start, ms)) for ms in series_ms]
-        result.append(
-            BodySeries(
-                azimuth_deg=[r[0] for r in rows],
-                elevation_deg=[r[1] for r in rows],
-                distance_km=[r[2] for r in rows],
-                angular_radius_deg=[r[3] for r in rows],
-                horizon_elevation_deg=[
-                    None
-                    if r[0] is None
-                    else interpolate_horizon(horizon.elevation_deg, horizon.azimuth_step_deg, r[0])
-                    for r in rows
-                ],
-                visible=[None] * len(rows),
-            )
-        )
-    return result[0], result[1]
-
-
-def simulate_idealized(
-    request: SimulationRequest,
-    sites: list[SiteInput],
-    profile: LoadedProfile,
-    progress: ProgressCallback | None = None,
-    dem: dict[str, DemSiteInput] | None = None,
-) -> SimulationResult:
-    """Rezultatul complet pentru `terrain_mode = idealized_local_plane` sau `dem` (cu `dem` dat).
-
-    `request.series_step_s` trebuie să fie deja stabilit. Ridică `LunarHorizonError` pentru
-    acoperire temporală. Azimutul nedefinit (zenit/nadir) devine `null`, cu motiv în
-    `quality.issues`.
-    """
-    dem_mode = request.terrain_mode == "dem"
-    if dem_mode and (dem is None or any(site.site_ref not in dem for site in sites)):
-        raise LunarHorizonError(
-            ErrorCode.OUT_OF_DEM_COVERAGE,
-            "terrain_mode=dem cere profilul de orizont din DEM pentru fiecare sit; modul "
-            "idealizat nu se substituie automat",
-        )
-    if not dem_mode and dem:
-        raise ValueError("profilurile DEM se folosesc numai cu terrain_mode=dem")
-    if request.series_step_s is None:
-        raise ValueError("series_step_s trebuie stabilit înaintea simulării")
-    report = progress or (lambda _stage, _fraction: None)
-    start = parse_utc(request.start_utc)
-    total_ms = _ms_between(start, parse_utc(request.end_utc))
-    series_ms = list(range(0, total_ms + 1, request.series_step_s * 1000))
-    scan_ms = scan_step_s(total_ms / 1000.0) * 1000
-    scan_points = sorted({*range(0, total_ms, scan_ms), total_ms})
-    thresholds: dict[Body, float] = {
-        "sun": 0.0,
-        "earth": request.earth_criterion.min_elevation_deg,
-    }
-    total_s = total_ms / 1000.0
-
-    result_sites: list[ResultSite] = []
-    series: list[SiteSeries] = []
-    events: list[SiteEvents] = []
-    summary: list[SiteSummary] = []
-    horizon: list[SiteHorizon] = []
-    terrain: list[SiteTerrain] = []
-    issues: list[QualityIssue] = []
-    not_computed: list[NotComputed] = []
-    count = round(360.0 / HORIZON_AZIMUTH_STEP_DEG)
-
-    for index, site in enumerate(sites):
-        stage = f"sit {index + 1}/{len(sites)}"
-        report(stage, index / len(sites))
-        if dem_mode:
-            assert dem is not None
-            out = _Out()
-            _dem_site(request, site, dem[site.site_ref], profile, start, series_ms, out)
-            result_sites.extend(out.sites)
-            series.extend(out.series)
-            horizon.extend(out.horizon)
-            terrain.extend(out.terrain)
-            issues.extend(out.issues)
-            not_computed.extend(out.not_computed)
-            report(stage, (index + 1.0) / len(sites))
-            continue
-        evaluator = _Evaluator(profile, site, request.observer_height_m)
-        body_events: dict[Body, BodyEvents] = {}
-        intervals: dict[Body, list[Interval]] = {}
-        body_series: dict[Body, BodySeries] = {}
-        # Un sit se calculează sub același lacăt: comutarea profilului între eșantioane ar reîncărca
-        # kernelurile la fiecare apel; alt fir așteaptă terminarea sitului.
         with SPICE_LOCK:
             activate(profile)
-            for body in BODIES:
-                body_events[body], intervals[body] = _scan_body(
-                    evaluator, body, thresholds[body], start, scan_points, total_ms
-                )
-                body_series[body] = _series_body(
-                    evaluator, body, thresholds[body], start, series_ms
-                )
+            et0 = utc_to_et(request.start_utc, profile)
+            et1 = utc_to_et(request.end_utc, profile)
+            self.tt0 = float(spiceypy.unitim(et0, "TDB", "TT"))
+            tt1 = float(spiceypy.unitim(et1, "TDB", "TT"))
+        self.leap_free = abs((tt1 - self.tt0) - self.total_s) < 1e-6
 
-        sun_ms = sum(end - begin for begin, end, _, _ in intervals["sun"])
-        earth_ms = sum(end - begin for begin, end, _, _ in intervals["earth"])
-        result_sites.append(
-            ResultSite(
-                site_ref=site.site_ref,
-                label=site.label,
-                kind="catalog" if site.kind == "catalog" else "custom",
-                catalog_id=site.catalog_id,
-                latitude_deg=site.latitude_deg,
-                longitude_deg=site.longitude_deg,
-                frame_id=request.frame_id,
-                terrain_elevation_m=None,
-                observer_height_m=request.observer_height_m,
-                on_reference_surface=True,
-                azimuth_convention=azimuth_convention(site.latitude_deg),
-                coordinates_rounded=False,
-            )
-        )
-        for body in BODIES:
-            if any(value is None for value in body_series[body].azimuth_deg):
-                issues.append(_azimuth_issue(site.site_ref, f"series.{body}.azimuth_deg"))
-            if any(event.azimuth_deg is None for event in body_events[body].events):
-                issues.append(_azimuth_issue(site.site_ref, f"events.{body}.azimuth_deg"))
-        issues.append(
-            QualityIssue(
-                code="terrain_elevation_not_used",
-                severity="info",
-                site_ref=site.site_ref,
-                field="sites.terrain_elevation_m",
-                message_key="quality.idealized_reference_surface",
-            )
-        )
-        series.append(
-            SiteSeries(
-                site_ref=site.site_ref,
-                step_s=float(request.series_step_s),
-                time_utc=[_utc_at(start, ms) for ms in series_ms],
-                sun=body_series["sun"],
-                earth=body_series["earth"],
-            )
-        )
-        events.append(
-            SiteEvents(site_ref=site.site_ref, sun=body_events["sun"], earth=body_events["earth"])
-        )
-        summary.append(
-            SiteSummary(
-                site_ref=site.site_ref,
-                sun_visible_duration_s=sun_ms / 1000.0,
-                sun_visible_fraction=sun_ms / 1000.0 / total_s,
-                earth_visible_duration_s=earth_ms / 1000.0,
-                both_visible_duration_s=_overlap_ms(intervals["sun"], intervals["earth"]) / 1000.0,
-                sun_intervals=[_to_interval(start, i) for i in intervals["sun"]],
-                earth_windows=[_to_interval(start, i) for i in intervals["earth"]],
-            )
-        )
-        horizon.append(
-            SiteHorizon(
-                site_ref=site.site_ref,
-                mode="idealized_local_plane",
-                azimuth_step_deg=HORIZON_AZIMUTH_STEP_DEG,
-                elevation_deg=[0.0] * count,
-                obstacle_distance_m=[None] * count,
-                quality=["complete"] * count,
-                max_search_distance_m=None,
-                coverage_fraction=1.0,
-                dem_products=[],
-            )
-        )
-        terrain.append(
-            SiteTerrain(
-                site_ref=site.site_ref,
-                available=False,
-                reason="Idealized mode: local terrain is not included.",
-                terrain_id=None,
-                product_id=None,
-                calc_resolution_m=None,
-                visual_resolutions_m=[],
-                frame_id=None,
-            )
-        )
-        report(stage, (index + 1.0) / len(sites))
+    def et(self, t: float) -> float:
+        if self.leap_free:
+            return float(spiceypy.unitim(self.tt0 + t, "TT", "TDB"))
+        return utc_to_et(self.utc(t), self.profile)
 
-    scan_s = scan_ms // 1000
-    if dem_mode:
-        assert dem is not None
-        return _dem_result(
-            request, profile, dem, result_sites, series, horizon, terrain, issues, not_computed
-        )
-    provenance = Provenance(
-        app_version=__version__,
-        computed_at_utc=format_utc(datetime.now(tz=UTC)),
-        source_mode="live",
-        kernel_profile=KernelProfileUse(
-            profile_id=profile.profile_id,
-            files=[
-                KernelFileUse(filename=path.name, sha256=digest or None)
-                for path, digest in zip(profile.paths, profile.sha256, strict=True)
-            ],
-        ),
-        frame_id=request.frame_id,
-        aberration_correction=APPARENT_CORRECTION,
-        body_radii_km={body: body_radius_km(body, profile) for body in BODIES},
-        dem_products=[],
-        horizon_parameters={
-            "mode": "idealized_local_plane",
-            "fixed_horizon_elevation_deg": 0.0,
-            "azimuth_step_deg": HORIZON_AZIMUTH_STEP_DEG,
-        },
-        event_parameters={
-            "method": "scan_and_bisection",
-            "scan_step_s": scan_s,
-            "refinement_tolerance_s": REFINEMENT_MS / 1000.0,
-        },
-        criteria={
-            "solar_criterion": request.solar_criterion,
-            "solar_threshold_deg": 0.0,
-            "earth_criterion": request.earth_criterion.kind,
-            "earth_min_elevation_deg": request.earth_criterion.min_elevation_deg,
-        },
-    )
-    quality = Quality(
-        issues=issues,
-        not_computed=[],
-        approximations=[
-            "Idealized mode: flat local horizon at 0°, local terrain not included; "
-            "this is not a terrain-based result.",
-            "Sun visibility uses the disc centre (angular radius not applied); no refraction.",
-            "Apparent positions with the CN+S correction (D-02, confirmed by the astronomers; no "
-            "gravitational light deflection).",
-            "The observer is on the reference sphere; the catalog elevation is not used.",
-        ],
-        limits=[
-            f"Events are searched on a {scan_s} s grid and refined to "
-            f"{REFINEMENT_MS / 1000.0} s; two crossings between neighbouring samples are missed.",
-            "Steps are counted on the civil UTC scale; no leap second is inserted.",
-            "DEM horizon coverage is not validated; terrain mode 'dem' is not available yet.",
-            "Earth threshold and visibility criteria are provisional (D-04, D-16 [ASTRO]).",
-            "Catalog coordinates are adopted in MOON_ME_DE440_ME421 as a hypothesis (E04).",
-        ],
-    )
-    return SimulationResult(
-        schema_version=SCHEMA_VERSION,
-        request=request,
-        sites=result_sites,
-        series=series,
-        events=events,
-        summary=summary,
-        horizon=horizon,
-        terrain=terrain,
-        provenance=provenance,
-        quality=quality,
-    )
+    def utc(self, t: float) -> str:
+        return _utc_at(self.start, round(t * 1000.0))
 
 
-@dataclass
-class _Out:
-    sites: list[ResultSite] = field(default_factory=list)
-    series: list[SiteSeries] = field(default_factory=list)
-    horizon: list[SiteHorizon] = field(default_factory=list)
-    terrain: list[SiteTerrain] = field(default_factory=list)
-    issues: list[QualityIssue] = field(default_factory=list)
-    not_computed: list[NotComputed] = field(default_factory=list)
+@dataclass(frozen=True)
+class _Direction:
+    azimuth_deg: float | None
+    elevation_deg: float
+    distance_km: float
+    angular_radius_deg: float
+
+
+class _Evaluator:
+    """Direcțiile unui sit: seria prin UTC (identică cu `body_direction`), scanarea prin ET."""
+
+    def __init__(self, profile: LoadedProfile, observer: ObserverSite, clock: _Clock) -> None:
+        self.profile = profile
+        self.observer = observer
+        self.clock = clock
+
+    def at_utc(self, body: Body, utc: str) -> _Direction:
+        with SPICE_LOCK:
+            activate(self.profile)
+            r = body_direction(self.profile, self.observer, body, utc, APPARENT_CORRECTION)
+        return _Direction(r.azimuth_deg, r.elevation_deg, r.distance_km, r.angular_radius_deg)
+
+    def at(self, body: Body, t: float) -> _Direction:
+        with SPICE_LOCK:
+            activate(self.profile)
+            r = body_direction_et(
+                self.profile, self.observer, body, self.clock.et(t), "", APPARENT_CORRECTION
+            )
+        return _Direction(r.azimuth_deg, r.elevation_deg, r.distance_km, r.angular_radius_deg)
+
+
+def _sun_state(model: HorizonModel, d: _Direction) -> SunVisibility:
+    return sun_visibility(model, d.azimuth_deg, d.elevation_deg, d.angular_radius_deg)
+
+
+def _earth_state(model: HorizonModel, d: _Direction, min_elevation: float) -> EarthVisibility:
+    return earth_visibility(model, d.azimuth_deg, d.elevation_deg, min_elevation)
+
+
+def _sample(state: SunVisibility | EarthVisibility, t: float) -> Sample:
+    value = state.clearance_deg if isinstance(state, SunVisibility) else state.margin_deg
+    return Sample(t, value, state.eps_deg, state.timeline_state, state.reason)
 
 
 def _issue(code: str, severity: str, site_ref: str, field_name: str, key: str) -> QualityIssue:
@@ -543,48 +227,285 @@ def _issue(code: str, severity: str, site_ref: str, field_name: str, key: str) -
     )
 
 
-def _dem_site(
+@dataclass
+class _SiteOutput:
+    site: ResultSite
+    series: SiteSeries
+    events: SiteEvents
+    summary: SiteSummary
+    horizon: SiteHorizon
+    terrain: SiteTerrain
+    issues: list[QualityIssue]
+    evaluations: int
+
+
+def _series(
+    evaluator: _Evaluator,
+    model: HorizonModel,
+    request: SimulationRequest,
+    series_ms: list[int],
+) -> tuple[BodySeries, BodySeries]:
+    start = evaluator.clock.start
+    e_min = request.earth_criterion.min_elevation_deg
+    result: dict[Body, BodySeries] = {}
+    for body in BODIES:
+        rows = [evaluator.at_utc(body, _utc_at(start, ms)) for ms in series_ms]
+        states: list[SunVisibility | EarthVisibility] = [
+            _sun_state(model, d) if body == "sun" else _earth_state(model, d, e_min) for d in rows
+        ]
+        horizon: list[float | None] = []
+        for d in rows:
+            if d.azimuth_deg is None:
+                horizon.append(None)
+            else:
+                value = float(model.evaluate(np.array([d.azimuth_deg]))[0][0])
+                horizon.append(None if math.isnan(value) else value)
+        result[body] = BodySeries(
+            azimuth_deg=[d.azimuth_deg for d in rows],
+            elevation_deg=[d.elevation_deg for d in rows],
+            distance_km=[d.distance_km for d in rows],
+            angular_radius_deg=[d.angular_radius_deg for d in rows],
+            horizon_elevation_deg=horizon,
+            visible=[None if s.state == "undetermined" else s.state != "hidden" for s in states],
+            state=[s.state for s in states],
+            state_reason=[s.reason for s in states],
+            visible_fraction=[s.fraction if isinstance(s, SunVisibility) else None for s in states],
+            visible_fraction_uncertainty=[
+                s.fraction_uncertainty if isinstance(s, SunVisibility) else None for s in states
+            ],
+        )
+    return result["sun"], result["earth"]
+
+
+def _segments_ms(segments: list[Segment], total_ms: int) -> list[tuple[int, int, str, str | None]]:
+    """Segmentele în ms întregi, fără lungimi nule, unite când au aceeași stare."""
+    cuts: list[tuple[int, int, str, str | None]] = []
+    for segment in segments:
+        a = 0 if segment.start <= 0 else round(segment.start * 1000.0)
+        b = total_ms if segment.end >= total_ms / 1000.0 else round(segment.end * 1000.0)
+        if cuts:
+            a = cuts[-1][1]
+        if b <= a:
+            continue
+        if cuts and (cuts[-1][2], cuts[-1][3]) == (segment.state, segment.reason):
+            cuts[-1] = (cuts[-1][0], b, segment.state, segment.reason)
+        else:
+            cuts.append((a, b, segment.state, segment.reason))
+    if cuts and cuts[-1][1] != total_ms:
+        last = cuts[-1]
+        cuts[-1] = (last[0], total_ms, last[2], last[3])
+    return cuts
+
+
+def _timeline(
+    start: datetime, cuts: list[tuple[int, int, str, str | None]], total_ms: int
+) -> list[StateInterval]:
+    return [
+        StateInterval.model_validate(
+            {
+                "start_utc": _utc_at(start, a),
+                "end_utc": _utc_at(start, b),
+                "state": state,
+                "reason": reason,
+                "truncated_start": a == 0,
+                "truncated_end": b == total_ms,
+            }
+        )
+        for a, b, state, reason in cuts
+    ]
+
+
+def _duration(cuts: list[tuple[int, int, str, str | None]], state: str) -> float:
+    return sum(b - a for a, b, s, _ in cuts if s == state) / 1000.0
+
+
+def _visible_intervals(
+    start: datetime, cuts: list[tuple[int, int, str, str | None]], total_ms: int
+) -> list[TimeInterval]:
+    return [
+        TimeInterval(
+            start_utc=_utc_at(start, a),
+            end_utc=_utc_at(start, b),
+            truncated_start=a == 0,
+            truncated_end=b == total_ms,
+        )
+        for a, b, s, _ in cuts
+        if s == "visible"
+    ]
+
+
+def _combined(
+    sun: list[tuple[int, int, str, str | None]], earth: list[tuple[int, int, str, str | None]]
+) -> tuple[float, float]:
+    """(ambele vizibile, ambele necunoscute) în secunde, pe partiția comună a celor două linii."""
+    points = sorted({a for a, *_ in sun} | {a for a, *_ in earth} | {sun[-1][1]})
+    both_visible = both_unknown = 0
+
+    def state_at(cuts: list[tuple[int, int, str, str | None]], t: int) -> str:
+        for a, b, s, _ in cuts:
+            if a <= t < b:
+                return s
+        return cuts[-1][2]
+
+    for a, b in itertools.pairwise(points):
+        s, e = state_at(sun, a), state_at(earth, a)
+        if s == "visible" and e == "visible":
+            both_visible += b - a
+        elif s != "hidden" and e != "hidden":
+            both_unknown += b - a
+    return both_visible / 1000.0, both_unknown / 1000.0
+
+
+def _events(
+    body: Body,
+    transitions: list[Transition],
+    evaluator: _Evaluator,
+    model: HorizonModel,
+    request: SimulationRequest,
+    total_ms: int,
+) -> list[Event]:
+    events: list[Event] = []
+    start = evaluator.clock.start
+    for transition in transitions:
+        direction = evaluator.at(body, transition.time)
+        if body == "sun":
+            state = _sun_state(model, direction)
+            cause = "terrain" if model.kind == "dem" else "idealized_horizon"
+            obstacle_azimuth = state.contact_azimuth_deg
+        else:
+            earth = _earth_state(model, direction, request.earth_criterion.min_elevation_deg)
+            cause = earth.cause
+            obstacle_azimuth = direction.azimuth_deg if cause == "terrain" else None
+        lo = max(0, math.floor(transition.window_start * 1000.0))
+        hi = min(total_ms, math.ceil(transition.window_end * 1000.0))
+        at = min(max(round(transition.time * 1000.0), lo), hi)
+        width = transition.window_end - transition.window_start
+        events.append(
+            Event.model_validate(
+                {
+                    "body": body,
+                    "type": transition.kind,
+                    "cause": cause,
+                    "criterion": CRITERIA[body],
+                    "time_utc": _utc_at(start, at),
+                    "window_start_utc": _utc_at(start, lo),
+                    "window_end_utc": _utc_at(start, hi),
+                    "quality": "refined" if width <= 2 * REFINEMENT_TOLERANCE_S else "window",
+                    "azimuth_deg": direction.azimuth_deg,
+                    "elevation_deg": direction.elevation_deg,
+                    "obstacle_distance_m": (
+                        None
+                        if obstacle_azimuth is None
+                        else model.obstacle_distance_at(obstacle_azimuth)
+                    ),
+                    "refinement_tolerance_s": REFINEMENT_TOLERANCE_S,
+                }
+            )
+        )
+    return events
+
+
+def _simulate_site(
     request: SimulationRequest,
     site: SiteInput,
-    inputs: DemSiteInput,
     profile: LoadedProfile,
-    start: datetime,
-    series_ms: list[int],
-    out: _Out,
-) -> None:
-    horizon = inputs.horizon
-    if horizon.status == "unavailable" or horizon.observer_terrain_elevation_m is None:
-        raise LunarHorizonError(
-            ErrorCode.OUT_OF_DEM_COVERAGE,
-            f"{site.site_ref}: orizontul DEM este indisponibil ({horizon.reason_code})",
-        )
-    surface = horizon.observer_terrain_elevation_m
-    evaluator = _Evaluator(profile, site, request.observer_height_m, surface)
-    with SPICE_LOCK:
-        activate(profile)
-        sun, earth = _series_dem(evaluator, horizon, start, series_ms)
-    ref = site.site_ref
-    out.sites.append(
-        ResultSite(
-            site_ref=ref,
-            label=site.label,
-            kind="catalog" if site.kind == "catalog" else "custom",
-            catalog_id=site.catalog_id,
-            latitude_deg=site.latitude_deg,
-            longitude_deg=site.longitude_deg,
-            frame_id=request.frame_id,
-            terrain_elevation_m=surface,
-            observer_height_m=request.observer_height_m,
-            on_reference_surface=False,
-            azimuth_convention=azimuth_convention(site.latitude_deg),
-            coordinates_rounded=False,
-        )
+    clock: _Clock,
+    dem: DemSiteInput | None,
+) -> _SiteOutput:
+    mode = request.terrain_mode
+    if dem is not None:
+        source = dem.visibility_horizon or dem.horizon
+        if source.status == "unavailable" or source.observer_terrain_elevation_m is None:
+            raise LunarHorizonError(
+                ErrorCode.OUT_OF_DEM_COVERAGE,
+                f"{site.site_ref}: orizontul DEM este indisponibil ({source.reason_code})",
+            )
+        model = HorizonModel.from_profile(source)
+        surface = source.observer_terrain_elevation_m
+    else:
+        model = HorizonModel.idealized()
+        surface = 0.0
+    observer = ObserverSite(
+        site.latitude_deg, site.longitude_deg, surface, request.observer_height_m
     )
-    for body, body_series in (("sun", sun), ("earth", earth)):
-        if any(value is None for value in body_series.azimuth_deg):
-            out.issues.append(_azimuth_issue(ref, f"series.{body}.azimuth_deg"))
-        if any(value is None for value in body_series.horizon_elevation_deg):
-            out.issues.append(
+    evaluator = _Evaluator(profile, observer, clock)
+    assert request.series_step_s is not None
+    series_ms = list(range(0, clock.total_ms + 1, request.series_step_s * 1000))
+    sun_series, earth_series = _series(evaluator, model, request, series_ms)
+    e_min = request.earth_criterion.min_elevation_deg
+
+    def sun_eval(t: float) -> Sample:
+        return _sample(_sun_state(model, evaluator.at("sun", t)), t)
+
+    def earth_eval(t: float) -> Sample:
+        return _sample(_earth_state(model, evaluator.at("earth", t), e_min), t)
+
+    steps = SCAN_STEP_S[mode]
+    scans = {
+        "sun": scan(
+            sun_eval, clock.total_s, steps["sun"], REFINEMENT_TOLERANCE_S, MIN_SUBDIVISION_STEP_S
+        ),
+        "earth": scan(
+            earth_eval,
+            clock.total_s,
+            steps["earth"],
+            REFINEMENT_TOLERANCE_S,
+            MIN_SUBDIVISION_STEP_S,
+        ),
+    }
+    cuts = {body: _segments_ms(scans[body].segments, clock.total_ms) for body in BODIES}
+    groups: dict[Body, BodyEvents] = {}
+    for body in BODIES:
+        found = _events(body, scans[body].transitions, evaluator, model, request, clock.total_ms)
+        data_gaps = any(s == "unknown" and r != "near_threshold" for *_, s, r in cuts[body])
+        if found:
+            groups[body] = BodyEvents(status="found", reason=None, events=found)
+        elif data_gaps:
+            groups[body] = BodyEvents(
+                status="unavailable",
+                reason=(
+                    "Visibility could not be determined during part of the interval (horizon data "
+                    "missing or partial); events there are unknown."
+                ),
+                events=[],
+            )
+        else:
+            groups[body] = BodyEvents(status="none_in_interval", reason=None, events=[])
+
+    start = clock.start
+    total = clock.total_s
+    sun_visible = _duration(cuts["sun"], "visible")
+    both_visible, both_unknown = _combined(cuts["sun"], cuts["earth"])
+    summary = SiteSummary(
+        site_ref=site.site_ref,
+        sun_visible_duration_s=sun_visible,
+        sun_visible_fraction=sun_visible / total,
+        earth_visible_duration_s=_duration(cuts["earth"], "visible"),
+        both_visible_duration_s=both_visible,
+        sun_unknown_duration_s=_duration(cuts["sun"], "unknown"),
+        earth_unknown_duration_s=_duration(cuts["earth"], "unknown"),
+        both_unknown_duration_s=both_unknown,
+        sun_intervals=_visible_intervals(start, cuts["sun"], clock.total_ms),
+        earth_windows=_visible_intervals(start, cuts["earth"], clock.total_ms),
+        sun_timeline=_timeline(start, cuts["sun"], clock.total_ms),
+        earth_timeline=_timeline(start, cuts["earth"], clock.total_ms),
+    )
+
+    ref = site.site_ref
+    issues: list[QualityIssue] = []
+    for body, body_series in (("sun", sun_series), ("earth", earth_series)):
+        if any(v is None for v in body_series.azimuth_deg):
+            issues.append(
+                _issue(
+                    "azimuth_undefined",
+                    "info",
+                    ref,
+                    f"series.{body}.azimuth_deg",
+                    "quality.azimuth_undefined_zenith_nadir",
+                )
+            )
+        if any(v is None for v in body_series.horizon_elevation_deg):
+            issues.append(
                 _issue(
                     "horizon_no_data",
                     "warning",
@@ -593,56 +514,80 @@ def _dem_site(
                     "quality.horizon_no_data_or_undefined_azimuth",
                 )
             )
-        out.issues.append(
-            _issue(
-                "visibility_pending_e10",
-                "info",
-                ref,
-                f"series.{body}.visible",
-                "quality.terrain_visibility_not_computed",
+        if any(v is None for v in body_series.visible):
+            issues.append(
+                _issue(
+                    "visibility_undetermined",
+                    "warning",
+                    ref,
+                    f"series.{body}.visible",
+                    "quality.visibility_undetermined",
+                )
             )
-        )
-    if any(value is None for value in horizon.elevation_deg):
-        out.issues.append(
+        if any(e.azimuth_deg is None for e in groups[body].events):
+            issues.append(
+                _issue(
+                    "azimuth_undefined",
+                    "info",
+                    ref,
+                    f"events.{body}.azimuth_deg",
+                    "quality.azimuth_undefined_zenith_nadir",
+                )
+            )
+    if any(v is None for v in sun_series.visible_fraction):
+        issues.append(
             _issue(
-                "horizon_no_data",
+                "visible_fraction_undetermined",
                 "warning",
                 ref,
-                "horizon.elevation_deg",
-                "quality.horizon_no_data",
+                "series.sun.visible_fraction",
+                "quality.visible_fraction_undetermined",
             )
         )
-    if horizon.status == "partial":
-        out.issues.append(
-            _issue("horizon_partial", "warning", ref, "horizon.quality", "quality.horizon_partial")
+    if summary.sun_unknown_duration_s > 0 or summary.earth_unknown_duration_s > 0:
+        issues.append(
+            _issue(
+                "unknown_intervals",
+                "info",
+                ref,
+                "summary.unknown_duration",
+                "quality.unknown_intervals",
+            )
         )
-    out.series.append(
-        SiteSeries(
-            site_ref=ref,
-            step_s=float(request.series_step_s or 0),
-            time_utc=[_utc_at(start, ms) for ms in series_ms],
-            sun=sun,
-            earth=earth,
-        )
-    )
-    out.horizon.append(
-        SiteHorizon(
+
+    if dem is not None:
+        display = dem.horizon
+        if any(v is None for v in display.elevation_deg):
+            issues.append(
+                _issue(
+                    "horizon_no_data",
+                    "warning",
+                    ref,
+                    "horizon.elevation_deg",
+                    "quality.horizon_no_data",
+                )
+            )
+        if (dem.visibility_horizon or display).status == "partial":
+            issues.append(
+                _issue(
+                    "horizon_partial", "warning", ref, "horizon.quality", "quality.horizon_partial"
+                )
+            )
+        horizon = SiteHorizon(
             site_ref=ref,
             mode="dem",
-            azimuth_step_deg=horizon.azimuth_step_deg,
-            elevation_deg=horizon.elevation_deg,
-            obstacle_distance_m=horizon.obstacle_distance_m,
-            quality=horizon.quality,
-            max_search_distance_m=horizon.max_search_distance_m,
-            coverage_fraction=horizon.coverage_fraction,
+            azimuth_step_deg=display.azimuth_step_deg,
+            elevation_deg=display.elevation_deg,
+            obstacle_distance_m=display.obstacle_distance_m,
+            quality=display.quality,
+            max_search_distance_m=display.max_search_distance_m,
+            coverage_fraction=display.coverage_fraction,
             dem_products=[
-                DemProductUse(product_id=p.product_id, role=p.role) for p in horizon.dem_products
+                DemProductUse(product_id=p.product_id, role=p.role) for p in display.dem_products
             ],
         )
-    )
-    manifest = inputs.terrain
-    out.terrain.append(
-        SiteTerrain(
+        manifest = dem.terrain
+        terrain = SiteTerrain(
             site_ref=ref,
             available=True,
             reason=None,
@@ -652,34 +597,145 @@ def _dem_site(
             visual_resolutions_m=sorted({lod.visual_resolution_m for lod in manifest.lods}),
             frame_id=manifest.frame_id,
         )
+        terrain_elevation: float | None = surface
+    else:
+        issues.append(
+            _issue(
+                "terrain_elevation_not_used",
+                "info",
+                ref,
+                "sites.terrain_elevation_m",
+                "quality.idealized_reference_surface",
+            )
+        )
+        count = round(360.0 / HORIZON_AZIMUTH_STEP_DEG)
+        horizon = SiteHorizon(
+            site_ref=ref,
+            mode="idealized_local_plane",
+            azimuth_step_deg=HORIZON_AZIMUTH_STEP_DEG,
+            elevation_deg=[0.0] * count,
+            obstacle_distance_m=[None] * count,
+            quality=["complete"] * count,
+            max_search_distance_m=None,
+            coverage_fraction=1.0,
+            dem_products=[],
+        )
+        terrain = SiteTerrain(
+            site_ref=ref,
+            available=False,
+            reason="Idealized mode: local terrain is not included.",
+            terrain_id=None,
+            product_id=None,
+            calc_resolution_m=None,
+            visual_resolutions_m=[],
+            frame_id=None,
+        )
+        terrain_elevation = None
+
+    result_site = ResultSite(
+        site_ref=ref,
+        label=site.label,
+        kind="catalog" if site.kind == "catalog" else "custom",
+        catalog_id=site.catalog_id,
+        latitude_deg=site.latitude_deg,
+        longitude_deg=site.longitude_deg,
+        frame_id=request.frame_id,
+        terrain_elevation_m=terrain_elevation,
+        observer_height_m=request.observer_height_m,
+        on_reference_surface=dem is None,
+        azimuth_convention=azimuth_convention(site.latitude_deg),
+        coordinates_rounded=False,
     )
-    out.not_computed.append(NotComputed(group="events", site_ref=ref, reason=E10_PENDING))
-    out.not_computed.append(NotComputed(group="summary", site_ref=ref, reason=E10_PENDING))
+    series = SiteSeries(
+        site_ref=ref,
+        step_s=float(request.series_step_s),
+        time_utc=[_utc_at(start, ms) for ms in series_ms],
+        sun=sun_series,
+        earth=earth_series,
+    )
+    return _SiteOutput(
+        result_site,
+        series,
+        SiteEvents(site_ref=ref, sun=groups["sun"], earth=groups["earth"]),
+        summary,
+        horizon,
+        terrain,
+        issues,
+        scans["sun"].evaluations + scans["earth"].evaluations,
+    )
 
 
-def _dem_result(
+def simulate_idealized(
+    request: SimulationRequest,
+    sites: list[SiteInput],
+    profile: LoadedProfile,
+    progress: ProgressCallback | None = None,
+    dem: dict[str, DemSiteInput] | None = None,
+) -> SimulationResult:
+    """Rezultatul complet pentru `terrain_mode = idealized_local_plane` sau `dem` (cu `dem` dat).
+
+    `request.series_step_s` trebuie să fie deja stabilit. Ridică `LunarHorizonError` pentru
+    acoperire
+    temporală sau orizont indisponibil; valorile necunoscute devin `null` cu motiv în
+    `quality.issues`.
+    """
+    dem_mode = request.terrain_mode == "dem"
+    if dem_mode and (dem is None or any(site.site_ref not in dem for site in sites)):
+        raise LunarHorizonError(
+            ErrorCode.OUT_OF_DEM_COVERAGE,
+            "terrain_mode=dem cere profilul de orizont din DEM pentru fiecare sit; modul "
+            "idealizat nu se substituie automat",
+        )
+    if not dem_mode and dem:
+        raise ValueError("profilurile DEM se folosesc numai cu terrain_mode=dem")
+    if request.series_step_s is None:
+        raise ValueError("series_step_s trebuie stabilit înaintea simulării")
+    report = progress or (lambda _stage, _fraction: None)
+    clock = _Clock(request, profile)
+    outputs: list[_SiteOutput] = []
+    for index, site in enumerate(sites):
+        stage = f"sit {index + 1}/{len(sites)}"
+        report(stage, index / len(sites))
+        outputs.append(
+            _simulate_site(request, site, profile, clock, dem[site.site_ref] if dem else None)
+        )
+        report(stage, (index + 1.0) / len(sites))
+    return _result(request, profile, dem, outputs)
+
+
+def _result(
     request: SimulationRequest,
     profile: LoadedProfile,
-    dem: dict[str, DemSiteInput],
-    sites: list[ResultSite],
-    series: list[SiteSeries],
-    horizon: list[SiteHorizon],
-    terrain: list[SiteTerrain],
-    issues: list[QualityIssue],
-    not_computed: list[NotComputed],
+    dem: dict[str, DemSiteInput] | None,
+    outputs: list[_SiteOutput],
 ) -> SimulationResult:
-    profiles = [dem[site.site_ref].horizon for site in sites]
+    mode = request.terrain_mode
+    steps = SCAN_STEP_S[mode]
     products: dict[str, DemProductUse] = {}
-    for item in profiles:
-        for use in item.dem_products:
-            products.setdefault(
-                use.product_id, DemProductUse(product_id=use.product_id, role=use.role)
-            )
-    parameters: dict[str, float | int | str | bool] = {"mode": "dem"}
-    parameters.update(profiles[0].parameters)
-    parameters["parameters_status"] = "provisional (D-08/D-09 open)"
-    for item, site in zip(profiles, sites, strict=True):
-        parameters[f"cache_key.{site.site_ref}"] = item.cache_key
+    horizon_parameters: dict[str, float | int | str | bool]
+    if dem:
+        first = next(iter(dem.values()))
+        horizon_parameters = {"mode": "dem"}
+        horizon_parameters.update(first.horizon.parameters)
+        horizon_parameters["display_azimuth_step_deg"] = first.horizon.azimuth_step_deg
+        horizon_parameters["visibility_azimuth_step_deg"] = (
+            first.visibility_horizon or first.horizon
+        ).azimuth_step_deg
+        horizon_parameters["parameters_status"] = "provisional (D-08/D-09 open)"
+        for ref, inputs in dem.items():
+            horizon_parameters[f"cache_key.{ref}"] = (
+                inputs.visibility_horizon or inputs.horizon
+            ).cache_key
+            for use in inputs.horizon.dem_products:
+                products.setdefault(
+                    use.product_id, DemProductUse(product_id=use.product_id, role=use.role)
+                )
+    else:
+        horizon_parameters = {
+            "mode": "idealized_local_plane",
+            "fixed_horizon_elevation_deg": 0.0,
+            "azimuth_step_deg": HORIZON_AZIMUTH_STEP_DEG,
+        }
     provenance = Provenance(
         app_version=__version__,
         computed_at_utc=format_utc(datetime.now(tz=UTC)),
@@ -695,42 +751,79 @@ def _dem_result(
         aberration_correction=APPARENT_CORRECTION,
         body_radii_km={body: body_radius_km(body, profile) for body in BODIES},
         dem_products=list(products.values()),
-        horizon_parameters=parameters,
-        event_parameters={"method": "not_computed_e10"},
+        horizon_parameters=horizon_parameters,
+        event_parameters={
+            "algorithm_version": VISIBILITY_ALGORITHM_VERSION,
+            "method": "adaptive_scan_subdivision_bisection",
+            "sun_scan_step_s": steps["sun"],
+            "earth_scan_step_s": steps["earth"],
+            "refinement_tolerance_s": REFINEMENT_TOLERANCE_S,
+            "min_subdivision_step_s": MIN_SUBDIVISION_STEP_S,
+            "eps_numeric_deg": EPS_NUMERIC_DEG,
+            "disc_columns": DISC_COLUMNS,
+            "criterion_evaluations": sum(o.evaluations for o in outputs),
+        },
         criteria={
             "solar_criterion": request.solar_criterion,
+            "solar_definition": SOLAR_DEFINITION,
             "earth_criterion": request.earth_criterion.kind,
+            "earth_definition": EARTH_DEFINITION,
             "earth_min_elevation_deg": request.earth_criterion.min_elevation_deg,
-            "terrain_visibility": "not_computed_e10",
+            "eclipses": "not_included",
         },
     )
+    terrain_text = (
+        "DEM horizon: H(A) from the DEM calculation rasters (near PGDA product, far LOLA GDR "
+        f"product), sampled every {VISIBILITY_AZIMUTH_STEP_DEG} deg for visibility and linear "
+        "between samples; the observer stands on the DEM surface plus the equipment height."
+        if mode == "dem"
+        else "Idealized mode: flat local horizon at 0 deg, local terrain not included; this is not "
+        "a terrain-based result. The observer is on the reference sphere."
+    )
     quality = Quality(
-        issues=issues,
-        not_computed=not_computed,
+        issues=[issue for o in outputs for issue in o.issues],
+        not_computed=[],
         approximations=[
-            "Horizon H(a) from the DEM calculation rasters (near PGDA product, far LOLA GDR "
-            "product), linear between sampled azimuths; the display mesh is not used.",
-            "The observer stands on the DEM surface (bilinear height) plus the equipment height.",
-            "Apparent positions with the CN+S correction (D-02, confirmed by the astronomers; no "
-            "gravitational light deflection).",
+            terrain_text,
+            "Sun: visible when any part of the disc with positive area is above the horizon; "
+            "disc radius asin(R_sun / D) at each moment; tangent-plane disc model (relative error "
+            "of order rho^2). The visible fraction is an apparent-area fraction, not solar power.",
+            "Earth: geometric line of sight to the Earth's centre above max(horizon, minimum "
+            "elevation); not a communication-link assessment.",
+            "Apparent positions with the CN+S correction (D-02); no refraction, no gravitational "
+            "light deflection.",
         ],
         limits=[
-            "Horizon parameters (d_max, radial and azimuth steps, far product) are technical "
-            "proposals from the E09 convergence study; D-08/D-09 [GEO] are open.",
-            "Terrain-based visibility, events and indicators are stage E10 and are not computed.",
-            "The DEM frame MOON_ME_DE421 is a working hypothesis (D-10); no frame conversion.",
-            "Near-terrain resolution convergence cannot be shown: 5 m is the finest product.",
-        ],
+            "Visibility is with respect to terrain only; eclipses are not included.",
+            f"Events: scan every {steps['sun']:g} s (Sun) and {steps['earth']:g} s (Earth), "
+            f"subdivision to {MIN_SUBDIVISION_STEP_S:g} s where the criterion may reach the "
+            f"threshold, roots refined to {REFINEMENT_TOLERANCE_S:g} s. This is numerical "
+            "precision, not physical (DEM, ephemeris) uncertainty.",
+            "Undetermined periods (missing or partial horizon data, or within the horizon "
+            "resolution of the threshold) are reported separately, never as hidden.",
+            "Earth minimum elevation is a configurable threshold (default 0 deg).",
+            "Steps are counted on the civil UTC scale; no leap second is inserted.",
+        ]
+        + (
+            [
+                "Horizon parameters are technical proposals (D-08/D-09 open); the DEM frame "
+                "MOON_ME_DE421 is a working hypothesis (D-10).",
+                "Narrow obstacles between horizon samples cannot be excluded; near-terrain "
+                "resolution convergence is not demonstrable (5 m is the finest product).",
+            ]
+            if mode == "dem"
+            else ["Catalog coordinates are adopted in their declared frame as a hypothesis (E04)."]
+        ),
     )
     return SimulationResult(
         schema_version=SCHEMA_VERSION,
         request=request,
-        sites=sites,
-        series=series,
-        events=[],
-        summary=[],
-        horizon=horizon,
-        terrain=terrain,
+        sites=[o.site for o in outputs],
+        series=[o.series for o in outputs],
+        events=[o.events for o in outputs],
+        summary=[o.summary for o in outputs],
+        horizon=[o.horizon for o in outputs],
+        terrain=[o.terrain for o in outputs],
         provenance=provenance,
         quality=quality,
     )

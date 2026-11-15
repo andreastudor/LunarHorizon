@@ -17,7 +17,7 @@ import math
 import threading
 from collections import OrderedDict
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Final
 
@@ -52,6 +52,9 @@ DEFAULT_PARAMETERS: Final = HorizonParameters(
     near_step_m=5.0,
     far_step_m=120.0,
 )
+# Profilul fin folosit pentru vizibilitatea discului solar și a Pământului (E10): același algoritm,
+# pas azimutal 0,025° (eșantioanele de 0,5° sunt un subset exact). Ales prin convergență (VALIDARE).
+VISIBILITY_PARAMETERS: Final = replace(DEFAULT_PARAMETERS, azimuth_step_deg=0.025)
 NOTE: Final = (
     "Horizon from the DEM calculation rasters (not the display mesh). Parameters are technical "
     "proposals pending D-08/D-09; not a scientifically validated horizon."
