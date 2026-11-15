@@ -618,3 +618,20 @@ verificarea compatibilității și decizia D-08; nu se aprobă relaxarea criteri
 288 de teste backend au trecut; Ruff și mypy au trecut (45 fișiere sursă pentru mypy).
 Un test specific țintei IM-2 a fost eliminat odată cu intrarea; celelalte teste au fost adaptate
 la cele 10 situri și la raportul istoric păstrat. Nu s-au efectuat verificări DEM sau vizuale noi.
+
+## E10A / E11 / E12 — verificări 2026-11-15
+
+- Frontend: 234 teste trecute; lint și typecheck trecute.
+- Backend: rularea completă inițială 399 trecute / 2 eșuate (inventarul OpenAPI și unitățile din containerele E10A).
+  Ambele corectate; reexecutare contracte + sistem: 62/62, API sistem + OpenAPI: 3/3.
+  Ruff și mypy trecute. Nu raportăm o reexecutare completă suplimentară care nu a avut loc.
+- Chromium/SwiftShader, servere proaspete: **4/4** trecute (5,1 minute): fallback WebGL,
+  hartă globală/polară cu selecție păstrată, comparație Leibnitz Beta–Connecting Ridge în mod DEM
+  pe o zi, timp comun și activarea celui de-al doilea teren 3D; E10A cu distanțe, focus și cache.
+- Rulările browser anterioare NU au trecut: servere reutilizate/HMR în timpul lucrului, controale
+  suprapuse și expirarea comparației de 30 zile. Verificarea finală folosește cod stabil și servere
+  dedicate; comparația reală de 30 zile rămâne neverificată în această sesiune.
+- 2–4 situri: construcția cererii comune și cadrele incompatibile testate unitar; cap-coadă browser
+  verificat pentru două. Trei/patru coloane și schimbarea datei de început nu sunt încă validate
+  cap-coadă. E12 funcționează pentru demonstrația verificată; acceptarea exhaustivă rămâne deschisă.
+- E10A: Horizons geometric și ASTRO restante; E15 offline restant. Nu se declară P0/MVP complet.

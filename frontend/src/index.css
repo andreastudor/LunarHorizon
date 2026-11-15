@@ -506,9 +506,8 @@ button.primary:hover:not(:disabled) {
 
 /* View tabs and local terrain */
 .view-tabs {
-  position: absolute;
-  top: 0.6rem;
-  left: 0.6rem;
+  position: relative;
+  padding: 0.6rem;
   z-index: 2;
   display: flex;
   gap: 0.3rem;
@@ -520,8 +519,15 @@ button.primary:hover:not(:disabled) {
 }
 
 .view-panel {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.zone--center {
+  display: flex;
+  flex-direction: column;
 }
 
 .terrain {

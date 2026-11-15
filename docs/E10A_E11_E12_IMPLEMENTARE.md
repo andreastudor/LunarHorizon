@@ -57,3 +57,7 @@ Frontend: transformare schematică, proiecții polare la seam/pol, cerere comun�
 refuz cadre incompatibile/duplicate. Testele App existente verifică ignorarea rezultatelor vechi.
 Playwright: `system.spec.ts`, `map-comparison.spec.ts`; servere dedicate 8001/5174, fără reutilizarea
 serverelor de dezvoltare, pentru a nu testa o versiune API veche. Rezultatele finale în VALIDARE.
+
+Verificare finală: 4/4 teste browser trecute, inclusiv două situri DEM pe o zi și terenul activ.
+E12 este funcțională pentru acest scenariu; 3–4 situri și schimbarea datei rămân de verificat
+cap-coadă, la fel ca validarea științifică. E10A are Horizons geometric restant. Vezi VALIDARE.

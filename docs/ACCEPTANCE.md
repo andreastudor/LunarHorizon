@@ -1,4 +1,16 @@
 # Criterii de acceptanță
+## E10A/E11/E12 — implementare curentă
+
+| Criteriu | Implementare / limită |
+|---|---|
+| Centre, distanțe, trasee, UTC E10A | Implementate; norme și vector SPICE direct verificate; Horizons geometric restant |
+| Navigare, etichete de scară, cache și GPU | Implementate; test Chromium E10A trecut |
+| Harta globală/polară, proiecții lunare, selecție comună E11 | Implementate; test Chromium trecut după corectarea suprapunerii controalelor |
+| Fallback WebGL | Test Chromium trecut |
+| Comparație 2–4 puncte E12 | Implementată; cerere comună, refuz cadre incompatibile, scări comune |
+| Două situri DEM cap-coadă | Datele reale există; rezultatul verificării în VALIDARE |
+| Acceptare științifică și offline | Restante; nicio decizie GEO/ASTRO închisă implicit |
+
 ## E10 — stare 2026-11-15: încheiată tehnic (M1) pentru Leibnitz Beta; acceptare științifică restantă
 
 | Criteriu BACKLOG | Stare | Dovadă |
@@ -367,3 +379,7 @@ vizual pozițiile** și ca **cele două situri polare demonstrative să fie ales
 | D-10 confirmat de geografi | **incomplet** | Propunere implementată; neconfirmată |
 | Lucrarea Icarus și PDF-ul LROC din 2016 | inaccesibile | HTTP 403 și 500; definiția incertitudinii nu a putut fi citită |
 | Clonă curată fără kerneluri și fără date brute | trecut | 228 trecute, 60 omise explicit (kerneluri), 0 eșuate; `test_catalog.py` 29/29; frontend 166/166; Ruff, mypy și fișierele generate la zi |
+
+Actualizare finală E12: demonstrația pe o zi Leibnitz Beta–Connecting Ridge a trecut testul
+cap-coadă, inclusiv sliderul și al doilea teren 3D. Rămân testele cap-coadă pentru 3–4 situri,
+schimbarea datei și acceptările științifice; nu este declarată închisă exhaustiv.

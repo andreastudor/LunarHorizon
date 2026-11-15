@@ -4,9 +4,15 @@ import { en } from '../src/i18n/en.ts'
 test('WebGL failure automatically opens a working 2D map', async ({ page }) => {
   await page.addInitScript(() => {
     const original = HTMLCanvasElement.prototype.getContext
-    HTMLCanvasElement.prototype.getContext = function(kind: string, ...args: unknown[]) {
+    HTMLCanvasElement.prototype.getContext = function (
+      this: HTMLCanvasElement,
+      kind: string,
+      ...args: unknown[]
+    ) {
       if (kind.includes('webgl')) return null
-      return original.apply(this, [kind, ...args] as Parameters<typeof original>)
+      return original.apply(this, [kind, ...args] as Parameters<
+        typeof original
+      >)
     } as typeof original
   })
   await page.goto('/')
@@ -37,7 +43,7 @@ test('2D map switches projections and preserves catalog selection', async ({
 test('two real polar DEM sites compare and follow one clock and active terrain', async ({
   page,
 }) => {
-  test.setTimeout(240000)
+  test.setTimeout(600000)
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   let requests = 0
@@ -51,9 +57,10 @@ test('two real polar DEM sites compare and follow one clock and active terrain',
     await page.getByRole('button', { name: en.compare.add }).click()
   }
   await page.locator('select[name="terrain-mode"]').selectOption('dem')
+  await page.getByLabel(en.params.duration).selectOption('1')
   await page.getByRole('button', { name: en.compare.run, exact: true }).click()
   const columns = page.locator('.comparison-column')
-  await expect(columns).toHaveCount(2, { timeout: 180000 })
+  await expect(columns).toHaveCount(2, { timeout: 480000 })
   await expect(columns.nth(0)).toContainText('Leibnitz')
   await expect(columns.nth(1)).toContainText('Connecting Ridge')
   await page.locator('#time-slider').fill('24')

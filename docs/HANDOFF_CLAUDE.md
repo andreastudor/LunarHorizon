@@ -1,5 +1,18 @@
 # LunarHorizon — handoff pentru Claude Code
 
+## Actualizare 2026-11-15: E10A, E11, E12
+
+Starea nouă are prioritate față de istoricul de mai jos. Commit WIP `e26ad5a` împins pe
+`origin/e04-completare-dovezi` la cererea utilizatorului. Implementare:
+[E10A_E11_E12_IMPLEMENTARE.md](E10A_E11_E12_IMPLEMENTARE.md); verificări finale în VALIDARE.
+Comenzile de instalare, achiziție și pornire sunt actualizate în README. Datele reale sunt locale,
+ignorate de Git, reproductibile prin scripturi; un clone nu le conține automat.
+Pentru demonstrație: Leibnitz Beta și Connecting Ridge, DEM, 1 zi, Compare sites; coloana activă
+urmărită în scena comună. E10A: contract 1.0.0 aditiv, J2000/SUN/NONE, fără schimbarea vizibilității locale.
+E11: OpenLayers 10.11.0. Playwright pornește servere proaspete la 8001/5174 (nu reutilizează 8000/5173).
+Restante: Horizons geometric E10A, acceptări științifice, E13–E17 (inclusiv offline și deployment).
+Nu confunda push-ul pe ramura de lucru cu un site public funcțional sau un MVP validat.
+
 ## Cerință nouă obligatorie: E10A — Earth–Moon–Sun
 
 Decizie utilizator, 2026-11-14: tabul cu Soare, Pământ și Lună în 3D, trasee și distanțe între centre

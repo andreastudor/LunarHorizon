@@ -9,10 +9,49 @@ altimetrice reale (LOLA) pentru siturile polare. O hartă 2D sincronizată este 
 
 ## Stare
 
-Implementate: mediul de lucru și CI (E01), convențiile comune și contractele de date (E02) și motorul
-astronomic pentru un sit, verificat față de JPL Horizons (E03, încă deschisă până la deciziile colegilor de
-astronomie). **Interfața aplicației (harta 3D, comparația) nu există încă**; pagina pornită de `npm run dev` este
-doar componenta rădăcină. Starea curentă și etapa următoare sunt în [docs/STATUS.md](docs/STATUS.md).
+Implementate: glob 3D, teren real pentru 13 regiuni PGDA 104, orizont DEM, vizibilitate și evenimente;
+vederea Earth–Moon–Sun, hartă 2D și comparație 2–4 situri. Acceptarea științifică și unele verificări
+rămân deschise: [docs/STATUS.md](docs/STATUS.md). Punctele DEM sunt reprezentative, nu locuri de aterizare.
+Versiunea curentă pentru hackathon este pe ramura `e04-completare-dovezi`.
+
+## Hackathon: datele și pornirea aplicației complete
+
+După instalarea dependențelor de mai jos, o clonă nouă necesită datele reale. Acestea nu sunt incluse
+în Git, la fel ca mediile virtuale și cache-urile; pe calculatorul de dezvoltare există deja.
+Comenzile reproducibile (rădăcina proiectului, PowerShell):
+
+```powershell
+$env:PYTHONUTF8 = "1"
+backend\.venv\Scripts\python scripts\download_kernels.py
+backend\.venv\Scripts\python scripts\download_terrain.py
+backend\.venv\Scripts\python scripts\build_terrain.py
+backend\.venv\Scripts\python scripts\download_e05_auxiliary.py
+backend\.venv\Scripts\python scripts\build_e05_auxiliary.py
+backend\.venv\Scripts\python scripts\acquire_pgda104.py --all
+backend\.venv\Scripts\python scripts\build_pgda104_regions.py
+backend\.venv\Scripts\python scripts\acquire_lola_gdr.py LDEM_75S_120M
+backend\.venv\Scripts\python scripts\verify_terrain_products.py
+```
+
+Descărcările cer acces la sursele oficiale și pot dura. La eroare nu se generează teren sintetic.
+Pornește două terminale din rădăcina proiectului:
+
+```powershell
+# Terminal 1 — API
+backend\.venv\Scripts\python -m uvicorn lunarhorizon.api.app:app --app-dir backend --host 127.0.0.1 --port 8000
+# Terminal 2 — interfață
+npm --prefix frontend run dev -- --host 127.0.0.1 --port 5173
+```
+
+Deschide http://127.0.0.1:5173. Pentru comparație: selectează **Leibnitz Beta**, adaugă-l în lista
+de comparație; repetă pentru **Connecting Ridge** (nu Extension); alege **DEM terrain horizon**, **1 day**,
+**Compare sites**. Prima rulare calculează orizontul fin și poate dura. Apasă titlul unei coloane și
+**Local terrain** pentru situl activ. Sliderul este comun. **Earth–Moon–Sun** funcționează și fără
+simulare locală; **2D map** păstrează selecția.
+
+`npm --prefix frontend run build` produce frontendul, care necesită în continuare API și date.
+**Push-ul Git nu este deployment. GitHub Pages singur nu rulează SPICE/DEM.** Modul complet offline E15
+nu este implementat încă. Nu declarați MVP-ul complet cât timp criteriile deschise din ACCEPTANCE persistă.
 
 ## Structură
 

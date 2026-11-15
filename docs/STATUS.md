@@ -1,4 +1,13 @@
 # Stare
+## E10A → E11 → E12 — lucru curent, 2026-11-15
+
+`e26ad5a` (WIP) publicat la cererea utilizatorului pe `origin/e04-completare-dovezi`, înaintea încheierii
+verificărilor; `main` nemodificat. Implementate: centre SPICE/scena Earth–Moon–Sun, hartă OpenLayers
+globală/polară cu fallback WebGL, comparație 2–4 puncte cu interval, parametri și scări comune.
+Detalii: [E10A_E11_E12_IMPLEMENTARE.md](E10A_E11_E12_IMPLEMENTARE.md). Rezultate rulate în VALIDARE.
+Horizons geometric E10A, acceptările ASTRO/GEO și offline E15 rămân deschise; push-ul nu le închide.
+README conține acum pornirea cu API și reproducerea datelor reale.
+
 ## E10 — vizibilitate, evenimente și indicatori (M1), 2026-11-15
 
 **Încheiată tehnic pentru un sit polar real (Leibnitz Beta), cap-coadă: teren → orizont → geometrie → vizibilitate →
